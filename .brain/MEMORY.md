@@ -30,6 +30,7 @@ Surface dev: `npm run dev` (:3000 HTTPS) | DGX backend: 3DAIGC-API :7842
 - DGX runs API only; OpenNexus dev server runs on Surface unless user explicitly asks otherwise <!-- added: 2026-06-26 -->
 - DGX ↔ Surface sync via scp scripts — agents must not git push/pull unless user asks <!-- added: 2026-06-26 -->
 - XR Voice stays on Surface `:8443` xr-hub-proxy → DGX hub `:8088`; not OpenNexus `/xr` route <!-- added: 2026-06-26 -->
+- **XR voice start:** DGX `mcp/scripts/start_xr_voice_full.sh` + verify; Surface proxy via scheduled task (SSH Start-Process dies) <!-- added: 2026-06-29 -->
 - MSF browser URL: `https://10.0.0.32:8453` (Surface msf-proxy → DGX MSF :8443); not Tailscale hostname until funnel fixed <!-- added: 2026-06-26 -->
 - Backend + frontend API contract changes must land in both repos (models.yaml ↔ aiModelsCatalog.js, taskManager.js, etc.) <!-- added: 2026-06-26 -->
 
@@ -66,9 +67,12 @@ SessionMem team: `.sessionmem-team/` | Cursor memory-bank: `memory-bank/` | Grap
 ## Conventions  <!-- Read when writing code -->
 
 - Code quality: `.cursor/rules/solid-skills.mdc` + `.agents/skills/solid/` — SOLID for new/refactor work; minimize scope + meaningful tests over mandatory TDD <!-- added: 2026-06-26 -->
-- After DGX edits to sync-owned paths: `bash scripts/sync-changes-to-pc.sh` (add `--include-src` when `src/` changed)
+- **New/changed scripts or operator commands:** update `docs/scripts-cheatsheet.md` + `bash scripts/sync-changes-to-pc.sh --retry-until-complete` same session (`.cursor/rules/new-scripts-ops-cheatsheet.mdc`) <!-- added: 2026-06-29 -->
+**Terse or implicit failure signals** (screenshot, “fix it”, “where is X?”, “still broken” — not only the word `debug`): full workflow in `.cursor/rules/terse-debug-ops.mdc` + `memory-bank/debug-ops-workflow.md` — infer intent, logs → fix → verify → sync <!-- added: 2026-06-29 -->
+- After other DGX edits to sync-owned paths: `bash scripts/sync-changes-to-pc.sh` (add `--include-src` when `src/` changed)
 - HTTPS required for WebXR — see `docs/HTTPS_SETUP.md`
 - Prefer dynamic model lists from `/api/v1/system/models` over hardcoded dropdowns
+- **Krea → Image-to-3D pipeline locked (2026-06-30):** `memory-bank/krea2-text-to-3d-pipeline-protected-state.md` · `bash scripts/verify_krea2_text_to_3d_pipeline.sh` before merging chain/URL/Krea UI touches <!-- added: 2026-06-30 -->
 
 ---
 
