@@ -26,36 +26,36 @@ The repository uses 28 model identifiers. The table groups them by
 task. The type column states whether the model is a deep learning
 model or a geometric algorithm.
 
-| Model id                            | Type                | Task                         | Runs on |
-| ----------------------------------- | ------------------- | ---------------------------- | ------- |
-| trellis_text_to_textured_mesh       | Deep learning       | Text to 3D                   | DGX API |
-| trellis2_image_to_textured_mesh     | Deep learning       | Image to 3D                  | DGX API |
-| trellis_image_to_textured_mesh      | Deep learning       | Image to 3D (legacy)         | DGX API |
-| pixal3d_image_to_textured_mesh      | Deep learning       | Image to 3D (PBR)            | DGX API |
-| hunyuan3dv21_image_to_textured_mesh | Deep learning       | Image to 3D                  | DGX API |
-| hunyuan3dv21_image_to_raw_mesh      | Deep learning       | Image to raw mesh            | DGX API |
-| ultrashape_image_to_raw_mesh        | Deep learning       | Image to raw mesh            | DGX API |
-| trellis_text_mesh_painting          | Deep learning       | Text mesh painting           | DGX API |
-| trellis2_image_mesh_painting        | Deep learning       | Image mesh painting          | DGX API |
-| trellis_image_mesh_painting         | Deep learning       | Image mesh painting (legacy) | DGX API |
-| hunyuan3dv21_image_mesh_painting    | Deep learning       | Image mesh painting          | DGX API |
-| p3sam_mesh_segmentation             | Deep learning       | Mesh segmentation            | DGX API |
-| krea2_turbo_text_to_image           | Deep learning       | Text to image                | DGX API |
-| seethrough_layer_decomposition      | Deep learning       | Image to layers              | DGX API |
-| kimodo_text_to_motion               | Deep learning       | Text to motion               | DGX API |
-| skintokens_auto_rig                 | Deep learning       | Auto rig (full)              | DGX API |
-| unirig_auto_rig                     | Deep learning       | Auto rig (template VRM)      | DGX API |
-| appearance_component_auto_rig       | Deep learning       | Auto rig (appearance)        | DGX API |
-| creature_template_auto_rig          | Deep learning       | Auto rig (creature)          | DGX API |
-| triposplat_image_to_splat           | Deep learning       | Image to splat               | DGX API |
-| worldmirror2_reconstruct            | Deep learning       | Photos to splat              | DGX API |
-| opennexus_image_to_world            | Deep learning       | Image to world               | DGX API |
-| lingbot_map_environment_scan        | Deep learning       | Environment scan             | DGX API |
-| colmap_3dgs_reconstruct             | Geometric algorithm | Photos to splat              | DGX API |
-| instant_meshes_retopology           | Geometric algorithm | Mesh retopology              | DGX API |
-| xatlas_uv_unwrapping                | Geometric algorithm | UV unwrapping                | DGX API |
-| voxhammer_text_mesh_editing         | Deep learning       | Text mesh editing            | DGX API |
-| voxhammer_image_mesh_editing        | Deep learning       | Image mesh editing           | DGX API |
+| Model id                                | Type                | Task                         | Runs on |
+| --------------------------------------- | ------------------- | ---------------------------- | ------- |
+| trellis_text_to_textured_mesh           | Deep learning       | Text to 3D                   | DGX API |
+| trellis2_image_to_textured_mesh         | Deep learning       | Image to 3D                  | DGX API |
+| trellis_image_to_textured_mesh          | Deep learning       | Image to 3D (legacy)         | DGX API |
+| pixal3d_image_to_textured_mesh          | Deep learning       | Image to 3D (PBR)            | DGX API |
+| ~~hunyuan3dv21_image_to_textured_mesh~~ | Deep learning       | Image to 3D                  | DGX API |
+| ~~hunyuan3dv21_image_to_raw_mesh~~      | Deep learning       | Image to raw mesh            | DGX API |
+| ~~ultrashape_image_to_raw_mesh~~        | Deep learning       | Image to raw mesh            | DGX API |
+| trellis_text_mesh_painting              | Deep learning       | Text mesh painting           | DGX API |
+| trellis2_image_mesh_painting            | Deep learning       | Image mesh painting          | DGX API |
+| trellis_image_mesh_painting             | Deep learning       | Image mesh painting (legacy) | DGX API |
+| ~~hunyuan3dv21_image_mesh_painting~~    | Deep learning       | Image mesh painting          | DGX API |
+| p3sam_mesh_segmentation                 | Deep learning       | Mesh segmentation            | DGX API |
+| krea2_turbo_text_to_image               | Deep learning       | Text to image                | DGX API |
+| seethrough_layer_decomposition          | Deep learning       | Image to layers              | DGX API |
+| kimodo_text_to_motion                   | Deep learning       | Text to motion               | DGX API |
+| skintokens_auto_rig                     | Deep learning       | Auto rig (full)              | DGX API |
+| ~~unirig_auto_rig~~                     | Deep learning       | Auto rig (template VRM)      | DGX API |
+| ~~appearance_component_auto_rig~~       | Deep learning       | Auto rig (appearance)        | DGX API |
+| ~~creature_template_auto_rig~~          | Deep learning       | Auto rig (creature)          | DGX API |
+| triposplat_image_to_splat               | Deep learning       | Image to splat               | DGX API |
+| worldmirror2_reconstruct                | Deep learning       | Photos to splat              | DGX API |
+| opennexus_image_to_world                | Deep learning       | Image to world               | DGX API |
+| lingbot_map_environment_scan            | Deep learning       | Environment scan             | DGX API |
+| colmap_3dgs_reconstruct                 | Geometric algorithm | Photos to splat              | DGX API |
+| instant_meshes_retopology               | Geometric algorithm | Mesh retopology              | DGX API |
+| xatlas_uv_unwrapping                    | Geometric algorithm | UV unwrapping                | DGX API |
+| voxhammer_text_mesh_editing             | Deep learning       | Text mesh editing            | DGX API |
+| voxhammer_image_mesh_editing            | Deep learning       | Image mesh editing           | DGX API |
 
 ## Client and external models
 
