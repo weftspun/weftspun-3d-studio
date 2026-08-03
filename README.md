@@ -467,7 +467,7 @@ Open3DStudio was the original foundation of this project, providing core 3D AIGC
 - [Wallet-Owned Assets Approach](docs/WALLET_OWNED_ASSETS_AVATAR_APPROACH.md) - Configure avatars from connected wallet (RMRK EVM, Thirdweb)
 - [Model Format Specification](docs/model-format-specification.md) - Format compatibility between applications
 - [Modder Documentation](docs/docs/Modders/getting-started.md) - Guide for custom assets and manifests (base body = layer 0, soulbound)
-- [Developer Documentation](docs/docs/Developers/overview.md) - API and architecture documentation
+- [Code Map](docs/CODE_MAP.md) - module groups and where the source lives
 - [History & Roadmap](docs/docs/history.md) - Project history and roadmap (wallet load profiles, mint files, AI personality)
 
 ## 📄 License
