@@ -47,15 +47,19 @@ model or a geometric algorithm.
 | ~~unirig_auto_rig~~                     | Deep learning       | Auto rig (template VRM)      | DGX API |
 | ~~appearance_component_auto_rig~~       | Deep learning       | Auto rig (appearance)        | DGX API |
 | ~~creature_template_auto_rig~~          | Deep learning       | Auto rig (creature)          | DGX API |
-| triposplat_image_to_splat               | Deep learning       | Image to splat               | DGX API |
-| worldmirror2_reconstruct                | Deep learning       | Photos to splat              | DGX API |
 | opennexus_image_to_world                | Deep learning       | Image to world               | DGX API |
 | lingbot_map_environment_scan            | Deep learning       | Environment scan             | DGX API |
-| colmap_3dgs_reconstruct                 | Geometric algorithm | Photos to splat              | DGX API |
 | instant_meshes_retopology               | Geometric algorithm | Mesh retopology              | DGX API |
 | xatlas_uv_unwrapping                    | Geometric algorithm | UV unwrapping                | DGX API |
 | voxhammer_text_mesh_editing             | Deep learning       | Text mesh editing            | DGX API |
 | voxhammer_image_mesh_editing            | Deep learning       | Image mesh editing           | DGX API |
+
+
+| Splat Model id                          | Type                | Task                         | Runs on |
+| --------------------------------------- | ------------------- | ---------------------------- | ------- |
+| worldmirror2_reconstruct                | Deep learning       | Photos to splat              | DGX API |
+| triposplat_image_to_splat               | Deep learning       | Image to splat               | DGX API |
+| colmap_3dgs_reconstruct                 | Geometric algorithm | Photos to splat              | DGX API |
 
 ## Client and external models
 
