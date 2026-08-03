@@ -36,6 +36,20 @@ defmodule WeftspunStudio.Router do
     json(conn, 200, %{facts: Enum.map(facts, &encode_fact/1)})
   end
 
+  get "/api/v1/facts/search" do
+    query = conn.params["q"] || ""
+    limit = String.to_integer(conn.params["limit"] || "5")
+    min_trust = String.to_float(conn.params["min_trust"] || "0.0")
+
+    results =
+      WeftspunStudio.FactStore.search(query, limit: limit, min_trust: min_trust)
+      |> Enum.map(fn {fact, score} ->
+        fact |> Map.drop([:hrr_vector]) |> encode_fact() |> Map.put(:score, score)
+      end)
+
+    json(conn, 200, %{query: query, results: results})
+  end
+
   get "/api/v1/models/features" do
     json(conn, 200, %{features: catalog().list_features(nil)})
   end

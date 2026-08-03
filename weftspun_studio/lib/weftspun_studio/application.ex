@@ -5,12 +5,14 @@ defmodule WeftspunStudio.Application do
 
   @impl true
   def start(_type, _args) do
+    # The RFD 0016 inventory seeds the fact store at boot.
     children =
-      if serve?() do
-        [{Bandit, plug: WeftspunStudio.Router, port: port()}]
-      else
-        []
-      end
+      [WeftspunStudio.FactStore] ++
+        if serve?() do
+          [{Bandit, plug: WeftspunStudio.Router, port: port()}]
+        else
+          []
+        end
 
     opts = [strategy: :one_for_one, name: WeftspunStudio.Supervisor]
     {:ok, pid} = Supervisor.start_link(children, opts)
