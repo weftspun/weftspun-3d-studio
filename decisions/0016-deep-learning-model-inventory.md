@@ -41,6 +41,7 @@ model or a geometric algorithm.
 | ~~hunyuan3dv21_image_mesh_painting~~    | Deep learning       | Image mesh painting          | DGX API |
 | p3sam_mesh_segmentation                 | Deep learning       | Mesh segmentation            | DGX API |
 | krea2_turbo_text_to_image               | Deep learning       | Text to image                | DGX API |
+| qwen_q4_k_m_image_edit                  | Deep learning       | Text editing                 | DGX API |
 | seethrough_layer_decomposition          | Deep learning       | Image to layers              | DGX API |
 | kimodo_text_to_motion                   | Deep learning       | Text to motion               | DGX API |
 | skintokens_auto_rig                     | Deep learning       | Auto rig (full)              | DGX API |
