@@ -42,8 +42,6 @@ Forking the repo does **not** grant rights to operate as “Weftspun”, to issu
 
 ## Related public docs
 
-- [Phygital NFC roadmap](./PHYGITAL_NFC_APPAREL_ROADMAP.md) — Phase 0 mock; production registry is hosted
-- [Phygital passport API draft](./PHYGITAL_PASSPORT_API.md) — contract only; implementation is not in the OSS client alone
 - [Public deploy](./PUBLIC_DEPLOY.md) — safe CI/Vercel boundaries
 
 **Internal strategy** (pricing, ARR, full revenue map) lives in local-only files synced to DGX over SSH — **not** in this repository’s public git history.

@@ -309,7 +309,6 @@ For more information don't forget to check out this guide: https://hackmd.io/@re
 
 ---
 
-## [Personality.json](./ai-personalities.md)
 
 This is an experimental feature for prepopulating and customizing personalities for VRM avatars for AI chatbot application use cases. There's also an ongoing effort to standardize this type of metadata as a [gltf extension](https://github.com/omigroup/gltf-extensions/tree/main/extensions/2.0/OMI_personality) if interested.
 
@@ -354,7 +353,6 @@ This is an experimental feature for prepopulating and customizing personalities 
 
 ---
 
-## [Generating Manifest Files](./generate-manifest-files.md)
 
 Some useful scripts for generating manifest files for use in https://github.com/M3-org/chagithub.com/M3-org/characterstudio## Adding Your Own Traits
 

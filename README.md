@@ -26,8 +26,6 @@ The repo is **Vercel deploy-ready** for a public viewport demo (VRM upload, trai
 
 Import the GitHub repo in Vercel; no `VITE_API_ENDPOINT` required for the public demo. Full AI generation stays on local dev + self-hosted [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API).
 
-**Phygital passport (mock):** `/verify/ST-DEMO-0001` — digital twin passport UI preview; see [docs/PHYGITAL_NFC_APPAREL_ROADMAP.md](docs/PHYGITAL_NFC_APPAREL_ROADMAP.md).
-
 ## 🚀 Core Principles
 - **All Local**: No data leaves your device. 
 - **Open Source**: MIT licensed (see [LICENSE](LICENSE); **Weftspun** brand assets are reserved — see Legal below).
@@ -109,7 +107,6 @@ Task types: **Image to Gaussian Splat**, **Image to World (splat + props)**, **E
 - [World package format](docs/WORLD_PACKAGE.md) — splats, props, env-scan metric calibration
 - [LingBot environment scan (API)](https://github.com/AlfaOmegaGrafx/3DAIGC-API/blob/main/docs/LINGBOT_MAP_ENVIRONMENT_SCAN.md) — Phase A/B, gravity, door metric
 - [Spatial fabric / RP1](docs/SPATIAL_FABRIC_INTEGRATION.md) — Task Manager vs World Library publish
-- [Phygital NFC roadmap](docs/PHYGITAL_NFC_APPAREL_ROADMAP.md) — mock `/verify/:serialId` (Phase 0)
 - [Avatar pipeline (client)](docs/AVATAR_PIPELINE.md) — avatar-from-image, optional splat preview, Arc2Avatar direction
 - [Avatar pipeline (API)](https://github.com/AlfaOmegaGrafx/3DAIGC-API/blob/main/docs/AVATAR_PIPELINE.md) — endpoints, template rig, splat-generation
 - [IWSDK Option A Migration Blueprint](docs/IWSDK_OPTION_A_MIGRATION_BLUEPRINT.md) — Spark + world package stack, XR world building order

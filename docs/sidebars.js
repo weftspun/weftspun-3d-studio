@@ -1,6 +1,5 @@
 const sidebars = {
   tutorialSidebar: [
-    'about',
     'quickstart',
     'history',
     {
@@ -34,8 +33,6 @@ const sidebars = {
             'Modders/manifest-files/vrm-to-lora',
             'Modders/manifest-files/vrm-to-spritesheet',
             'Modders/manifest-files/vrm-to-thumbnails',
-            'Modders/manifest-files/ai-personalities',
-            'Modders/manifest-files/generate-manifest-files',
           ]
         },
       ]
