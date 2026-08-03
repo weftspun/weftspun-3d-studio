@@ -12,8 +12,10 @@ import {
 export const STUDIO_STAGES = Object.freeze([
   { id: 'prompt', label: 'Prompt' },
   { id: 'image', label: 'Image' },
+  { id: 'layers', label: 'Layers' },
   { id: 'mesh', label: 'Mesh' },
   { id: 'rig', label: 'Rig' },
+  { id: 'motion', label: 'Motion' },
   { id: 'export', label: 'Export' },
 ]);
 
@@ -32,6 +34,14 @@ export const STUDIO_NODE_KINDS = Object.freeze({
     taskType: 'text-to-image',
     defaultModel: 'krea2_turbo_text_to_image',
   },
+  layer_decomposition: {
+    id: 'layer_decomposition',
+    label: 'Layer Decomposition',
+    stage: 'layers',
+    runnable: true,
+    taskType: 'image-to-layers',
+    defaultModel: 'seethrough_layer_decomposition',
+  },
   image_to_3d: {
     id: 'image_to_3d',
     label: 'Image to 3D',
@@ -47,6 +57,14 @@ export const STUDIO_NODE_KINDS = Object.freeze({
     runnable: true,
     taskType: 'auto-rigging',
     defaultModel: 'skintokens_auto_rig',
+  },
+  motion_validation: {
+    id: 'motion_validation',
+    label: 'Motion Validation (Kimodo)',
+    stage: 'motion',
+    runnable: true,
+    taskType: 'text-to-motion',
+    defaultModel: 'kimodo_text_to_motion',
   },
   export_asset: {
     id: 'export_asset',
@@ -132,6 +150,22 @@ export function createStudioProject(templateId = DEFAULT_STUDIO_TEMPLATE_ID, opt
     },
     position: { x: 320, y: 120 },
   };
+  const layersNode = {
+    id: newId('n'),
+    kind: 'layer_decomposition',
+    label: STUDIO_NODE_KINDS.layer_decomposition.label,
+    stage: 'layers',
+    status: 'idle',
+    data: {
+      modelPreference: STUDIO_NODE_KINDS.layer_decomposition.defaultModel,
+      layersUrl: null,
+      psdUrl: null,
+      compositeUrl: null,
+      layerCount: null,
+      appearanceSlots: [],
+    },
+    position: { x: 460, y: 120 },
+  };
   const meshNode = {
     id: newId('n'),
     kind: 'image_to_3d',
@@ -147,7 +181,7 @@ export function createStudioProject(templateId = DEFAULT_STUDIO_TEMPLATE_ID, opt
       meshUrl: null,
       objectName: projectName,
     },
-    position: { x: 600, y: 120 },
+    position: { x: 740, y: 120 },
   };
   const rigNode = {
     id: newId('n'),
@@ -162,7 +196,21 @@ export function createStudioProject(templateId = DEFAULT_STUDIO_TEMPLATE_ID, opt
       meshUrl: null,
       objectName: projectName,
     },
-    position: { x: 880, y: 120 },
+    position: { x: 1020, y: 120 },
+  };
+  const motionNode = {
+    id: newId('n'),
+    kind: 'motion_validation',
+    label: STUDIO_NODE_KINDS.motion_validation.label,
+    stage: 'motion',
+    status: 'idle',
+    data: {
+      modelPreference: STUDIO_NODE_KINDS.motion_validation.defaultModel,
+      taskId: null,
+      motionUrl: null,
+      objectName: projectName,
+    },
+    position: { x: 1160, y: 120 },
   };
   const exportNode = {
     id: newId('n'),
@@ -170,8 +218,8 @@ export function createStudioProject(templateId = DEFAULT_STUDIO_TEMPLATE_ID, opt
     label: STUDIO_NODE_KINDS.export_asset.label,
     stage: 'export',
     status: 'idle',
-    data: { meshUrl: null },
-    position: { x: 1160, y: 120 },
+    data: { meshUrl: null, motionUrl: null },
+    position: { x: 1300, y: 120 },
   };
 
   return {
@@ -179,12 +227,22 @@ export function createStudioProject(templateId = DEFAULT_STUDIO_TEMPLATE_ID, opt
     name: projectName,
     templateId: template.id,
     createdAt: new Date().toISOString(),
-    nodes: [promptNode, imageNode, meshNode, rigNode, exportNode],
+    nodes: [
+      promptNode,
+      imageNode,
+      layersNode,
+      meshNode,
+      rigNode,
+      motionNode,
+      exportNode,
+    ],
     edges: [
       { id: newId('e'), source: promptNode.id, target: imageNode.id },
-      { id: newId('e'), source: imageNode.id, target: meshNode.id },
+      { id: newId('e'), source: imageNode.id, target: layersNode.id },
+      { id: newId('e'), source: layersNode.id, target: meshNode.id },
       { id: newId('e'), source: meshNode.id, target: rigNode.id },
-      { id: newId('e'), source: rigNode.id, target: exportNode.id },
+      { id: newId('e'), source: rigNode.id, target: motionNode.id },
+      { id: newId('e'), source: motionNode.id, target: exportNode.id },
     ],
   };
 }
@@ -340,6 +398,84 @@ export function migrateStudioProject(project) {
     }
   }
 
+  // Older projects: insert Layer Decomposition between image and mesh.
+  if (!next.nodes.some((n) => n.kind === 'layer_decomposition')) {
+    const image = next.nodes.find((n) => n.kind === 'text_to_image');
+    const mesh = next.nodes.find((n) => n.kind === 'image_to_3d');
+    if (image && mesh) {
+      const layersNode = {
+        id: newId('n'),
+        kind: 'layer_decomposition',
+        label: STUDIO_NODE_KINDS.layer_decomposition.label,
+        stage: 'layers',
+        status: 'idle',
+        data: {
+          modelPreference: STUDIO_NODE_KINDS.layer_decomposition.defaultModel,
+          layersUrl: null,
+          psdUrl: null,
+          compositeUrl: null,
+          layerCount: null,
+          appearanceSlots: [],
+        },
+        position: {
+          x: ((image.position?.x || 320) + (mesh.position?.x || 600)) / 2,
+          y: image.position?.y || 120,
+        },
+      };
+      next = {
+        ...next,
+        nodes: [...next.nodes, layersNode],
+        edges: [
+          ...next.edges.filter(
+            (e) => !(e.source === image.id && e.target === mesh.id),
+          ),
+          { id: newId('e'), source: image.id, target: layersNode.id },
+          { id: newId('e'), source: layersNode.id, target: mesh.id },
+        ],
+      };
+    }
+  }
+
+  // Older projects: insert Motion Validation between rig and export.
+  if (!next.nodes.some((n) => n.kind === 'motion_validation')) {
+    const rig = next.nodes.find((n) => n.kind === 'auto_rigging');
+    const exportNode = next.nodes.find((n) => n.kind === 'export_asset');
+    if (rig && exportNode) {
+      const motionNode = {
+        id: newId('n'),
+        kind: 'motion_validation',
+        label: STUDIO_NODE_KINDS.motion_validation.label,
+        stage: 'motion',
+        status: 'idle',
+        data: {
+          modelPreference: STUDIO_NODE_KINDS.motion_validation.defaultModel,
+          taskId: null,
+          motionUrl: null,
+          objectName: next.name || rig.data?.objectName || 'studio_asset',
+        },
+        position: {
+          x: ((rig.position?.x || 880) + (exportNode.position?.x || 1160)) / 2,
+          y: rig.position?.y || 120,
+        },
+      };
+      next = {
+        ...next,
+        nodes: [
+          ...next.nodes.filter((n) => n.id !== exportNode.id),
+          motionNode,
+          exportNode,
+        ],
+        edges: [
+          ...next.edges.filter(
+            (e) => !(e.source === rig.id && e.target === exportNode.id),
+          ),
+          { id: newId('e'), source: rig.id, target: motionNode.id },
+          { id: newId('e'), source: motionNode.id, target: exportNode.id },
+        ],
+      };
+    }
+  }
+
   return next;
 }
 
@@ -354,7 +490,13 @@ export function groupNodesByStage(project) {
 
 /** Linear run order for the locked template (topological by edges). */
 export function getRunnablePipelineOrder(project) {
-  const kindOrder = ['text_to_image', 'image_to_3d', 'auto_rigging'];
+  const kindOrder = [
+    'text_to_image',
+    'layer_decomposition',
+    'image_to_3d',
+    'auto_rigging',
+    'motion_validation',
+  ];
   return kindOrder
     .map((kind) => project.nodes.find((n) => n.kind === kind))
     .filter(Boolean);

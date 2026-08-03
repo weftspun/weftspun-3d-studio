@@ -15,19 +15,21 @@ import {
 } from '../library/studioGraph.js';
 
 describe('studioGraph', () => {
-  it('creates locked Krea → TRELLIS.2 template with five stages (incl. auto-rig)', () => {
+  it('creates locked Krea → TRELLIS.2 template with seven stages (layers + rig + motion)', () => {
     const project = createKreaTrellisTemplate({ prompt: 'a red cube' });
     expect(project.templateId).toBe('krea_trellis2');
-    expect(project.nodes).toHaveLength(5);
-    expect(project.edges).toHaveLength(4);
+    expect(project.nodes).toHaveLength(7);
+    expect(project.edges).toHaveLength(6);
     expect(getPromptText(project)).toBe('a red cube');
 
     const kinds = project.nodes.map((n) => n.kind);
     expect(kinds).toEqual([
       'text_prompt',
       'text_to_image',
+      'layer_decomposition',
       'image_to_3d',
       'auto_rigging',
+      'motion_validation',
       'export_asset',
     ]);
 
@@ -42,6 +44,10 @@ describe('studioGraph', () => {
     );
     const rig = project.nodes.find((n) => n.kind === 'auto_rigging');
     expect(rig.data.modelPreference).toBe('skintokens_auto_rig');
+    const layers = project.nodes.find((n) => n.kind === 'layer_decomposition');
+    expect(layers.data.modelPreference).toBe('seethrough_layer_decomposition');
+    const motion = project.nodes.find((n) => n.kind === 'motion_validation');
+    expect(motion.data.modelPreference).toBe('kimodo_text_to_motion');
   });
 
   it('creates separate multiview template with TRELLIS v1 mesh model', () => {
@@ -59,20 +65,22 @@ describe('studioGraph', () => {
     expect(getPromptText(project)).toBe('samurai helmet');
   });
 
-  it('resolves upstream for image_to_3d as text_to_image', () => {
+  it('resolves upstream for image_to_3d as layer_decomposition', () => {
     const project = createKreaTrellisTemplate();
     const mesh = project.nodes.find((n) => n.kind === 'image_to_3d');
     const upstream = getUpstreamNode(project, mesh.id);
-    expect(upstream?.kind).toBe('text_to_image');
+    expect(upstream?.kind).toBe('layer_decomposition');
   });
 
-  it('runnable order is text_to_image then image_to_3d then auto_rigging', () => {
+  it('runnable order is image → layers → mesh → rig → motion', () => {
     const project = createKreaTrellisTemplate();
     const order = getRunnablePipelineOrder(project);
     expect(order.map((n) => n.kind)).toEqual([
       'text_to_image',
+      'layer_decomposition',
       'image_to_3d',
       'auto_rigging',
+      'motion_validation',
     ]);
   });
 
@@ -82,8 +90,10 @@ describe('studioGraph', () => {
     expect(groups.map((g) => g.id)).toEqual([
       'prompt',
       'image',
+      'layers',
       'mesh',
       'rig',
+      'motion',
       'export',
     ]);
     expect(groups.every((g) => g.nodes.length === 1)).toBe(true);
@@ -92,8 +102,8 @@ describe('studioGraph', () => {
   it('maps to React Flow elements', () => {
     const project = createKreaTrellisTemplate();
     const { nodes, edges } = toReactFlowElements(project);
-    expect(nodes).toHaveLength(5);
-    expect(edges).toHaveLength(4);
+    expect(nodes).toHaveLength(7);
+    expect(edges).toHaveLength(6);
     expect(nodes[0].type).toBe('studio');
   });
 

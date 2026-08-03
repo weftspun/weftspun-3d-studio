@@ -129,11 +129,13 @@ function StudioPageInner() {
   const imageNode = project.nodes.find((n) => n.kind === 'text_to_image');
   const meshNode = project.nodes.find((n) => n.kind === 'image_to_3d');
   const rigNode = project.nodes.find((n) => n.kind === 'auto_rigging');
+  const motionNode = project.nodes.find((n) => n.kind === 'motion_validation');
   const exportNode = project.nodes.find((n) => n.kind === 'export_asset');
   const imageUrl = imageNode?.data?.imageUrl || null;
   const imageViews = imageNode?.data?.views || null;
   const meshUrl =
     exportNode?.data?.meshUrl || rigNode?.data?.meshUrl || meshNode?.data?.meshUrl;
+  const motionUrl = motionNode?.data?.motionUrl || exportNode?.data?.motionUrl || null;
   const apiEndpoint = getApiEndpoint?.() || '/__dev_dgx_proxy';
   const imageReady = Boolean(imageUrl) && imageNode?.status === 'completed';
   const meshReady = Boolean(meshNode?.data?.meshUrl) && meshNode?.status === 'completed';
@@ -191,11 +193,13 @@ function StudioPageInner() {
           ? isMultiview
             ? 'Running Krea 6-view turnaround…'
             : 'Running Krea text-to-image…'
-          : mode === 'mesh'
-            ? `Running ${meshLabel} image-to-3D…`
-            : mode === 'rig'
-              ? 'Running SkinTokens auto-rigging…'
-              : `Running ${template.label} pipeline (image → mesh → rig)…`;
+          : mode === 'layers'
+            ? 'Decomposing image into semantic layers…'
+            : mode === 'mesh'
+              ? `Running ${meshLabel} image-to-3D…`
+              : mode === 'rig'
+                ? 'Running SkinTokens auto-rigging…'
+                : `Running ${template.label} pipeline (image → layers → mesh → rig → motion)…`;
       setStatusLine(label);
       try {
         const endpoint = getApiEndpoint?.() || '/__dev_dgx_proxy';
@@ -219,7 +223,7 @@ function StudioPageInner() {
           });
         } else if (mode === 'rig') {
           next = await runStudioPipeline(next, deps, {
-            skipKinds: ['text_to_image', 'image_to_3d'],
+            skipKinds: ['text_to_image', 'layer_decomposition', 'image_to_3d'],
           });
         } else if (mode === 'image') {
           next = await runStudioPipeline(next, deps, { until: 'text_to_image' });
@@ -435,9 +439,20 @@ function StudioPageInner() {
 
       <footer className="studio-page-footer">
         {meshUrl ? (
-          <a className="studio-btn primary" href={`/?loadMesh=${encodeURIComponent(meshUrl)}`}>
-            Open mesh in viewport
-          </a>
+          <>
+            <a className="studio-btn primary" href={`/?loadMesh=${encodeURIComponent(meshUrl)}`}>
+              Open mesh in viewport
+            </a>
+            {motionUrl ? (
+              <span className="studio-footer-hint" title={motionUrl}>
+                Motion validated (Kimodo) — load the mesh, then play the motion in viewport.
+              </span>
+            ) : (
+              <span className="studio-footer-hint">
+                Keep going: rig the mesh, then Kimodo motion validation (replaces publish).
+              </span>
+            )}
+          </>
         ) : (
           <span className="studio-footer-hint">
             Generate a mesh-ready image, review it, then Generate mesh (or Run full pipeline).

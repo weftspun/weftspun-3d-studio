@@ -25,8 +25,17 @@ export default function StudioKanbanView({ project, onSelectNode }) {
                 {node.data?.imageUrl ? (
                   <p className="studio-kanban-card-preview">Image ready</p>
                 ) : null}
+                {node.data?.compositeUrl ? (
+                  <p className="studio-kanban-card-preview">Layers composited</p>
+                ) : null}
+                {node.data?.layerCount ? (
+                  <p className="studio-kanban-card-preview">{node.data.layerCount} layers</p>
+                ) : null}
                 {node.data?.meshUrl ? (
                   <p className="studio-kanban-card-preview">Mesh ready</p>
+                ) : null}
+                {node.data?.motionUrl ? (
+                  <p className="studio-kanban-card-preview">Motion ready</p>
                 ) : null}
               </button>
             ))}

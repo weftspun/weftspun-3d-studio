@@ -206,6 +206,7 @@ export class TaskManager {
       'environment-scan',
       'text-to-image',
       'text-to-motion',
+      'image-to-layers',
     ];
   }
 
@@ -500,7 +501,8 @@ export class TaskManager {
           task.type === 'image-to-world' ||
           task.type === 'environment-scan' ||
           task.type === 'text-to-image' ||
-          task.type === 'text-to-motion'
+          task.type === 'text-to-motion' ||
+          task.type === 'image-to-layers'
             ? { maxAttempts: 600, pollInterval: 3000 }
             : {};
         const pollIntervalMs = pollOptions.pollInterval ?? 3000;
@@ -761,6 +763,8 @@ export class TaskManager {
         return await this.executeTextToImage(prompt, options);
       case 'text-to-motion':
         return await this.executeTextToMotion(prompt, options);
+      case 'image-to-layers':
+        return await this.executeLayerDecomposition(imageFile, options);
       default:
         throw new Error(`Unknown task type: ${type}`);
     }
@@ -836,6 +840,89 @@ export class TaskManager {
     } catch (error) {
       performanceMonitor.trackAPICall(endpoint, 'POST', Date.now() - startTime, error.response?.status ?? 0, error);
       logger.error('Text-to-image task failed', error, { prompt, endpoint });
+      throw error;
+    }
+  }
+
+  /**
+   * Execute image-to-layers (See-Through single-image layer decomposition).
+   * Returns { job_id, status: 'queued', ... }; completed payload carries
+   * layers_url (zip), psd_url, composite_url, layer_count, appearance_slots.
+   */
+  async executeLayerDecomposition(imageFile, options) {
+    if (!imageFile) {
+      throw new Error(
+        'Layer decomposition requires an input image. Generate an image first.',
+      );
+    }
+    const maxSide =
+      Number(options?.max_image_side ?? import.meta.env.VITE_3DAIGC_MAX_IMAGE_SIDE ?? 2048) || 2048;
+    const preparedImage = await resizeImageFor3daigc(imageFile, maxSide);
+
+    const endpoint = `${this.apiEndpoint}/api/v1/layer-decomposition/image-to-layers`;
+
+    let imageFileId = null;
+    try {
+      imageFileId = await this.uploadImageFileForApi(preparedImage);
+    } catch (uploadErr) {
+      logger.warn('Image upload failed unexpectedly for layer decomposition', {
+        message: uploadErr?.message,
+        status: uploadErr?.response?.status,
+      });
+    }
+
+    const basePayload = withObjectNamePayload({
+      output_format: 'layers_psd',
+      model_preference:
+        options?.model_preference ??
+        getDefaultModelForFeature('image-to-layers'),
+    }, options);
+
+    // See-Through cog options: working resolution, seed, split L/R limbs.
+    if (options?.resolution != null) basePayload.resolution = options.resolution;
+    if (options?.seed != null) basePayload.seed = options.seed;
+    if (options?.tblr_split != null) basePayload.tblr_split = options.tblr_split;
+
+    const payload = imageFileId
+      ? { ...basePayload, image_file_id: imageFileId }
+      : {
+          ...basePayload,
+          image_base64: await this.fileToBase64(preparedImage)
+        };
+
+    try {
+      const response = await axios.post(endpoint, payload, {
+        headers: { 'Content-Type': 'application/json', ...get3daigcAuthHeaders() },
+        timeout: 300000,
+        onUploadProgress: () => this.emitTaskProgress( { progress: imageFileId ? 55 : 10 })
+      });
+      const data = response.data;
+      if (data?.job_id) {
+        return { job_id: data.job_id, status: 'queued', message: 'Job queued. Processing...', ...data };
+      }
+      return data;
+    } catch (error) {
+      if (error.response) {
+        const body = error.response.data;
+        let detail = body?.message ?? body?.error ?? body?.detail;
+        if (detail == null && body && typeof body === 'object') {
+          try {
+            detail = JSON.stringify(body);
+          } catch {
+            detail = error.message;
+          }
+        }
+        if (detail == null) detail = error.message;
+        const e = new Error(
+          `API request failed: ${error.response.status} ${error.response.statusText}. ${detail}. Endpoint: ${endpoint}`
+        );
+        e.originalError = error;
+        e.status = error.response.status;
+        throw e;
+      }
+      if (error.request) {
+        throw TaskManager.formatNetworkError(endpoint, error);
+      }
       throw error;
     }
   }

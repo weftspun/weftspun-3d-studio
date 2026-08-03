@@ -20,8 +20,17 @@ function StudioFlowNode({ data }) {
       {data?.payload?.imageUrl ? (
         <div className="studio-flow-node-hint">image ready</div>
       ) : null}
+      {data?.payload?.compositeUrl ? (
+        <div className="studio-flow-node-hint">layers composited</div>
+      ) : null}
+      {data?.payload?.layerCount ? (
+        <div className="studio-flow-node-hint">{data.payload.layerCount} layers</div>
+      ) : null}
       {data?.payload?.meshUrl ? (
         <div className="studio-flow-node-hint">mesh ready</div>
+      ) : null}
+      {data?.payload?.motionUrl ? (
+        <div className="studio-flow-node-hint">motion ready</div>
       ) : null}
       <Handle type="source" position={Position.Right} />
     </div>

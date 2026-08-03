@@ -23,7 +23,7 @@ describe('studioGraphExecutor', () => {
     vi.unstubAllGlobals();
   });
 
-  it('runStudioPipeline single-image TRELLIS.2 template runs one Krea job', async () => {
+  it('runStudioPipeline single-image TRELLIS.2 template runs Krea + layers + mesh', async () => {
     let project = createKreaTrellisTemplate({ prompt: 'red cube', projectName: 'Cube' });
     project = setPromptText(project, 'red cube');
 
@@ -32,6 +32,14 @@ describe('studioGraphExecutor', () => {
       .mockResolvedValueOnce({
         job_id: 'img1',
         feature: 'text_to_image',
+        status: 'completed',
+      })
+      .mockResolvedValueOnce({
+        job_id: 'layers1',
+        feature: 'image_to_layers',
+        composite_url: '/api/v1/system/jobs/layers1/composite.png',
+        layer_count: 19,
+        layer_names: ['hair', 'face', 'torso', 'legs'],
         status: 'completed',
       })
       .mockResolvedValueOnce({
@@ -65,10 +73,25 @@ describe('studioGraphExecutor', () => {
       },
       { until: 'image_to_3d' },
     );
-    expect(createAndStartTask).toHaveBeenCalledTimes(2);
+    expect(createAndStartTask).toHaveBeenCalledTimes(3);
     expect(createAndStartTask.mock.calls[0][0].type).toBe('text-to-image');
-    expect(createAndStartTask.mock.calls[1][0].type).toBe('image-to-3d');
-    expect(createAndStartTask.mock.calls[1][0].options.use_multiview_mesh).toBeFalsy();
+    expect(createAndStartTask.mock.calls[1][0].type).toBe('image-to-layers');
+    expect(createAndStartTask.mock.calls[1][0].options.model_preference).toBe(
+      'seethrough_layer_decomposition',
+    );
+    expect(createAndStartTask.mock.calls[2][0].type).toBe('image-to-3d');
+    // Mesh consumes the layer composite, not the raw Krea image.
+    expect(createAndStartTask.mock.calls[2][0].imageFile.name).toContain('layers');
+    expect(createAndStartTask.mock.calls[2][0].options.use_multiview_mesh).toBeFalsy();
+    const layersNode = next.nodes.find((n) => n.kind === 'layer_decomposition');
+    expect(layersNode.status).toBe('completed');
+    expect(layersNode.data.layerCount).toBe(19);
+    expect(layersNode.data.appearanceSlots).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slot: 'Head' }),
+        expect.objectContaining({ slot: 'Legs' }),
+      ]),
+    );
     expect(next.nodes.find((n) => n.kind === 'image_to_3d').data.modelPreference).toBe(
       'trellis2_image_to_textured_mesh',
     );
@@ -88,6 +111,15 @@ describe('studioGraphExecutor', () => {
       const jobId = `job_${jobCounter}`;
       if (taskData.type === 'text-to-image') {
         return { job_id: jobId, feature: 'text_to_image', status: 'completed' };
+      }
+      if (taskData.type === 'image-to-layers') {
+        return {
+          job_id: jobId,
+          feature: 'image_to_layers',
+          layer_count: 19,
+          layer_names: ['hair', 'torso', 'legs'],
+          status: 'completed',
+        };
       }
       return {
         job_id: jobId,
@@ -124,8 +156,8 @@ describe('studioGraphExecutor', () => {
       { until: 'image_to_3d' },
     );
 
-    // 6 Krea views + 1 TRELLIS
-    expect(createAndStartTask).toHaveBeenCalledTimes(7);
+    // 6 Krea views + 1 See-Through layers + 1 TRELLIS
+    expect(createAndStartTask).toHaveBeenCalledTimes(8);
     const imageCalls = createAndStartTask.mock.calls.filter((c) => c[0].type === 'text-to-image');
     expect(imageCalls).toHaveLength(6);
     const seeds = imageCalls.map((c) => c[0].options.model_parameters?.seed);
@@ -181,7 +213,7 @@ describe('studioGraphExecutor', () => {
     vi.unstubAllGlobals();
   });
 
-  it('runStudioPipeline continues to auto_rigging after mesh', async () => {
+  it('runStudioPipeline full pipeline: image → layers → mesh → rig → motion', async () => {
     let project = createKreaTrellisTemplate({ prompt: 'red cube', projectName: 'Cube' });
     project = setPromptText(project, 'red cube');
 
@@ -190,6 +222,11 @@ describe('studioGraphExecutor', () => {
       .mockResolvedValueOnce({
         job_id: 'img1',
         feature: 'text_to_image',
+        status: 'completed',
+      })
+      .mockResolvedValueOnce({
+        job_id: 'layers1',
+        feature: 'image_to_layers',
         status: 'completed',
       })
       .mockResolvedValueOnce({
@@ -202,6 +239,12 @@ describe('studioGraphExecutor', () => {
         job_id: 'rig1',
         feature: 'auto_rig',
         mesh_url: '/api/v1/system/jobs/rig1/download',
+        status: 'completed',
+      })
+      .mockResolvedValueOnce({
+        job_id: 'motion1',
+        feature: 'text_to_motion',
+        motion_url: '/api/v1/system/jobs/motion1/download',
         status: 'completed',
       });
     const listTasks = vi.fn(() => [
@@ -225,14 +268,88 @@ describe('studioGraphExecutor', () => {
       listTasks,
       apiEndpoint: 'http://127.0.0.1:7842',
     });
-    expect(createAndStartTask).toHaveBeenCalledTimes(3);
-    expect(createAndStartTask.mock.calls[2][0].type).toBe('auto-rigging');
-    expect(createAndStartTask.mock.calls[2][0].options.model_preference).toBe(
+    expect(createAndStartTask).toHaveBeenCalledTimes(5);
+    expect(createAndStartTask.mock.calls.map((c) => c[0].type)).toEqual([
+      'text-to-image',
+      'image-to-layers',
+      'image-to-3d',
+      'auto-rigging',
+      'text-to-motion',
+    ]);
+    expect(createAndStartTask.mock.calls[3][0].options.model_preference).toBe(
       'skintokens_auto_rig',
     );
-    expect(createAndStartTask.mock.calls[2][1]).toBeInstanceOf(File);
+    expect(createAndStartTask.mock.calls[3][1]).toBeInstanceOf(File);
+    expect(createAndStartTask.mock.calls[4][0].options.model_preference).toBe(
+      'kimodo_text_to_motion',
+    );
     expect(next.nodes.find((n) => n.kind === 'auto_rigging').status).toBe('completed');
+    expect(next.nodes.find((n) => n.kind === 'motion_validation').status).toBe('completed');
+    expect(next.nodes.find((n) => n.kind === 'motion_validation').data.motionUrl).toContain(
+      'motion1',
+    );
     expect(next.nodes.find((n) => n.kind === 'export_asset').data.meshUrl).toContain('rig1');
+    expect(next.nodes.find((n) => n.kind === 'export_asset').data.motionUrl).toContain(
+      'motion1',
+    );
+    vi.unstubAllGlobals();
+  });
+
+  it('runStudioPipeline rig mode skips layers and mesh, then validates motion', async () => {
+    let project = createKreaTrellisTemplate({ prompt: 'red cube', projectName: 'Cube' });
+    project = setPromptText(project, 'red cube');
+    // Simulate earlier stages already completed (image + layers composited + mesh).
+    project = {
+      ...project,
+      nodes: project.nodes.map((n) => {
+        if (n.kind === 'text_to_image' || n.kind === 'layer_decomposition') {
+          return { ...n, status: 'completed' };
+        }
+        if (n.kind === 'image_to_3d') {
+          return {
+            ...n,
+            status: 'completed',
+            data: { ...n.data, meshUrl: '/api/v1/system/jobs/mesh1/download' },
+          };
+        }
+        return n;
+      }),
+    };
+
+    const createAndStartTask = vi
+      .fn()
+      .mockResolvedValueOnce({
+        job_id: 'rig1',
+        feature: 'auto_rig',
+        mesh_url: '/api/v1/system/jobs/rig1/download',
+        status: 'completed',
+      })
+      .mockResolvedValueOnce({
+        job_id: 'motion1',
+        feature: 'text_to_motion',
+        motion_url: '/api/v1/system/jobs/motion1/download',
+        status: 'completed',
+      });
+    const listTasks = vi.fn(() => []);
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => ({
+        ok: true,
+        blob: async () => new Blob(['x'], { type: 'model/gltf-binary' }),
+      })),
+    );
+
+    const next = await runStudioPipeline(
+      project,
+      { createAndStartTask, listTasks, apiEndpoint: 'http://127.0.0.1:7842' },
+      { skipKinds: ['text_to_image', 'layer_decomposition', 'image_to_3d'] },
+    );
+    expect(createAndStartTask).toHaveBeenCalledTimes(2);
+    expect(createAndStartTask.mock.calls.map((c) => c[0].type)).toEqual([
+      'auto-rigging',
+      'text-to-motion',
+    ]);
+    expect(next.nodes.find((n) => n.kind === 'motion_validation').status).toBe('completed');
     vi.unstubAllGlobals();
   });
 });

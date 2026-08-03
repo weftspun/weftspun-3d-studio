@@ -83,6 +83,56 @@ export function inferAppearanceSlot(hints = {}) {
 }
 
 /**
+ * Map a See-Through single-image layer name (body-part RGBA layer) to an
+ * Appearance trait slot so decomposed layers can seed trait remixing.
+ * @param {string|undefined|null} layerName
+ * @returns {string|null}
+ */
+export function mapLayerNameToAppearanceSlot(layerName) {
+  if (!layerName || typeof layerName !== 'string') return null;
+  const text = String(layerName).trim();
+  if (!text) return null;
+
+  const viaName = inferAppearanceSlot({ objectName: text });
+  if (viaName) return viaName;
+
+  // See-Through / LayerDiff body-part vocabulary → Appearance slots.
+  const LAYER_NAME_TO_SLOT = [
+    [/^(hair|hairstyle|front_hair|back_hair|bangs)$/i, 'Head'],
+    [/^(face|head|head_low|eyes|eye|brow|brows|mouth|nose|ears?)$/i, 'Head'],
+    [/^(body|torso|chest|upper_body|upperbody|breasts?)$/i, 'Chest'],
+    [/^(sleeves?|arms?|upper_arm|forearm|hand|hands|gloves|wrist)$/i, 'Hands'],
+    [/^(legs?|lower_body|lowerbody|thigh|shin|pants|skirt|shorts|shoe|shoes|boot|feet|foot)$/i, 'Legs'],
+    [/^(waist|belt|hip|hips)$/i, 'Waist'],
+    [/^(neck|scarf|choker|necklace)$/i, 'Neck'],
+    [/^(coat|jacket|shirt|blouse|top|dress|robe|clothing|clothes|uniform|suit|armor|skirt_outer)$/i, 'Chest'],
+  ];
+  for (const [re, slot] of LAYER_NAME_TO_SLOT) {
+    if (re.test(text)) return slot;
+  }
+  return null;
+}
+
+/**
+ * @param {string[]|undefined|null} layerNames
+ * @returns {{ layer: string, slot: string }[]}
+ */
+export function mapLayerNamesToAppearanceSlots(layerNames) {
+  if (!Array.isArray(layerNames) || layerNames.length === 0) return [];
+  const seen = new Set();
+  const out = [];
+  for (const name of layerNames) {
+    const slot = mapLayerNameToAppearanceSlot(name);
+    if (!slot) continue;
+    const key = `${slot}:${String(name).trim().toLowerCase()}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ layer: String(name).trim(), slot });
+  }
+  return out;
+}
+
+/**
  * @param {string} slot
  * @returns {string}
  */

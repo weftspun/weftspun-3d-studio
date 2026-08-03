@@ -66,6 +66,11 @@ export const ALL_MODELS = [
     label: 'Krea 2 Turbo Text-to-Image (local, recommended)',
     feature: 'text_to_image',
   },
+  {
+    value: 'seethrough_layer_decomposition',
+    label: 'See-Through Layer Decomposition (anime → RGBA layers + depth)',
+    feature: 'image_to_layers',
+  },
   { value: 'kimodo_text_to_motion', label: 'Kimodo Text-to-Motion (SOMA → VRM)', feature: 'text_to_motion' },
 ];
 
@@ -133,6 +138,7 @@ export const TASK_TYPE_TO_FEATURE = {
   'environment-scan': 'environment_scan',
   'text-to-image': 'text_to_image',
   'text-to-motion': 'text_to_motion',
+  'image-to-layers': 'image_to_layers',
   'avatar-from-image': null,
   'avatar-from-photo': null,
 };
@@ -203,6 +209,7 @@ const DEFAULT_MODEL_BY_FEATURE = {
   image_mesh_editing: 'voxhammer_image_mesh_editing',
   text_to_image: 'krea2_turbo_text_to_image',
   text_to_motion: 'kimodo_text_to_motion',
+  image_to_layers: 'seethrough_layer_decomposition',
 };
 
 /** Default model id for a task type or API feature key. */

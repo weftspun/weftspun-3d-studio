@@ -2,7 +2,7 @@
  * Run studio graph nodes via TaskContext createAndStartTask.
  * Keeps download URL rules aligned with taskModelUrl (job download path).
  */
-import { resolveTextToImageDownloadUrl, getTaskResultModelUrl, getTaskResultMeshUrl, resolveTaskModelUrl } from './taskModelUrl.js';
+import { resolveTextToImageDownloadUrl, getTaskResultModelUrl, getTaskResultMeshUrl, getTaskResultMotionUrl, getTaskResultLayersUrl, getTaskResultPsdUrl, getTaskResultCompositeUrl, getTaskResultLayerCount, resolveTaskModelUrl } from './taskModelUrl.js';
 import {
   buildOrthographicMultiviewPrompts,
   buildTextToImagePrompt,
@@ -13,6 +13,7 @@ import {
   getPromptText,
   getRunnablePipelineOrder,
   getTextToImagePromptOptions,
+  STUDIO_NODE_KINDS,
   updateNode,
 } from './studioGraph.js';
 import { get3daigcAuthHeaders } from './taskManager.js';
@@ -22,6 +23,7 @@ import {
   resolveAutoRigModelForTask,
 } from './aiModelsCatalog.js';
 import { AUTO_RIG_MODES, DEFAULT_HUMANOID_TEMPLATE_ID } from './avatarPipelineCatalog.js';
+import { mapLayerNamesToAppearanceSlots } from './appearanceClothing.js';
 
 /**
  * @param {string} relativeOrAbsoluteUrl
@@ -110,13 +112,13 @@ async function runSingleTextToImageView(createAndStartTask, deps, {
  *   onStatus?: (message: string) => void,
  * }} deps
  * @param {{
- *   until?: 'text_to_image' | 'image_to_3d' | 'auto_rigging',
+ *   until?: 'text_to_image' | 'image_to_3d' | 'auto_rigging' | 'motion_validation',
  *   skipKinds?: string[],
  * }} [opts]
  */
 export async function runStudioPipeline(project, deps, opts = {}) {
   const { createAndStartTask, apiEndpoint, onProjectChange, onStatus } = deps;
-  const until = opts.until || 'auto_rigging';
+  const until = opts.until || 'motion_validation';
   const skipKinds = new Set(opts.skipKinds || []);
   let current = project;
   const emit = (next) => {
@@ -132,7 +134,13 @@ export async function runStudioPipeline(project, deps, opts = {}) {
   const runnable = getRunnablePipelineOrder(current).filter((n) => !skipKinds.has(n.kind));
 
   for (const node of runnable) {
+    if (node.kind === 'layer_decomposition' && until === 'text_to_image') {
+      break;
+    }
     if (node.kind === 'image_to_3d' && until === 'text_to_image') {
+      break;
+    }
+    if (node.kind === 'motion_validation' && until !== 'motion_validation') {
       break;
     }
     if (node.kind === 'auto_rigging' && (until === 'text_to_image' || until === 'image_to_3d')) {
@@ -228,6 +236,89 @@ export async function runStudioPipeline(project, deps, opts = {}) {
       continue;
     }
 
+    if (node.kind === 'layer_decomposition') {
+      // Decompose the text-to-image result into semantic RGBA layers
+      // (See-Through / LayerDiff) so image-to-3D consumes a clean,
+      // depth-aligned subject and appearance traits are remixable.
+      const imageNode = current.nodes.find((n) => n.kind === 'text_to_image');
+      const imageUrl = imageNode?.data?.imageUrl;
+      if (!imageUrl) {
+        emit(updateNode(current, node.id, { status: 'failed' }));
+        throw new Error(
+          'Layer Decomposition needs a completed Text to Image result. Run Generate image first, then decompose.',
+        );
+      }
+
+      const views = Array.isArray(imageNode?.data?.views) ? imageNode.data.views : [];
+      const primaryViewId =
+        getTextToImagePromptOptions(current).camera_view || views[0]?.viewId || 'front';
+      const primaryMeta =
+        views.find((v) => v.viewId === primaryViewId) ||
+        views[0] || { imageUrl, viewId: 'front' };
+
+      onStatus?.('Decomposing image into semantic layers (See-Through)…');
+
+      try {
+        const baseName = slugifyObjectName(
+          node.data?.objectName || current.name || 'studio',
+          'studio',
+        );
+        const imageFile = await fetchImageAsFile(
+          primaryMeta.imageUrl || imageUrl,
+          apiEndpoint,
+          `${baseName}_${primaryMeta.viewId || 'front'}.png`,
+        );
+
+        const objectName = slugifyObjectName(
+          node.data?.objectName || current.name || 'studio_asset',
+          'studio_asset',
+        );
+        const apiResult = await createAndStartTask(
+          {
+            type: 'image-to-layers',
+            prompt: getPromptText(current) || 'Studio layer decomposition',
+            imageFile,
+            options: {
+              model_preference:
+                node.data?.modelPreference ||
+                STUDIO_NODE_KINDS.layer_decomposition.defaultModel,
+              object_name: objectName,
+              resolution: node.data?.resolution ?? 768,
+              seed: node.data?.seed ?? 42,
+              tblr_split: node.data?.tblr_split ?? true,
+            },
+          },
+          null,
+        );
+
+        const layerNames = Array.isArray(apiResult?.layer_names)
+          ? apiResult.layer_names
+          : Array.isArray(apiResult?.result?.layer_names)
+            ? apiResult.result.layer_names
+            : [];
+
+        emit(
+          updateNode(current, node.id, {
+            status: 'completed',
+            data: {
+              taskId: apiResult?.task_id || null,
+              jobId: apiResult?.job_id || null,
+              objectName,
+              layersUrl: getTaskResultLayersUrl(apiResult),
+              psdUrl: getTaskResultPsdUrl(apiResult),
+              compositeUrl: getTaskResultCompositeUrl(apiResult),
+              layerCount: getTaskResultLayerCount(apiResult),
+              appearanceSlots: mapLayerNamesToAppearanceSlots(layerNames),
+            },
+          }),
+        );
+      } catch (err) {
+        emit(updateNode(current, node.id, { status: 'failed' }));
+        throw err;
+      }
+      continue;
+    }
+
     if (node.kind === 'image_to_3d') {
       // Always read the latest image node from `current` (not a stale runnable snapshot).
       const imageNode = current.nodes.find((n) => n.kind === 'text_to_image');
@@ -239,6 +330,12 @@ export async function runStudioPipeline(project, deps, opts = {}) {
         );
       }
 
+      // Prefer the flattened/composited subject from layer decomposition —
+      // clean background, separated body parts, depth-aligned.
+      const layersNode = current.nodes.find((n) => n.kind === 'layer_decomposition');
+      const compositeUrl = layersNode?.data?.compositeUrl || null;
+      const primaryImageFromLayers = compositeUrl || imageUrl;
+
       const views = Array.isArray(imageNode?.data?.views) ? imageNode.data.views : [];
       const primaryViewId =
         getTextToImagePromptOptions(current).camera_view || views[0]?.viewId || 'front';
@@ -248,9 +345,11 @@ export async function runStudioPipeline(project, deps, opts = {}) {
       const referenceMetas = views.filter((v) => v.viewId !== primaryMeta.viewId && v.imageUrl);
 
       onStatus?.(
-        referenceMetas.length
-          ? `Building TRELLIS multiview mesh (${1 + referenceMetas.length} views)…`
-          : 'Building TRELLIS.2 mesh…',
+        compositeUrl
+          ? `Building TRELLIS mesh from decomposed layer composite…`
+          : referenceMetas.length
+            ? `Building TRELLIS multiview mesh (${1 + referenceMetas.length} views)…`
+            : 'Building TRELLIS.2 mesh…',
       );
 
       try {
@@ -259,9 +358,9 @@ export async function runStudioPipeline(project, deps, opts = {}) {
           'studio',
         );
         const imageFile = await fetchImageAsFile(
-          primaryMeta.imageUrl || imageUrl,
+          primaryImageFromLayers,
           apiEndpoint,
-          `${baseName}_${primaryMeta.viewId || 'front'}.png`,
+          `${baseName}_${compositeUrl ? 'layers' : primaryMeta.viewId || 'front'}.png`,
         );
 
         const referenceFiles = [];
@@ -409,6 +508,85 @@ export async function runStudioPipeline(project, deps, opts = {}) {
             updateNode(current, exportNode.id, {
               status: riggedUrl || meshUrl ? 'completed' : 'ready',
               data: { meshUrl: riggedUrl || meshUrl },
+            }),
+          );
+        }
+      } catch (err) {
+        emit(updateNode(current, node.id, { status: 'failed' }));
+        throw err;
+      }
+    }
+
+    if (node.kind === 'motion_validation') {
+      // Kimodo text-to-motion doubles as body-rig validation: playback on the
+      // rigged avatar exercises the skeleton, and the studio_motion.json is
+      // the companion-runtime asset ("talk to your VRM").
+      const rigNode = current.nodes.find((n) => n.kind === 'auto_rigging');
+      const meshNode = current.nodes.find((n) => n.kind === 'image_to_3d');
+      const riggedUrl = rigNode?.data?.meshUrl || meshNode?.data?.meshUrl;
+      if (!riggedUrl) {
+        emit(updateNode(current, node.id, { status: 'failed' }));
+        throw new Error(
+          'Motion Validation needs a completed Auto Rigging result. Run Auto-rig first.',
+        );
+      }
+
+      const objectName = slugifyObjectName(
+        node.data?.objectName || rigNode?.data?.objectName || current.name || 'studio_asset',
+        'studio_asset',
+      );
+      const motionPrompt =
+        node.data?.motionPrompt ||
+        `${getPromptText(current) || objectName} — gentle idle breathing loop`;
+
+      onStatus?.(`Validating rig via Kimodo text-to-motion (${motionPrompt})…`);
+
+      try {
+        const apiResult = await createAndStartTask(
+          {
+            type: 'text-to-motion',
+            prompt: motionPrompt,
+            imageFile: null,
+            options: {
+              model_preference:
+                node.data?.modelPreference ||
+                STUDIO_NODE_KINDS.motion_validation.defaultModel,
+              duration: node.data?.duration ?? 5,
+              output_format: 'studio_motion',
+              object_name: `${objectName}_motion`,
+            },
+          },
+          null,
+        );
+
+        const motionUrl = getTaskResultMotionUrl(apiResult);
+        if (!motionUrl) {
+          emit(updateNode(current, node.id, { status: 'failed' }));
+          throw new Error(
+            'Motion Validation did not return a motion URL — check API connection and Task Manager.',
+          );
+        }
+
+        emit(
+          updateNode(current, node.id, {
+            status: 'completed',
+            data: {
+              taskId: apiResult?.task_id || null,
+              jobId: apiResult?.job_id || null,
+              objectName,
+              meshUrl: riggedUrl,
+              motionUrl,
+              motionPrompt,
+            },
+          }),
+        );
+
+        const exportNode = current.nodes.find((n) => n.kind === 'export_asset');
+        if (exportNode) {
+          emit(
+            updateNode(current, exportNode.id, {
+              status: 'completed',
+              data: { meshUrl: riggedUrl, motionUrl },
             }),
           );
         }

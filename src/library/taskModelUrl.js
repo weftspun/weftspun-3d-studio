@@ -26,6 +26,25 @@ const MOTION_URL_KEYS = [
   'modelUrl',
 ];
 
+/** See-Through layer decomposition artifact keys (zip / psd / flattened composite). */
+const LAYERS_URL_KEYS = [
+  'layers_url',
+  'layers_zip_url',
+  'zip_url',
+  'output_layers_path',
+  'downloadUrl',
+  'modelUrl',
+];
+
+const PSD_URL_KEYS = ['psd_url', 'output_psd_path', 'psd_path'];
+
+const COMPOSITE_URL_KEYS = [
+  'composite_url',
+  'composite_image_url',
+  'flattened_url',
+  'output_composite_path',
+];
+
 /** Server-side artifact paths (outputs/...) — not fetchable from the browser. */
 const MOTION_ARTIFACT_PATH_KEYS = [
   'output_motion_path',
@@ -346,6 +365,67 @@ export function getTaskResultMotionUrl(result) {
   }
 
   return null;
+}
+
+/**
+ * Layer decomposition zip URL (individual RGBA body-part layers).
+ * @param {object|null|undefined} result
+ * @returns {string|null}
+ */
+export function getTaskResultLayersUrl(result) {
+  if (!result || typeof result !== 'object') return null;
+  const nested = result.result && typeof result.result === 'object' ? result.result : null;
+  return (
+    pickFetchableUrlFromObject(result, LAYERS_URL_KEYS) ||
+    pickFetchableUrlFromObject(nested, LAYERS_URL_KEYS) ||
+    resolveJobDownloadPath(result) ||
+    resolveJobDownloadPath(nested)
+  );
+}
+
+/**
+ * Layer decomposition PSD URL (editable layered document).
+ * @param {object|null|undefined} result
+ * @returns {string|null}
+ */
+export function getTaskResultPsdUrl(result) {
+  if (!result || typeof result !== 'object') return null;
+  const nested = result.result && typeof result.result === 'object' ? result.result : null;
+  return (
+    pickUrlFromObject(result, PSD_URL_KEYS) ||
+    pickUrlFromObject(nested, PSD_URL_KEYS) ||
+    null
+  );
+}
+
+/**
+ * Flattened/composited image from layer decomposition — the preferred
+ * image-to-3D input (clean subject, removed background, depth-aligned).
+ * @param {object|null|undefined} result
+ * @returns {string|null}
+ */
+export function getTaskResultCompositeUrl(result) {
+  if (!result || typeof result !== 'object') return null;
+  const nested = result.result && typeof result.result === 'object' ? result.result : null;
+  return (
+    pickFetchableUrlFromObject(result, COMPOSITE_URL_KEYS) ||
+    pickFetchableUrlFromObject(nested, COMPOSITE_URL_KEYS) ||
+    null
+  );
+}
+
+/**
+ * Number of decomposed semantic layers (from See-Through / LayerDiff).
+ * @param {object|null|undefined} result
+ * @returns {number|null}
+ */
+export function getTaskResultLayerCount(result) {
+  if (!result || typeof result !== 'object') return null;
+  const nested = result.result && typeof result.result === 'object' ? result.result : null;
+  const count = result.layer_count ?? nested?.layer_count ?? result.layers?.length ?? nested?.layers?.length;
+  if (typeof count === 'number' && Number.isFinite(count)) return count;
+  const parsed = Number(count);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
 }
 
 /**
