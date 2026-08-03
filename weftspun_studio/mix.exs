@@ -34,7 +34,12 @@ defmodule WeftspunStudio.MixProject do
       {:exla, "~> 0.13"},
       # Single-binary packaging. Needs Zig at build time.
       {:burrito, "~> 1.0"},
-      {:jason, "~> 1.4"}
+      {:jason, "~> 1.4"},
+      # HTTP surface. Smallest slice that serves the client.
+      {:bandit, "~> 1.5"},
+      {:plug, "~> 1.16"},
+      # Mocks for the API surface the UI consumes.
+      {:mox, "~> 1.1", only: :test}
     ]
   end
 

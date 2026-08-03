@@ -57,6 +57,28 @@ An earlier draft selected nx-ggml, to match the ggml runtime in
 see-through.cpp. EXLA replaces it. The DGX hardware is NVIDIA, so the
 CUDA path uses the hardware the project already owns.
 
+## Ports and facts
+
+The application follows the hexagonal shape from
+`holographic-item-memory`. A `*_source` port reads inbound. A
+`*_sink` port writes outbound. `state` is the adapter's opaque
+handle.
+
+Mox covers each port. The job ports reach the DGX backend and run
+model work, so no test uses a real job adapter.
+
+A catalog entry is a fact, not a fixed row. A licence gate vetoes a
+model. A benchmark moves a recommendation. RFD 0016 records that
+churn. Each fact therefore carries a trust score and a timestamp,
+after the hermes-agent holographic memory store. The field names
+follow that store: `content`, `category`, and `tags`.
+
+A veto lowers trust. It does not drop the fact. The veto is itself a
+fact worth keeping, so a later reader learns why the model left.
+
+The HRR vector from that store is not here yet. It needs Nx work. A
+later phase adds it.
+
 ## Packaging
 
 Burrito wraps the release into one binary. The target machine needs

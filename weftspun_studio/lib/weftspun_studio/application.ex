@@ -5,7 +5,13 @@ defmodule WeftspunStudio.Application do
 
   @impl true
   def start(_type, _args) do
-    children = []
+    children =
+      if serve?() do
+        [{Bandit, plug: WeftspunStudio.Router, port: port()}]
+      else
+        []
+      end
+
     opts = [strategy: :one_for_one, name: WeftspunStudio.Supervisor]
     {:ok, pid} = Supervisor.start_link(children, opts)
 
@@ -27,4 +33,10 @@ defmodule WeftspunStudio.Application do
   end
 
   defp release?, do: System.get_env("RELEASE_NAME") != nil
+
+  # The HTTP surface stays off during tests, which call the router
+  # directly through Plug.Test.
+  defp serve?, do: System.get_env("WEFTSPUN_SERVE", "1") == "1" and Mix.env() != :test
+
+  defp port, do: String.to_integer(System.get_env("WEFTSPUN_PORT", "4000"))
 end
