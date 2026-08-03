@@ -1,6 +1,6 @@
 {
-  "appId": "com.opennexus3dstudio.app",
-  "productName": "OpenNexus3DStudio",
+  "appId": "com.weftspun.studio",
+  "productName": "Weftspun 3D Studio",
   "directories": {
     "output": "dist"
   },

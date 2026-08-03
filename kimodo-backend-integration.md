@@ -1,4 +1,4 @@
-# Kimodo backend integration (OpenNexus3DStudio)
+# Kimodo backend integration (Weftspun3DStudio)
 
 Frontend triggers **text-to-motion** via animation bar (`KimodoMotionPromptBar.jsx` → `taskManager.js`).
 

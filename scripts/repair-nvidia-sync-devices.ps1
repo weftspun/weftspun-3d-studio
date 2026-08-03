@@ -1,5 +1,5 @@
 # Remove junk aliases only; keep DGX Sparks local + DGX Sparks remote.
-#   cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+#   cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 #   .\scripts\repair-nvidia-sync-devices.ps1
 
 $ErrorActionPreference = "Continue"

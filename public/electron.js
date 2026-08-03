@@ -226,12 +226,12 @@ const template = [
     label: 'Help',
     submenu: [
       {
-        label: 'About Open3DStudio',
+        label: 'About Weftspun 3D Studio',
         click: () => {
           dialog.showMessageBox(mainWindow, {
             type: 'info',
-            title: 'About Open3DStudio',
-            message: 'Open3DStudio v1.0.0',
+            title: 'About Weftspun 3D Studio',
+            message: 'Weftspun 3D Studio v1.0.2',
             detail: 'A 3D AIGC application for completely locally deployed and free 3DAIGC workflows'
           });
         }

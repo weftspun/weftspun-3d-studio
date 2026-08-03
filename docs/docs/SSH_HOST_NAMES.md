@@ -15,7 +15,7 @@ One physical DGX. Two SSH nicknames in Cursor — nothing else.
 
 1. `C:\Users\alfao\.ssh\config`
 2. Cursor **Settings** → `remote.SSH.remotePlatform`
-3. `OpenNexus3DStudio/.vscode/settings.json`
+3. `Weftspun3DStudio/.vscode/settings.json`
 4. `scripts/dgx-spark.ssh.config` (template + sign-in repair)
 
 ## Rules — stop extra “devices”

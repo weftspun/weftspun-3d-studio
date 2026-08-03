@@ -1,6 +1,6 @@
 ---
 description: LingBot env-scan / Phase A 3DGS client load — do not regress
-globs: OpenNexus3DStudio/src/library/{worldSceneLoader,pointCloudPlyLoader,worldPackage,taskManager}*
+globs: Weftspun3DStudio/src/library/{worldSceneLoader,pointCloudPlyLoader,worldPackage,taskManager}*
 alwaysApply: false
 ---
 

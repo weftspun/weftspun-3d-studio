@@ -1,6 +1,6 @@
 # Install OpenSSH Server on this Surface so DGX can SSH in (alfao@10.0.0.32).
 # MUST run as Administrator:
-#   cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+#   cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 #   .\scripts\install-surface-openssh-server.ps1
 
 #Requires -RunAsAdministrator

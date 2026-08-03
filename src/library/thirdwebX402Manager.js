@@ -21,7 +21,7 @@ export class ThirdwebX402Manager {
    * @param {string} label - Wallet label
    * @returns {Promise<Object>} Wallet information
    */
-  async createSolanaFacilitatorWallet(label = 'spacetime-solana-facilitator') {
+  async createSolanaFacilitatorWallet(label = 'weftspun-solana-facilitator') {
     try {
       const response = await fetch(
         `${THIRDWEB_API_BASE}/solana/wallets`,

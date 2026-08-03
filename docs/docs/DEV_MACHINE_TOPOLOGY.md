@@ -1,4 +1,4 @@
-# Dev machine topology (OpenNexus3DStudio)
+# Dev machine topology (Weftspun3DStudio)
 
 Use this when reading **`logs/remote-log.txt`**, planning Galaxy XR tests, or writing docs that mention “the PC.” IPs change on your LAN; roles do not.
 
@@ -19,7 +19,7 @@ Use this when reading **`logs/remote-log.txt`**, planning Galaxy XR tests, or wr
     ↑ POST /__remote_log, /__native_face_ingest
     │
 [Galaxy XR Chrome]  ?nativeFaceRelay=1&remoteLog=1  (AR/VR, relay, playback)
-    ↑ POST face JSON from OpenNexus XR Face APK (same origin ingest on Surface)
+    ↑ POST face JSON from Weftspun XR Face APK (same origin ingest on Surface)
 
 [DGX Spark]  SSH / API / builds via NVIDIA Sync  —  not required for headset → Surface LAN URL
 ```
@@ -56,17 +56,17 @@ Each line includes the **HTTP client** that forwarded the log:
 ## DGX Spark access (SSH / Cursor)
 
 - **NVIDIA Sync** — primary way to reach the headless Spark.
-- **HDMI** — optional local console; does not change the log roles above unless you run Chrome there for OpenNexus3DStudio.
+- **HDMI** — optional local console; does not change the log roles above unless you run Chrome there for Weftspun3DStudio.
 - **SSH (two hosts only):** **`DGX-Local`** = LAN `10.0.0.158`; **`DGX-Remote`** = Tailscale via NVIDIA Sync. User `sifr`. See [`SSH_HOST_NAMES.md`](./SSH_HOST_NAMES.md).
 
-## OpenNexus3DStudio — Local Cursor + DGX Remote SSH
+## Weftspun3DStudio — Local Cursor + DGX Remote SSH
 
 Same git repo, two Cursor entry points. Keep them in sync with **scp scripts** (not GitHub — see cheat sheet below).
 
 | Workspace | Typical path | Cursor connection |
 |-----------|--------------|-------------------|
-| **Surface (local dev + Galaxy XR)** | `C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` | Local folder |
-| **DGX Spark (SSH agent)** | `/home/sifr/OpenNexus3DStudio` | **`DGX-Local`** or **`DGX-Remote`** |
+| **Surface (local dev + Galaxy XR)** | `C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` | Local folder |
+| **DGX Spark (SSH agent)** | `/home/sifr/Weftspun3DStudio` | **`DGX-Local`** or **`DGX-Remote`** |
 
 **Who runs what**
 
@@ -208,7 +208,7 @@ From the **Surface** repo root (PowerShell) — run in this order when both side
 On **DGX** (optional — `sync-to-dgx.ps1` runs this automatically after each PC push):
 
 ```bash
-cd /home/sifr/OpenNexus3DStudio
+cd /home/sifr/Weftspun3DStudio
 bash scripts/ensure-dgx-sync-ready.sh
 ```
 
@@ -234,7 +234,7 @@ With **`-IncludeDocs`** on **to-dgx only**, also mirrors full `docs/` from PC. A
 
 **Critical:** If you browse **`https://10.0.0.32:3000`**, that is **Surface `npm run dev`**. Pushing files to DGX does **not** change that browser session. DGX sync is for the **Remote-SSH Cursor agent** on the Spark and for sharing docs with the **3DAIGC-API** codebase — not for updating the Surface dev server.
 
-**Avatar rig GLBs** come from the **3DAIGC-API** export on DGX (`UniRig` → Blender GLB). Copying OpenNexus3DStudio docs to DGX does not fix broken rigs; the API must implement `docs/API_AVATAR_RIG_CONTRACT.md`. Re-opening an **old completed task** still downloads the **same** GLB — run a **new** avatar-from-image job after API fixes.
+**Avatar rig GLBs** come from the **3DAIGC-API** export on DGX (`UniRig` → Blender GLB). Copying Weftspun3DStudio docs to DGX does not fix broken rigs; the API must implement `docs/API_AVATAR_RIG_CONTRACT.md`. Re-opening an **old completed task** still downloads the **same** GLB — run a **new** avatar-from-image job after API fixes.
 
 **Cursor:** Open the same tree on DGX via **Remote-SSH → DGX-Local** or **DGX-Remote**; run `npm run dev` on whichever machine serves the UI (usually Surface for Galaxy XR).
 

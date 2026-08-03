@@ -32,9 +32,9 @@ describe('viewportLighting', () => {
       lightIntensityUi: 1,
       exposureUi: 1,
     });
-    expect(extras.opennexusViewportLighting.lightIntensity).toBe(2);
-    expect(extras.opennexusViewportLighting.exposure).toBe(2);
-    expect(extras.opennexusViewportLighting.lightIntensityUi).toBe(1);
+    expect(extras.weftspunViewportLighting.lightIntensity).toBe(2);
+    expect(extras.weftspunViewportLighting.exposure).toBe(2);
+    expect(extras.weftspunViewportLighting.lightIntensityUi).toBe(1);
     const roundTrip = readViewportLightingExtras({ userData: extras });
     expect(roundTrip.lightIntensity).toBe(2);
     expect(normalizeViewportLightingState({ lightIntensity: 4, exposure: 4 }).lightIntensityUi).toBe(2);

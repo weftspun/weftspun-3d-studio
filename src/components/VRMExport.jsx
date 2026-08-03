@@ -23,10 +23,10 @@ const VRMExport = () => {
   const [vrmMetadata, setVrmMetadata] = useState(null);
   const cardHeaderRef = useRef(null);
   const [exportOptions, setExportOptions] = useState({
-    filename: 'opennexus3dstudio_export.vrm',
+    filename: 'weftspun3dstudio_export.vrm',
     vrmVersion: '0.0',
-    title: 'OpenNexus3DStudio Export',
-    author: 'OpenNexus3DStudio',
+    title: 'Weftspun3DStudio Export',
+    author: 'Weftspun3DStudio',
     version: '1.0.0',
     allowedUserName: 'Everyone',
     commercialUssageName: 'Allow',

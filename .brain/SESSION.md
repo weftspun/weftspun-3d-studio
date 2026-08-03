@@ -16,7 +16,7 @@ None — setup complete on DGX.
 
 ## Topics & Conversations
 
-- User requested MindLink on both OpenNexus3DStudio and 3DAIGC-API
+- User requested MindLink on both Weftspun3DStudio and 3DAIGC-API
 - Prior session: MSF proxy, Publish RP1/Assembler fixes, XR remoteLog propagation
 
 ## Decisions Made This Session

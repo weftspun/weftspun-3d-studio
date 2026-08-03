@@ -1,6 +1,6 @@
 /**
  * SharedHDRManager - Manages HDR environment across multiple scenes
- * Ensures consistent lighting and environment across main scene and OpenNexus3DStudio avatar viewport
+ * Ensures consistent lighting and environment across main scene and Weftspun3DStudio avatar viewport
  */
 import * as THREE from 'three';
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';

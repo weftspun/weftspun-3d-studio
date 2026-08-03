@@ -77,7 +77,7 @@ export default function BottomDisplayMenu({ loadedAnimationName, randomize }) {
     if (overlay) observer.observe(overlay);
     const appRoot = viewport?.closest('.app');
     const appContent = viewport?.closest('.app-content');
-    const sidebar = appRoot?.querySelector('.opennexus-sidebar');
+    const sidebar = appRoot?.querySelector('.weftspun-sidebar');
     if (sidebar) observer.observe(sidebar);
 
     const classObserver = new MutationObserver(syncDock);

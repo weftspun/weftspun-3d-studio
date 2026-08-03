@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Verify agent continuity stack for OpenNexus / product repos.
+# Verify agent continuity stack for Weftspun / product repos.
 # Safe to re-run. Exit 0 = all required checks pass; 1 = failures.
 #
 # Usage:
@@ -95,11 +95,11 @@ check_repo() {
     local required_rules=(
       "dgx-sync-reminder.mdc"
       "agent-run-instructions.mdc"
-      "3daigc-opennexus3dstudio-workflow.mdc"
+      "3daigc-weftspun3dstudio-workflow.mdc"
       "agent-continuity-startup.mdc"
     )
-    # Only enforce OpenNexus-specific rules in that repo
-    if [[ "$name" == "OpenNexus3DStudio" ]]; then
+    # Only enforce Weftspun-specific rules in that repo
+    if [[ "$name" == "Weftspun3DStudio" ]]; then
       local r
       for r in "${required_rules[@]}"; do
         [[ -f "$repo/.cursor/rules/$r" ]] && ok "rule $r" || fail "rule missing: $r"
@@ -160,12 +160,12 @@ check_user_hooks() {
   fi
 }
 
-STAMP_DIR="${HOME}/.cache/opennexus-continuity"
+STAMP_DIR="${HOME}/.cache/weftspun-continuity"
 mkdir -p "$STAMP_DIR"
 
 check_repo "$ROOT"
 if [[ "$ALL_REPOS" -eq 1 ]]; then
-  for extra in /home/sifr/3DAIGC-API /home/sifr/SpaceTimeHost /home/sifr/Sneeze; do
+  for extra in /home/sifr/3DAIGC-API /home/sifr/WeftspunHost /home/sifr/Sneeze; do
     [[ "$extra" == "$ROOT" ]] && continue
     [[ -d "$extra" ]] && check_repo "$extra"
   done

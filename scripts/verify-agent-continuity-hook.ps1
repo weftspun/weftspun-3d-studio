@@ -1,7 +1,7 @@
 # Cursor sessionStart hook (Surface) — verify continuity and emit JSON context
 $ErrorActionPreference = 'Continue'
 try { $null = [Console]::In.ReadToEnd() } catch {}
-$root = 'C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio'
+$root = 'C:\Users\alfao\Documents\GitHub\Weftspun3DStudio'
 $verify = Join-Path $root 'scripts\verify-agent-continuity.ps1'
 $status = 'fail'
 $summary = 'verify script missing'
@@ -27,8 +27,8 @@ $summary
 "@
 $payload = @{
   env = @{
-    OPENNEXUS_CONTINUITY_STATUS = $status
-    OPENNEXUS_CONTINUITY_VERIFIED = '1'
+    WEFTSPUN_CONTINUITY_STATUS = $status
+    WEFTSPUN_CONTINUITY_VERIFIED = '1'
   }
   additional_context = $ctx
 } | ConvertTo-Json -Compress -Depth 5

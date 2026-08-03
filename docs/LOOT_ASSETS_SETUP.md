@@ -2,7 +2,7 @@
 
 **Source of truth:** [github.com/m3-org/loot-assets](https://github.com/m3-org/loot-assets)
 
-OpenNexus3DStudio does **not** commit asset binaries. They are fetched from that repo and served at `/loot-assets/…`.
+Weftspun3DStudio does **not** commit asset binaries. They are fetched from that repo and served at `/loot-assets/…`.
 
 | Environment | What happens |
 |-------------|----------------|
@@ -15,14 +15,14 @@ Pointer file in repo root: `loot-assets.source`
 ## Quick start
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 npm run get-assets
 npm run dev
 ```
 
 ```bash
 # DGX
-cd /home/sifr/OpenNexus3DStudio
+cd /home/sifr/Weftspun3DStudio
 npm run get-assets
 ```
 
@@ -31,7 +31,7 @@ npm run get-assets
 | Path | Role |
 |------|------|
 | `C:\Users\alfao\Documents\GitHub\loot-assets` | Git clone of m3-org/loot-assets |
-| `OpenNexus3DStudio\public\loot-assets` | Junction/symlink → external clone |
+| `Weftspun3DStudio\public\loot-assets` | Junction/symlink → external clone |
 | App URLs | `/loot-assets/manifest.json`, `/loot-assets/models/…`, etc. |
 
 Override clone location: `LOOT_ASSETS_EXTERNAL_DIR` in `.env`

@@ -166,7 +166,7 @@ export function connectNativeFaceRelaySse(options = {}) {
     if (!_connectedLogged) {
       _connectedLogged = true;
       console.info(
-        '[nativeFaceRelay] SSE connected — keep OpenNexus XR Face APK open while in Chrome WebXR'
+        '[nativeFaceRelay] SSE connected — keep Weftspun XR Face APK open while in Chrome WebXR'
       );
     }
   };
@@ -195,7 +195,7 @@ export function connectNativeFaceRelay() {
   disconnectNativeFaceRelay();
 
   console.info(
-    '[nativeFaceRelay] Starting (poll + SSE) — open OpenNexus XR Face APK first, then Chrome WebXR'
+    '[nativeFaceRelay] Starting (poll + SSE) — open Weftspun XR Face APK first, then Chrome WebXR'
   );
   startPollLoop();
   connectNativeFaceRelaySse();

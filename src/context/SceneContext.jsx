@@ -466,7 +466,7 @@ export const SceneProvider = ({ children }) => {
 
     if (format === 'vrm') {
       const cm = characterManagerRef.current;
-      const name = (options.filename || 'opennexus3dstudio_export').replace(/\.vrm$/i, '');
+      const name = (options.filename || 'weftspun3dstudio_export').replace(/\.vrm$/i, '');
       if (cm && Object.keys(cm.avatar || {}).length > 0) {
         return cm.downloadVRM(name, options);
       }

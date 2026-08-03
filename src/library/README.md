@@ -1,6 +1,6 @@
 # Library Scripts
 
-This directory contains various utility scripts for the OpenNexus3DStudio application.
+This directory contains various utility scripts for the Weftspun3DStudio application.
 
 ## Files
 

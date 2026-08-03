@@ -1,6 +1,6 @@
-# OpenXR face tracking (Android XR) and OpenNexus3DStudio
+# OpenXR face tracking (Android XR) and Weftspun3DStudio
 
-This document ties **native OpenXR** face data to the **web** OpenNexus3DStudio app when the browser does not expose WebXR **`expression-tracking`** / **`XRFrame.expressions`** (common on current Chrome builds; see remote-log diagnostics).
+This document ties **native OpenXR** face data to the **web** Weftspun3DStudio app when the browser does not expose WebXR **`expression-tracking`** / **`XRFrame.expressions`** (common on current Chrome builds; see remote-log diagnostics).
 
 ## Local spec copies (this repository)
 
@@ -36,7 +36,7 @@ The folder **`OpenXR/`** at the repo root holds PDFs for offline reading (includ
 
 ## Jetpack XR / ARCore face (Google stack)
 
-On Android XR, Google documents **[ARCore face tracking for Jetpack XR](https://developer.android.com/develop/xr/jetpack-xr-sdk/arcore/face)** with **`FaceTrackingMode.BLEND_SHAPES`** and the same style of **68 blend shapes** as in the tables above. The OpenNexus3DStudio wrapper APK implements this path in **`native/android-xr-face-bridge/XrFaceTrackingEngine.kt`** (foreground service + HTTP relay for Chrome WebXR) and forwards weights into **`nativeFaceBridge.js`** (no raw OpenXR C required for that route).
+On Android XR, Google documents **[ARCore face tracking for Jetpack XR](https://developer.android.com/develop/xr/jetpack-xr-sdk/arcore/face)** with **`FaceTrackingMode.BLEND_SHAPES`** and the same style of **68 blend shapes** as in the tables above. The Weftspun3DStudio wrapper APK implements this path in **`native/android-xr-face-bridge/XrFaceTrackingEngine.kt`** (foreground service + HTTP relay for Chrome WebXR) and forwards weights into **`nativeFaceBridge.js`** (no raw OpenXR C required for that route).
 
 ## Native OpenXR runtime loop (C API) — optional
 
@@ -55,7 +55,7 @@ Older drafts or slides sometimes mention different function names; **trust the K
 | Path | Where it runs | Feature | Data shape | Implementation in repo |
 |------|----------------|---------|------------|-------------------------|
 | WebXR | Chrome immersive session | Optional `expression-tracking` | `XRFrame.expressions` | [`src/library/xrExpressionTrackingDriver.js`](../src/library/xrExpressionTrackingDriver.js) → `applyXRFrameExpressionsToVRMS` |
-| Native bridge | Android XR host (OpenXR) | `XR_ANDROID_face_tracking` | Serialized weights or `openxrParameters[]` | Native app → `window.__openNexus3dStudioNativeFace.push()` → [`src/library/nativeFaceBridge.js`](../src/library/nativeFaceBridge.js) → `applyExpressionWeightRecordToVRMS` |
+| Native bridge | Android XR host (OpenXR) | `XR_ANDROID_face_tracking` | Serialized weights or `openxrParameters[]` | Native app → `window.__weftspun3dStudioNativeFace.push()` → [`src/library/nativeFaceBridge.js`](../src/library/nativeFaceBridge.js) → `applyExpressionWeightRecordToVRMS` |
 
 **Index → key mapping in repo:** [`src/library/openxrFaceParameterMap.js`](../src/library/openxrFaceParameterMap.js) (`OPENXR_ANDROID_FACE_PARAMETER_WEBXR_KEYS`, `openxrFloatParametersToWebXRRecord`).
 
@@ -65,7 +65,7 @@ When **both** are inactive, the avatar face in XR stays neutral (webcam driver i
 
 ### Dev relay: Chrome WebXR + APK face (Galaxy XR)
 
-When the browser does not grant **`expression-tracking`**, use the **OpenNexus XR Face** APK plus the Vite dev relay:
+When the browser does not grant **`expression-tracking`**, use the **Weftspun XR Face** APK plus the Vite dev relay:
 
 | Step | Component |
 |------|-----------|
@@ -106,7 +106,7 @@ From Kotlin/Java WebView:
 
 ```java
 webView.evaluateJavascript(
-  "window.__openNexus3dStudioNativeFace.push(" + json + ");",
+  "window.__weftspun3dStudioNativeFace.push(" + json + ");",
   null
 );
 ```

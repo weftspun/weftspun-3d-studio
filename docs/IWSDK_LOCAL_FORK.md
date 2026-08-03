@@ -1,21 +1,21 @@
 # Local IWSDK fork (AlfaOmegaGrafx/immersive-web-sdk)
 
-OpenNexus3DStudio consumes **local builds** from a sibling clone of your IWSDK fork instead of npm `@iwsdk/*` ^0.4.2.
+Weftspun3DStudio consumes **local builds** from a sibling clone of your IWSDK fork instead of npm `@iwsdk/*` ^0.4.2.
 
 ## Layout
 
 ```
 /home/sifr/
   immersive-web-sdk/          # git clone AlfaOmegaGrafx/immersive-web-sdk
-  OpenNexus3DStudio/        # file:../immersive-web-sdk/packages/*/iwsdk-*.tgz
+  Weftspun3DStudio/        # file:../immersive-web-sdk/packages/*/iwsdk-*.tgz
 ```
 
-On Surface: clone `immersive-web-sdk` next to `OpenNexus3DStudio` the same way.
+On Surface: clone `immersive-web-sdk` next to `Weftspun3DStudio` the same way.
 
 ## Link / refresh
 
 ```bash
-cd OpenNexus3DStudio
+cd Weftspun3DStudio
 npm run iwsdk:link-local              # build tgz if missing + npm install
 npm run iwsdk:link-local:rebuild      # force rebuild fork + reinstall
 ```
@@ -25,7 +25,7 @@ Or manually:
 ```bash
 cd ../immersive-web-sdk
 pnpm install && npm run build:tgz:skip-reference-assets
-cd ../OpenNexus3DStudio && npm install
+cd ../Weftspun3DStudio && npm install
 ```
 
 ## Packages wired

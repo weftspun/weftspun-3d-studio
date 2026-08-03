@@ -1,6 +1,6 @@
 # Let DGX (user sifr) SSH to this Surface via key auth.
 #
-#   cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+#   cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 #   .\scripts\install-surface-openssh-server.ps1   # Admin once
 #   .\scripts\allow-dgx-ssh-to-surface.ps1
 

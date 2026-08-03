@@ -7,14 +7,14 @@ import './Shared3DViewer.css';
 /**
  * Universal 3D Viewer Component
  * Automatically detects the application mode and provides appropriate 3D viewing capabilities
- * Works seamlessly with OpenNexus3DStudio (3D AIGC + avatar/VRM workflows)
+ * Works seamlessly with Weftspun3DStudio (3D AIGC + avatar/VRM workflows)
  */
 const Universal3DViewer = ({
   // Viewer configuration
   showControls = true,
   showStats = false,
   autoDetectMode = true,
-  mode = null, // 'characterstudio' or 'opennexus3dstudio'
+  mode = null, // 'characterstudio' or 'weftspun3dstudio'
   
   // Model loading
   model = null,
@@ -50,16 +50,16 @@ const Universal3DViewer = ({
       
       if (hasCore3D && hasAvatarPanel) {
         // Both available - determine based on current state
-        setDetectedMode(core3dContext.currentDesign ? 'opennexus3dstudio' : 'opennexus3dstudio');
+        setDetectedMode(core3dContext.currentDesign ? 'weftspun3dstudio' : 'weftspun3dstudio');
       } else if (hasCore3D) {
-        setDetectedMode('opennexus3dstudio');
+        setDetectedMode('weftspun3dstudio');
       } else if (hasAvatarPanel) {
-        setDetectedMode('opennexus3dstudio');
+        setDetectedMode('weftspun3dstudio');
       } else {
-        setDetectedMode('opennexus3dstudio'); // Default fallback
+        setDetectedMode('weftspun3dstudio'); // Default fallback
       }
     } else {
-      setDetectedMode(mode || 'opennexus3dstudio');
+      setDetectedMode(mode || 'weftspun3dstudio');
     }
   }, [autoDetectMode, mode, core3dContext, sceneContext]);
 
@@ -67,11 +67,11 @@ const Universal3DViewer = ({
   const getActiveModel = () => {
     if (model) return model; // Explicit model provided
     
-    if (detectedMode === 'opennexus3dstudio') {
-      // For OpenNexus3DStudio, use Core3D design or selected model
+    if (detectedMode === 'weftspun3dstudio') {
+      // For Weftspun3DStudio, use Core3D design or selected model
       return core3dContext?.currentDesign || core3dContext?.selectedModel;
     } else {
-      // OpenNexus3DStudio avatar viewport model
+      // Weftspun3DStudio avatar viewport model
       return sceneContext?.currentModel;
     }
   };
@@ -82,7 +82,7 @@ const Universal3DViewer = ({
       onViewerReady?.({
         mode: detectedMode,
         hasCore3D: core3dContext?.isInitialized || false,
-        hasOpenNexusAvatar: sceneContext?.isInitialized || false
+        hasWeftspunAvatar: sceneContext?.isInitialized || false
       });
     }
   }, [detectedMode, isReady, onViewerReady, core3dContext, sceneContext]);
@@ -114,7 +114,7 @@ const Universal3DViewer = ({
     };
 
     // Add mode-specific configurations
-    if (detectedMode === 'opennexus3dstudio') {
+    if (detectedMode === 'weftspun3dstudio') {
       return {
         ...baseConfig,
         enableCore3D,
@@ -128,7 +128,7 @@ const Universal3DViewer = ({
         ...baseConfig,
         enableVRM,
         enableExport,
-        // OpenNexus3DStudio avatar panel options
+        // Weftspun3DStudio avatar panel options
         characterMode: true,
         blendShapes: true
       };
@@ -141,10 +141,10 @@ const Universal3DViewer = ({
 
     const controls = [];
     
-    if (detectedMode === 'opennexus3dstudio' && sceneContext?.characterManager) {
+    if (detectedMode === 'weftspun3dstudio' && sceneContext?.characterManager) {
       controls.push(
         <div key="character-controls" className="mode-specific-controls">
-          <h4>OpenNexus3DStudio Avatar Controls</h4>
+          <h4>Weftspun3DStudio Avatar Controls</h4>
           <div className="control-group">
             <button 
               onClick={() => sceneContext?.exportModel?.('vrm')}
@@ -165,10 +165,10 @@ const Universal3DViewer = ({
       );
     }
     
-    if (detectedMode === 'opennexus3dstudio') {
+    if (detectedMode === 'weftspun3dstudio') {
       controls.push(
         <div key="core3d-controls" className="mode-specific-controls">
-          <h4>OpenNexus3DStudio Controls</h4>
+          <h4>Weftspun3DStudio Controls</h4>
           <div className="control-group">
             <button 
               onClick={() => core3dContext?.exportDesign?.(core3dContext.currentDesign?.id)}

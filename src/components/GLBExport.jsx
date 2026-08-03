@@ -24,8 +24,8 @@ const GLBExport = ({ apiEndpoint = '' }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const cardHeaderRef = useRef(null);
   const [exportOptions, setExportOptions] = useState({
-    filename: 'opennexus3dstudio_export.glb',
-    forOpenNexus3DStudio: true,
+    filename: 'weftspun3dstudio_export.glb',
+    forWeftspun3DStudio: true,
     optimize: true,
     includeTextures: true,
     includeAnimations: true,
@@ -318,13 +318,13 @@ const GLBExport = ({ apiEndpoint = '' }) => {
                   <label className="flex items-center gap-2">
                     <input
                       type="checkbox"
-                      checked={exportOptions.forOpenNexus3DStudio}
-                      onChange={(e) => handleOptionChange('forOpenNexus3DStudio', e.target.checked)}
+                      checked={exportOptions.forWeftspun3DStudio}
+                      onChange={(e) => handleOptionChange('forWeftspun3DStudio', e.target.checked)}
                     />
-                    <span>Optimize for OpenNexus3DStudio</span>
+                    <span>Optimize for Weftspun3DStudio</span>
                   </label>
                   <p className="text-xs text-gray-400 mt-1">
-                    Adds VRM compatibility and OpenNexus3DStudio-specific optimizations
+                    Adds VRM compatibility and Weftspun3DStudio-specific optimizations
                   </p>
                 </div>
 

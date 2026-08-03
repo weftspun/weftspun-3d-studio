@@ -20,7 +20,7 @@ Golden templates live in `scripts/` (`dgx-spark.ssh.config`, `cursor-ssh-extras.
 **One-time install** (Windows sign-in + before every `npm run dev`):
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 .\scripts\install-dgx-ssh-guard.ps1
 ```
 
@@ -31,7 +31,7 @@ The guard **does not** re-pair NVIDIA Sync or delete hosts — it only restores 
 ## Fix auth (from repo root)
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 .\scripts\repair-dgx-auth.ps1
 ```
 
@@ -45,7 +45,7 @@ This script:
 Local already works — use this script. It does **not** change DGX-Local.
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 .\scripts\repair-dgx-remote.ps1
 ```
 
@@ -54,7 +54,7 @@ cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
 Stale `cursor-server` on the Spark causes multiplex **401** and an endless reconnect loop.
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 .\scripts\fix-cursor-remote-loop.ps1
 ```
 
@@ -63,7 +63,7 @@ Quit Cursor fully, run the script, reopen, connect via **DGX-Local** (not `dgx-s
 ## Other scripts
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 .\scripts\repair-nvidia-sync-devices.ps1   # remove old junk names only
 .\scripts\restart-nvidia-sync.ps1          # app won't open
 ```
@@ -75,7 +75,7 @@ Let the Spark SSH **into** the Surface (`alfao@10.0.0.32`) for sync scripts, fil
 **One-time (Administrator PowerShell on Surface):**
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 .\scripts\install-surface-openssh-server.ps1
 ```
 

@@ -6,9 +6,9 @@
  * Alternatively pass **`openxrParameters`**: a dense float array in
  * `XrFaceParameterIndicesANDROID` order; see `openxrFaceParameterMap.js`.
  *
- * Native side (OpenNexus XR Face APK WebView):
+ * Native side (Weftspun XR Face APK WebView):
  * - `window.onNativeFaceData(weights)` — thin hook (weights use WebXR keys, e.g. `jaw_drop`)
- * - `window.__openNexus3dStudioNativeFace.push(payload)` — full payload `{ weights, t }`
+ * - `window.__weftspun3dStudioNativeFace.push(payload)` — full payload `{ weights, t }`
  * - `window.AndroidXRBridge.onBridgeReady()` — call from web after init; native restarts pipeline
  *
  * Chrome WebXR still uses the dev HTTP relay (`nativeFaceRelay.js`), not this bridge.
@@ -20,8 +20,8 @@
 import { openxrFloatParametersToWebXRRecord } from './openxrFaceParameterMap.js';
 import { resetFaceExpressionNeutralBaseline } from './xrExpressionTrackingDriver.js';
 
-/** Window global injected by `com.opennexus3dstudio.xrfacebridge` WebView evaluateJavascript. */
-export const NATIVE_FACE_WINDOW_API = '__openNexus3dStudioNativeFace';
+/** Window global injected by `com.weftspun.xrfacebridge` WebView evaluateJavascript. */
+export const NATIVE_FACE_WINDOW_API = '__weftspun3dStudioNativeFace';
 
 /**
  * Web-side OpenXR toggle.  When `false` the `openxrParameters` dense-float
@@ -92,7 +92,7 @@ export function getNativeFaceWeightsMaxAgeMs(xrPresenting = false) {
   return xrPresenting ? XR_PRESENTING_MAX_AGE_MS : DEFAULT_MAX_AGE_MS;
 }
 
-/** True when running inside the OpenNexus XR Face APK WebView (`AndroidXRBridge` injected). */
+/** True when running inside the Weftspun XR Face APK WebView (`AndroidXRBridge` injected). */
 export function isAndroidXrWebView() {
   if (typeof window === 'undefined') return false;
   try {
@@ -208,7 +208,7 @@ export function initNativeFaceBridge() {
 
   try {
     window.dispatchEvent(
-      new CustomEvent('opennexus3dstudio-native-face-ready', { detail: { api } }),
+      new CustomEvent('weftspun3dstudio-native-face-ready', { detail: { api } }),
     );
   } catch (_) {
     /* ignore */

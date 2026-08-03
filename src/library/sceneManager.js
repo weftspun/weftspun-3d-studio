@@ -1,6 +1,6 @@
 /**
  * SceneManager - Central orchestrator for 3D scene management
- * Similar to CharacterManager in OpenNexus3DStudio, but focused on 3D AIGC workflows
+ * Similar to CharacterManager in Weftspun3DStudio, but focused on 3D AIGC workflows
  */
 import * as THREE from './three.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -3256,7 +3256,7 @@ export class SceneManager {
   }
 
   /**
-   * VRM used for facial expressions: provider callback (OpenNexus3DStudio trait body) or imported model.
+   * VRM used for facial expressions: provider callback (Weftspun3DStudio trait body) or imported model.
    * @returns {import('@pixiv/three-vrm').VRM | null}
    */
   _resolveExpressionVRM() {
@@ -6230,8 +6230,8 @@ export class SceneManager {
    */
   async exportToGLB(options = {}) {
     const {
-      filename = 'opennexus3dstudio_export.glb',
-      forOpenNexus3DStudio = true,
+      filename = 'weftspun3dstudio_export.glb',
+      forWeftspun3DStudio = true,
       animationClips,
       metadata: userMetadata = {},
       ...exportOptions
@@ -6249,8 +6249,8 @@ export class SceneManager {
       ...exportOptions,
     };
 
-    if (forOpenNexus3DStudio) {
-      return await this.glbExporter.exportForOpenNexus3DStudio(this.currentModel, glbOpts);
+    if (forWeftspun3DStudio) {
+      return await this.glbExporter.exportForWeftspun3DStudio(this.currentModel, glbOpts);
     }
     return await this.glbExporter.exportToGLB(this.currentModel, glbOpts);
   }
@@ -6271,7 +6271,7 @@ export class SceneManager {
    */
   async exportToVRM(options = {}) {
     const {
-      filename = 'opennexus3dstudio_export.vrm',
+      filename = 'weftspun3dstudio_export.vrm',
       vrmVersion = '0.0',
       metadata = {},
       ...exportOptions

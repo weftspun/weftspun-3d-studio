@@ -27,10 +27,10 @@ const ToolsSimple = ({ onNavigate }) => {
     mergeAtlasType: 'standard', // 'toon', 'standard', 'both'
     shaderType: 'standard', // 'standard' or 'toon'
     ktxCompression: false,
-    filename: 'opennexus3dstudio_export.vrm',
+    filename: 'weftspun3dstudio_export.vrm',
     vrmVersion: '0.0',
-    title: 'OpenNexus3DStudio Export',
-    author: 'OpenNexus3DStudio',
+    title: 'Weftspun3DStudio Export',
+    author: 'Weftspun3DStudio',
     version: '1.0.0',
     allowedUserName: 'Everyone',
     commercialUssageName: 'Allow',
@@ -160,7 +160,7 @@ const ToolsSimple = ({ onNavigate }) => {
   const [availableTraits, setAvailableTraits] = useState([]);
   const [currentLootCharacter, setCurrentLootCharacter] = useState(null);
 
-  // Button handlers for OpenNexus3DStudio avatar tools
+  // Button handlers for Weftspun3DStudio avatar tools
   const handleVRMExport = async () => {
     if (!currentModel) {
       alert('No model loaded to export');
@@ -321,7 +321,7 @@ const ToolsSimple = ({ onNavigate }) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>3D Tools & Export</h2>
-        <p className={styles.subtitle}>Enhanced 3D viewing with OpenNexus3DStudio features</p>
+        <p className={styles.subtitle}>Enhanced 3D viewing with Weftspun3DStudio features</p>
       </div>
 
       <div className={styles.content}>
@@ -494,9 +494,9 @@ const ToolsSimple = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* OpenNexus3DStudio Features */}
+        {/* Weftspun3DStudio Features */}
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>OpenNexus3DStudio Features</h3>
+          <h3 className={styles.sectionTitle}>Weftspun3DStudio Features</h3>
           <div className={styles.buttonGrid}>
             <button 
               onClick={handleMaterialEditor}

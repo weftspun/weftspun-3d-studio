@@ -2,7 +2,7 @@
 
 **Status (2026-06-24):** Template-rig export, API gate, and client validation are aligned on **Y-up**, **-Z forward**, and **feet on the floor**. Upright/inverted and yaw-after-parenting regressions from the June 2026 Blender path are fixed on DGX; the client validates on load and applies only targeted skinned-mesh repair — it does **not** reuse VRM loader flags on AIGC GLBs.
 
-OpenNexus3DStudio and the DGX API share this contract for **skinned humanoid GLB** exports
+Weftspun3DStudio and the DGX API share this contract for **skinned humanoid GLB** exports
 (template VRM rig, UniRig merge, etc.). Both sides log ``[API-Contract] PASS|FAIL``; the API
 **must** validate on export and fail the job when **critical** codes are present.
 
@@ -94,7 +94,7 @@ Remote log grep: `[API-Contract]`
 
 ## Re-test
 
-1. Hard reload OpenNexus3DStudio  
+1. Hard reload Weftspun3DStudio  
 2. Run **Avatar from Image** (new job)  
 3. Grep remote log for `[API-Contract] PASS`  
 4. Upright mesh + skeleton in Solid and Skeleton modes  

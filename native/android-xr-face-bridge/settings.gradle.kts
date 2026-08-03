@@ -17,5 +17,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "OpenNexus3dStudioXrFaceBridge"
+rootProject.name = "Weftspun3dStudioXrFaceBridge"
 include(":app")

@@ -12,7 +12,7 @@ When the user says **lock it in**, **locked**, or equivalent for a feature/pipel
 1. **Document** — `memory-bank/<topic>-protected-state.md` + `.cursor/rules/<topic>-protected.mdc`
 2. **Manifest** — add paths to `scripts/protected-paths.manifest`
 3. **Verify** — contract script(s) under `scripts/verify_*.sh` or vitest tests
-4. **Git commit** — run `bash scripts/lock-it-in.sh` (OpenNexus) or `bash scripts/lock-it-in.sh` (3DAIGC-API)
+4. **Git commit** — run `bash scripts/lock-it-in.sh` (Weftspun) or `bash scripts/lock-it-in.sh` (3DAIGC-API)
 5. **Sync** — `bash scripts/reconcile-dgx-surface.sh` (or `sync-to-pc.sh --include-src` + protected push)
 6. **Confirm** — `git log -1 --oneline` shows the lock commit; verifiers pass
 
@@ -22,7 +22,7 @@ When the user says **lock it in**, **locked**, or equivalent for a feature/pipel
 
 **Not done** if protected files differ from `HEAD` after the user asked to lock.
 
-## OpenNexus
+## Weftspun
 
 ```bash
 bash scripts/verify-protected-contracts.sh

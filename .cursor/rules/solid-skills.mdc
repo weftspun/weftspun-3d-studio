@@ -3,7 +3,7 @@ description: Apply solid-skills (SOLID, clean code, architecture) when writing, 
 alwaysApply: false
 ---
 
-# Solid Skills — OpenNexus3DStudio
+# Solid Skills — Weftspun3DStudio
 
 Project skill: `.agents/skills/solid/` ([ramziddin/solid-skills](https://github.com/ramziddin/solid-skills)). Lock: `skills-lock.json`.
 

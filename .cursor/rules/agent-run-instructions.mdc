@@ -35,8 +35,8 @@ When blocked: state **what you tried**, **what blocked you**, **exactly what onl
 
 | Cursor on | Local root | Reach other |
 |-----------|------------|-------------|
-| **DGX** | `/home/sifr/OpenNexus3DStudio`, `/home/sifr/3DAIGC-API` | `ssh Surface-PC-Tailscale` |
-| **Surface** | `C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` | `ssh DGX-Local` |
+| **DGX** | `/home/sifr/Weftspun3DStudio`, `/home/sifr/3DAIGC-API` | `ssh Surface-PC-Tailscale` |
+| **Surface** | `C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` | `ssh DGX-Local` |
 
 After edits: **auto-run scp sync** (not git). Say “copied to Surface/DGX” — never “git push” for machine sync.
 
@@ -74,6 +74,6 @@ When user says **remember this**: follow `.cursor/rules/remember-this-retention.
 
 DGX has GitHub SSH; Surface `origin` is HTTPS. Over Tailscale SSH use:
 
-`ssh Surface-PC-Tailscale "cd /d C:\\Users\\alfao\\Documents\\GitHub\\OpenNexus3DStudio && git pull https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio.git main"`
+`ssh Surface-PC-Tailscale "cd /d C:\\Users\\alfao\\Documents\\GitHub\\Weftspun3DStudio && git pull https://github.com/weftspun/weftspun-3d-studio.git main"`
 
 Do not assume Surface has a GitHub SSH key (`git fetch origin` may fail with `Permission denied`).

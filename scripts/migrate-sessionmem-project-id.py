@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Migrate SessionMem team folder from legacy CharacterStudio project ID to OpenNexus3DStudio."""
+"""Migrate SessionMem team folder from legacy CharacterStudio project ID to Weftspun3DStudio."""
 
 from __future__ import annotations
 
@@ -10,11 +10,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 OLD_ID = "CharacterStudio"
-NEW_ID = "OpenNexus3DStudio"
+NEW_ID = "Weftspun3DStudio"
 CONTENT_REPLACEMENTS = {
     "Surface disk folder may still be CharacterStudio until renamed. ": "",
-    "Character Studio dev split": "OpenNexus3DStudio dev split",
-    "character studio dev split": "opennexus3dstudio dev split",
+    "Character Studio dev split": "Weftspun3DStudio dev split",
+    "character studio dev split": "weftspun3dstudio dev split",
 }
 
 

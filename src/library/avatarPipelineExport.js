@@ -36,8 +36,8 @@ export function buildTemplateVrmMeta(manifest, sessionMeta = null) {
   const session = sessionMeta || loadVrmTemplateMetadataFromSession();
   const expected = manifest?.expected || {};
   return {
-    title: manifest?.description || 'OpenNexus Avatar',
-    author: 'OpenNexus3DStudio',
+    title: manifest?.description || 'Weftspun Avatar',
+    author: 'Weftspun3DStudio',
     version: '1.0',
     allowedUserName: 'Everyone',
     violentUssageName: 'Disallow',

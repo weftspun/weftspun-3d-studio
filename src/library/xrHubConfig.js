@@ -1,7 +1,7 @@
 /**
  * XR Voice hub URL (sidebar iframe). Dev on Surface uses the local :8443 proxy —
  * DGX :8088 / Tailscale :8088 use self-signed certs that browsers block inside iframes.
- * Not OpenNexus IWSDK lab `/xr` (PC :3000/xr).
+ * Not Weftspun IWSDK lab `/xr` (PC :3000/xr).
  *
  * Dev: run `npm run xr-hub-proxy` on Surface, then iframe loads https://<Surface-LAN>:8443
  */

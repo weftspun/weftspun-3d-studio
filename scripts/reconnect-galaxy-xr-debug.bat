@@ -90,7 +90,7 @@ if defined CHROME_PATH (
     echo.
     echo Next steps:
     echo   1. Wait for your device to appear in the 'Remote Target' section
-    echo   2. Look for: 'OpenNexus3DStudio: SPACE-TIME EDITION' at https://localhost:3000/
+    echo   2. Look for: 'Weftspun 3D Studio' at https://localhost:3000/
     echo   3. Click the 'inspect' link next to the device
     echo   4. This will open DevTools connected to your Galaxy XR device
     echo.

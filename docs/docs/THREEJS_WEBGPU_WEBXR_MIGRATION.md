@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-This guide documents the migration of OpenNexus3DStudio's SceneManager from WebGL-only to a modern rendering stack with WebGPU support, WebXR integration, enhanced audio, and advanced post-processing effects.
+This guide documents the migration of Weftspun3DStudio's SceneManager from WebGL-only to a modern rendering stack with WebGPU support, WebXR integration, enhanced audio, and advanced post-processing effects.
 
 ## ✅ What's Been Implemented
 
@@ -403,7 +403,7 @@ function updateAvatar(bodyData, faceData) {
 
 ### Android XR Integration
 - Native Android XR app using OpenXR (`XR_ANDROID_face_tracking`) — see [OPENXR_FACE_TRACKING_ANDROID_XR.md](./OPENXR_FACE_TRACKING_ANDROID_XR.md)
-- Face tracking data streaming to web app via `window.__openNexus3dStudioNativeFace` ([`nativeFaceBridge.js`](../src/library/nativeFaceBridge.js))
+- Face tracking data streaming to web app via `window.__weftspun3dStudioNativeFace` ([`nativeFaceBridge.js`](../src/library/nativeFaceBridge.js))
 - Complete avatar animation (body + face + eye)
 
 ---

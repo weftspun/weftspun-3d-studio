@@ -41,7 +41,7 @@ async function resolveStudioAnimationEntries() {
 }
 
 /**
- * Load OpenNexus3DStudio default animation templates from the main manifest
+ * Load Weftspun3DStudio default animation templates from the main manifest
  * (`defaultAnimations`) or bundled loot FBX clips under `/loot-assets/animations/`.
  *
  * @param {import('./animationManager').AnimationManager | null | undefined} animationManager

@@ -1,6 +1,6 @@
 ---
 description: XR floor anchoring invariants — do not regress (Galaxy XR AR)
-globs: OpenNexus3DStudio/src/library/**/{sceneManager,worldSceneLoader,rigBoneUtils}*
+globs: Weftspun3DStudio/src/library/**/{sceneManager,worldSceneLoader,rigBoneUtils}*
 alwaysApply: false
 ---
 

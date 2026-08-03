@@ -1,7 +1,7 @@
 /**
  * Record-and-replay face tracking for Chrome WebXR.
  *
- * The dev relay ({@link nativeFaceRelay.js}) only flows while the OpenNexus XR Face APK
+ * The dev relay ({@link nativeFaceRelay.js}) only flows while the Weftspun XR Face APK
  * (the tracking source) stays foregrounded — but entering an immersive Chrome
  * WebXR session backgrounds/throttles that APK, so live weights stop arriving.
  *

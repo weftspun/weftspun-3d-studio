@@ -1,7 +1,7 @@
 # Phygital Passport API (draft contract)
 
 **Status:** Mock / planning — **not implemented** on 3DAIGC-API yet.  
-**Consumer:** OpenNexus3DStudio `/verify/:serialId` page (`src/library/phygital/passportClient.js`).
+**Consumer:** Weftspun3DStudio `/verify/:serialId` page (`src/library/phygital/passportClient.js`).
 
 When `VITE_PHYGITAL_USE_MOCK=0` and `VITE_PHYGITAL_API_BASE` is set, the client will call these endpoints.
 
@@ -36,7 +36,7 @@ Returns the Digital Twin Passport for a garment serial.
   "sku": "ST-OG-001",
   "edition": "Genesis Drop",
   "status": "authentic",
-  "brand": "Space-Time",
+  "brand": "Weftspun",
   "nfc": {
     "vendor": "Acme NFC Co.",
     "chipModel": "NTAG424 DNA",
@@ -71,7 +71,7 @@ Returns the Digital Twin Passport for a garment serial.
   "provenance": {
     "manufacturedAt": "2026-06-01T12:00:00Z",
     "fulfillmentRegion": "US",
-    "notes": "Space-Time OG hoodie — unit 9842"
+    "notes": "Weftspun OG hoodie — unit 9842"
   },
   "onChain": {
     "status": "none",
@@ -135,7 +135,7 @@ Invalid or replayed tap token.
 
 **Not specified in mock phase** — manufacturing ops TBD with NFC vendor.
 
-## Client behavior (OpenNexus3DStudio)
+## Client behavior (Weftspun3DStudio)
 
 1. Parse `serialId` from route `/verify/:serialId`.
 2. Preserve optional `?tap=` query for future POST verify (Phase 3).

@@ -221,7 +221,7 @@ export function xrCycleEmotion(characterManager, state) {
  */
 export function xrExportVrm(characterManager) {
   if (typeof characterManager?.downloadVRM === 'function') {
-    characterManager.downloadVRM('opennexus-xr-export');
+    characterManager.downloadVRM('weftspun-xr-export');
     return true;
   }
   throw new Error('VRM export not available');

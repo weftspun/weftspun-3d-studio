@@ -44,7 +44,7 @@ model or a geometric algorithm.
 
 | Environment Model id                    | Type                | Task                         | Runs on |
 | --------------------------------------- | ------------------- | ---------------------------- | ------- |
-| opennexus_image_to_world                | Deep learning       | Image to world               | DGX API |
+| weftspun_image_to_world                | Deep learning       | Image to world               | DGX API |
 | lingbot_map_environment_scan            | Deep learning       | Environment scan             | DGX API |
 
 | Splat Model id                          | Type                | Task                         | Runs on |

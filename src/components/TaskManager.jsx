@@ -812,7 +812,7 @@ const TaskManager = ({ tasks, onAITask, isApiConnected }) => {
       options.mask_image_file = meshEditMaskImage;
     }
     if (newTaskType === 'image-to-world') {
-      options.model_preference = newTaskModel || 'opennexus_image_to_world';
+      options.model_preference = newTaskModel || 'weftspun_image_to_world';
       options.prop_mesh_model_preference =
         taskOptions.prop_mesh_model_preference || 'trellis2_image_to_textured_mesh';
       options.world_name = objectName;
@@ -1354,7 +1354,7 @@ const TaskManager = ({ tasks, onAITask, isApiConnected }) => {
     try {
       const assetName = slugifyObjectName(
         task.options?.object_name || task.name,
-        jobId ? `job-${jobId}` : 'opennexus-mesh',
+        jobId ? `job-${jobId}` : 'weftspun-mesh',
       );
       await publishJob(jobId, assetName, { preopenedTab });
     } catch (err) {

@@ -1,12 +1,12 @@
 /**
- * OpenNexus3DStudioBridge - Bridge for importing Core3D / GLB exports into OpenNexus3DStudio avatar workflows
+ * Weftspun3DStudioBridge - Bridge for importing Core3D / GLB exports into Weftspun3DStudio avatar workflows
  * Handles format conversion and VRM compatibility
  */
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { VRMLoaderPlugin } from '@pixiv/three-vrm';
 
-export class OpenNexus3DStudioBridge {
+export class Weftspun3DStudioBridge {
   constructor() {
     this.gltfLoader = new GLTFLoader();
     // Register VRM loader plugin if available
@@ -20,15 +20,15 @@ export class OpenNexus3DStudioBridge {
   }
 
   /**
-   * Load OpenNexus3DStudio GLB for OpenNexus3DStudio
+   * Load Weftspun3DStudio GLB for Weftspun3DStudio
    * @param {File|string} source - GLB file or URL
    * @param {Object} options - Loading options
    */
-  async loadOpenNexus3DStudioGLB(source, options = {}) {
+  async loadWeftspun3DStudioGLB(source, options = {}) {
     const {
       convertToVRM = true,
       addVRMStructure = true,
-      optimizeForOpenNexus3DStudio = true,
+      optimizeForWeftspun3DStudio = true,
       addDefaultMaterials = true
     } = options;
 
@@ -38,18 +38,18 @@ export class OpenNexus3DStudioBridge {
       // Load the GLB file
       const gltf = await this.loadGLB(source);
       
-      // Process for OpenNexus3DStudio compatibility
-      const processedModel = await this.processForOpenNexus3DStudio(gltf, {
+      // Process for Weftspun3DStudio compatibility
+      const processedModel = await this.processForWeftspun3DStudio(gltf, {
         convertToVRM,
         addVRMStructure,
-        optimizeForOpenNexus3DStudio,
+        optimizeForWeftspun3DStudio,
         addDefaultMaterials
       });
 
       this.emit('loadComplete', { model: processedModel, gltf });
       return processedModel;
     } catch (error) {
-      console.error('Failed to load OpenNexus3DStudio GLB:', error);
+      console.error('Failed to load Weftspun3DStudio GLB:', error);
       this.emit('loadError', { error, source });
       throw error;
     }
@@ -74,15 +74,15 @@ export class OpenNexus3DStudioBridge {
   }
 
   /**
-   * Process model for OpenNexus3DStudio compatibility
+   * Process model for Weftspun3DStudio compatibility
    * @param {Object} gltf - Loaded GLTF object
    * @param {Object} options - Processing options
    */
-  async processForOpenNexus3DStudio(gltf, options = {}) {
+  async processForWeftspun3DStudio(gltf, options = {}) {
     const {
       convertToVRM = true,
       addVRMStructure = true,
-      optimizeForOpenNexus3DStudio = true,
+      optimizeForWeftspun3DStudio = true,
       addDefaultMaterials = true
     } = options;
 
@@ -98,9 +98,9 @@ export class OpenNexus3DStudioBridge {
       await this.convertToVRMFormat(scene);
     }
 
-    // Optimize for OpenNexus3DStudio
-    if (optimizeForOpenNexus3DStudio) {
-      this.optimizeForOpenNexus3DStudio(scene);
+    // Optimize for Weftspun3DStudio
+    if (optimizeForWeftspun3DStudio) {
+      this.optimizeForWeftspun3DStudio(scene);
     }
 
     // Add default materials if needed
@@ -108,8 +108,8 @@ export class OpenNexus3DStudioBridge {
       this.addDefaultMaterials(scene);
     }
 
-    // Add OpenNexus3DStudio metadata
-    this.addOpenNexus3DStudioMetadata(scene);
+    // Add Weftspun3DStudio metadata
+    this.addWeftspun3DStudioMetadata(scene);
 
     return scene;
   }
@@ -122,9 +122,9 @@ export class OpenNexus3DStudioBridge {
     // Create VRM userData structure
     scene.userData.vrm = {
       meta: {
-        title: 'OpenNexus3DStudio Import',
+        title: 'Weftspun3DStudio Import',
         version: '1.0.0',
-        author: 'OpenNexus3DStudio',
+        author: 'Weftspun3DStudio',
         contactInformation: '',
         reference: '',
         texture: -1,
@@ -250,18 +250,18 @@ export class OpenNexus3DStudioBridge {
   }
 
   /**
-   * Optimize model for OpenNexus3DStudio
+   * Optimize model for Weftspun3DStudio
    * @param {Object} scene - Scene to optimize
    */
-  optimizeForOpenNexus3DStudio(scene) {
+  optimizeForWeftspun3DStudio(scene) {
     // Merge geometries for better performance
     this.mergeGeometries(scene);
     
     // Optimize materials
     this.optimizeMaterials(scene);
     
-    // Add OpenNexus3DStudio-specific properties
-    this.addOpenNexus3DStudioProperties(scene);
+    // Add Weftspun3DStudio-specific properties
+    this.addWeftspun3DStudioProperties(scene);
   }
 
   /**
@@ -300,12 +300,12 @@ export class OpenNexus3DStudioBridge {
   optimizeMaterials(scene) {
     scene.traverse((child) => {
       if (child.isMesh && child.material) {
-        // Ensure materials are optimized for OpenNexus3DStudio
+        // Ensure materials are optimized for Weftspun3DStudio
         child.material.transparent = false;
         child.material.opacity = 1.0;
         child.material.needsUpdate = true;
         
-        // Add OpenNexus3DStudio material properties
+        // Add Weftspun3DStudio material properties
         child.material.userData.characterStudio = true;
         child.material.userData.optimized = true;
       }
@@ -313,13 +313,13 @@ export class OpenNexus3DStudioBridge {
   }
 
   /**
-   * Add OpenNexus3DStudio properties
+   * Add Weftspun3DStudio properties
    * @param {Object} scene - Scene to add properties to
    */
-  addOpenNexus3DStudioProperties(scene) {
+  addWeftspun3DStudioProperties(scene) {
     scene.userData.characterStudio = {
       imported: true,
-      source: 'OpenNexus3DStudio',
+      source: 'Weftspun3DStudio',
       importDate: new Date().toISOString(),
       version: '1.0.0',
       compatible: true
@@ -344,15 +344,15 @@ export class OpenNexus3DStudioBridge {
   }
 
   /**
-   * Add OpenNexus3DStudio metadata
+   * Add Weftspun3DStudio metadata
    * @param {Object} scene - Scene to add metadata to
    */
-  addOpenNexus3DStudioMetadata(scene) {
+  addWeftspun3DStudioMetadata(scene) {
     scene.userData.metadata = {
       ...scene.userData.metadata,
       characterStudio: {
         compatible: true,
-        importSource: 'OpenNexus3DStudio',
+        importSource: 'Weftspun3DStudio',
         importDate: new Date().toISOString(),
         version: '1.0.0'
       }
@@ -360,10 +360,10 @@ export class OpenNexus3DStudioBridge {
   }
 
   /**
-   * Validate model for OpenNexus3DStudio compatibility
+   * Validate model for Weftspun3DStudio compatibility
    * @param {Object} model - Model to validate
    */
-  validateForOpenNexus3DStudio(model) {
+  validateForWeftspun3DStudio(model) {
     const issues = [];
     const warnings = [];
 

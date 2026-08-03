@@ -1,4 +1,4 @@
-# Avatar pipeline (OpenNexus3DStudio)
+# Avatar pipeline (Weftspun3DStudio)
 
 ## Quick path
 
@@ -10,7 +10,7 @@
 
 ## What “VRM export from rigged GLB” means
 
-**Yes — it downloads a file.** The API returns a rigged **GLB**. OpenNexus3DStudio’s existing `VRMExporter` (Save panel or post-pipeline hook) builds a **`.vrm`** blob and triggers a **browser download**. Nothing is uploaded unless you Mint/save elsewhere.
+**Yes — it downloads a file.** The API returns a rigged **GLB**. Weftspun3DStudio’s existing `VRMExporter` (Save panel or post-pipeline hook) builds a **`.vrm`** blob and triggers a **browser download**. Nothing is uploaded unless you Mint/save elsewhere.
 
 Flow:
 
@@ -41,7 +41,7 @@ If the rig was **backward** or **floating at hips**, re-run after pulling latest
 
 - Feet (foot bones) aligned to mesh ground  
 - Skeleton no longer inverted (head at top, feet at bottom)  
-- OpenNexus3DStudio skips auto 180° re-orient and rig-repair heuristics for `fromAigc` loads  
+- Weftspun3DStudio skips auto 180° re-orient and rig-repair heuristics for `fromAigc` loads  
 - Client validates pre-process and post-viewport-layout (no client-side rig hacks)
 
 

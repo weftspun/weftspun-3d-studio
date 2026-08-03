@@ -1,4 +1,4 @@
-# Migrate SessionMem team folder from legacy CharacterStudio project ID to OpenNexus3DStudio.
+# Migrate SessionMem team folder from legacy CharacterStudio project ID to Weftspun3DStudio.
 param(
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 )

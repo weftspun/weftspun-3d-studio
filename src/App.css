@@ -74,15 +74,6 @@
   margin-top: calc(0.35rem + 1px);
 }
 
-.space-time-row,
-.edition-row {
-  display: inline;
-  line-height: 1;
-  font-size: calc(0.85rem + 3px);
-  font-weight: 600;
-  color: #aaa;
-  letter-spacing: 0.5px;
-}
 
 .title-api-control {
   display: flex;
@@ -327,8 +318,8 @@
   letter-spacing: 0.5px;
 }
 
-/* OpenNexus3DStudio Panel System */
-.opennexus-panel {
+/* Weftspun3DStudio Panel System */
+.weftspun-panel {
   position: fixed;
   top: 0;
   right: 0;
@@ -393,8 +384,8 @@
   background: #2a2a2a;
 }
 
-/* OpenNexus3DStudio Viewport Overlay - Responsive positioning */
-.opennexus-viewport-overlay {
+/* Weftspun3DStudio Viewport Overlay - Responsive positioning */
+.weftspun-viewport-overlay {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -414,7 +405,7 @@
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
-.opennexus-viewport-title {
+.weftspun-viewport-title {
   font-size: 0.9rem;
   font-weight: 600;
   color: #fff;
@@ -423,7 +414,7 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.opennexus-viewport-canvas {
+.weftspun-viewport-canvas {
   border-radius: 6px;
   overflow: hidden;
   position: relative;
@@ -431,12 +422,12 @@
   border: 1px solid rgba(0, 122, 204, 0.3);
 }
 
-.opennexus-viewport-canvas:hover {
+.weftspun-viewport-canvas:hover {
   border-color: rgba(0, 122, 204, 0.6);
 }
 
-/* OpenNexus3DStudio Sidebar — align with .app-content top (matches left rail origin) */
-.opennexus-sidebar {
+/* Weftspun3DStudio Sidebar — align with .app-content top (matches left rail origin) */
+.weftspun-sidebar {
   position: fixed;
   top: calc(var(--app-content-top, var(--app-chrome-top-height, 148px)) + var(--viewport-top-inset, 0px));
   bottom: max(0px, env(safe-area-inset-bottom, 0px), var(--viewport-bottom-inset, 0px));
@@ -456,11 +447,11 @@
   box-sizing: border-box;
 }
 
-.opennexus-sidebar:not(.collapsed) {
+.weftspun-sidebar:not(.collapsed) {
   transform: translateX(0);
 }
 
-.opennexus-sidebar.collapsed {
+.weftspun-sidebar.collapsed {
   width: var(--collapsed-rail-width, 60px);
   padding: 0;
   transform: translateX(calc(100% - var(--collapsed-rail-width, 60px)));
@@ -503,8 +494,8 @@
 
 /* Removed viewport toggle - now controlled by sidebar */
 
-/* Original OpenNexus3DStudio Hamburger Menu (hidden) */
-.opennexus-sticky-hamburger {
+/* Original Weftspun3DStudio Hamburger Menu (hidden) */
+.weftspun-sticky-hamburger {
   position: sticky;
   top: 0;
   left: 0;
@@ -525,12 +516,12 @@
   visibility: hidden;
 }
 
-.opennexus-sticky-hamburger:hover {
+.weftspun-sticky-hamburger:hover {
   background: #4a4a4a;
   border-color: #666;
 }
 
-.opennexus-sticky-hamburger .hamburger-icon {
+.weftspun-sticky-hamburger .hamburger-icon {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -538,7 +529,7 @@
   height: 16px;
 }
 
-.opennexus-sticky-hamburger .hamburger-icon span {
+.weftspun-sticky-hamburger .hamburger-icon span {
   display: block;
   height: 2px;
   background: #ccc;
@@ -549,7 +540,7 @@
 
 /* Collapsed side-rail icon columns — mirrored layout on left & right */
 .collapsed-sidebar-icons,
-.collapsed-opennexus-icons {
+.collapsed-weftspun-icons {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -561,7 +552,7 @@
   margin: 0;
 }
 
-.opennexus-sidebar-icon,
+.weftspun-sidebar-icon,
 .sidebar-icon {
   width: var(--collapsed-rail-icon-width, 40px);
   height: var(--collapsed-rail-icon-height, 40px);
@@ -580,26 +571,26 @@
   flex-shrink: 0;
 }
 
-.opennexus-sidebar-icon:hover,
+.weftspun-sidebar-icon:hover,
 .sidebar-icon:hover {
   background: #4a4a4a;
   border-color: #666;
   transform: scale(1.05);
 }
 
-.opennexus-sidebar-icon.active {
+.weftspun-sidebar-icon.active {
   background: #007acc;
   border-color: #007acc;
   color: white;
   box-shadow: 0 0 8px rgba(0, 122, 204, 0.3);
 }
 
-.opennexus-sidebar-icon:active,
+.weftspun-sidebar-icon:active,
 .sidebar-icon:active {
   transform: scale(0.95);
 }
 
-.opennexus-sidebar-icon::after {
+.weftspun-sidebar-icon::after {
   content: attr(data-tooltip);
   position: absolute;
   right: 100%;
@@ -623,7 +614,7 @@
   margin-right: 8px;
 }
 
-.opennexus-sidebar-icon::before {
+.weftspun-sidebar-icon::before {
   content: '';
   position: absolute;
   right: calc(100% + 2px);
@@ -638,14 +629,14 @@
   pointer-events: none;
 }
 
-.opennexus-sidebar-icon:hover::after,
-.opennexus-sidebar-icon:hover::before {
+.weftspun-sidebar-icon:hover::after,
+.weftspun-sidebar-icon:hover::before {
   opacity: 1;
   visibility: visible;
 }
 
-/* OpenNexus3DStudio Content */
-.opennexus-content {
+/* Weftspun3DStudio Content */
+.weftspun-content {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -656,7 +647,7 @@
   min-height: 0;
 }
 
-.opennexus-header {
+.weftspun-header {
   position: relative;
   width: 100%;
   display: flex;
@@ -673,7 +664,7 @@
   z-index: 2;
 }
 
-.opennexus-title {
+.weftspun-title {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
@@ -681,7 +672,7 @@
 }
 
 
-.opennexus-panels {
+.weftspun-panels {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -693,21 +684,21 @@
   flex-direction: column;
 }
 
-/* OpenNexus3DStudio Scrollbar styling */
-.opennexus-sidebar::-webkit-scrollbar {
+/* Weftspun3DStudio Scrollbar styling */
+.weftspun-sidebar::-webkit-scrollbar {
   width: 6px;
 }
 
-.opennexus-sidebar::-webkit-scrollbar-track {
+.weftspun-sidebar::-webkit-scrollbar-track {
   background: #2a2a2a;
 }
 
-.opennexus-sidebar::-webkit-scrollbar-thumb {
+.weftspun-sidebar::-webkit-scrollbar-thumb {
   background: #555;
   border-radius: 3px;
 }
 
-.opennexus-sidebar::-webkit-scrollbar-thumb:hover {
+.weftspun-sidebar::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
 
@@ -722,56 +713,56 @@
   margin-left: 0;
 }
 
-/* OpenNexus3DStudio viewport is completely independent of left sidebar state */
-/* When OpenNexus3DStudio sidebar is open, adjust viewport (regardless of left sidebar state) */
-.app-content.has-opennexus .main-viewport {
+/* Weftspun3DStudio viewport is completely independent of left sidebar state */
+/* When Weftspun3DStudio sidebar is open, adjust viewport (regardless of left sidebar state) */
+.app-content.has-weftspun .main-viewport {
   margin-right: min(400px, 30vw) !important;
 }
 
-/* When OpenNexus3DStudio sidebar is collapsed, remove right margin (regardless of left sidebar state) */
-.app-content:not(.has-opennexus) .main-viewport {
+/* When Weftspun3DStudio sidebar is collapsed, remove right margin (regardless of left sidebar state) */
+.app-content:not(.has-weftspun) .main-viewport {
   margin-right: 0 !important;
 }
 
-/* Ensure OpenNexus3DStudio viewport is completely independent of left sidebar state */
-.app-content.main-sidebar-collapsed.has-opennexus .main-viewport {
+/* Ensure Weftspun3DStudio viewport is completely independent of left sidebar state */
+.app-content.main-sidebar-collapsed.has-weftspun .main-viewport {
   margin-right: min(400px, 30vw) !important;
   margin-left: 0;
 }
 
-.app-content.main-sidebar-collapsed:not(.has-opennexus) .main-viewport {
+.app-content.main-sidebar-collapsed:not(.has-weftspun) .main-viewport {
   margin-right: 0 !important;
   margin-left: 0;
 }
 
-/* Note: OpenNexus3DStudio viewport is now completely independent of left sidebar state */
+/* Note: Weftspun3DStudio viewport is now completely independent of left sidebar state */
 
 /* Main viewport should always be visible - never hide it */
 .app-content .main-viewport {
   display: block !important;
 }
 
-/* Independent OpenNexus3DStudio viewport control - Locked to HDR Sky position */
-.opennexus-viewport-overlay.visible {
+/* Independent Weftspun3DStudio viewport control - Locked to HDR Sky position */
+.weftspun-viewport-overlay.visible {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
   display: flex;
 }
 
-.opennexus-viewport-overlay.hidden {
+.weftspun-viewport-overlay.hidden {
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, -50%) scale(0.95);
   display: none;
 }
 
-/* OpenNexus3DStudio viewport is completely independent of left sidebar state and locked to HDR Sky */
-.opennexus-viewport-overlay {
+/* Weftspun3DStudio viewport is completely independent of left sidebar state and locked to HDR Sky */
+.weftspun-viewport-overlay {
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
-/* Simplified OpenNexus3DStudio Components */
+/* Simplified Weftspun3DStudio Components */
 .sectionTitle {
   font-size: 1.2rem;
   font-weight: 600;
@@ -1108,7 +1099,7 @@
 .app-content {
   display: flex;
   flex: 1;
-  position: relative; /* Anchor for the absolutely-positioned OpenNexus3DStudio sidebar */
+  position: relative; /* Anchor for the absolutely-positioned Weftspun3DStudio sidebar */
   overflow: hidden;
   min-height: 0;
   /* Fill space below header + scene-controls row (do not use header height only). */
@@ -1194,7 +1185,7 @@
 }
 
 .sidebar.collapsed .hamburger-menu,
-.opennexus-sidebar.collapsed .opennexus-sticky-hamburger {
+.weftspun-sidebar.collapsed .weftspun-sticky-hamburger {
   display: none;
 }
 
@@ -1286,33 +1277,33 @@
 /* Scrollbar styling */
 .sidebar::-webkit-scrollbar,
 .main-viewport::-webkit-scrollbar,
-.opennexus-sidebar::-webkit-scrollbar {
+.weftspun-sidebar::-webkit-scrollbar {
   width: 8px;
 }
 
 .sidebar::-webkit-scrollbar-track,
 .main-viewport::-webkit-scrollbar-track,
-.opennexus-sidebar::-webkit-scrollbar-track {
+.weftspun-sidebar::-webkit-scrollbar-track {
   background: #2a2a2a;
 }
 
 .sidebar::-webkit-scrollbar-thumb,
 .main-viewport::-webkit-scrollbar-thumb,
-.opennexus-sidebar::-webkit-scrollbar-thumb {
+.weftspun-sidebar::-webkit-scrollbar-thumb {
   background: #555;
   border-radius: 4px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover,
 .main-viewport::-webkit-scrollbar-thumb:hover,
-.opennexus-sidebar::-webkit-scrollbar-thumb:hover {
+.weftspun-sidebar::-webkit-scrollbar-thumb:hover {
   background: #777;
 }
 
 /* Firefox scrollbar styling */
 .sidebar,
 .main-viewport,
-.opennexus-sidebar {
+.weftspun-sidebar {
   scrollbar-width: thin;
   scrollbar-color: #555 #2a2a2a;
 }
@@ -1339,7 +1330,7 @@
     min-height: 0;
   }
 
-  .app-content.has-opennexus .main-viewport {
+  .app-content.has-weftspun .main-viewport {
     margin-right: 0 !important;
   }
 }
@@ -2483,8 +2474,8 @@ button,
   margin: 0.5rem 0;
 }
 
-/* OpenNexus3DStudio Import */
-.opennexus-import {
+/* Weftspun3DStudio Import */
+.weftspun-import {
   margin-bottom: 1rem;
 }
 
@@ -2612,8 +2603,8 @@ button,
   flex-shrink: 0;
 }
 
-/* OpenNexus3DStudio Overlay Styles */
-.opennexus-overlay {
+/* Weftspun3DStudio Overlay Styles */
+.weftspun-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -2627,7 +2618,7 @@ button,
   transition: all 0.3s ease;
 }
 
-.opennexus-overlay-title {
+.weftspun-overlay-title {
   position: absolute;
   top: 1rem;
   left: 1rem;
@@ -2650,7 +2641,7 @@ button,
   text-transform: uppercase;
 }
 
-.opennexus-overlay-content {
+.weftspun-overlay-content {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2898,7 +2889,7 @@ button,
 
 /* Responsive overlay */
 @media (max-width: 768px) {
-  .opennexus-overlay-title {
+  .weftspun-overlay-title {
     font-size: 1rem;
     top: 0.5rem;
     left: 0.5rem;

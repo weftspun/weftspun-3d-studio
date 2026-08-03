@@ -5,11 +5,11 @@ import { useCore3D } from '../context/Core3DContext';
 
 /**
  * Shared 3D Viewer Component
- * Works for OpenNexus3DStudio (avatar panels + 3D AIGC viewport)
+ * Works for Weftspun3DStudio (avatar panels + 3D AIGC viewport)
  * Supports both traditional 3D models and Core3D designs
  */
 const Shared3DViewer = ({ 
-  mode = 'characterstudio', // 'characterstudio' or 'opennexus3dstudio'
+  mode = 'characterstudio', // 'characterstudio' or 'weftspun3dstudio'
   model = null,
   renderMode = 'solid',
   showControls = true,
@@ -82,7 +82,7 @@ const Shared3DViewer = ({
       setIsLoading(true);
       setError(null);
 
-      if (mode === 'opennexus3dstudio') {
+      if (mode === 'weftspun3dstudio') {
         // Handle Core3D designs - prioritize design over model
         if (currentDesign) {
           await loadCore3DDesign(currentDesign);
@@ -285,14 +285,14 @@ const Shared3DViewer = ({
 
   // Handle Core3D design changes (prioritize design over model)
   useEffect(() => {
-    if (isInitialized && mode === 'opennexus3dstudio' && currentDesign) {
+    if (isInitialized && mode === 'weftspun3dstudio' && currentDesign) {
       loadCore3DDesign(currentDesign);
     }
   }, [isInitialized, mode, currentDesign, loadCore3DDesign]);
 
-  // Handle Core3D model changes when in opennexus3dstudio mode (if no design is active)
+  // Handle Core3D model changes when in weftspun3dstudio mode (if no design is active)
   useEffect(() => {
-    if (isInitialized && mode === 'opennexus3dstudio' && !currentDesign && core3dModel) {
+    if (isInitialized && mode === 'weftspun3dstudio' && !currentDesign && core3dModel) {
       loadCore3DModel(core3dModel);
     }
   }, [isInitialized, mode, currentDesign, core3dModel, loadCore3DModel]);
@@ -414,7 +414,7 @@ const Shared3DViewer = ({
       {/* Mode indicator */}
       <div className="viewer-mode-indicator">
         <span className={`mode-badge ${mode}`}>
-          {'🎭 OpenNexus3DStudio'}
+          {'🎭 Weftspun3DStudio'}
         </span>
       </div>
     </div>

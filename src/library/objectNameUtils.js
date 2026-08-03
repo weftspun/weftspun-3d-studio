@@ -11,7 +11,7 @@ export function normalizeObjectName(value) {
   return trimmed.slice(0, OBJECT_NAME_MAX_LEN);
 }
 
-export function slugifyObjectName(value, fallback = 'opennexus-mesh') {
+export function slugifyObjectName(value, fallback = 'weftspun-mesh') {
   const normalized = normalizeObjectName(value);
   const stem = (normalized || fallback)
     .slice(0, 48)

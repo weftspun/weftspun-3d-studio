@@ -1,6 +1,6 @@
 /**
  * Resolve the VRM used for facial expressions (blend shapes, lip sync, webcam, XR).
- * File import wins over modular OpenNexus3DStudio traits when both exist.
+ * File import wins over modular Weftspun3DStudio traits when both exist.
  *
  * @param {import('./sceneManager').SceneManager | null | undefined} sceneManager
  * @param {import('./characterManager').CharacterManager | null | undefined} characterManager

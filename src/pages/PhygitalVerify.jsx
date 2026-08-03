@@ -51,7 +51,7 @@ const PhygitalVerify = () => {
     return (
       <div className={styles.phygitalVerify}>
         <header className={styles.header}>
-          <p className={styles.brand}>Space-Time</p>
+          <p className={styles.brand}>Weftspun</p>
           <h1 className={styles.title}>Digital Twin Passport</h1>
         </header>
         <div className={styles.notFound}>
@@ -60,7 +60,7 @@ const PhygitalVerify = () => {
             Mock serials: {MOCK_SERIAL_IDS.join(', ')}
           </p>
           <Link className={styles.backLink} to="/">
-            ← OpenNexus3DStudio
+            ← Weftspun3DStudio
           </Link>
         </div>
       </div>
@@ -178,7 +178,7 @@ const PhygitalVerify = () => {
 
       <div style={{ textAlign: 'center' }}>
         <Link className={styles.backLink} to="/">
-          ← OpenNexus3DStudio
+          ← Weftspun3DStudio
         </Link>
       </div>
     </div>

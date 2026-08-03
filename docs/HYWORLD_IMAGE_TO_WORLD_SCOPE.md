@@ -1,6 +1,6 @@
 # HY-World 2.0 full image-to-world — integration scope
 
-Scope for replacing/enhancing `opennexus_image_to_world` (TripoSplat env + TRELLIS props) with Tencent [HY-World 2.0](https://github.com/AlfaOmegaGrafx/HY-World-2.0) **World Generation** pipeline.
+Scope for replacing/enhancing `weftspun_image_to_world` (TripoSplat env + TRELLIS props) with Tencent [HY-World 2.0](https://github.com/AlfaOmegaGrafx/HY-World-2.0) **World Generation** pipeline.
 
 **Status:** WorldMirror 2.0 reconstruction is **shipped** (`worldmirror2_reconstruct`). This doc covers the **full navigable world** path.
 
@@ -8,7 +8,7 @@ Scope for replacing/enhancing `opennexus_image_to_world` (TripoSplat env + TRELL
 
 ## Current vs target
 
-| | Today (`opennexus_image_to_world`) | Target (`hyworld2_image_to_world`) |
+| | Today (`weftspun_image_to_world`) | Target (`hyworld2_image_to_world`) |
 |--|-----------------------------------|-------------------------------------|
 | Input | 1 reference photo | 1 photo or text → panorama |
 | Environment | TripoSplat single-view `.ply` | Trained 3DGS world (multi-view consistent) |
@@ -43,7 +43,7 @@ Output: optimized Gaussian splat world + cameras → export `.ply` for Spark.js.
 ```yaml
 # config/models.yaml
 image_to_world:
-  opennexus_image_to_world:  # existing — fast path
+  weftspun_image_to_world:  # existing — fast path
     enabled: true
   hyworld2_image_to_world:   # new — quality path
     enabled: false             # flip when staged pipeline verified
@@ -159,7 +159,7 @@ Progress callbacks: write `job_progress.json` per stage for client polling.
 
 ---
 
-## Client changes (OpenNexus3DStudio)
+## Client changes (Weftspun3DStudio)
 
 | Area | Change |
 |------|--------|
@@ -202,4 +202,4 @@ curl -X POST .../world-generation/image-to-world \
 
 - `docs/MULTI_IMAGE_SPLAT_ROADMAP.md` — WorldMirror reconstruction (done)
 - `thirdparty/HY-World-2.0/hyworld2/worldgen/README.md` — upstream stages
-- `OpenNexus3DStudio/docs/WORLD_PACKAGE.md` — client manifest contract
+- `Weftspun3DStudio/docs/WORLD_PACKAGE.md` — client manifest contract

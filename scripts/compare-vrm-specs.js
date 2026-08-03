@@ -55,7 +55,7 @@ function analyzeVRMFile(filePath) {
 }
 
 // Analyze both files
-const exportedFile = 'C:\\Users\\alfao\\Downloads\\opennexus3dstudio_export.vrm';
+const exportedFile = 'C:\\Users\\alfao\\Downloads\\weftspun3dstudio_export.vrm';
 const originalFile = 'C:\\Users\\alfao\\Downloads\\Sifr V2.vrm';
 
 console.log('🔍 Analyzing VRM Files...\n');

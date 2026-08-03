@@ -8,7 +8,7 @@ This guide documents the **uploaded `.vrm` pipeline** we settled on after multi-
 
 ## Problem we fixed
 
-Other VRM viewers load the file and render it. OpenNexus3DStudio was **mutating** the model after load:
+Other VRM viewers load the file and render it. Weftspun3DStudio was **mutating** the model after load:
 
 | Wrong (breaks eyes / fingers) | Right |
 |-------------------------------|--------|
@@ -19,7 +19,7 @@ Other VRM viewers load the file and render it. OpenNexus3DStudio was **mutating*
 
 VRM0 UniGLTF layout: **skinned mesh nodes and the Hips bone tree are siblings**. Rotating only the armature changes bone world matrices relative to mesh nodes; per-skin bind drifts (worst on eyes and finger extremities).
 
-Reference pattern (original OpenNexus3DStudio / `@pixiv/three-vrm`):
+Reference pattern (original Weftspun3DStudio / `@pixiv/three-vrm`):
 
 - `VRMUtils.rotateVRM0` → `scene.rotation.y += Math.PI` when needed
 - `src/library/load-utils.js` `loadVRM()` — scene root, not hips

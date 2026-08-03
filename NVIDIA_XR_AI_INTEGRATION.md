@@ -20,10 +20,10 @@ Voice-driven **vision + 3D generation** on Galaxy XR using NVIDIA’s **xr-ai** 
         ▼
 [3DAIGC-API :7842]  TRELLIS / mesh jobs on Spark GPU
         ▼
-[OpenNexus3DStudio]  load completed GLB/VRM in viewport (separate client path)
+[Weftspun3DStudio]  load completed GLB/VRM in viewport (separate client path)
 ```
 
-This is **complementary** to OpenNexus3DStudio’s Task Manager UI — same inference backend, different XR voice UX.
+This is **complementary** to Weftspun3DStudio’s Task Manager UI — same inference backend, different XR voice UX.
 
 ## Repos and paths (DGX only)
 
@@ -33,7 +33,7 @@ This is **complementary** to OpenNexus3DStudio’s Task Manager UI — same infe
 | `/home/sifr/xr-ai/agent-samples/3daigc-vlm-example` | Voice VLM + 3DAIGC mesh orchestrator |
 | `/home/sifr/3DAIGC-API` | Inference API (`:7842`) |
 | `/home/sifr/3DAIGC-API/mcp` | **3daigc-mcp-http** (`:8260`) — MCP tools over completed API |
-| `/home/sifr/OpenNexus3DStudio/scripts/xr-spark-hub-proxy.mjs` | Optional Surface proxy (Galaxy XR → Spark hub) |
+| `/home/sifr/Weftspun3DStudio/scripts/xr-spark-hub-proxy.mjs` | Optional Surface proxy (Galaxy XR → Spark hub) |
 
 Overlay config (copy reference): `3DAIGC-API/mcp/yaml/xr_ai_3daigc_overlay.yaml`
 
@@ -91,7 +91,7 @@ Some routers block **headset → DGX** (`10.0.0.224` → `10.0.0.158`) but allow
 **On Surface** (uses `certs/localhost.pem` from `npm run setup-https`):
 
 ```powershell
-cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 $env:XR_SPARK_HUB_URL = 'https://10.0.0.158:8088'
 $env:XR_PROXY_PORT = '8443'
 node scripts/xr-spark-hub-proxy.mjs
@@ -113,9 +113,9 @@ Worker config: `xr-ai/agent-samples/3daigc-vlm-example/yaml/3daigc_vlm_example_w
 
 VLM backend: `model_backend: nim` uses hosted NVIDIA NIM (`NGC_API_KEY`); `local` runs on-Spark `vlm-server`.
 
-## Relationship to OpenNexus3DStudio
+## Relationship to Weftspun3DStudio
 
-| Layer | NVIDIA XR AI | OpenNexus3DStudio |
+| Layer | NVIDIA XR AI | Weftspun3DStudio |
 |-------|----------------|-------------------|
 | XR input | Voice + passthrough camera via xr-ai hub | WebXR controllers, World Library, VRM viewport |
 | 3D generation | MCP → 3DAIGC-API | Task Manager REST → same API |

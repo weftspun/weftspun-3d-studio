@@ -1,5 +1,5 @@
 /**
- * Shared viewport lighting defaults for OpenNexus3DStudio.
+ * Shared viewport lighting defaults for Weftspun3DStudio.
  *
  * Slider UI range is 0–2 (default 1.0). Applied Three.js intensity/exposure is
  * UI × 2, so UI 1.0 behaves like the old 2.0 and UI 2.0 like the old 4.0.
@@ -18,7 +18,9 @@ export const VIEWPORT_UI_TO_EFFECTIVE_SCALE = 2;
 export const DEFAULT_VIEWPORT_LIGHTING_PRESET = 'soft';
 export const DEFAULT_VIEWPORT_TONE_MAPPING = 'ACESFilmic';
 
-export const VIEWPORT_LIGHTING_EXTRAS_KEY = 'opennexusViewportLighting';
+export const VIEWPORT_LIGHTING_EXTRAS_KEY = 'weftspunViewportLighting';
+/** Pre-Weftspun-rebrand extras key, still read so VRMs exported before the rebrand load correctly. */
+export const LEGACY_VIEWPORT_LIGHTING_EXTRAS_KEY = 'opennexusViewportLighting';
 
 export const DEFAULT_EFFECTIVE_LIGHT_INTENSITY =
   DEFAULT_VIEWPORT_LIGHT_INTENSITY * VIEWPORT_UI_TO_EFFECTIVE_SCALE;
@@ -142,6 +144,9 @@ export function readViewportLightingExtras(gltfOrScene) {
     gltfOrScene.userData?.[VIEWPORT_LIGHTING_EXTRAS_KEY],
     gltfOrScene.scene?.userData?.[VIEWPORT_LIGHTING_EXTRAS_KEY],
     gltfOrScene[VIEWPORT_LIGHTING_EXTRAS_KEY],
+    gltfOrScene.userData?.[LEGACY_VIEWPORT_LIGHTING_EXTRAS_KEY],
+    gltfOrScene.scene?.userData?.[LEGACY_VIEWPORT_LIGHTING_EXTRAS_KEY],
+    gltfOrScene[LEGACY_VIEWPORT_LIGHTING_EXTRAS_KEY],
   ];
   for (const raw of candidates) {
     if (raw && typeof raw === 'object' && raw.lightIntensity != null) {
@@ -161,27 +166,27 @@ export function addViewportLightsForExport(THREE, scene, lightIntensityEffective
   const I = clampEffectiveLightIntensity(lightIntensityEffective);
 
   const ambient = new THREE.AmbientLight(0xffffff, I * 0.3);
-  ambient.name = 'opennexusExportAmbient';
+  ambient.name = 'weftspunExportAmbient';
   scene.add(ambient);
 
   const key = new THREE.DirectionalLight(0xffffff, I);
-  key.name = 'opennexusExportKey';
+  key.name = 'weftspunExportKey';
   key.position.set(5, 8, 3);
   scene.add(key);
 
   const fill = new THREE.DirectionalLight(0xffffff, I * 0.35);
-  fill.name = 'opennexusExportFill';
+  fill.name = 'weftspunExportFill';
   fill.position.set(-3, 5, 2);
   scene.add(fill);
 
   const rim = new THREE.DirectionalLight(0xffffff, I * 0.25);
-  rim.name = 'opennexusExportRim';
+  rim.name = 'weftspunExportRim';
   rim.position.set(-2, 3, -5);
   scene.add(rim);
 
   if (THREE.HemisphereLight) {
     const hemi = new THREE.HemisphereLight(0x87ceeb, 0x362d1d, I * 0.4);
-    hemi.name = 'opennexusExportHemi';
+    hemi.name = 'weftspunExportHemi';
     hemi.position.set(0, 10, 0);
     scene.add(hemi);
   }

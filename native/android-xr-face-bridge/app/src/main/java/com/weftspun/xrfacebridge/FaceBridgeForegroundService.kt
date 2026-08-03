@@ -1,4 +1,4 @@
-package com.opennexus3dstudio.xrfacebridge
+package com.weftspun.xrfacebridge
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -138,7 +138,7 @@ class FaceBridgeForegroundService : LifecycleService() {
         if (wakeLock?.isHeld == true) return
         wakeLock = pm.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,
-            "OpenNexus3dStudio:FaceBridge"
+            "Weftspun3dStudio:FaceBridge"
         ).apply {
             setReferenceCounted(false)
             acquire(WAKE_LOCK_TIMEOUT_MS)

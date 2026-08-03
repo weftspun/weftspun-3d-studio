@@ -20,7 +20,7 @@ Do **not** wait for the user to ask. On the **first agent turn of every new chat
    - RepoResident: `.agent/STATE.md`, `CLAUDE.md`
    - MindLink: `.brain/MEMORY.md`, `.brain/SESSION.md` (+ `.agent/areas/mindlink.md`)
    - Cursor memory bank: `memory-bank/activeContext.md` when present
-4. **Hooks** also fire `sessionStart` / `workspaceOpen` → `.cursor/hooks/session-continuity.sh` (and `~/.cursor/hooks/` on DGX). Treat hook `OPENNEXUS_CONTINUITY_STATUS` as a hint; still run the script if you have not verified this session.
+4. **Hooks** also fire `sessionStart` / `workspaceOpen` → `.cursor/hooks/session-continuity.sh` (and `~/.cursor/hooks/` on DGX). Treat hook `WEFTSPUN_CONTINUITY_STATUS` as a hint; still run the script if you have not verified this session.
 5. After DGX edits under `src/`, auto-push:
    ```bash
    bash scripts/sync-changes-to-pc.sh --include-src --retry-until-complete

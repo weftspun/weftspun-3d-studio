@@ -1,15 +1,15 @@
 ---
-description: Sync Surface PC ↔ DGX after OpenNexus3DStudio changes (local workspace)
+description: Sync Surface PC ↔ DGX after Weftspun3DStudio changes (local workspace)
 alwaysApply: true
 ---
 
 # Surface sync reminder (local PC workspace)
 
-You are editing **OpenNexus3DStudio on the Surface** — the machine that runs
+You are editing **Weftspun3DStudio on the Surface** — the machine that runs
 `npm run dev` and serves `https://<Surface-LAN-IP>:3000/` for browser and
 Galaxy XR tests.
 
-Repo root (typical): `C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio`
+Repo root (typical): `C:\Users\alfao\Documents\GitHub\Weftspun3DStudio`
 
 Whenever you **create, edit, or delete** files in this repo, **apply scp sync yourself** after the edit (user permission). **Never** run git push/pull/fetch/upstream unless the user explicitly asks.
 
@@ -47,7 +47,7 @@ Whenever you **create, edit, or delete** files in this repo, **apply scp sync yo
 Pull DGX `src/` from Surface if DGX did not push yet:
 
 ```powershell
-ssh DGX-Local "cd /home/sifr/OpenNexus3DStudio && bash scripts/sync-changes-to-pc.sh --include-src --retry-until-complete"
+ssh DGX-Local "cd /home/sifr/Weftspun3DStudio && bash scripts/sync-changes-to-pc.sh --include-src --retry-until-complete"
 ```
 
 Use `DGX-Remote` away from LAN.

@@ -13,7 +13,7 @@ const MOCK_PASSPORT_OG = {
   sku: 'ST-OG-001',
   edition: 'Genesis Drop',
   status: 'authentic',
-  brand: 'Space-Time',
+  brand: 'Weftspun',
   mock: true,
   nfc: {
     vendor: PHYGITAL_NFC_VENDOR_TBD,

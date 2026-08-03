@@ -13,7 +13,7 @@ Whenever you **create, edit, or delete** files under this repo, **apply scp sync
 2. **Do not** run `git push`, `git pull`, `git fetch`, or merge `upstream` unless the user explicitly asks.
 3. **After DGX-owned changes** — run automatically when Surface SSH works:
    ```bash
-   cd /home/sifr/OpenNexus3DStudio
+   cd /home/sifr/Weftspun3DStudio
    bash scripts/sync-changes-to-pc.sh --retry-until-complete
    ```
    Use full `bash scripts/sync-to-pc.sh` only for a **full** resync (first clone, large drift, or when incremental finds nothing but files are missing).
@@ -59,7 +59,7 @@ Whenever you **create, edit, or delete** files under this repo, **apply scp sync
 **Important:** Surface `sync-from-dgx.ps1` does **not** copy `src/` or roadmaps. If you edited `src/` on **DGX**, push before the user can test in the browser:
 
 ```bash
-cd /home/sifr/OpenNexus3DStudio
+cd /home/sifr/Weftspun3DStudio
 bash scripts/sync-changes-to-pc.sh --include-src --retry-until-complete
 bash scripts/sync-changes-to-pc.sh --include-agent-context --retry-until-complete
 bash scripts/sync-sessionmem-team.sh

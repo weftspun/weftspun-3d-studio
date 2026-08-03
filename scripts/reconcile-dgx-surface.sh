@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bidirectional DGX <-> Surface reconcile for OpenNexus3DStudio.
+# Bidirectional DGX <-> Surface reconcile for Weftspun3DStudio.
 # Protected paths (scripts/protected-paths.manifest) are DGX-canonical:
 #   - always pushed DGX -> Surface
 #   - never pulled Surface -> DGX
@@ -10,14 +10,14 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 SURFACE_SSH="${SURFACE_SSH:-Surface-PC-Tailscale}"
-SURFACE_ROOT="${SURFACE_ROOT:-C:/Users/alfao/Documents/GitHub/OpenNexus3DStudio}"
+SURFACE_ROOT="${SURFACE_ROOT:-C:/Users/alfao/Documents/GitHub/Weftspun3DStudio}"
 MANIFEST="$ROOT/scripts/protected-paths.manifest"
 
 # shellcheck source=scripts/protected-paths-lib.sh
 source "$ROOT/scripts/protected-paths-lib.sh"
 protected_load_manifest "$MANIFEST"
 
-echo "=== Reconcile OpenNexus: DGX <-> Surface ==="
+echo "=== Reconcile Weftspun: DGX <-> Surface ==="
 echo "DGX:     $ROOT"
 echo "Surface: ${SURFACE_SSH}:${SURFACE_ROOT}"
 echo "Protected paths in manifest: ${#PROTECTED_PATHS[@]}"
@@ -66,4 +66,4 @@ if [[ "$mismatch" -gt 0 ]]; then
 fi
 
 echo ""
-echo "RECONCILE_OPENNEXUS_OK (${#PROTECTED_PATHS[@]} protected paths)"
+echo "RECONCILE_WEFTSPUN_OK (${#PROTECTED_PATHS[@]} protected paths)"

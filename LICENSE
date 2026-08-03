@@ -19,20 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-## Legal & Trademark Information
-
-### Software Licensing
-
-The underlying source code of Weftspun3DStudio is licensed under the MIT License.
-
-### Upstream Fork Notice
-
-Weftspun 3D Studio is a fork of OpenNexus3DStudio: SPACE-TIME EDITION. The names "Space-Time" and
-"OpenNexus3DStudio", the Space-Time orbital clock logo artwork, and the associated apparel, product-name,
-graphics, and phygital concept assets are the property of their respective owners and are not used by this
-project. Per the upstream trademark terms, this fork has been rebranded in full: all upstream product names,
-logos, and trade dress have been removed and replaced with Weftspun's own. References to the upstream project
-in this repository are nominative attribution only and imply no affiliation or endorsement.

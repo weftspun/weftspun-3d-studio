@@ -1,14 +1,14 @@
 # Approach: Wallet-Owned Assets → Programmatic Avatar & Wearables
 
-This document outlines how to implement **reading owned assets from a connected wallet to configure avatars and wearables programmatically** in OpenNexus3DStudio, as described in [Create an Avatar — Configure programmatically](docs/General/create-an-avatar.md#configure-programmatically). It incorporates [RMRK EVM](https://evm.rmrk.app/) modular NFT standards and assumes **Thirdweb** (and Thirdweb MCP) for wallet and chain connectivity.
+This document outlines how to implement **reading owned assets from a connected wallet to configure avatars and wearables programmatically** in Weftspun3DStudio, as described in [Create an Avatar — Configure programmatically](docs/General/create-an-avatar.md#configure-programmatically). It incorporates [RMRK EVM](https://evm.rmrk.app/) modular NFT standards and assumes **Thirdweb** (and Thirdweb MCP) for wallet and chain connectivity.
 
-**Alignment with [README](../README.md)**: This approach adheres to the project’s stated **avatar structure** and **roadmap**. OpenNexus3DStudio’s **base body** VRM avatar is **soulbound** (non-transferable; [Modder getting-started](docs/Modders/getting-started.md)—base body is layer 0). Clothing, hair, and accessories are **equippable** layers. Wallet-driven assembly fills those equippable traits from owned assets; the base body remains the fixed, soulbound foundation. The [README Roadmap Alignment](../README.md#-roadmap-alignment) and [History & Roadmap](docs/history.md#roadmap) (connect wallet to load profiles or mint files) are the source of record for goals.
+**Alignment with [README](../README.md)**: This approach adheres to the project’s stated **avatar structure** and **roadmap**. Weftspun3DStudio’s **base body** VRM avatar is **soulbound** (non-transferable; [Modder getting-started](docs/Modders/getting-started.md)—base body is layer 0). Clothing, hair, and accessories are **equippable** layers. Wallet-driven assembly fills those equippable traits from owned assets; the base body remains the fixed, soulbound foundation. The [README Roadmap Alignment](../README.md#-roadmap-alignment) and [History & Roadmap](docs/history.md#roadmap) (connect wallet to load profiles or mint files) are the source of record for goals.
 
 ---
 
 ## 1. Goal (from create-an-avatar.md)
 
-- **Current**: OpenNexus3DStudio can assemble and export VRMs from a JSON file (traits); this is custom for batch Anata VRMs and not general-purpose yet.
+- **Current**: Weftspun3DStudio can assemble and export VRMs from a JSON file (traits); this is custom for batch Anata VRMs and not general-purpose yet.
 - **Target**: Configure avatars and wearables **from owned wallet assets** (e.g. POAPs, whitelisted collections as [badges/pins](https://sketchfab.com/3d-models/3d-skill-role-badges-and-pins-e3329ed59b874aad98586657a5f11630)).
 - **Scope**: Use connected wallet + owned NFTs (including RMRK-style composable/equippable NFTs) to drive trait selection and optional "equipped" wearables/badges when assembling the avatar.
 
@@ -18,7 +18,7 @@ This document outlines how to implement **reading owned assets from a connected 
 
 [RMRK EVM](https://evm.rmrk.app/) provides **modular NFT standards** that map well to "avatar + wearables":
 
-| Concept | RMRK EVM | OpenNexus3DStudio |
+| Concept | RMRK EVM | Weftspun3DStudio |
 |--------|----------|-------------------|
 | Avatar / base character | **Multi-Asset** NFT (ERC-5773) with a "main" composable asset | **Base body** VRM = **soulbound** (non-transferable, layer 0 per [Modder getting-started](docs/Modders/getting-started.md)) |
 | Wearables / items | **Equippable** NFTs (ERC-6220) that go into **slots** | **Equippable** trait slots (clothing, hair, accessories, head, hands, badges) |
@@ -38,7 +38,7 @@ Relevant RMRK docs (all under [evm.rmrk.app](https://evm.rmrk.app/)):
 So the "best approach" is to treat **wallet-owned assets** as either:
 
 1. **Simple NFTs** (ERC-721): whitelisted collections → map to traits or "badge" slots (POAP-style).
-2. **RMRK-style NFTs** (MultiAsset + Equippable): use **active assets**, **equipment** (which child is in which slot), and **catalogs** to know which token can go in which slot; then map that to OpenNexus3DStudio trait/slot model.
+2. **RMRK-style NFTs** (MultiAsset + Equippable): use **active assets**, **equipment** (which child is in which slot), and **catalogs** to know which token can go in which slot; then map that to Weftspun3DStudio trait/slot model.
 
 ---
 
@@ -50,9 +50,9 @@ So the "best approach" is to treat **wallet-owned assets** as either:
   - For **RMRK EVM**: use contract reads (or indexer if available) for:
     - `getActiveAssets(tokenId)`, `getAssetMetadata(tokenId, assetId)`, `getEquipment(contract, tokenId, catalogAddress, slotId)`, and catalog/slot configuration.
 - **Mapping layer**: Config (or manifest extension) that maps:
-  - **Collection address** (and optional tokenId/assetId) → OpenNexus3DStudio **trait group** or **"badge" slot**.
+  - **Collection address** (and optional tokenId/assetId) → Weftspun3DStudio **trait group** or **"badge" slot**.
   - For RMRK: **Catalog + slot** → one trait group or slot in our model.
-- **Assembly**: Existing OpenNexus3DStudio pipeline (manifest + trait IDs) driven by:
+- **Assembly**: Existing Weftspun3DStudio pipeline (manifest + trait IDs) driven by:
   - **Trait IDs** from manifest, **or**
   - **Resolved asset URIs** from wallet (metadata → thumbnail/VRM/GLB URL) for that slot.
 
@@ -91,7 +91,7 @@ End-to-end flow:
   - Catalog/slot configuration (which collections can go in which slot) can be read from catalog contract or from your own config.
 - **Mapping**:
   - Define "avatar collection" + "wearable/badge collections" in config.
-  - Map RMRK "slot" (catalog + part/slot id) → OpenNexus3DStudio trait group or badge slot.
+  - Map RMRK "slot" (catalog + part/slot id) → Weftspun3DStudio trait group or badge slot.
   - Resolve child token's active asset metadata → thumbnail/VRM/GLB for that slot.
 - **Assembly**: Same as Phase 1, but source of "what's in each slot" comes from RMRK equipment + active assets instead of only "owned token in collection."
 - **Docs to implement against**: [Configuring Equippability](https://evm.rmrk.app/basic-usage/configuring-equippability), [Asset Management](https://evm.rmrk.app/basic-usage/asset-management), [Composable & Equippable](https://evm.rmrk.app/composable-equippable).
@@ -114,9 +114,9 @@ End-to-end flow:
 
 ---
 
-## 6. Mapping: RMRK → OpenNexus3DStudio Concepts
+## 6. Mapping: RMRK → Weftspun3DStudio Concepts
 
-| RMRK | OpenNexus3DStudio |
+| RMRK | Weftspun3DStudio |
 |------|-------------------|
 | Parent NFT (e.g. "avatar" token) | One "character" instance; **base body** is soulbound (layer 0), fixed per user/avatar. |
 | Active asset on parent | Which "skin" or "base" is active → map to manifest base or single trait group (base body remains soulbound). |
@@ -158,7 +158,7 @@ Config shape (example):
 
 - **Wallet / NFTs**: `src/library/mint-utils.js` (`fetchOwnedNFTs`, `connectWallet`), `src/library/walletCollections.js` (`getNftsFromCollection`, `getSolanaPurchasedAssets`), `AccountContext`.
 - **Assembly**: Manifest + trait IDs → `CharacterManager`, `manifestDataManager`, and existing VRM assembly/export.
-- **Bridge**: `OpenNexus3DStudioBridge` for GLB→OpenNexus3DStudio; keep same pipeline, but **trait/slot source** = wallet + mapping config instead of (or in addition to) static JSON.
+- **Bridge**: `Weftspun3DStudioBridge` for GLB→Weftspun3DStudio; keep same pipeline, but **trait/slot source** = wallet + mapping config instead of (or in addition to) static JSON.
 
 ---
 
@@ -196,6 +196,6 @@ This keeps the "configure programmatically" vision from create-an-avatar.md, ali
 
 **See also (README adherence)**:
 - [README](../README.md) — Project overview; **Goals & structure** and **Roadmap Alignment** state soulbound base body + equippable wearables and link to this doc.
-- [README § OpenNexus3DStudio Features](../README.md#opennexus3dstudio-features) — Avatar Structure (soulbound base body, layer 0), Wallet-Driven Assembly (planned).
+- [README § Weftspun3DStudio Features](../README.md#weftspun3dstudio-features) — Avatar Structure (soulbound base body, layer 0), Wallet-Driven Assembly (planned).
 - [README § Roadmap Alignment](../README.md#-roadmap-alignment) — History & Roadmap, this approach doc, Technical Roadmap RPM Migration.
 - [Modder getting-started](docs/Modders/getting-started.md) — Base body = layer 0; clothing/accessories = higher layers.

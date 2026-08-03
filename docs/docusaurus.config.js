@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'OpenNexus3DStudio',
+  title: 'Weftspun3DStudio',
   tagline: 'VRM Avatar Toolkit',
   favicon: 'img/favicon.ico',
 
@@ -81,7 +81,7 @@ const config = {
       navbar: {
         title: 'Home',
         logo: {
-          alt: 'OpenNexus3DStudio',
+          alt: 'Weftspun3DStudio',
           src: 'img/m3-solid.svg',
         },
 	hideOnScroll: true,
@@ -94,7 +94,7 @@ const config = {
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio',
+            href: 'https://github.com/weftspun/weftspun-3d-studio',
             label: 'GitHub',
             position: 'right',
           },

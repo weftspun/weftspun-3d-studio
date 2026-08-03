@@ -1,10 +1,10 @@
-# Remove legacy CharacterStudio folder after migration to OpenNexus3DStudio.
-# Run on Surface when Cursor is opened on OpenNexus3DStudio (not the old folder).
+# Remove legacy CharacterStudio folder after migration to Weftspun3DStudio.
+# Run on Surface when Cursor is opened on Weftspun3DStudio (not the old folder).
 $ErrorActionPreference = 'Stop'
 $old = 'C:\Users\alfao\Documents\GitHub\CharacterStudio'
-$new = 'C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio'
+$new = 'C:\Users\alfao\Documents\GitHub\Weftspun3DStudio'
 if (-not (Test-Path (Join-Path $new 'package.json'))) {
-    Write-Error "OpenNexus3DStudio not ready: $new"
+    Write-Error "Weftspun3DStudio not ready: $new"
 }
 if (-not (Test-Path $old)) {
     Write-Host 'Legacy CharacterStudio folder already removed.'

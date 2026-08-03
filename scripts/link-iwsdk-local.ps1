@@ -1,4 +1,4 @@
-# Sync local @iwsdk/* tgz into OpenNexus3DStudio (Windows-native).
+# Sync local @iwsdk/* tgz into Weftspun3DStudio (Windows-native).
 # Usage: .\scripts\link-iwsdk-local.ps1
 #        .\scripts\link-iwsdk-local.ps1 -Rebuild
 
@@ -47,7 +47,7 @@ if ($needBuild) {
 }
 
 Set-Location $Root
-Write-Host "Installing local @iwsdk/* into OpenNexus3DStudio..."
+Write-Host "Installing local @iwsdk/* into Weftspun3DStudio..."
 $core = (Join-Path $IwsdkRoot "packages\core\iwsdk-core.tgz") -replace '\\', '/'
 $loco = (Join-Path $IwsdkRoot "packages\locomotor\iwsdk-locomotor.tgz") -replace '\\', '/'
 $xr = (Join-Path $IwsdkRoot "packages\xr-input\iwsdk-xr-input.tgz") -replace '\\', '/'

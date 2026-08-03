@@ -1,4 +1,4 @@
-package com.opennexus3dstudio.xrfacebridge
+package com.weftspun.xrfacebridge
 
 import android.webkit.JavascriptInterface
 

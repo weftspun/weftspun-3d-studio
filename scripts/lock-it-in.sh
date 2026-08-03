@@ -13,7 +13,7 @@ if [[ "${1:-}" == "--message" ]]; then
 fi
 [[ -z "$msg" ]] && msg="chore(lock-in): commit protected state and verify tooling"
 
-echo "=== Lock it in (OpenNexus3DStudio) ==="
+echo "=== Lock it in (Weftspun3DStudio) ==="
 
 bash "$ROOT/scripts/verify-protected-contracts.sh"
 bash "$ROOT/scripts/verify_krea2_text_to_3d_pipeline.sh" | tail -1

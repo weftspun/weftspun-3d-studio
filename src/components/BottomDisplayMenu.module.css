@@ -13,7 +13,7 @@
   pointer-events: none;
 }
 
-/* Main app: fixed to main-viewport rect (excludes OpenNexus3DStudio avatar sidebar). */
+/* Main app: fixed to main-viewport rect (excludes Weftspun3DStudio avatar sidebar). */
 .ContainerViewportDocked {
   position: fixed;
   left: var(--dock-left, 0);

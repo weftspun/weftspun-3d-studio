@@ -1,10 +1,10 @@
 # Model Format Specification
 
-This document defines the shared model format between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio to ensure seamless model transfer and compatibility.
+This document defines the shared model format between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio to ensure seamless model transfer and compatibility.
 
 ## Overview
 
-The bridge between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio uses GLB (GL Transmission Format Binary) as the primary exchange format, with specific optimizations and metadata for OpenNexus3DStudio compatibility.
+The bridge between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio uses GLB (GL Transmission Format Binary) as the primary exchange format, with specific optimizations and metadata for Weftspun3DStudio compatibility.
 
 ## Format Requirements
 
@@ -15,23 +15,23 @@ The bridge between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio uses G
 - **Compression**: Optional KHR_draco_mesh_compression
 
 ### Required Extensions
-- **VRM**: For OpenNexus3DStudio compatibility
+- **VRM**: For Weftspun3DStudio compatibility
 - **KHR_materials_pbrSpecularGlossiness**: For material compatibility
 - **KHR_texture_transform**: For texture transformations
 
-## Open3DStudio (OpenNexus3DStudio) Export Specifications
+## Open3DStudio (Weftspun3DStudio) Export Specifications
 
 ### Export Options
 ```javascript
 {
   filename: 'model.glb',
-  forOpenNexus3DStudio: true,
+  forWeftspun3DStudio: true,
   optimize: true,
   includeTextures: true,
   includeAnimations: true,
   metadata: {
-    source: 'OpenNexus3DStudio',
-    target: 'OpenNexus3DStudio',
+    source: 'Weftspun3DStudio',
+    target: 'Weftspun3DStudio',
     compatibility: 'VRM',
     exportDate: '2024-01-01T00:00:00.000Z'
   }
@@ -64,9 +64,9 @@ The bridge between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio uses G
     VRM: {
       version: '0.0',
       meta: {
-        title: 'OpenNexus3DStudio Export',
+        title: 'Weftspun3DStudio Export',
         version: '1.0.0',
-        author: 'OpenNexus3DStudio',
+        author: 'Weftspun3DStudio',
         contactInformation: '',
         reference: '',
         texture: -1,
@@ -82,13 +82,13 @@ The bridge between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio uses G
   },
   userData: {
     vrmCompatible: true,
-    exportSource: 'OpenNexus3DStudio',
+    exportSource: 'Weftspun3DStudio',
     exportDate: '2024-01-01T00:00:00.000Z'
   }
 }
 ```
 
-## OpenNexus3DStudio Import Specifications
+## Weftspun3DStudio Import Specifications
 
 ### Import Processing
 1. **VRM Structure Addition**
@@ -97,10 +97,10 @@ The bridge between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio uses G
    - Add blend shape definitions
    - Set up material properties
 
-2. **OpenNexus3DStudio Optimization**
+2. **Weftspun3DStudio Optimization**
    - Merge geometries
    - Optimize materials
-   - Add OpenNexus3DStudio properties
+   - Add Weftspun3DStudio properties
    - Set up animation system
 
 3. **Validation**
@@ -115,7 +115,7 @@ The bridge between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio uses G
   userData: {
     characterStudio: {
       imported: true,
-      source: 'OpenNexus3DStudio',
+      source: 'Weftspun3DStudio',
       importDate: '2024-01-01T00:00:00.000Z',
       version: '1.0.0',
       compatible: true
@@ -163,17 +163,17 @@ model.glb
 
 ## Validation Rules
 
-### Open3DStudio (OpenNexus3DStudio) Export Validation
+### Open3DStudio (Weftspun3DStudio) Export Validation
 1. Model must have at least one mesh
 2. All meshes must have materials
 3. Materials must be PBR-compatible
 4. VRM metadata must be present
 5. Bone structure must be valid (if applicable)
 
-### OpenNexus3DStudio Import Validation
+### Weftspun3DStudio Import Validation
 1. GLB file must be valid
 2. VRM extensions must be present
-3. Model must be compatible with OpenNexus3DStudio
+3. Model must be compatible with Weftspun3DStudio
 4. Materials must be importable
 5. Bone structure must be valid for VRM
 
@@ -214,7 +214,7 @@ model.glb
 2. **Complex Model Export**: Multiple meshes with textures
 3. **Animated Model Export**: Model with animations
 4. **VRM Model Export**: Model with VRM structure
-5. **Import Validation**: OpenNexus3DStudio compatibility
+5. **Import Validation**: Weftspun3DStudio compatibility
 
 ### Test Data
 - Various model complexities
@@ -240,14 +240,14 @@ model.glb
 
 ## Implementation Notes
 
-### Open3DStudio (OpenNexus3DStudio) Implementation
+### Open3DStudio (Weftspun3DStudio) Implementation
 - Use GLBExporter class for export functionality
 - Implement VRM compatibility layer
-- Add OpenNexus3DStudio-specific optimizations
+- Add Weftspun3DStudio-specific optimizations
 - Provide export validation
 
-### OpenNexus3DStudio Implementation
-- Use OpenNexus3DStudioBridge class for import functionality
+### Weftspun3DStudio Implementation
+- Use Weftspun3DStudioBridge class for import functionality
 - Implement VRM structure addition
 - Add import validation
 - Provide compatibility checking
@@ -258,7 +258,7 @@ model.glb
 - Compatible material systems
 - Unified error handling
 
-This specification ensures seamless model transfer between Open3DStudio (OpenNexus3DStudio) and OpenNexus3DStudio while maintaining compatibility and performance.
+This specification ensures seamless model transfer between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio while maintaining compatibility and performance.
 
 
 

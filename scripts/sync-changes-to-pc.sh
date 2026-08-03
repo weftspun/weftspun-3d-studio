@@ -36,7 +36,7 @@ cd "$ROOT"
 source "${ROOT}/scripts/sync-changes-lib.sh"
 
 SURFACE_SSH="${SURFACE_SSH:-Surface-PC-Tailscale}"
-SURFACE_ROOT="${SURFACE_ROOT:-C:/Users/alfao/Documents/GitHub/OpenNexus3DStudio}"
+SURFACE_ROOT="${SURFACE_ROOT:-C:/Users/alfao/Documents/GitHub/Weftspun3DStudio}"
 
 SYNC_REPO_ROOT="$ROOT"
 SYNC_SSH_TARGET="$SURFACE_SSH"

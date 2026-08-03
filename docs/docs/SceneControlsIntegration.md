@@ -1,6 +1,6 @@
 # Scene Controls Integration Guide
 
-This document explains how to integrate the saved scene controls back into the OpenNexus3DStudio application.
+This document explains how to integrate the saved scene controls back into the Weftspun3DStudio application.
 
 ## 📁 Files Created
 

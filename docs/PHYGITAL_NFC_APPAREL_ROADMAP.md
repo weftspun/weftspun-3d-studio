@@ -2,18 +2,18 @@
 
 **Status:** Planning / mock phase (2026-06). **NFC hardware supplier:** TBD — placeholders only until vendor + chip SKU are selected.
 
-**Trademark:** Physical "Space-Time" apparel, NFC placement, and passport UX are proprietary brand assets (see README Legal & Trademark). Open-source code does not grant use of Space-Time trade dress.
+**Trademark:** Physical "Weftspun" apparel, NFC placement, and passport UX are proprietary brand assets (see README Legal & Trademark). Open-source code does not grant use of Weftspun trade dress.
 
 ## Goal
 
-Bridge **physical Space-Time garments** to **digital twins** created in OpenNexus3DStudio with tamper-evident tap-to-verify and a public **Digital Twin Passport**.
+Bridge **physical Weftspun garments** to **digital twins** created in Weftspun3DStudio with tamper-evident tap-to-verify and a public **Digital Twin Passport**.
 
 ```text
 [NFC tap on garment]
        ↓
-https://open-nexus3-d-studio.vercel.app/verify/{serialId}[?tap=…]
+https://weftspun3-d-studio.vercel.app/verify/{serialId}[?tap=…]
        ↓
-Passport UI (Vercel / OpenNexus3DStudio)
+Passport UI (Vercel / Weftspun3DStudio)
        ↓
 Passport API (future: 3DAIGC-API or dedicated service) → metadata + download URLs + provenance
 ```
@@ -25,7 +25,7 @@ Passport API (future: 3DAIGC-API or dedicated service) → metadata + download U
 | Topic | Planned approach |
 |--------|------------------|
 | **Chip class** | NFC Type 4, **NTAG 424 DNA** (or equivalent) with **Secure Unique NFC (SUN)** / CMAC URL — not static QR |
-| **Placement** | Silicone patch behind Space-Time logo, collar label, or sleeve cuff (product-dependent) |
+| **Placement** | Silicone patch behind Weftspun logo, collar label, or sleeve cuff (product-dependent) |
 | **Why not QR alone** | QR is photocopyable; SUN URLs rotate a **single-use or session token** in the query string per tap |
 | **Encoding** | NDEF URI record → `https://…/verify/{serialId}` (+ vendor-specific auth params) |
 | **Supplier** | **`TBD_NFC_VENDOR`** — evaluate garment integrator + NTAG programming toolchain in Phase 2 |
@@ -39,18 +39,18 @@ Until supplier is named, use **mock serial IDs** and manual `/verify/ST-…` lin
 | **Serial ID** | Human-readable unique id, e.g. `ST-OG-001-9842` |
 | **SKU / edition** | Product line (e.g. OG drop, collab) |
 | **Digital twin files** | GLB (web/Blender), VRM (VRChat), USDZ (Apple AR — **planned**) |
-| **Studio linkage** | Optional `studioProjectId` / export hash tying twin to OpenNexus export |
+| **Studio linkage** | Optional `studioProjectId` / export hash tying twin to Weftspun export |
 | **Provenance** | Manufacture date, fulfillment region, optional on-chain token history |
 | **Tap telemetry** | Last tap time, monotonic counter (for SUN replay detection) |
 
 On-chain provenance is **Phase 4** (Thirdweb / existing mint stack) — not required for Phase 0–1 mock.
 
-## OpenNexus3DStudio outputs (digital twin formats)
+## Weftspun3DStudio outputs (digital twin formats)
 
 | Format | Today | Phygital use |
 |--------|--------|----------------|
 | **GLB** | ✅ Export from studio | Default web twin + Blender/Unreal import |
-| **VRM** | ✅ Export | VRChat / VTuber / OpenNexus avatar pipeline |
+| **VRM** | ✅ Export | VRChat / VTuber / Weftspun avatar pipeline |
 | **FBX** | ✅ Via pipeline / loot | Legacy rigs, some engines |
 | **USDZ** | ❌ Planned | iOS Quick Look / Apple AR try-on for apparel mesh |
 
@@ -76,7 +76,7 @@ Passport download links should point at **CDN or signed URLs** (not raw DGX path
 - Deploy `/verify/*` on public Vercel app (static + client fetch)
 - Environment: `VITE_PHYGITAL_API_BASE` → future API origin
 - `VITE_PHYGITAL_USE_MOCK=0` when real API live
-- Mobile-first passport layout, Space-Time branding
+- Mobile-first passport layout, Weftspun branding
 - Optional: `?tap=` query preserved for future SUN token validation (display only in mock)
 
 ### Phase 2 — NFC supplier + encoding

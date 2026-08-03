@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Weftspun">
+  <title>Weftspun</title>
+  <defs>
+    <clipPath id="frame">
+      <rect x="0" y="0" width="512" height="512" rx="112" ry="112"/>
+    </clipPath>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1E222A"/>
+      <stop offset="1" stop-color="#101317"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
+
+  <g clip-path="url(#frame)">
+    <!-- weft: horizontal threads -->
+    <g fill="#E0A64B">
+      <rect x="0" y="65"  width="512" height="90"/>
+      <rect x="0" y="211" width="512" height="90"/>
+      <rect x="0" y="357" width="512" height="90"/>
+    </g>
+
+    <!-- warp: vertical threads, laid over the weft -->
+    <g fill="#5FB8AE">
+      <rect x="65"  y="0" width="90" height="512"/>
+      <rect x="211" y="0" width="90" height="512"/>
+      <rect x="357" y="0" width="90" height="512"/>
+    </g>
+
+    <!-- plain weave: bring the weft back over at alternating crossings -->
+    <g fill="#E0A64B">
+      <rect x="65"  y="65"  width="90" height="90"/>
+      <rect x="357" y="65"  width="90" height="90"/>
+      <rect x="211" y="211" width="90" height="90"/>
+      <rect x="65"  y="357" width="90" height="90"/>
+      <rect x="357" y="357" width="90" height="90"/>
+    </g>
+  </g>
+</svg>

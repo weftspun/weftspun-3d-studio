@@ -1,5 +1,5 @@
 /**
- * Canonical loot-assets source (not vendored in OpenNexus3DStudio).
+ * Canonical loot-assets source (not vendored in Weftspun3DStudio).
  * @see https://github.com/m3-org/loot-assets
  */
 import fs from 'node:fs';

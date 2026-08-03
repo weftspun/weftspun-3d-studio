@@ -9,7 +9,7 @@ Sources: [thirdweb.com](https://thirdweb.com/), [API reference](https://portal.t
 | `VITE_THIRDWEB_CLIENT_ID` | Frontend (ConnectButton, in-app wallets). Set in `.env`. |
 | `THIRDWEB_SECRET_KEY` | **Server/MCP only** — x402 facilitator, MCP. Never `VITE_` prefix (would ship to the browser). |
 
-## Current state in OpenNexus3DStudio
+## Current state in Weftspun3DStudio
 
 | Layer | Status | Notes |
 |-------|--------|-------|
@@ -26,7 +26,7 @@ Sources: [thirdweb.com](https://thirdweb.com/), [API reference](https://portal.t
 
 ## Thirdweb platform benefits (beyond what we use today)
 
-From [thirdweb.com](https://thirdweb.com/) and docs — mapped to OpenNexus3DStudio use cases:
+From [thirdweb.com](https://thirdweb.com/) and docs — mapped to Weftspun3DStudio use cases:
 
 | Product | Benefit for this app | We have it? |
 |---------|----------------------|------------|

@@ -4,7 +4,7 @@
 
 ## What works
 
-- **OpenNexus3DStudio rebrand** + spatial fabric **Publish RP1** (Task Manager, user-confirmed 2026-06-19).
+- **Weftspun3DStudio rebrand** + spatial fabric **Publish RP1** (Task Manager, user-confirmed 2026-06-19).
 - **Incremental DGX ↔ Surface sync** — `sync-changes-to-dgx.ps1`, `sync-changes-to-pc.sh`, retry-until-complete.
 - **Galaxy XR on main `/`** — grab (trigger), context menu / pan (grip), locomotion; `sceneManagerXrMouseEmulation.js`.
 - **Image-to-world** — load + rehydrate (`dgx-rehydrate-world-job.py`) when Redis TTL expires; disk outputs persist on DGX.
@@ -17,8 +17,8 @@
 ## Moat documentation (2026-07-30)
 
 - **MONETIZATION_ROADMAP.md** v3.3.7 (local only, gitignored) — LingBot env-scan Phase A/B SKUs planned; Pitch Deck/ aligned when next deck pass runs.
-- Internal: `memory-bank/spacetime-moat-strategy.md`
-- Public overview: `docs/SPACETIME_MOAT_OVERVIEW.md`
+- Internal: `memory-bank/weftspun-moat-strategy.md`
+- Public overview: `docs/WEFTSPUN_MOAT_OVERVIEW.md`
 - Dev topology: `docs/DEV_MACHINE_TOPOLOGY.md` (incremental sync cheat sheet)
 - Env-scan API: `3DAIGC-API/docs/LINGBOT_MAP_ENVIRONMENT_SCAN.md`
 

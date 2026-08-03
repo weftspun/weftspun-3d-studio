@@ -1,6 +1,6 @@
 ---
 description: XR embody / third-person / Move / menu invariants — do not regress
-globs: OpenNexus3DStudio/src/library/sceneManagerXr*.js
+globs: Weftspun3DStudio/src/library/sceneManagerXr*.js
 alwaysApply: false
 ---
 

@@ -22,7 +22,7 @@ test.describe('App page load', () => {
     await expect(root).toBeVisible();
     await expect(root).not.toBeEmpty();
 
-    await expect(page).toHaveTitle(/OpenNexus3DStudio|SPACE-TIME/i);
+    await expect(page).toHaveTitle(/Weftspun 3D Studio/i);
 
     // Real UI is visible (not just root div)
     await expect(page.getByText(/API|CharacterStudio|Connected|Disconnected/i).first()).toBeVisible({ timeout: 5000 });

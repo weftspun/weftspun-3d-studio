@@ -1,6 +1,6 @@
 ## IWSDK Option A Migration Blueprint (least resistance)
 
-This document is a **reference checklist** for migrating IWSDK XR capabilities from `/xr` into the main OpenNexus3DStudio app (`/`) while keeping **`SceneManager` as the owner** of:
+This document is a **reference checklist** for migrating IWSDK XR capabilities from `/xr` into the main Weftspun3DStudio app (`/`) while keeping **`SceneManager` as the owner** of:
 
 - the **Three.js renderer**
 - the **WebXR session lifecycle**
@@ -41,7 +41,7 @@ If a migration step introduces a second renderer/session/loop, treat it as a **s
 
 ## World building stack (Spark / sensai / image-blaster)
 
-**One-line direction:** OpenNexus3DStudio Core owns the scene and XR session; **Spark** renders splat environments; **IWSDK** (Option A) drives presence; **DGX Hunyuan** builds props; **image-blaster-style pipelines** produce world packages—not a fourth runtime.
+**One-line direction:** Weftspun3DStudio Core owns the scene and XR session; **Spark** renders splat environments; **IWSDK** (Option A) drives presence; **DGX Hunyuan** builds props; **image-blaster-style pipelines** produce world packages—not a fourth runtime.
 
 Use all three repos as **layers**, not as three parallel apps:
 
@@ -55,7 +55,7 @@ Use all three repos as **layers**, not as three parallel apps:
 [Capture]        in-app spectator camera (near-term); WebXR observer view if runtime grants it
 ```
 
-| Repo | Role | Use in OpenNexus3DStudio |
+| Repo | Role | Use in Weftspun3DStudio |
 |------|------|-------------------------|
 | [spark](https://github.com/AlfaOmegaGrafx/spark) | Gaussian splat **renderer** for Three.js | npm dependency when Core loads `.spz`/`.ply` worlds in SceneManager |
 | [sensai-webxr-worldmodels](https://github.com/AlfaOmegaGrafx/sensai-webxr-worldmodels) | IWSDK + Spark **XR world template** | Reference lab only—copy splat loader, collision mesh for locomotion, LoD/render-order patterns; do not ship as second app |

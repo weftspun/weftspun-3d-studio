@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Contract check for locked Krea 2 → Image-to-3D pipeline (OpenNexus3DStudio).
+# Contract check for locked Krea 2 → Image-to-3D pipeline (Weftspun3DStudio).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"

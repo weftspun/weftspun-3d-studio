@@ -1,5 +1,5 @@
 /**
- * GLBExporter - Exports 3D models to GLB format for OpenNexus3DStudio
+ * GLBExporter - Exports 3D models to GLB format for Weftspun3DStudio
  * Handles model optimization and VRM compatibility preparation
  */
 import * as THREE from 'three';
@@ -211,7 +211,7 @@ export class GLBExporter {
     model.userData = {
       ...model.userData,
       vrmCompatible: true,
-      exportSource: 'OpenNexus3DStudio',
+      exportSource: 'Weftspun3DStudio',
       exportDate: new Date().toISOString()
     };
 
@@ -247,9 +247,9 @@ export class GLBExporter {
       VRM: {
         version: '0.0',
         meta: {
-          title: 'OpenNexus3DStudio Export',
+          title: 'Weftspun3DStudio Export',
           version: '1.0.0',
-          author: 'OpenNexus3DStudio',
+          author: 'Weftspun3DStudio',
           contactInformation: '',
           reference: '',
           texture: -1,
@@ -313,11 +313,11 @@ export class GLBExporter {
   }
 
   /**
-   * Export with OpenNexus3DStudio compatibility
+   * Export with Weftspun3DStudio compatibility
    * @param {Object} model - Model to export
    * @param {Object} options - Export options
    */
-  async exportForOpenNexus3DStudio(model, options = {}) {
+  async exportForWeftspun3DStudio(model, options = {}) {
     const { metadata: userMetadata, ...rest } = options;
     const characterStudioOptions = {
       ...rest,
@@ -329,8 +329,8 @@ export class GLBExporter {
       compressQuality: rest.compressQuality ?? 50,
       skipDownload: rest.skipDownload ?? false,
       metadata: {
-        source: 'OpenNexus3DStudio',
-        target: 'OpenNexus3DStudio',
+        source: 'Weftspun3DStudio',
+        target: 'Weftspun3DStudio',
         compatibility: 'VRM',
         exportDate: new Date().toISOString(),
         ...userMetadata,
@@ -341,10 +341,10 @@ export class GLBExporter {
   }
 
   /**
-   * Validate model for OpenNexus3DStudio compatibility
+   * Validate model for Weftspun3DStudio compatibility
    * @param {Object} model - Model to validate
    */
-  validateForOpenNexus3DStudio(model) {
+  validateForWeftspun3DStudio(model) {
     const issues = [];
     
     // Check for required components

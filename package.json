@@ -1,8 +1,8 @@
 {
-  "name": "opennexus3dstudio",
+  "name": "weftspun-3d-studio",
   "version": "1.0.2",
   "description": "A 3D AIGC application for completely locally deployed and free 3DAIGC workflows",
-  "homepage": "https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio",
+  "homepage": "https://github.com/weftspun/weftspun-3d-studio",
   "scripts": {
     "dev": "vite --host",
     "dev:polling": "cross-env VITE_USE_POLLING=1 vite --host",

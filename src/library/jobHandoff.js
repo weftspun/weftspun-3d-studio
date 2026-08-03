@@ -1,5 +1,5 @@
 /**
- * Galaxy XR voice job → OpenNexus3DStudio handoff (DGX API is source of truth).
+ * Galaxy XR voice job → Weftspun3DStudio handoff (DGX API is source of truth).
  */
 
 /**

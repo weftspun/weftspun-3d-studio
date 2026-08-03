@@ -38,8 +38,8 @@ ctx = (
 )
 print(json.dumps({
     "env": {
-        "OPENNEXUS_CONTINUITY_STATUS": status,
-        "OPENNEXUS_CONTINUITY_VERIFIED": "1",
+        "WEFTSPUN_CONTINUITY_STATUS": status,
+        "WEFTSPUN_CONTINUITY_VERIFIED": "1",
     },
     "additional_context": ctx,
 }))

@@ -44,13 +44,13 @@
 
 | What | DGX Spark | Surface PC |
 |------|-----------|------------|
-| **OpenNexus3DStudio** (frontend) | `/home/sifr/OpenNexus3DStudio` | `C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Weftspun3DStudio** (frontend) | `/home/sifr/Weftspun3DStudio` | `C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 | **3DAIGC-API** (backend) | `/home/sifr/3DAIGC-API` | *(API runs on DGX only)* |
 | **MSF Map Service** (RP1 / Scene Assembler) | `/home/sifr/MSF_Map_Svc` | *(DGX only)* |
 | **Sneeze** (OMB engine lib) | `/home/sifr/Sneeze` | *(DGX only — native build)* |
 | RP1 / MSF secrets (gitignored) | `~/.config/rp1-spatial-fabric/rp1.env` | copy template from `rp1.env.example` |
 | Memory Bank | `.../memory-bank/` | `...\memory-bank\` |
-| SessionMem team folder | `.../.sessionmem-team/OpenNexus3DStudio/` | `...\.sessionmem-team\OpenNexus3DStudio\` |
+| SessionMem team folder | `.../.sessionmem-team/Weftspun3DStudio/` | `...\.sessionmem-team\Weftspun3DStudio\` |
 | SessionMem local DB | `~/.sessionmem/memories.db` | `C:\Users\alfao\.sessionmem\memories.db` |
 | MCP config (repo) | `.../.mcp.json` | `...\.mcp.json` |
 | Graphify output | `.../graphify-out/` | `...\graphify-out\` |
@@ -93,7 +93,7 @@
 | | |
 |--|--|
 | **Where** | **DGX** |
-| **Folder** | `cd /home/sifr/OpenNexus3DStudio` |
+| **Folder** | `cd /home/sifr/Weftspun3DStudio` |
 | **After edits (preferred)** | `bash scripts/sync-changes-to-pc.sh --retry-until-complete` |
 | **Changes only, one pass** | `bash scripts/sync-changes-to-pc.sh` |
 | **Full sync (all DGX-owned paths)** | `bash scripts/sync-to-pc.sh` |
@@ -108,7 +108,7 @@
 | | |
 |--|--|
 | **Where** | **Surface** — PowerShell |
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 | **After edits (preferred)** | `.\scripts\sync-changes-to-dgx.ps1 -RetryUntilComplete` |
 | **Changes only, one pass** | `.\scripts\sync-changes-to-dgx.ps1` |
 | **Full sync (all src top-level dirs)** | `.\scripts\sync-to-dgx.ps1 -RetryUntilComplete` |
@@ -123,7 +123,7 @@
 | | |
 |--|--|
 | **Where** | **Surface** |
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 | **Command** | `.\scripts\sync-from-dgx.ps1` |
 | **Away from home** | `.\scripts\sync-from-dgx.ps1 -Remote` |
 
@@ -132,8 +132,8 @@
 | | |
 |--|--|
 | **Where** | **Surface** — PowerShell |
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
-| **Command** | `scp logs\remote-log.txt sifr@DGX-Local:/home/sifr/OpenNexus3DStudio/logs/` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
+| **Command** | `scp logs\remote-log.txt sifr@DGX-Local:/home/sifr/Weftspun3DStudio/logs/` |
 
 ---
 
@@ -144,7 +144,7 @@
 | | |
 |--|--|
 | **Where** | **Surface** — PowerShell |
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 | **Command** | `npm run dev` |
 | **Stop** | `Ctrl+C` in that terminal |
 
@@ -182,8 +182,8 @@ Optional env: `ANIM_SMOKE_URL=https://10.0.0.32:3000` (default LAN HTTPS origin)
 **From DGX** (SSH to Surface and run in repo):
 
 ```bash
-ssh Surface-PC-Tailscale "cd C:/Users/alfao/Documents/GitHub/OpenNexus3DStudio && npm run test:anim-smoke"
-ssh Surface-PC-Tailscale "cd C:/Users/alfao/Documents/GitHub/OpenNexus3DStudio && set MOTION_JOB_ID=90cc20fe-da7d-4175-8601-f40e1819515e&& npm run test:bone-audit"
+ssh Surface-PC-Tailscale "cd C:/Users/alfao/Documents/GitHub/Weftspun3DStudio && npm run test:anim-smoke"
+ssh Surface-PC-Tailscale "cd C:/Users/alfao/Documents/GitHub/Weftspun3DStudio && set MOTION_JOB_ID=90cc20fe-da7d-4175-8601-f40e1819515e&& npm run test:bone-audit"
 ```
 
 **Eagle Knight (SkinTokens GLB):** job `79a9f3d5-10e3-4ba0-9b7f-593aa6191455` — `skintokens_tokenrig_cli`, skeleton `bone_0`…`bone_51`. Do **not** apply VRM0 quat axis fix on SkinTokens (causes reversed limbs). VRM canned + Kimodo locked via `npm run test:anim-regression` (`vrmPlaybackLock.test.js`).
@@ -212,7 +212,7 @@ Run on **DGX** after every reboot (or when Surface says API/MSF/XR unreachable).
 | MySQL (`msf-mysql`) | 3306 | `MSF_Map_Svc/scripts/ensure-msf-mysql.sh` |
 | MSF Map Service | 8443 | `MSF_Map_Svc/scripts/run-msf-map-svc.sh` |
 
-**Surface (each dev session — not DGX):** `cd OpenNexus3DStudio` → `npm run dev` and `npm run dev:spark-proxies` when using MSF Scene Assembler or Galaxy XR voice.
+**Surface (each dev session — not DGX):** `cd Weftspun3DStudio` → `npm run dev` and `npm run dev:spark-proxies` when using MSF Scene Assembler or Galaxy XR voice.
 
 **Aliases:** `start-dgx-after-reboot.sh` → `ensure-spark-dev-services.sh`. MSF helpers: `ensure-msf-mysql.sh`, `verify-fabric-url.sh`.
 
@@ -330,8 +330,8 @@ Config-only changes (e.g. `models.yaml`): stop + start is enough — no model re
 
 | Task | Command |
 |------|---------|
-| Ensure detached start sources `.env` (MSF vars) | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/OpenNexus3DStudio/scripts/dgx-api-source-env-patch.py` |
-| Add `POST /spatial-fabric/publish-glb` route (if missing) | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/OpenNexus3DStudio/scripts/dgx-api-add-publish-glb.py` |
+| Ensure detached start sources `.env` (MSF vars) | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/Weftspun3DStudio/scripts/dgx-api-source-env-patch.py` |
+| Add `POST /spatial-fabric/publish-glb` route (if missing) | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/Weftspun3DStudio/scripts/dgx-api-add-publish-glb.py` |
 
 Restart API after either patch (section 5).
 
@@ -439,7 +439,7 @@ All on **DGX** in `/home/sifr/3DAIGC-API` unless noted.
 |--|--|
 | **Where** | **DGX** |
 | **When** | API returns **404** for job/manifest but files still exist under `outputs/worlds/<job_id>/` |
-| **Command** | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/OpenNexus3DStudio/scripts/dgx-rehydrate-world-job.py JOB_ID` |
+| **Command** | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/Weftspun3DStudio/scripts/dgx-rehydrate-world-job.py JOB_ID` |
 | **Does** | Re-registers completed job in Redis from on-disk `world.manifest.json` + `environment.ply` |
 | **Verify** | `curl -sS -o /dev/null -w '%{http_code}\n' 'http://127.0.0.1:7842/api/v1/system/jobs/JOB_ID/download?asset=manifest'` *(expect 200)* |
 
@@ -450,7 +450,7 @@ All on **DGX** in `/home/sifr/3DAIGC-API` unless noted.
 | | |
 |--|--|
 | **Where** | **DGX** |
-| **Command** | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/OpenNexus3DStudio/scripts/dgx-query-job-sqlite.py JOB_ID` |
+| **Command** | `/home/sifr/3DAIGC-API/venv/bin/python /home/sifr/Weftspun3DStudio/scripts/dgx-query-job-sqlite.py JOB_ID` |
 | **Does** | Prints `(job_id, status, feature)` or `NOT_IN_SQLITE` — diagnostic only; does not fix API 404 |
 
 Omit `JOB_ID` to list the first 5 rows in `jobs`.
@@ -459,7 +459,7 @@ Omit `JOB_ID` to list the first 5 rows in `jobs`.
 
 ## 7a. Krea 2 text-to-image (DGX)
 
-Local **Krea 2 Turbo** via diffusers `Krea2Pipeline` — **no Krea cloud API**. OpenNexus: Task Manager → **Text to Image** · model `krea2_turbo_text_to_image` → completed row → **Use for Image to 3D** → **Image to 3D** (`trellis2_image_to_textured_mesh`).
+Local **Krea 2 Turbo** via diffusers `Krea2Pipeline` — **no Krea cloud API**. Weftspun: Task Manager → **Text to Image** · model `krea2_turbo_text_to_image` → completed row → **Use for Image to 3D** → **Image to 3D** (`trellis2_image_to_textured_mesh`).
 
 | Task | Where | Folder | Command |
 |------|-------|--------|---------|
@@ -467,7 +467,7 @@ Local **Krea 2 Turbo** via diffusers `Krea2Pipeline` — **no Krea cloud API**. 
 | Deps only (weights already on disk) | DGX | `cd /home/sifr/3DAIGC-API` | `bash scripts/setup_krea2.sh --deps-only` |
 | Post-pip guard | DGX | `cd /home/sifr/3DAIGC-API` | `bash scripts/post_pip_guard.sh` |
 | Restart API after setup/adapter change | DGX | `cd /home/sifr/3DAIGC-API` | `bash scripts/restart_services.sh` |
-| **Pipeline lock verify (frontend)** | DGX or Surface | `cd OpenNexus3DStudio` | `bash scripts/verify_krea2_text_to_3d_pipeline.sh` |
+| **Pipeline lock verify (frontend)** | DGX or Surface | `cd Weftspun3DStudio` | `bash scripts/verify_krea2_text_to_3d_pipeline.sh` |
 | **Pipeline lock verify (backend)** | DGX | `cd /home/sifr/3DAIGC-API` | `./venv/bin/python scripts/verify_hf_conditioning.py` |
 | Verify model listed | DGX | any | `curl -s http://127.0.0.1:7842/api/v1/system/models \| python3 -c "import json,sys; print(json.load(sys.stdin)['available_models'].get('text_to_image'))"` |
 | Smoke job (512² quick) | DGX | `cd /home/sifr/3DAIGC-API` | `curl -s -X POST http://127.0.0.1:7842/api/v1/image-generation/text-to-image -H 'Content-Type: application/json' -d '{"prompt":"a red cube on white","model_preference":"krea2_turbo_text_to_image","width":512,"height":512}'` |
@@ -480,17 +480,17 @@ Local **Krea 2 Turbo** via diffusers `Krea2Pipeline` — **no Krea cloud API**. 
 
 **Canonical ops doc:** `/home/sifr/3DAIGC-API/memory-bank/krea2-text-to-image-ops.md` · rule: `3DAIGC-API/.cursor/rules/krea2-text-to-image-ops.mdc`
 
-**Frontend:** OpenNexus `memory-bank/krea2-backend-integration.md` · **locked pipeline:** `memory-bank/krea2-text-to-3d-pipeline-protected-state.md` · rule `.cursor/rules/krea2-text-to-3d-pipeline-protected.mdc`. Prompt chips: background, full body, T/A-pose (exclusive), camera views.
+**Frontend:** Weftspun `memory-bank/krea2-backend-integration.md` · **locked pipeline:** `memory-bank/krea2-text-to-3d-pipeline-protected-state.md` · rule `.cursor/rules/krea2-text-to-3d-pipeline-protected.mdc`. Prompt chips: background, full body, T/A-pose (exclusive), camera views.
 
 **Multiview mesh:** `trellis_image_to_textured_mesh` + `trellis2_image_to_textured_mesh` (2–8 photos) — Task Manager **Image to 3D** multi-upload + checkbox; API `reference_image_file_ids` on `/mesh-generation/image-to-textured-mesh`.
 
-**Studio canvas (Phase 1):** OpenNexus `/studio` — Graph + Kanban for the locked Krea → TRELLIS.2 template (`memory-bank/studio-canvas-phase1.md`). Run pipeline via Task Manager; **Open mesh in viewport** uses `/?loadMesh=…`.
+**Studio canvas (Phase 1):** Weftspun `/studio` — Graph + Kanban for the locked Krea → TRELLIS.2 template (`memory-bank/studio-canvas-phase1.md`). Run pipeline via Task Manager; **Open mesh in viewport** uses `/?loadMesh=…`.
 
 ---
 
 ## 7b. Kimodo text-to-motion (DGX)
 
-NVIDIA Kimodo SOMA skeleton → `studio_motion.json` for VRM playback. OpenNexus: animation bar **KimodoMotionPromptBar**.
+NVIDIA Kimodo SOMA skeleton → `studio_motion.json` for VRM playback. Weftspun: animation bar **KimodoMotionPromptBar**.
 
 | Task | Where | Folder | Command |
 |------|-------|--------|---------|
@@ -552,7 +552,7 @@ cd /home/sifr/3DAIGC-API
 2. Download weights if needed:
    `cd /home/sifr/3DAIGC-API && ./scripts/download_models.sh -m triposplat`
 3. Restart API (section 5).
-4. In **OpenNexus3DStudio** on Surface:
+4. In **Weftspun3DStudio** on Surface:
    - **Avatar from Image** → upload photo → Start, or
    - Image to 3D → load mesh → Auto Rigging → Rig mode: Template VRM
 
@@ -562,8 +562,8 @@ cd /home/sifr/3DAIGC-API
 
 | Tool | When | Where | Command |
 |------|------|-------|---------|
-| **SessionMem sync** | After coding session | DGX | `cd /home/sifr/OpenNexus3DStudio` → `bash scripts/sync-sessionmem-team.sh` |
-| **SessionMem sync** | After coding session | Surface | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` → `.\scripts\sync-sessionmem-team.ps1` |
+| **SessionMem sync** | After coding session | DGX | `cd /home/sifr/Weftspun3DStudio` → `bash scripts/sync-sessionmem-team.sh` |
+| **SessionMem sync** | After coding session | Surface | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` → `.\scripts\sync-sessionmem-team.ps1` |
 | **Memory Bank** | Start of task | — | Agent reads `memory-bank/*.md` automatically |
 | **Memory Bank** | After big changes | Chat | Say **update memory bank** |
 | **Agent context → Surface** | After DGX agent session | DGX | `bash scripts/sync-to-pc.sh --include-agent-context` |
@@ -578,8 +578,8 @@ One-time SessionMem ID migration (done 2026-06-16): `python3 scripts/migrate-ses
 
 | | |
 |--|--|
-| **Refresh DGX** (frontend + API) | `cd /home/sifr/OpenNexus3DStudio` → `bash scripts/refresh-graphify-dgx.sh` |
-| **Refresh Surface** (frontend) | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` → `.\scripts\refresh-graphify-surface.ps1` |
+| **Refresh DGX** (frontend + API) | `cd /home/sifr/Weftspun3DStudio` → `bash scripts/refresh-graphify-dgx.sh` |
+| **Refresh Surface** (frontend) | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` → `.\scripts\refresh-graphify-surface.ps1` |
 | **Query** (either machine, in repo) | `graphify query "how does taskManager connect to API"` |
 
 AST-only, no API keys. Output: `graphify-out/` (gitignored).
@@ -593,7 +593,7 @@ AST-only, no API keys. Output: `graphify-out/` (gitignored).
 | | |
 |--|--|
 | **Where** | **Surface** — PowerShell |
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 | **Command** | `Get-Content .\logs\remote-log.txt -Wait -Tail 30` |
 
 ### Filter face-relay lines
@@ -607,13 +607,13 @@ Get-Content .\logs\remote-log.txt -Wait -Tail 50 | Select-String "REMOTE_LOG|nat
 | | |
 |--|--|
 | **Where** | **Surface** |
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 | **Command** | `.\scripts\capture-apk-logcat.ps1` |
 | **Output** | `logs\apk-logcat.txt` |
 
 *Note: `capture-nativeFaceRelay-logcat.ps1` in old notes → use `capture-apk-logcat.ps1`.*
 
-### Other XR scripts (all from OpenNexus3DStudio repo on Surface)
+### Other XR scripts (all from Weftspun3DStudio repo on Surface)
 
 | Script | Purpose |
 |--------|---------|
@@ -626,7 +626,7 @@ Get-Content .\logs\remote-log.txt -Wait -Tail 50 | Select-String "REMOTE_LOG|nat
 
 | | |
 |--|--|
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 
 | Task | Command |
 |------|---------|
@@ -676,7 +676,7 @@ python main.py
 | | |
 |--|--|
 | **Where** | **Surface** — PowerShell |
-| **Folder** | `cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
+| **Folder** | `cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
 | **Command** | `.\scripts\restart-nvidia-sync.ps1` |
 
 ---
@@ -752,7 +752,7 @@ Check XR service: `systemctl --user status xr-ai-3daigc-stack.service` · logs: 
 
 | Task | Where | Folder | Command |
 |------|-------|--------|---------|
-| Sync MSF + XR URLs → API + OpenNexus `.env` | DGX | `cd /home/sifr/3DAIGC-API` | `bash scripts/sync-dev-topology-env.sh` |
+| Sync MSF + XR URLs → API + Weftspun `.env` | DGX | `cd /home/sifr/3DAIGC-API` | `bash scripts/sync-dev-topology-env.sh` |
 
 ### MSF / Scene Assembler (DGX)
 
@@ -774,8 +774,8 @@ Check XR service: `systemctl --user status xr-ai-3daigc-stack.service` · logs: 
 
 | Task | Where | Folder | Command |
 |------|-------|--------|---------|
-| Both proxies (MSF :8453 + XR :8443) | Surface | `cd OpenNexus3DStudio` | `npm run dev:spark-proxies` |
-| Verify proxies reach DGX | Surface | `cd OpenNexus3DStudio` | `npm run verify:dev-proxies` |
+| Both proxies (MSF :8453 + XR :8443) | Surface | `cd Weftspun3DStudio` | `npm run dev:spark-proxies` |
+| Verify proxies reach DGX | Surface | `cd Weftspun3DStudio` | `npm run verify:dev-proxies` |
 
 **Scene Assembler login:** open host root (not a raw `.msf` file). Two fields:
 - **Fabric URL** must match the host you opened Scene Assembler on:
@@ -811,7 +811,7 @@ Artifact: `builds/linux-arm64/install/release/lib/libSneeze.a`. More: `Sneeze/do
 
 ---
 
-## 20b. Space-Time Host (DGX) — OMB fabric viewer
+## 20b. Weftspun Host (DGX) — OMB fabric viewer
 
 Minimal native browser shell (**SDL + Sneeze**). Your viewer — not Artemis. Opens MSF fabric URLs in 3D.
 
@@ -819,14 +819,14 @@ Docs/examples: [MetaversalCorp/SneezeDoc](https://github.com/MetaversalCorp/Snee
 
 | Task | Where | Folder | Command |
 |------|-------|--------|---------|
-| Build (needs Sneeze deps) | DGX | `cd /home/sifr/SpaceTimeHost` | `bash scripts/build-dgx.sh` |
+| Build (needs Sneeze deps) | DGX | `cd /home/sifr/WeftspunHost` | `bash scripts/build-dgx.sh` |
 | Run SneezeDoc stool (CDN) | DGX | same | `bash scripts/run-dgx.sh --url https://cdn.rp1.com/sneeze/examples/stool.json` |
 | Run vs local MSF | DGX | same | `bash scripts/run-dgx.sh --url https://127.0.0.1:8443/fabric/sample.msf` |
 | Update SneezeDoc wiki clone | DGX | `cd /home/sifr/SneezeDoc` | `git pull --ff-only` |
 
 **Prerequisite for local MSF:** `bash /home/sifr/3DAIGC-API/scripts/start-dgx-after-reboot.sh`. Sneeze deps: `cd /home/sifr/Sneeze && bash scripts/build-dgx-spark.sh` (or `--only sneeze-sdk` / `fastgltf` if only those missing).
 
-Binary: `SpaceTimeHost/install/release/bin/spacetime-host`. Keys: F5 reload, Ctrl+Alt+F5 reset, Esc quit.
+Binary: `WeftspunHost/install/release/bin/weftspun-host`. Keys: F5 reload, Ctrl+Alt+F5 reset, Esc quit.
 
 ---
 
@@ -834,15 +834,15 @@ Binary: `SpaceTimeHost/install/release/bin/spacetime-host`. Keys: F5 reload, Ctr
 
 | Old command / path | Use instead |
 |--------------------|-------------|
-| `C:\Users\alfao\Documents\GitHub\CharacterStudio` | `...\OpenNexus3DStudio` |
-| `cd ~/OpenNexus3DStudio/CharacterStudio` | `cd /home/sifr/OpenNexus3DStudio` |
+| `C:\Users\alfao\Documents\GitHub\CharacterStudio` | `...\Weftspun3DStudio` |
+| `cd ~/Weftspun3DStudio/CharacterStudio` | `cd /home/sifr/Weftspun3DStudio` |
 | `cd ~/github/3DAIGC-API` | `cd /home/sifr/3DAIGC-API` |
 | `bash start-api-in-container.sh` | `./scripts/run_local_venv.sh` (venv, not Docker API) |
 | `docker exec 3daigc-api pkill …` | `pkill -f 'uvicorn api.main_singleworker:app'` |
 | `./scripts/download_models.sh triposplat` | `./scripts/download_models.sh -m triposplat` |
 | `sync-from-dgx.ps1 -IncludeDocs` | `-IncludeDocs` is on **`sync-to-dgx.ps1`**, not sync-from |
 | `capture-nativeFaceRelay-logcat.ps1` | `.\scripts\capture-apk-logcat.ps1` |
-| SessionMem folder `CharacterStudio/` | `.sessionmem-team/OpenNexus3DStudio/` |
+| SessionMem folder `CharacterStudio/` | `.sessionmem-team/Weftspun3DStudio/` |
 | Manual `pkill` scheduler/API only | `bash scripts/stop_services.sh` then `start_services_detached.sh` or `restart_services.sh` |
 | Manual `docker start 3daigc-redis` before every restart | `bash scripts/restart_services.sh` *(calls `ensure_redis.sh` automatically)* |
 | `builds/.../bin/WasmTest` / `NetTest` | `SneezeTest --wasm --net` (unified test runner) |

@@ -207,10 +207,10 @@ bool CreateInstanceWithApiVersion(XrVersion apiVersion, XrInstance* outInstance)
     ici.next = reinterpret_cast<XrBaseInStructure*>(&androidInfo);
     ici.enabledExtensionCount = 3;
     ici.enabledExtensionNames = extensions;
-    std::strncpy(ici.applicationInfo.applicationName, "OpenNexus3dStudio",
+    std::strncpy(ici.applicationInfo.applicationName, "Weftspun3dStudio",
                  XR_MAX_APPLICATION_NAME_SIZE - 1);
     ici.applicationInfo.applicationVersion = 1;
-    std::strncpy(ici.applicationInfo.engineName, "OpenNexus3dStudio", XR_MAX_ENGINE_NAME_SIZE - 1);
+    std::strncpy(ici.applicationInfo.engineName, "Weftspun3dStudio", XR_MAX_ENGINE_NAME_SIZE - 1);
     ici.applicationInfo.engineVersion = 1;
     ici.applicationInfo.apiVersion = apiVersion;
 

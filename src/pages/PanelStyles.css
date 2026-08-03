@@ -1,4 +1,4 @@
-/* Shared styles for OpenNexus3DStudio avatar panels */
+/* Shared styles for Weftspun3DStudio avatar panels */
 .appearancePanel,
 .savePanel,
 .loadPanel {
@@ -408,7 +408,7 @@
   border-bottom: none;
 }
 
-/* Navigation Buttons at Bottom - OpenNexus3DStudio Style */
+/* Navigation Buttons at Bottom - Weftspun3DStudio Style */
 .navigationButtons {
   display: flex;
   justify-content: space-between;

@@ -1,5 +1,5 @@
 /**
- * RP1 / OMB spatial fabric adapter for OpenNexus3DStudio.
+ * RP1 / OMB spatial fabric adapter for Weftspun3DStudio.
  * Mirrors the IWSDK deep-link pattern in iwsdkWorldPackage.js.
  *
  * @see docs/SPATIAL_FABRIC_INTEGRATION.md
@@ -84,7 +84,7 @@ export function buildSpatialFabricPublishPayload({
   jobId,
 }) {
   return {
-    asset_name: name || (jobId ? `job-${jobId}` : 'opennexus-export'),
+    asset_name: name || (jobId ? `job-${jobId}` : 'weftspun-export'),
     glb_url: glbUrl,
     omb_tier: tier,
     company_id: companyId,
@@ -451,7 +451,7 @@ export async function publishWorldPropsToSpatialFabric(
   if (glbProps.length === 0) {
     throw new Error(
       'This world has no mesh props to publish (prop_count is 0). ' +
-        'Image-to-World splat environments stay in the OpenNexus viewport; Scene Assembler only accepts GLB props.',
+        'Image-to-World splat environments stay in the Weftspun viewport; Scene Assembler only accepts GLB props.',
     );
   }
 

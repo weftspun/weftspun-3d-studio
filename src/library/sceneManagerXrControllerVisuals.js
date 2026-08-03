@@ -28,13 +28,13 @@ function setObjectOpacity(root, opacity, transparent) {
     for (const mat of mats) {
       if (!mat) continue;
       if (typeof mat.opacity === 'number') {
-        if (mat.userData.opennexusBaseOpacity == null) {
-          mat.userData.opennexusBaseOpacity = mat.opacity;
+        if (mat.userData.weftspunBaseOpacity == null) {
+          mat.userData.weftspunBaseOpacity = mat.opacity;
         }
-        mat.transparent = transparent || mat.userData.opennexusBaseOpacity < 1;
+        mat.transparent = transparent || mat.userData.weftspunBaseOpacity < 1;
         mat.opacity = transparent
-          ? opacity * (mat.userData.opennexusBaseOpacity ?? 1)
-          : mat.userData.opennexusBaseOpacity ?? 1;
+          ? opacity * (mat.userData.weftspunBaseOpacity ?? 1)
+          : mat.userData.weftspunBaseOpacity ?? 1;
         mat.depthWrite = mat.opacity >= 0.99;
         mat.needsUpdate = true;
       }
@@ -45,7 +45,7 @@ function setObjectOpacity(root, opacity, transparent) {
 /** Names / markers that must stay on the XR camera scene (not floor-offset wrapper). */
 export function isXrInputVisualObject(obj) {
   if (!obj) return false;
-  if (obj.userData?.opennexusXrInputVisual) return true;
+  if (obj.userData?.weftspunXrInputVisual) return true;
   const name = String(obj.name || '');
   return (
     name.startsWith('XRController') ||
@@ -144,7 +144,7 @@ export class SceneManagerXrControllerVisuals {
     if (!hand) {
       const used = new Set(this._handsByHandedness.values());
       hand =
-        this._hands.find((h) => h && !used.has(h) && !h.userData.opennexusHandSource) ||
+        this._hands.find((h) => h && !used.has(h) && !h.userData.weftspunHandSource) ||
         this._hands[handedness === 'left' ? 0 : 1] ||
         this._hands[0] ||
         null;
@@ -155,7 +155,7 @@ export class SceneManagerXrControllerVisuals {
     if (!hand.joints) hand.joints = {};
     if (!hand.inputState) hand.inputState = { pinching: false };
 
-    if (hand.userData.opennexusHandSource !== handSrc) {
+    if (hand.userData.weftspunHandSource !== handSrc) {
       for (const inputJoint of handSrc.hand.values()) {
         this._getHandJoint(hand, inputJoint);
       }
@@ -164,9 +164,9 @@ export class SceneManagerXrControllerVisuals {
       } catch (err) {
         console.warn('[XR][visuals] hand connected dispatch failed:', err?.message || err);
       }
-      hand.userData.opennexusHandSource = handSrc;
+      hand.userData.weftspunHandSource = handSrc;
       hand.userData.inputSource = handSrc;
-      hand.userData.opennexusXrInputVisual = true;
+      hand.userData.weftspunXrInputVisual = true;
     }
     return hand;
   }
@@ -285,7 +285,7 @@ export class SceneManagerXrControllerVisuals {
         this._handsByHandedness.get(handedness) ||
         this._hands.find(
           (h) =>
-            h?.userData?.opennexusHandSource?.handedness === handedness ||
+            h?.userData?.weftspunHandSource?.handedness === handedness ||
             h?.userData?.inputSource?.handedness === handedness,
         ) ||
         null;
@@ -301,7 +301,7 @@ export class SceneManagerXrControllerVisuals {
           if (this._grips[slotIndex]) {
             this._grips[slotIndex].visible = true;
             setObjectOpacity(this._grips[slotIndex], XR_CONTROLLER_IDLE_OPACITY, true);
-            const ph = this._grips[slotIndex].userData?.opennexusPlaceholder;
+            const ph = this._grips[slotIndex].userData?.weftspunPlaceholder;
             if (ph) ph.visible = false;
           }
           if (this._controllers[slotIndex]) {
@@ -334,9 +334,9 @@ export class SceneManagerXrControllerVisuals {
 
   _syncPlaceholders() {
     for (const grip of this._grips) {
-      const ph = grip?.userData?.opennexusPlaceholder;
+      const ph = grip?.userData?.weftspunPlaceholder;
       if (!ph) continue;
-      const model = grip.userData.opennexusControllerModel;
+      const model = grip.userData.weftspunControllerModel;
       // Profile GLTF has loaded when the factory model has scene children.
       const modelReady = !!(model && model.children && model.children.length > 0);
       ph.visible = !modelReady;
@@ -344,7 +344,7 @@ export class SceneManagerXrControllerVisuals {
   }
 
   _ensurePlaceholder(parent, name, color) {
-    if (parent.userData.opennexusPlaceholder) return;
+    if (parent.userData.weftspunPlaceholder) return;
     const mesh = new THREE.Mesh(
       new THREE.BoxGeometry(0.04, 0.03, 0.1),
       new THREE.MeshStandardMaterial({
@@ -357,7 +357,7 @@ export class SceneManagerXrControllerVisuals {
     mesh.castShadow = false;
     mesh.receiveShadow = false;
     parent.add(mesh);
-    parent.userData.opennexusPlaceholder = mesh;
+    parent.userData.weftspunPlaceholder = mesh;
   }
 
   /**
@@ -372,34 +372,34 @@ export class SceneManagerXrControllerVisuals {
     for (let i = 0; i < 2; i += 1) {
       const grip = renderer.xr.getControllerGrip(i);
       grip.name = `XRControllerGrip${i}`;
-      grip.userData.opennexusXrInputVisual = true;
+      grip.userData.weftspunXrInputVisual = true;
       this._ensurePlaceholder(grip, `XRControllerPlaceholder${i}`, 0x3a3a3a);
-      if (!grip.userData.opennexusControllerModel) {
+      if (!grip.userData.weftspunControllerModel) {
         const model = controllerFactory.createControllerModel(grip);
         model.name = `XRControllerModel${i}`;
         grip.add(model);
-        grip.userData.opennexusControllerModel = model;
+        grip.userData.weftspunControllerModel = model;
       }
       grip.visible = true;
       this._grips[i] = grip;
 
       const controller = renderer.xr.getController(i);
       controller.name = `XRController${i}`;
-      controller.userData.opennexusXrInputVisual = true;
+      controller.userData.weftspunXrInputVisual = true;
       this._controllers[i] = controller;
 
       const hand = renderer.xr.getHand(i);
       hand.name = `XRHand${i}`;
-      hand.userData.opennexusXrInputVisual = true;
+      hand.userData.weftspunXrInputVisual = true;
       hand.matrixAutoUpdate = false;
       if (!hand.joints) hand.joints = {};
       if (!hand.inputState) hand.inputState = { pinching: false };
-      if (!hand.userData.opennexusHandModel) {
+      if (!hand.userData.weftspunHandModel) {
         // 'mesh' needs CDN; joints still drive bones once connected. Spheres work offline.
         const handModel = handFactory.createHandModel(hand, 'mesh');
         handModel.name = `XRHandModel${i}`;
         hand.add(handModel);
-        hand.userData.opennexusHandModel = handModel;
+        hand.userData.weftspunHandModel = handModel;
       }
       hand.visible = false;
       this._hands[i] = hand;
@@ -423,9 +423,9 @@ export class SceneManagerXrControllerVisuals {
       const grip = this._grips[i] || renderer.xr.getControllerGrip(i);
       const hand = this._hands[i] || renderer.xr.getHand(i);
       const controller = this._controllers[i] || renderer.xr.getController(i);
-      grip.userData.opennexusXrInputVisual = true;
-      hand.userData.opennexusXrInputVisual = true;
-      controller.userData.opennexusXrInputVisual = true;
+      grip.userData.weftspunXrInputVisual = true;
+      hand.userData.weftspunXrInputVisual = true;
+      controller.userData.weftspunXrInputVisual = true;
       if (grip.parent !== parent) parent.add(grip);
       if (hand.parent !== parent) parent.add(hand);
       if (controller.parent !== parent) parent.add(controller);
@@ -478,7 +478,7 @@ export class SceneManagerXrControllerVisuals {
           (s) => s.handedness === handedness && s.hand,
         );
         if (!stillThere) {
-          hand.userData.opennexusHandSource = null;
+          hand.userData.weftspunHandSource = null;
           this._handsByHandedness.delete(handedness);
         }
       }

@@ -1,11 +1,11 @@
 # Spatial Fabric / Open Metaverse Browser
 
-OpenNexus3DStudio integrates with the **[Open Metaverse Browser](https://omb.metaverse-standards.org/)** stack via **RP1 / OMB spatial fabric** on DGX.
+Weftspun3DStudio integrates with the **[Open Metaverse Browser](https://omb.metaverse-standards.org/)** stack via **RP1 / OMB spatial fabric** on DGX.
 
 ## Architecture
 
 ```text
-[OpenNexus3DStudio]  World Library, GLB Export, Task Manager
+[Weftspun3DStudio]  World Library, GLB Export, Task Manager
         │  spatialFabricAdapter.js + useSpatialFabric hook
         ▼
 [3DAIGC-API :7842]  /api/v1/spatial-fabric/*

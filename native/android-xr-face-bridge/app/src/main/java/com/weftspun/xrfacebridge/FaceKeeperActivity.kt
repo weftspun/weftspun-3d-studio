@@ -1,4 +1,4 @@
-package com.opennexus3dstudio.xrfacebridge
+package com.weftspun.xrfacebridge
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ class FaceKeeperActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "ON-FaceKeeper"
         const val EXTRA_REASON = "reason"
-        const val ACTION_FINISH = "com.opennexus3dstudio.xrfacebridge.FACE_KEEPER_FINISH"
+        const val ACTION_FINISH = "com.weftspun.xrfacebridge.FACE_KEEPER_FINISH"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

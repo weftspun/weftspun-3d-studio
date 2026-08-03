@@ -6,29 +6,31 @@ plugins {
 }
 
 /** WebView entry URL. Physical headset must reach your PC — not 10.0.2.2 (emulator-only). */
-fun readOpenNexus3dStudioUrl(): String {
+fun readWeftspun3dStudioUrl(): String {
     val f = rootProject.file("local.properties")
     if (f.exists()) {
         val p = Properties()
         f.inputStream().use { p.load(it) }
-        val fromFile = p.getProperty("openNexus3dStudio.url")?.trim() ?: p.getProperty("characterStudio.url")?.trim()
+        val fromFile = p.getProperty("weftspun3dStudio.url")?.trim()
+            ?: p.getProperty("openNexus3dStudio.url")?.trim()
+            ?: p.getProperty("characterStudio.url")?.trim()
         if (!fromFile.isNullOrEmpty()) return fromFile
     }
-    // Set openNexus3dStudio.url in local.properties (see local.properties.example). Rebuild after changing.
+    // Set weftspun3dStudio.url in local.properties (see local.properties.example). Rebuild after changing.
     return "https://192.168.1.100:3000/"
 }
 
 android {
-    namespace = "com.opennexus3dstudio.xrfacebridge"
+    namespace = "com.weftspun.xrfacebridge"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.opennexus3dstudio.xrfacebridge"
+        applicationId = "com.weftspun.xrfacebridge"
         minSdk = 31
         targetSdk = 35
         versionCode = 9
         versionName = "0.1.8"
-        resValue("string", "open_nexus_3d_studio_url", readOpenNexus3dStudioUrl())
+        resValue("string", "weftspun_3d_studio_url", readWeftspun3dStudioUrl())
 
         ndk {
             abiFilters += listOf("arm64-v8a")

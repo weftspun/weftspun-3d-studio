@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Overview
 
-The manifest files are essential if you want to mod OpenNexus3DStudio with your own assets and selection screens. They are found in various parts of the project, and basically are the main file other than art assets that you would need to modify to make an avatar builder program. For more info go to the full documentation page for any manifest in the sidebar.
+The manifest files are essential if you want to mod Weftspun3DStudio with your own assets and selection screens. They are found in various parts of the project, and basically are the main file other than art assets that you would need to modify to make an avatar builder program. For more info go to the full documentation page for any manifest in the sidebar.
 
 
 ## [Character Selection](./character-select.md)
@@ -49,7 +49,7 @@ The next section will have more information about the manifest.json files being 
 
 ## [Character Traits](./character-traits.md)
 
-Setting up this manifest will populate the asset trait section with your own traits that people can select from. It will also serve the OpenNexus3DStudio for cull trait model options (remove faces underneath) based on the layers, so the triangles disappear underneath the clothing for example.
+Setting up this manifest will populate the asset trait section with your own traits that people can select from. It will also serve the Weftspun3DStudio for cull trait model options (remove faces underneath) based on the layers, so the triangles disappear underneath the clothing for example.
 
 ![Screenshot from 2024-02-19 13-42-19](/img/By1NZXbhT.jpg)
 

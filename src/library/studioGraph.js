@@ -524,7 +524,7 @@ export function toReactFlowElements(project) {
   return { nodes, edges };
 }
 
-const STORAGE_KEY = 'opennexus.studio.project.v1';
+const STORAGE_KEY = 'weftspun.studio.project.v1';
 
 export function saveProjectToStorage(project) {
   try {

@@ -1,6 +1,6 @@
 # Public deploy (Vercel / GitHub Pages)
 
-OpenNexus3DStudio ships two deployment modes:
+Weftspun3DStudio ships two deployment modes:
 
 | Mode | Where | AI backend | Secrets |
 |------|-------|------------|---------|
@@ -9,7 +9,7 @@ OpenNexus3DStudio ships two deployment modes:
 
 ## Vercel (recommended public demo)
 
-1. Import [AlfaOmegaGrafx/OpenNexus3DStudio](https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio) in Vercel.
+1. Import [weftspun/weftspun-3d-studio](https://github.com/weftspun/weftspun-3d-studio) in Vercel.
 2. Framework preset: **Vite** (or use repo `vercel.json`).
 3. Build command: `npm run build` (runs `verify-public-build-env` then `vite build`).
 4. Output directory: `build`.

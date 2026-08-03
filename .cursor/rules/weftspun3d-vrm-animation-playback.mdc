@@ -1,6 +1,6 @@
 ---
 description: VRM Mixamo animation playback invariants — do not break
-globs: OpenNexus3DStudio/src/library/**/{animationManager,loadMixamoAnimation,kimodoMotionLoader,studioAnimations,viewportExpressionVrm,vrmMixamoPlaybackGuard}*
+globs: Weftspun3DStudio/src/library/**/{animationManager,loadMixamoAnimation,kimodoMotionLoader,studioAnimations,viewportExpressionVrm,vrmMixamoPlaybackGuard}*
 alwaysApply: false
 ---
 

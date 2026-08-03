@@ -383,7 +383,7 @@
   position: relative;
   margin-top: 10px; /* Reduced top margin */
   margin-bottom: 80px; /* Increased bottom margin to ensure space above buttons */
-  z-index: 1; /* Lower z-index to go behind OpenNexus3DStudio avatar panel header */
+  z-index: 1; /* Lower z-index to go behind Weftspun3DStudio avatar panel header */
   width: 95%; /* Use almost all available horizontal space */
   max-width: none; /* Remove width constraint to use all space */
   height: auto; /* Let height adjust to content */
@@ -718,7 +718,7 @@
   background: #4a4a4a;
 }
 
-/* Sidebar panel (OpenNexus3DStudio avatar right rail) */
+/* Sidebar panel (Weftspun3DStudio avatar right rail) */
 .appearanceSidebar.container {
   padding-top: 0;
 }

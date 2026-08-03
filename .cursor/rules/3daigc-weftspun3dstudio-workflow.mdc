@@ -1,22 +1,22 @@
 ---
-description: 3DAIGC-API and OpenNexus3DStudio dev workflow across DGX Spark and PC
+description: 3DAIGC-API and Weftspun3DStudio dev workflow across DGX Spark and PC
 alwaysApply: true
 ---
 
-# 3DAIGC-API + OpenNexus3DStudio Workflow
+# 3DAIGC-API + Weftspun3DStudio Workflow
 
 ## Where things run
 
 - **DGX Spark**: `3DAIGC-API` backend (`/home/sifr/3DAIGC-API`, port `7842`)
-- **PC**: OpenNexus3DStudio dev server (`/home/sifr/OpenNexus3DStudio`, Vite)
+- **PC**: Weftspun3DStudio dev server (`/home/sifr/Weftspun3DStudio`, Vite)
 
-Do **not** start the OpenNexus3DStudio dev server on Spark unless the user explicitly asks. The user runs it locally on their PC.
+Do **not** start the Weftspun3DStudio dev server on Spark unless the user explicitly asks. The user runs it locally on their PC.
 
 ## Complementary changes (required)
 
-Backend and frontend are one integration. When changing `3DAIGC-API`, also update OpenNexus3DStudio so the client matches the API contract.
+Backend and frontend are one integration. When changing `3DAIGC-API`, also update Weftspun3DStudio so the client matches the API contract.
 
-| Backend change | OpenNexus3DStudio counterpart |
+| Backend change | Weftspun3DStudio counterpart |
 |----------------|------------------------------|
 | New model in `config/models.yaml` + adapter | `src/library/aiModelsCatalog.js` (model entry, labels, defaults) |
 | API request/response shape | `src/library/taskManager.js` (upload flow, payloads, polling) |
@@ -49,7 +49,7 @@ See `.cursor/rules/agent-run-instructions.mdc` for full rules.
 Both repos have `.cursor/rules/graphify.mdc` and a local AST graph in `graphify-out/` (gitignored).
 
 - **Refresh after code changes (DGX):** `bash scripts/refresh-graphify-dgx.sh` or `graphify update . --no-cluster` in each repo.
-- **Refresh on Surface:** `.\scripts\refresh-graphify-surface.ps1` or `graphify update . --no-cluster` in `C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` after DGX sync.
+- **Refresh on Surface:** `.\scripts\refresh-graphify-surface.ps1` or `graphify update . --no-cluster` in `C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` after DGX sync.
 - **Query:** `graphify query "how does X connect to Y?"` before large greps.
 - **Scope:** `.graphifyignore` excludes `thirdparty/`, `node_modules/`, outputs, and huge roadmaps.
 - Does **not** replace workflow rules or chat memory — only cross-file structure in the repo.
@@ -57,7 +57,7 @@ Both repos have `.cursor/rules/graphify.mdc` and a local AST graph in `graphify-
 ## SessionMem (cross-session memory, both machines)
 
 - Installed globally: `npm install -g sessionmem`; registered per repo: `sessionmem install`.
-- **Team mode** shared folder: `OpenNexus3DStudio/.sessionmem-team/` (gitignored). Project ID namespace: `OpenNexus3DStudio` (migrated from legacy `CharacterStudio`).
+- **Team mode** shared folder: `Weftspun3DStudio/.sessionmem-team/` (gitignored). Project ID namespace: `Weftspun3DStudio` (migrated from legacy `CharacterStudio`).
 - **After coding on either machine:** run team sync **only when the user asks** — `bash scripts/sync-sessionmem-team.sh` (DGX) or `.\scripts\sync-sessionmem-team.ps1` (Surface).
 
 ## Cursor Memory Bank (tacticlaunch/cursor-bank)

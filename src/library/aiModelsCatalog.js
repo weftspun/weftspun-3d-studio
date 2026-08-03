@@ -35,7 +35,7 @@ export const ALL_MODELS = [
   { value: 'worldmirror2_reconstruct', label: 'WorldMirror 2.0 Photos to Splat (2+ photos)', feature: 'image_to_splat' },
   { value: 'colmap_3dgs_reconstruct', label: 'Photos to Splat (COLMAP — 3+ photos)', feature: 'image_to_splat' },
   {
-    value: 'opennexus_image_to_world',
+    value: 'weftspun_image_to_world',
     label: 'Image to World (TripoSplat env + TRELLIS.2 props)',
     feature: 'image_to_world',
   },
@@ -102,7 +102,7 @@ export const PREFERRED_PIPELINES = {
     label: 'Explorable world',
     steps: ['TripoSplat env', 'optional TRELLIS.2 props'],
     taskType: 'image-to-world',
-    envModel: 'opennexus_image_to_world',
+    envModel: 'weftspun_image_to_world',
     propMeshModel: 'trellis2_image_to_textured_mesh',
   },
   physicalReplicaScan: {
@@ -199,7 +199,7 @@ const DEFAULT_MODEL_BY_FEATURE = {
   text_mesh_painting: 'trellis_text_mesh_painting',
   image_mesh_painting: 'trellis2_image_mesh_painting',
   image_to_splat: 'triposplat_image_to_splat',
-  image_to_world: 'opennexus_image_to_world',
+  image_to_world: 'weftspun_image_to_world',
   environment_scan: 'lingbot_map_environment_scan',
   mesh_segmentation: 'p3sam_mesh_segmentation',
   auto_rig: 'skintokens_auto_rig',

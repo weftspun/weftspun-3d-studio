@@ -1,6 +1,6 @@
 /**
- * VRMLoader - VRM model loading and processing for OpenNexus3DStudio
- * Based on OpenNexus3DStudio's VRM handling patterns
+ * VRMLoader - VRM model loading and processing for Weftspun3DStudio
+ * Based on Weftspun3DStudio's VRM handling patterns
  */
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -306,7 +306,7 @@ export class VRMLoader {
       humanoid: null, // No humanoid bones
       expressionManager: null, // No expressions
       userData: {
-        opennexus3dstudio: {
+        weftspun3dstudio: {
           fallbackMode: true,
           hasHumanoidBones: false,
           loaded: true,
@@ -347,7 +347,7 @@ export class VRMLoader {
   }
 
   /**
-   * Process VRM model for OpenNexus3DStudio
+   * Process VRM model for Weftspun3DStudio
    * @param {Object} vrm - VRM object
    * @param {Object} options - Processing options
    */
@@ -406,8 +406,8 @@ export class VRMLoader {
     // Ensure blend shapes are properly detected
     this.ensureBlendShapes(vrm);
 
-    // Add OpenNexus3DStudio metadata
-    this.addOpenNexus3DStudioMetadata(vrm);
+    // Add Weftspun3DStudio metadata
+    this.addWeftspun3DStudioMetadata(vrm);
 
     console.log('✅ VRM Loader: VRM model processing completed');
     return vrm;
@@ -536,8 +536,8 @@ export class VRMLoader {
       Object.keys(humanBones).forEach(boneName => {
         const boneData = humanBones[boneName];
         if (boneData && boneData.node) {
-          // Add OpenNexus3DStudio bone metadata
-          boneData.node.userData.opennexus3dstudio = {
+          // Add Weftspun3DStudio bone metadata
+          boneData.node.userData.weftspun3dstudio = {
             boneType: boneName,
             isHumanBone: true
           };
@@ -554,8 +554,8 @@ export class VRMLoader {
     scene.traverse((child) => {
       if (child.isBone) {
         // Add bone metadata
-        child.userData.opennexus3dstudio = {
-          ...child.userData.opennexus3dstudio,
+        child.userData.weftspun3dstudio = {
+          ...child.userData.weftspun3dstudio,
           isBone: true,
           boneIndex: child.boneIndex || -1
         };
@@ -580,11 +580,11 @@ export class VRMLoader {
       Object.keys(expressions).forEach(expressionName => {
         const expression = expressions[expressionName];
         if (expression) {
-          // Add OpenNexus3DStudio expression metadata
+          // Add Weftspun3DStudio expression metadata
           if (!expression.userData) {
             expression.userData = {};
           }
-          expression.userData.opennexus3dstudio = {
+          expression.userData.weftspun3dstudio = {
             expressionName,
             isBlendShape: true
           };
@@ -614,8 +614,8 @@ export class VRMLoader {
             child.material.userData.vrmMaterial = true;
           }
           
-          // Add OpenNexus3DStudio material metadata
-          child.material.userData.opennexus3dstudio = {
+          // Add Weftspun3DStudio material metadata
+          child.material.userData.weftspun3dstudio = {
             isVRMMaterial: true,
             processed: true
           };
@@ -750,12 +750,12 @@ export class VRMLoader {
   }
 
   /**
-   * Add OpenNexus3DStudio metadata
+   * Add Weftspun3DStudio metadata
    * @param {Object} vrm - VRM object
    */
-  addOpenNexus3DStudioMetadata(vrm) {
+  addWeftspun3DStudioMetadata(vrm) {
     if (!vrm) {
-      console.warn('VRM object is undefined, cannot add OpenNexus3DStudio metadata');
+      console.warn('VRM object is undefined, cannot add Weftspun3DStudio metadata');
       return;
     }
     
@@ -763,7 +763,7 @@ export class VRMLoader {
       vrm.userData = {};
     }
     
-    vrm.userData.opennexus3dstudio = {
+    vrm.userData.weftspun3dstudio = {
       loaded: true,
       loadDate: new Date().toISOString(),
       version: '1.0.0',
@@ -852,7 +852,7 @@ export class VRMLoader {
     }
 
     // Check if this is a fallback VRM (no humanoid bones)
-    const isFallbackVRM = vrm.userData?.opennexus3dstudio?.fallbackMode === true;
+    const isFallbackVRM = vrm.userData?.weftspun3dstudio?.fallbackMode === true;
     
     if (!vrm.humanoid && !isFallbackVRM) {
       warnings.push('VRM model lacks humanoid structure');

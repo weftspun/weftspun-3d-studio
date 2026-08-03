@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run all locked contract verifiers for protected OpenNexus domains.
+# Run all locked contract verifiers for protected Weftspun domains.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -7,7 +7,7 @@ cd "$ROOT"
 
 fail=0
 
-echo "=== Protected contracts (OpenNexus) ==="
+echo "=== Protected contracts (Weftspun) ==="
 
 echo ""
 echo "--- Krea 2 -> Image-to-3D pipeline ---"

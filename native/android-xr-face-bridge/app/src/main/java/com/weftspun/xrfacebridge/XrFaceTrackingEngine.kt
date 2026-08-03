@@ -1,4 +1,4 @@
-package com.opennexus3dstudio.xrfacebridge
+package com.weftspun.xrfacebridge
 
 import android.util.Log
 import android.webkit.WebView
@@ -132,9 +132,9 @@ object XrFaceTrackingEngine {
                     "var p=$payloadJs;" +
                     "if(typeof window.onNativeFaceData==='function'&&p.weights){" +
                     "window.onNativeFaceData(p.weights);}" +
-                    "if(window.__openNexus3dStudioNativeFace&&" +
-                    "window.__openNexus3dStudioNativeFace.push){" +
-                    "window.__openNexus3dStudioNativeFace.push(p);" +
+                    "if(window.__weftspun3dStudioNativeFace&&" +
+                    "window.__weftspun3dStudioNativeFace.push){" +
+                    "window.__weftspun3dStudioNativeFace.push(p);" +
                     "}else{var q=(window.__ON_NATIVE_FACE_Q=window.__ON_NATIVE_FACE_Q||[]);" +
                     "if(q.length<120)q.push(p);}" +
                     "}catch(e){console.warn('ON-nativeFace',e&&e.message);}})();",
@@ -382,7 +382,7 @@ object XrFaceTrackingEngine {
 
     /**
      * Direct WebView injection (no HTTP relay). Feeds [window.onNativeFaceData] and
-     * [window.__openNexus3dStudioNativeFace.push] used by OpenNexus3dStudio.
+     * [window.__weftspun3dStudioNativeFace.push] used by Weftspun3dStudio.
      */
     private suspend fun pushToWebView(weights: JSONObject, payload: JSONObject) {
         val wv = webViewRef?.get() ?: return
@@ -394,9 +394,9 @@ object XrFaceTrackingEngine {
                     "var w=$weightsJs;" +
                     "if(typeof window.onNativeFaceData==='function'){window.onNativeFaceData(w);}" +
                     "var p=$payloadJs;" +
-                    "if(window.__openNexus3dStudioNativeFace&&" +
-                    "window.__openNexus3dStudioNativeFace.push){" +
-                    "window.__openNexus3dStudioNativeFace.push(p);" +
+                    "if(window.__weftspun3dStudioNativeFace&&" +
+                    "window.__weftspun3dStudioNativeFace.push){" +
+                    "window.__weftspun3dStudioNativeFace.push(p);" +
                     "}else{var q=(window.__ON_NATIVE_FACE_Q=window.__ON_NATIVE_FACE_Q||[]);" +
                     "if(q.length<120)q.push(p);}" +
                     "}catch(e){console.warn('ON-nativeFace',e&&e.message);}})();",

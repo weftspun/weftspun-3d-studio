@@ -1,7 +1,7 @@
 # Multi-image splat & avatar roadmap
 
 Three-tier plan for using **multiple photos** toward better splats and avatars.
-OpenNexus3DStudio + 3DAIGC-API share this doc.
+Weftspun3DStudio + 3DAIGC-API share this doc.
 
 ## Current state
 

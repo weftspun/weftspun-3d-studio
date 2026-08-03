@@ -1,13 +1,13 @@
 /**
- * Persist OpenNexus3DStudio task list across refresh and route changes.
+ * Persist Weftspun3DStudio task list across refresh and route changes.
  */
 
 import { TASK_TYPE_TO_FEATURE } from './aiModelsCatalog.js';
 import { enrichCompletedJobPayload } from './taskModelUrl.js';
 import { resolveObjectNameFromJob } from './objectNameUtils.js';
 
-export const TASK_STORAGE_KEY = 'opennexus3d_tasks_v1';
-export const DELETED_JOBS_STORAGE_KEY = 'opennexus3d_deleted_jobs_v1';
+export const TASK_STORAGE_KEY = 'weftspun3d_tasks_v1';
+export const DELETED_JOBS_STORAGE_KEY = 'weftspun3d_deleted_jobs_v1';
 export const MAX_STORED_TASKS = 100;
 export const MAX_DELETED_JOB_IDS = 500;
 /** Matches 3DAIGC-API Redis job TTL (24h). */
@@ -246,13 +246,32 @@ export function getTaskElapsedMs(task) {
   return ms >= 0 ? ms : null;
 }
 
+/** Pre-Weftspun-rebrand keys — read once so existing browsers keep their task history. */
+const LEGACY_STORAGE_KEYS = {
+  [TASK_STORAGE_KEY]: 'opennexus3d_tasks_v1',
+  [DELETED_JOBS_STORAGE_KEY]: 'opennexus3d_deleted_jobs_v1',
+};
+
+/**
+ * Read `key`, falling back to its pre-rebrand name and migrating the value forward.
+ * @param {string} key
+ * @returns {string|null}
+ */
+function readStorageWithLegacyFallback(key) {
+  const raw = window.localStorage.getItem(key);
+  if (raw) return raw;
+  const legacy = window.localStorage.getItem(LEGACY_STORAGE_KEYS[key]);
+  if (legacy) window.localStorage.setItem(key, legacy);
+  return legacy;
+}
+
 /**
  * @returns {{ version: number, apiEndpoint: string, tasks: object[], savedAt: string }|null}
  */
 export function readTaskStorageSnapshot() {
   if (typeof window === 'undefined' || !window.localStorage) return null;
   try {
-    const raw = window.localStorage.getItem(TASK_STORAGE_KEY);
+    const raw = readStorageWithLegacyFallback(TASK_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.tasks)) return null;
@@ -312,7 +331,7 @@ export function resolveTaskJobId(task) {
 export function readDeletedJobIds() {
   if (typeof window === 'undefined' || !window.localStorage) return new Set();
   try {
-    const raw = window.localStorage.getItem(DELETED_JOBS_STORAGE_KEY);
+    const raw = readStorageWithLegacyFallback(DELETED_JOBS_STORAGE_KEY);
     if (!raw) return new Set();
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return new Set();

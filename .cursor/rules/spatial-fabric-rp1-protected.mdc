@@ -15,7 +15,7 @@ alwaysApply: true
 | TaskManager | `apiEndpoint` from `getApiEndpoint()` only — no duplicate prop |
 | Publish | Completed **mesh** jobs → `POST /api/v1/spatial-fabric/publish` on DGX API |
 | DGX API | `/api/v1/spatial-fabric/*` routes must be loaded; `.env` MSF vars sourced on restart |
-| Naming | OpenNexus3DStudio in product strings; Character Studio = attribution only |
+| Naming | Weftspun3DStudio in product strings; Character Studio = attribution only |
 | Secrets | Never commit `.env`, `memory-bank/`, `MONETIZATION_ROADMAP.md`, MSF edit keys |
 
 ## Protected files

@@ -183,7 +183,7 @@ All API responses follow a consistent format:
       "hunyuan3dv21_image_mesh_painting",
       "trellis_image_mesh_painting"
     ],
-    "image_to_world": ["opennexus_image_to_world"],
+    "image_to_world": ["weftspun_image_to_world"],
     "image_to_splat": [
       "triposplat_image_to_splat",
       "worldmirror2_reconstruct",
@@ -943,7 +943,7 @@ Skinned humanoid GLB exports must satisfy the [API avatar rig contract](../API_A
   - `output_format`: Output format (`glb` recommended for template mode)
   - `model_preference`: Model to use for rigging (`unirig_auto_rig`)
 
-**Template rig example** (bones-only; facial morphs require mesh wrap — see OpenNexus3DStudio `docs/AVATAR_PIPELINE.md`):
+**Template rig example** (bones-only; facial morphs require mesh wrap — see Weftspun3DStudio `docs/AVATAR_PIPELINE.md`):
 
 ```json
 {
@@ -958,13 +958,13 @@ Skinned humanoid GLB exports must satisfy the [API avatar rig contract](../API_A
 ### Humanoid Template Manifest
 - **URL**: `/api/v1/auto-rigging/humanoid-templates/{template_id}/manifest`
 - **Method**: `GET`
-- **Description**: Metadata for `template.vrm` (bone counts, blend-shape preset names) used by OpenNexus3DStudio VRM export
+- **Description**: Metadata for `template.vrm` (bone counts, blend-shape preset names) used by Weftspun3DStudio VRM export
 - **Authentication**: None required
 - **Response** (abbreviated):
 ```json
 {
   "template_id": "template",
-  "description": "OpenNexus humanoid template VRM",
+  "description": "Weftspun humanoid template VRM",
   "expected": { "blend_shape_groups": 124, "human_bones": 55 }
 }
 ```
@@ -1012,7 +1012,7 @@ Skinned humanoid GLB exports must satisfy the [API avatar rig contract](../API_A
 
 ## Splat Generation Endpoints
 
-Gaussian splat preview (TripoSplat). Consumed by OpenNexus3DStudio via Spark.js.
+Gaussian splat preview (TripoSplat). Consumed by Weftspun3DStudio via Spark.js.
 
 ### Image to Splat
 - **URL**: `/api/v1/splat-generation/image-to-splat`
@@ -1802,7 +1802,7 @@ Open Metaverse Browser (OMB) publishing via the MSF Map Service. Configure `MSF_
 
 ### Available Models by Feature
 
-Enabled models match `3DAIGC-API/config/models.yaml` and the OpenNexus3DStudio catalog (`src/library/aiModelsCatalog.js`). Query live lists from `/api/v1/system/models`.
+Enabled models match `3DAIGC-API/config/models.yaml` and the Weftspun3DStudio catalog (`src/library/aiModelsCatalog.js`). Query live lists from `/api/v1/system/models`.
 
 | Feature | Model ID | Description |
 |---------|----------|-------------|
@@ -1817,7 +1817,7 @@ Enabled models match `3DAIGC-API/config/models.yaml` and the OpenNexus3DStudio c
 | Image Mesh Painting | `trellis2_image_mesh_painting` | TRELLIS.2 image mesh painting |
 | Image Mesh Painting | `hunyuan3dv21_image_mesh_painting` | Hunyuan3D v2.1 image mesh painting |
 | Image Mesh Painting | `trellis_image_mesh_painting` | TRELLIS v1 legacy mesh painting |
-| Image to World | `opennexus_image_to_world` | TripoSplat environment + optional TRELLIS.2 props |
+| Image to World | `weftspun_image_to_world` | TripoSplat environment + optional TRELLIS.2 props |
 | Image to Splat | `triposplat_image_to_splat` | Single-photo Gaussian splat (Spark.js / WebXR) |
 | Image to Splat | `worldmirror2_reconstruct` | WorldMirror 2.0 multi-photo splat (2+ images) |
 | Image to Splat | `colmap_3dgs_reconstruct` | COLMAP + 3DGS multi-photo splat (3+ images) |

@@ -27,7 +27,7 @@ function XrVoiceDemoPreview() {
         </div>
       </div>
       <p className="xr-ai-demo-footnote">
-        Public demo — run OpenNexus locally with DGX Spark for live mic, camera, and task handoff.
+        Public demo — run Weftspun locally with DGX Spark for live mic, camera, and task handoff.
       </p>
     </div>
   );

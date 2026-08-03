@@ -97,7 +97,7 @@ describe('sceneManagerXrControllerVisuals', () => {
     grips[0].userData.inputSource = { handedness: 'left', gamepad: {} };
     const gripMat = new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 1, transparent: false });
     grips[0].add(new THREE.Mesh(new THREE.BoxGeometry(0.01, 0.01, 0.01), gripMat));
-    hands[0].userData.opennexusHandSource = leftSrc;
+    hands[0].userData.weftspunHandSource = leftSrc;
     hands[0].userData.inputSource = leftSrc;
 
     const visuals = new SceneManagerXrControllerVisuals({

@@ -2,7 +2,7 @@
 $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $surfaceRoot = $env:SURFACE_ROOT
-if (-not $surfaceRoot) { $surfaceRoot = 'C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio' }
+if (-not $surfaceRoot) { $surfaceRoot = 'C:\Users\alfao\Documents\GitHub\Weftspun3DStudio' }
 
 if (-not (Get-Command graphify -ErrorAction SilentlyContinue)) {
     if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {

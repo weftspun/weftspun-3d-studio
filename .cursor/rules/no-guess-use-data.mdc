@@ -31,4 +31,4 @@ When debugging viewport, rig, animation, floor alignment, API, or device issues,
 ## Pair with
 
 - `remote-log-first.mdc` — browser log discipline
-- `opennexus3d-vrm-animation-playback.mdc` — anim regression tests
+- `weftspun3d-vrm-animation-playback.mdc` — anim regression tests

@@ -125,7 +125,7 @@ function Test-SurfaceOwnedSyncPath {
     )
     $rel = $Rel -replace '\\', '/'
     if ($rel -match '^(graphify-out|\.env|uploads/|Pitch Deck/)') { return $false }
-    if ($rel -eq 'MONETIZATION_ROADMAP.md' -or $rel -eq 'OpenNexus3DStudio.code-workspace') { return $true }
+    if ($rel -eq 'MONETIZATION_ROADMAP.md' -or $rel -eq 'Weftspun3DStudio.code-workspace') { return $true }
     if ($rel -match '^src/sound(/|$)' -and -not $Full) { return $false }
     if ($rel -match '^src/') { return $true }
     if ($rel -match '^memory-bank/') { return $true }

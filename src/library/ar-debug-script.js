@@ -5,7 +5,7 @@
  * 
  * Usage:
  * 1. Open chrome://inspect/#devices on your PC
- * 2. Find your Galaxy XR device (OpenNexus3DStudio: SPACE-TIME EDITION)
+ * 2. Find your Galaxy XR device (Weftspun 3D Studio)
  * 3. Click "inspect" next to https://10.0.0.32:3002/
  * 4. Open the Console tab
  * 5. Paste this entire script and press Enter

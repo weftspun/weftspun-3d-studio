@@ -1,6 +1,6 @@
 # Shared 3D Viewer System
 
-This document explains the shared 3D viewer system that allows both OpenNexus3DStudio and Open3DStudio (OpenNexus3DStudio) to use the same 3D viewing capabilities.
+This document explains the shared 3D viewer system that allows both Weftspun3DStudio and Open3DStudio (Weftspun3DStudio) to use the same 3D viewing capabilities.
 
 ## Overview
 
@@ -12,7 +12,7 @@ The shared 3D viewer system provides a unified 3D viewing experience across both
 
 1. **Shared3DViewer** (`src/components/Shared3DViewer.jsx`)
    - Base 3D viewer component with Three.js integration
-   - Handles both OpenNexus3DStudio and Open3DStudio (OpenNexus3DStudio) modes
+   - Handles both Weftspun3DStudio and Open3DStudio (Weftspun3DStudio) modes
    - Provides common 3D viewing functionality
 
 2. **Universal3DViewer** (`src/components/Universal3DViewer.jsx`)
@@ -21,12 +21,12 @@ The shared 3D viewer system provides a unified 3D viewing experience across both
    - Handles context switching between applications
 
 3. **Core3DViewer** (`src/components/Core3DViewer.jsx`)
-   - Open3DStudio (OpenNexus3DStudio)-specific viewer component
+   - Open3DStudio (Weftspun3DStudio)-specific viewer component
    - Optimized for Core3D design workflows
    - Integrates with Core3D API and designs
 
 4. **Scene3D** (`src/components/Scene3D.jsx`)
-   - OpenNexus3DStudio-specific viewer component
+   - Weftspun3DStudio-specific viewer component
    - Optimized for VRM and character workflows
    - Integrates with existing scene management
 
@@ -40,14 +40,14 @@ The shared 3D viewer system provides a unified 3D viewing experience across both
 - **Responsive Design**: Works on desktop and mobile
 - **Error Handling**: Graceful error recovery and user feedback
 
-### OpenNexus3DStudio Features
+### Weftspun3DStudio Features
 - **VRM Support**: Full VRM model loading and manipulation
 - **Blend Shapes**: VRM facial expression controls
 - **Character Animation**: Bone and animation support
 - **VRM Export**: Export models in VRM format
-- **OpenNexus3DStudio Integration**: Seamless workflow integration
+- **Weftspun3DStudio Integration**: Seamless workflow integration
 
-### Open3DStudio (OpenNexus3DStudio) Features
+### Open3DStudio (Weftspun3DStudio) Features
 - **Core3D Integration**: Direct API integration
 - **Design Preview**: Real-time design visualization
 - **Material Application**: Dynamic material switching
@@ -76,7 +76,7 @@ import Universal3DViewer from './components/Universal3DViewer';
 />
 ```
 
-### OpenNexus3DStudio Usage
+### Weftspun3DStudio Usage
 
 ```jsx
 import Scene3D from './components/Scene3D';
@@ -89,7 +89,7 @@ import Scene3D from './components/Scene3D';
 />
 ```
 
-### Open3DStudio (OpenNexus3DStudio) Usage
+### Open3DStudio (Weftspun3DStudio) Usage
 
 ```jsx
 import Core3DViewer from './components/Core3DViewer';
@@ -108,7 +108,7 @@ import Core3DViewer from './components/Core3DViewer';
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `mode` | string | 'auto' | Application mode ('characterstudio' or 'opennexus3dstudio' / 'open3dstudio') |
+| `mode` | string | 'auto' | Application mode ('characterstudio' or 'weftspun3dstudio' / 'open3dstudio') |
 | `model` | object | null | 3D model to display |
 | `renderMode` | string | 'solid' | Rendering mode |
 | `showControls` | boolean | true | Show control panel |
@@ -138,8 +138,8 @@ import Core3DViewer from './components/Core3DViewer';
 - Integrates with Core3D material system
 
 ### Context Integration
-- Uses `SceneContext` for OpenNexus3DStudio features
-- Uses `Core3DContext` for Open3DStudio (OpenNexus3DStudio) features
+- Uses `SceneContext` for Weftspun3DStudio features
+- Uses `Core3DContext` for Open3DStudio (Weftspun3DStudio) features
 - Maintains state consistency across components
 
 ## Performance Considerations
@@ -278,7 +278,7 @@ import Core3DViewer from './components/Core3DViewer';
 
 For issues related to:
 - **3D Viewer**: Check component documentation
-- **OpenNexus3DStudio**: Review scene management docs
-- **Open3DStudio (OpenNexus3DStudio)**: Check Core3D integration docs
+- **Weftspun3DStudio**: Review scene management docs
+- **Open3DStudio (Weftspun3DStudio)**: Check Core3D integration docs
 - **Performance**: Monitor browser dev tools
 - **Compatibility**: Test on different browsers/devices

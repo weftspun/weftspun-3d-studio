@@ -7,7 +7,7 @@
 param(
     [switch]$Remote,
     [string]$HostAlias = '',
-    [string]$RemoteRoot = '/home/sifr/OpenNexus3DStudio'
+    [string]$RemoteRoot = '/home/sifr/Weftspun3DStudio'
 )
 
 $ErrorActionPreference = 'Stop'

@@ -545,7 +545,7 @@ function getVRMMeta( vrmMeta){
   vrmMeta = vrmMeta||{}
 
   const defaults = {
-    authors:["OpenNexus3DStudio"],
+    authors:["Weftspun3DStudio"],
     metaVersion:"1",
     version:"v1",
     name:"CharacterCreator",

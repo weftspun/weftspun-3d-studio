@@ -1,6 +1,6 @@
 # One-time: install auto-guard (Windows logon + repo dev) so DGX SSH/Cursor/NVIDIA Sync stay fixed.
 #
-#   cd C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio
+#   cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 #   .\scripts\install-dgx-ssh-guard.ps1
 
 $ErrorActionPreference = "Stop"

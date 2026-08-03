@@ -128,7 +128,7 @@ if ($chromeExe) {
     Write-Host ""
     Write-Host "Next steps:" -ForegroundColor Cyan
     Write-Host "  1. Wait for your device to appear in the 'Remote Target' section" -ForegroundColor White
-    Write-Host "  2. Look for: 'OpenNexus3DStudio: SPACE-TIME EDITION' at https://10.0.0.32:3002/" -ForegroundColor White
+    Write-Host "  2. Look for: 'Weftspun 3D Studio' at https://10.0.0.32:3002/" -ForegroundColor White
     Write-Host "  3. Click the 'inspect' link next to the device" -ForegroundColor White
     Write-Host "  4. This will open DevTools connected to your Galaxy XR device" -ForegroundColor White
 } else {

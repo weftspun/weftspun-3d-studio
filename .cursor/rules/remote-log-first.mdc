@@ -12,7 +12,7 @@ Before changing code for **viewport, VRM upload, rig/bone alignment, orientation
 | Machine | Path |
 |---------|------|
 | **Surface** | `logs/remote-log.txt` (rotated archives: `logs/remote-log.*.txt`) |
-| **DGX** | Same paths under `/home/sifr/OpenNexus3DStudio/logs/` |
+| **DGX** | Same paths under `/home/sifr/Weftspun3DStudio/logs/` |
 
 Enable in browser: `?remoteLog=1` on the dev URL (e.g. `https://<Surface-LAN-IP>:3000/?remoteLog=1`).
 

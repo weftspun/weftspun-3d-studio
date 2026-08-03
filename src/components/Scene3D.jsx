@@ -6,12 +6,12 @@ import { useCore3D } from '../context/Core3DContext';
  * Scene3D Component - Shared 3D Viewport
  * 
  * This component provides the main 3D viewport that is shared between:
- * - OpenNexus3DStudio (main application)
- * - OpenNexus3DStudio avatar sidebar panels
+ * - Weftspun3DStudio (main application)
+ * - Weftspun3DStudio avatar sidebar panels
  * 
  * Both applications access the same scene via SceneContext, ensuring:
  * - Single source of truth for the 3D scene
- * - Real-time updates when OpenNexus3DStudio panels modify the model
+ * - Real-time updates when Weftspun3DStudio panels modify the model
  * - Consistent rendering and state management
  */
 const Scene3D = ({ model, renderMode }) => {
@@ -249,7 +249,7 @@ const Scene3D = ({ model, renderMode }) => {
     };
   }, [isInitialized]);
 
-  // Button handlers for OpenNexus3DStudio avatar features
+  // Button handlers for Weftspun3DStudio avatar features
   const handleVRMExport = async () => {
     if (!currentModel) {
       alert('No model loaded to export');

@@ -1,18 +1,18 @@
-# OpenNexus3DStudio: SPACE-TIME EDITION
+# Weftspun 3D Studio
 
 [![Apache2.0 License](https://img.shields.io/badge/license-Apache2.0-green.svg)](LICENSE)
 [![Cross-Platform](https://img.shields.io/badge/platform-MacOS%20%7C%20Windows%20%7C%20Web%20%7C%20XR-blue)](#)
 
-**OpenNexus3DStudio: SPACE-TIME EDITION** is a unified 3D AIGC application with advanced WebXR support. It combines legacy **Open3DStudio** capabilities with **OpenNexus3DStudio** (WebXR, WebGPU, blockchain) and integrated **VRM avatar authoring** (appearance traits, animation, mint/export). It works closely with the [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API) to provide **completely locally deployed** and **free** 3DAIGC workflows. Basically it's an advanced version of the **[Minimal3DStudio](https://github.com/FishWoWater/Minimal3DStudio)** and much like a **replicate of [TripoStudio](https://studio.tripo3d.ai/home?lng=en)**.
+**Weftspun 3D Studio** is a unified 3D AIGC application with advanced WebXR support. It combines legacy **Open3DStudio** capabilities with **Weftspun3DStudio** (WebXR, WebGPU, blockchain) and integrated **VRM avatar authoring** (appearance traits, animation, mint/export). It works closely with the [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API) to provide **completely locally deployed** and **free** 3DAIGC workflows. Basically it's an advanced version of the **[Minimal3DStudio](https://github.com/FishWoWater/Minimal3DStudio)** and much like a **replicate of [TripoStudio](https://studio.tripo3d.ai/home?lng=en)**.
 
-**Project Evolution**: The project started as **Open3DStudio**, evolved into **OpenNexus3DStudio: SPACE-TIME EDITION** with WebXR, WebGPU, and blockchain features, and now ships avatar/VRM workflows in the same app (formerly referred to separately as "Character Studio").
+**Project Evolution**: The project started as **Open3DStudio**, evolved into **Weftspun 3D Studio** with WebXR, WebGPU, and blockchain features, and now ships avatar/VRM workflows in the same app (formerly referred to separately as "Character Studio").
 
-**Goals & structure**: The [roadmap](docs/docs/history.md#roadmap) includes connecting wallet to load profiles or mint files and AI personality features. OpenNexus3DStudio uses a **soulbound base body** VRM (non-transferable) and **equippable** wearables/traits; programmatic avatar configuration from owned wallet assets is in progress (see [Create an Avatar](docs/docs/General/create-an-avatar.md#configure-programmatically) and [Wallet-Owned Assets Approach](docs/WALLET_OWNED_ASSETS_AVATAR_APPROACH.md)). Technical and product roadmaps are detailed in the docs (e.g. [Technical Roadmap: RPM Migration](docs/TECHNICAL_ROADMAP_RPM_MIGRATION.md)).
+**Goals & structure**: The [roadmap](docs/docs/history.md#roadmap) includes connecting wallet to load profiles or mint files and AI personality features. Weftspun3DStudio uses a **soulbound base body** VRM (non-transferable) and **equippable** wearables/traits; programmatic avatar configuration from owned wallet assets is in progress (see [Create an Avatar](docs/docs/General/create-an-avatar.md#configure-programmatically) and [Wallet-Owned Assets Approach](docs/WALLET_OWNED_ASSETS_AVATAR_APPROACH.md)). Technical and product roadmaps are detailed in the docs (e.g. [Technical Roadmap: RPM Migration](docs/TECHNICAL_ROADMAP_RPM_MIGRATION.md)).
 
 The supported workflows include text-to-3d, image-to-3d, mesh segmentation, texture generation, auto-rigging, part completion, VRM model optimization, avatar trait customization, animation, and more.
 
 ## Demo 
-Browse the [screenshot & demo album](https://photos.app.goo.gl/d7TRHmnTT54QashN7) or clone and build from [github.com/AlfaOmegaGrafx/OpenNexus3DStudio](https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio) (desktop: `npm run dist-mac` / `dist-win` / `dist-linux`).
+Browse the [screenshot & demo album](https://photos.app.goo.gl/d7TRHmnTT54QashN7) or clone and build from [github.com/weftspun/weftspun-3d-studio](https://github.com/weftspun/weftspun-3d-studio) (desktop: `npm run dist-mac` / `dist-win` / `dist-linux`).
 
 Deploy the [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API) backend on your own machine or server (see **API Backend Setup** below). Screenshots: [demo album](https://photos.app.goo.gl/d7TRHmnTT54QashN7).
 
@@ -49,7 +49,7 @@ Task types in the **New Task** panel (`TaskManager.jsx`), backed by [3DAIGC-API]
 | Auto rigging | `auto_rig` | **SkinTokens** (full GLB), UniRig (template VRM) |
 | Text to Motion (Kimodo) | `text_to_motion` | **Kimodo SOMA-RP-v1.1** → studio motion JSON |
 | Image to Gaussian Splat | `image_to_splat` | TripoSplat (1 photo), WorldMirror 2.0 (2+), COLMAP (3+) |
-| Image to World | `image_to_world` | `opennexus_image_to_world` |
+| Image to World | `image_to_world` | `weftspun_image_to_world` |
 | Avatar from Image | client pipeline | TRELLIS.2 mesh → UniRig template rig → GLB |
 | Avatar From Photo | client only | AvatarSDK (not 3DAIGC-API) |
 
@@ -79,7 +79,7 @@ Task types: **Image to Gaussian Splat**, **Image to World (splat + props)** in t
 ```text
 [DGX 3DAIGC-API]  TripoSplat, image-to-world, avatar mesh/rig jobs
        ↓
-[OpenNexus3DStudio /]  SceneManager — one renderer, one WebXR session, VRM + tools
+[Weftspun3DStudio /]  SceneManager — one renderer, one WebXR session, VRM + tools
        ↓                  SparkRenderer + SplatMesh in the same scene as avatars
 [Future XR worlds]       IWSDK Option A interaction + world packages (not a second app)
 ```
@@ -102,7 +102,7 @@ Task types: **Image to Gaussian Splat**, **Image to World (splat + props)** in t
 - Basic 3D model viewing and manipulation
 - All locally deployed, it's scalable and easy to add a feature/model both at the frontend and backend
 
-### OpenNexus3DStudio Features
+### Weftspun3DStudio Features
 - **WebXR Support**: Full VR/AR experiences with floor anchoring (main app via `SceneManager`)
   - VR mode with virtual sky backgrounds
   - AR mode with pass-through transparency
@@ -116,13 +116,13 @@ Task types: **Image to Gaussian Splat**, **Image to World (splat + props)** in t
 - **Advanced Post-Processing**: SSAO (Screen Space Ambient Occlusion), Bloom effects, FXAA anti-aliasing
 - **Spatial Audio**: PositionalAudio support for immersive audio experiences
 - **Core3D Integration**: Access to thousands of 3D models, materials library, AI-powered design generation
-- **Shared 3D Viewer**: Unified viewing system for OpenNexus3DStudio
+- **Shared 3D Viewer**: Unified viewing system for Weftspun3DStudio
 - **Universal3DViewer**: Smart wrapper that auto-detects application mode
 - **Blockchain Integration**: x402 protocol micropayments, Thirdweb wallet support, Base network
 - Enhanced rendering and performance optimizations
 - All Open3DStudio features included
 
-### OpenNexus3DStudio Avatar & VRM Features
+### Weftspun3DStudio Avatar & VRM Features
 - **VRM Character Creation**: Create and customize VRM avatars with trait-based system
 - **Avatar Structure**: Base body VRM avatar is **soulbound** (non-transferable); clothing, hair, and accessories are equippable layers (see [Modder getting-started](docs/docs/Modders/getting-started.md)—base body layer 0)
 - **Trait System**: Mix and match character components (body, clothing, hair, accessories, etc.)
@@ -147,8 +147,8 @@ Task types: **Image to Gaussian Splat**, **Image to World (splat + props)** in t
 
 ```bash
 # Clone the repository
-git clone https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio.git
-cd OpenNexus3DStudio
+git clone https://github.com/weftspun/weftspun-3d-studio.git
+cd Weftspun3DStudio
 
 # Install dependencies
 npm install
@@ -204,7 +204,7 @@ WebXR (VR/AR) requires HTTPS to work. For local development:
    ```
 
 3. **Access via HTTPS**:
-   - `https://localhost:3000` — main OpenNexus3DStudio app (PC)
+   - `https://localhost:3000` — main Weftspun3DStudio app (PC)
    | URL | Use on Galaxy XR |
    |-----|------------------|
    | `https://YOUR_IP:3000/` | **Main app** — VRM authoring, SceneManager AR/VR, **native face relay** |
@@ -215,7 +215,7 @@ WebXR (VR/AR) requires HTTPS to work. For local development:
 
 **Galaxy XR tips:** Use **https** (not http). Add your PC LAN IP to the cert (e.g. `mkcert localhost 127.0.0.1 10.0.0.32`). On `/xr`, do a **full page reload** before Enter VR (hot reload can drop the XR session). Headset console output is forwarded to `logs/remote-log.txt` in dev (`?remoteLog=1` or APK “Open in Chrome” adds it). See [HTTPS setup](docs/HTTPS_SETUP.md) and [IWSDK integration](docs/IWSDK_INTEGRATION.md).
 
-**Face tracking on Galaxy XR:** Use the **main app** (`/`), not `/xr`. If Chrome does not grant WebXR expression APIs, install the [**OpenNexus XR Face** APK](native/android-xr-face-bridge/README.md), run `npm run dev`, open **⋮ → Open in Chrome for WebXR (+ face)** — [OpenXR / Android XR face docs](docs/OPENXR_FACE_TRACKING_ANDROID_XR.md). APK currently uses **Jetpack XR only** (`OPENXR_ENABLED=false`); OpenXR face is preserved for a future runtime.
+**Face tracking on Galaxy XR:** Use the **main app** (`/`), not `/xr`. If Chrome does not grant WebXR expression APIs, install the [**Weftspun XR Face** APK](native/android-xr-face-bridge/README.md), run `npm run dev`, open **⋮ → Open in Chrome for WebXR (+ face)** — [OpenXR / Android XR face docs](docs/OPENXR_FACE_TRACKING_ANDROID_XR.md). APK currently uses **Jetpack XR only** (`OPENXR_ENABLED=false`); OpenXR face is preserved for a future runtime.
 
 ### Building
 
@@ -233,11 +233,11 @@ npm run dist-linux  # Linux
 
 1. Clone and setup the [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API) backend
 2. Start the API server (usually on port 8000)
-3. Update the API endpoint in OpenNexus3DStudio if needed
+3. Update the API endpoint in Weftspun3DStudio if needed
 
-### OpenNexus3DStudio Asset Setup
+### Weftspun3DStudio Asset Setup
 
-OpenNexus3DStudio requires asset packs for avatar traits. You can:
+Weftspun3DStudio requires asset packs for avatar traits. You can:
 
 1. **Use default assets**: Run `npm run get-assets` to clone required loot-assets from GitHub
 2. **Add custom assets**: Copy your asset packs to the `public/` folder
@@ -264,7 +264,7 @@ OpenNexus3DStudio requires asset packs for avatar traits. You can:
 - `APIStatus`: Monitor API connection and configure endpoints
 - `SceneManager`: Core 3D scene orchestration (WebGL-based)
 
-#### OpenNexus3DStudio Components
+#### Weftspun3DStudio Components
 - `SceneManager`: Enhanced with WebGPU, WebXR, and post-processing support
 - `Shared3DViewer`: Unified 3D viewer for both applications
 - `Universal3DViewer`: Smart wrapper that auto-detects application mode
@@ -274,10 +274,10 @@ OpenNexus3DStudio requires asset packs for avatar traits. You can:
 - `Core3DService`: Core3D API communication
 - All Open3DStudio components with enhanced capabilities
 
-#### OpenNexus3DStudio Avatar Components
+#### Weftspun3DStudio Avatar Components
 - `CharacterManager`: Core character management with VRM support
-- `OpenNexus3DStudioBridge`: Legacy bridge class for GLB import into avatar workflows (internal API name)
-- Uses `Shared3DViewer` and `Universal3DViewer` (developed by OpenNexus3DStudio)
+- `Weftspun3DStudioBridge`: Legacy bridge class for GLB import into avatar workflows (internal API name)
+- Uses `Shared3DViewer` and `Universal3DViewer` (developed by Weftspun3DStudio)
 - `AnimationManager`: Handles character animations and bone remapping
 - `BlinkManager`: Automatic eye blinking system
 - `LookAtManager`: Eye tracking and head movement
@@ -297,7 +297,7 @@ OpenNexus3DStudio requires asset packs for avatar traits. You can:
 - **Images**: JPG, PNG, BMP, TGA (for image-to-3D workflows)
 - **AI Workflows**: Text-to-3D, Image-to-3D, Mesh Painting, Mesh Segmentation, Part Completion, Auto Rigging
 
-### OpenNexus3DStudio Features
+### Weftspun3DStudio Features
 - **WebXR Features**:
   - **VR Mode**: Immersive virtual reality with floor-anchored content
   - **AR Mode**: Augmented reality with pass-through transparency
@@ -399,18 +399,18 @@ This README reflects the current project structure. Public technical docs live u
 - **[History & Roadmap](docs/docs/history.md)**: Connect wallet to load profiles or mint files; AI personality for VRM; optional profiles/personality from user‑controlled personal data exports; integration with external 3D launchpads for minting avatars and wearables; **[moeChat](https://github.com/moeru-ai/chat)** ([demo](https://chat.moeru.ai/)) as **default** companion runtime for “talk to your VRM” (WebXR); **optional [AIRI](https://github.com/AlfaOmegaGrafx/airi)** — export/handoff only, not merged into this repo
 - **[Wallet-Owned Assets Approach](docs/WALLET_OWNED_ASSETS_AVATAR_APPROACH.md)**: Programmatic avatar/wearables from connected wallet (RMRK EVM, Thirdweb); soulbound base body + equippable wearables
 
-OpenNexus3DStudio’s avatar model: **soulbound base body** (layer 0, non-transferable) with **equippable** clothing, hair, and accessories—supporting wallet-driven assembly when implemented.
+Weftspun3DStudio’s avatar model: **soulbound base body** (layer 0, non-transferable) with **equippable** clothing, hair, and accessories—supporting wallet-driven assembly when implemented.
 
 ## 📚 Additional Documentation
 
 ### Open3DStudio Documentation
-Open3DStudio was the original foundation of this project, providing core 3D AIGC capabilities with WebGL rendering. The [Three.js WebGPU & WebXR Migration Guide](docs/THREEJS_WEBGPU_WEBXR_MIGRATION.md) documents the evolution from Open3DStudio's WebGL-only SceneManager to OpenNexus3DStudio's enhanced rendering stack. Open3DStudio features include:
+Open3DStudio was the original foundation of this project, providing core 3D AIGC capabilities with WebGL rendering. The [Three.js WebGPU & WebXR Migration Guide](docs/THREEJS_WEBGPU_WEBXR_MIGRATION.md) documents the evolution from Open3DStudio's WebGL-only SceneManager to Weftspun3DStudio's enhanced rendering stack. Open3DStudio features include:
 - Basic 3D AIGC workflows and model processing
 - WebGL-based rendering
 - File format support and import/export capabilities
 - Task management and progress tracking
 
-### OpenNexus3DStudio Documentation
+### Weftspun3DStudio Documentation
 - [Avatar pipeline (client)](docs/AVATAR_PIPELINE.md) - Photo → rigged GLB/VRM, optional splat preview, key client files
 - [IWSDK Option A Migration Blueprint](docs/IWSDK_OPTION_A_MIGRATION_BLUEPRINT.md) - IWSDK → main app migration; Spark world building stack
 - [IWSDK Integration](docs/IWSDK_INTEGRATION.md) - Meta Immersive Web SDK (`/xr` route, Galaxy XR testing, optional PC emulator)
@@ -428,7 +428,7 @@ Open3DStudio was the original foundation of this project, providing core 3D AIGC
 - [Shared 3D Viewer System](src/components/Shared3DViewer_README.md) - Unified viewer documentation
 - [Core3D Integration](src/components/Core3D_README.md) - Core3D API integration guide
 
-### Avatar & modder documentation (OpenNexus3DStudio)
+### Avatar & modder documentation (Weftspun3DStudio)
 - [Quickstart](docs/docs/quickstart.md) - Getting started with avatar traits and VRM
 - [Create an Avatar](docs/docs/General/create-an-avatar.md) - Avatar creation guide (includes programmatic/wallet-driven goals)
 - [Optimize Avatars](docs/docs/General/optimize-avatars.md) - Avatar optimization guide
@@ -440,7 +440,7 @@ Open3DStudio was the original foundation of this project, providing core 3D AIGC
 
 ## 📄 License
 
-**OpenNexus3DStudio: SPACE-TIME EDITION** is licensed under [Apache2.0 License](LICENSE). The code maintains continuity with the original Open3DStudio project while evolving as a unified 3D AIGC + avatar platform.
+**Weftspun 3D Studio** is licensed under [Apache2.0 License](LICENSE). The code maintains continuity with the original Open3DStudio project while evolving as a unified 3D AIGC + avatar platform.
 
 ## 🙏 Acknowledgments
 
@@ -449,16 +449,46 @@ Open3DStudio was the original foundation of this project, providing core 3D AIGC
 - [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API) for the backend API
 - [TripoStudio](https://studio.tripo3d.ai/) for inspiration
 - [Minimal3DStudio](https://github.com/FishWoWater/Minimal3DStudio) for the foundation
+- [Atlas Foundation](https://github.com/AtlasFoundation/AvatarCreator) (MIT) — the original open-source avatar creator this lineage began with
+- [Webaverse](https://github.com/webaverse-studios/CharacterCreator) (MIT) — carried the avatar creator forward as Character Creator
 - [M3-org](https://github.com/M3-org) for the upstream avatar-trait foundation and inspiration
 - [Character Studio](https://github.com/M3-org/CharacterStudio) (M3-org, MIT) — upstream open-source avatar toolkit this project evolved from
+- OpenNexus3DStudio: SPACE-TIME EDITION (MIT) — the upstream project this fork derives from; rebranded in full per its trademark terms
 
 ## Legal & Trademark Information
 
 ### Software Licensing
-The underlying source code of OpenNexus3DStudio is licensed under the [MIT License](LICENSE).
+The underlying source code of Weftspun3DStudio is licensed under the [MIT License](LICENSE).
+
+The codebase carries MIT-licensed work from a chain of upstream projects, whose copyright notices are
+retained: **Atlas Foundation** ([AvatarCreator](https://github.com/AtlasFoundation/AvatarCreator), © 2022 —
+see [LICENSE](LICENSE)), **Webaverse** ([CharacterCreator](https://github.com/webaverse-studios/CharacterCreator)),
+**M3** ([Character Studio](https://github.com/M3-org/CharacterStudio), © 2024 — see [docs/LICENSE](docs/LICENSE)),
+and **Minimal3DStudio / Open3DStudio**. See [History](docs/docs/history.md) for the full lineage.
+
+### Third-Party Trademarks
+**"Webaverse"**, **"M3"**, **"Character Studio"**, **"Anata"**, **"0N1 Force"**, **"Tubby Cats"**, and all other
+product names, logos, and trade dress referenced in this repository are trademarks of their respective owners.
+They are used here **nominatively** — to credit upstream authorship and to identify interoperable assets — and
+their use implies **no affiliation with, sponsorship by, or endorsement from** those owners. An MIT grant on
+source code conveys **no trademark rights**; this project claims none.
+
+Avatar collections offered in the UI (Anata, 0N1 Force, Tubby Cats) are **not** redistributed by this
+repository. They are fetched at runtime from [m3-org.github.io/loot-assets](https://m3-org.github.io/loot-assets/)
+(see [`loot-assets.source`](loot-assets.source)) and remain subject to their own licenses and terms. No
+Webaverse or M3 logo artwork is bundled in this repository.
+
+### Upstream Fork Notice
+Weftspun 3D Studio is a fork of **OpenNexus3DStudio: SPACE-TIME EDITION**. The names "Space-Time" and
+"OpenNexus3DStudio", the Space-Time orbital clock logo artwork, and the associated apparel, product-name,
+graphics, and phygital concept assets are the property of their respective owners and are **not** used by
+this project. Per the upstream trademark terms, this fork has been rebranded in full: all upstream product
+names, logos, and trade dress have been removed and replaced with Weftspun's own. References to the upstream
+project in this repository are nominative attribution only and imply no affiliation or endorsement.
 
 ### Trademark & Brand Asset Reservation
-The names **"Space-Time"**, **"OpenNexus3DStudio"**, the "Space-Time" orbital clock logo artwork, and all associated apparel designs, product names, graphics, and phygital concept assets are proprietary intellectual property.
+The name **"Weftspun"**, the Weftspun woven-lattice logo artwork, and all associated apparel designs, product
+names, graphics, and phygital concept assets are proprietary intellectual property of Weftspun.
 
-* **No Trademark License:** The open-source license applied to the source code **does not** grant any rights, implied or explicit, to use the "Space-Time" brand name, logo, or trade dress for commercial or non-commercial redistributions.
-* **Modification Requirement:** If you fork this repository or modify the code to distribute your own software or services, you **must** remove all "Space-Time" branding, logos, and references, and rebrand your version entirely under a unique name.
+* **No Trademark License:** The open-source license applied to the source code **does not** grant any rights, implied or explicit, to use the "Weftspun" brand name, logo, or trade dress for commercial or non-commercial redistributions.
+* **Modification Requirement:** If you fork this repository or modify the code to distribute your own software or services, you **must** remove all "Weftspun" branding, logos, and references, and rebrand your version entirely under a unique name.

@@ -6,7 +6,7 @@ if ! command -v graphify >/dev/null 2>&1; then
   echo "Install: curl -LsSf https://astral.sh/uv/install.sh | sh && uv tool install graphifyy"
   exit 1
 fi
-ROOT_CS="${HOME}/OpenNexus3DStudio"
+ROOT_CS="${HOME}/Weftspun3DStudio"
 ROOT_API="${HOME}/3DAIGC-API"
 for repo in "$ROOT_CS" "$ROOT_API"; do
   if [[ -d "$repo" ]]; then

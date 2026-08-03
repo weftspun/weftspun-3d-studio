@@ -5,7 +5,7 @@
  * - Vercel / CI (bundled): shallow clone into public/loot-assets
  * - Vercel / CI (CDN): VITE_ASSET_PATH=https://… → download UI icons only (no full clone)
  *
- * OpenNexus3DStudio git push does NOT include asset binaries.
+ * Weftspun3DStudio git push does NOT include asset binaries.
  */
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';

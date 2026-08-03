@@ -1,6 +1,6 @@
 /**
  * TaskManager - Manages AI generation tasks and workflows
- * Similar to the task management in OpenNexus3DStudio but focused on 3DAIGC workflows
+ * Similar to the task management in Weftspun3DStudio but focused on 3DAIGC workflows
  *
  * HTTP targets 3DAIGC-API (AlfaOmegaGrafx/3DAIGC-API: mesh_generation.py, system.py).
  * There is no api.md in this repo; backend should publish OpenAPI or a consumer contract doc.
@@ -1616,7 +1616,7 @@ export class TaskManager {
 
     const referenceImageFileIds = await this.resolveReferenceImageFileIds(options);
     const payload = withObjectNamePayload({
-      model_preference: options?.model_preference ?? 'opennexus_image_to_world',
+      model_preference: options?.model_preference ?? 'weftspun_image_to_world',
       world_id: options?.world_id,
       world_name: options?.world_name || options?.object_name || prompt || 'Generated World',
       prop_regions: options?.prop_regions ?? [],

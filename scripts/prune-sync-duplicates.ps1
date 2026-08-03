@@ -49,7 +49,7 @@ function Invoke-PruneAtRoot {
 if ($Remote -or $HostAlias) {
     if ($HostAlias) { $sshHost = $HostAlias }
     else { $sshHost = 'DGX-Remote' }
-    ssh -o ConnectTimeout=15 $sshHost 'bash /home/sifr/OpenNexus3DStudio/scripts/prune-sync-duplicates.sh'
+    ssh -o ConnectTimeout=15 $sshHost 'bash /home/sifr/Weftspun3DStudio/scripts/prune-sync-duplicates.sh'
 } else {
     Set-Location $repoRoot
     Invoke-PruneAtRoot -Root $repoRoot

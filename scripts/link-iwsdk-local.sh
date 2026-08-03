@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Build AlfaOmegaGrafx/immersive-web-sdk and install local @iwsdk/* tgz into OpenNexus3DStudio.
+# Build AlfaOmegaGrafx/immersive-web-sdk and install local @iwsdk/* tgz into Weftspun3DStudio.
 #
 # Usage (DGX or Surface):
 #   bash scripts/link-iwsdk-local.sh           # build tgz if missing, npm install
 #   bash scripts/link-iwsdk-local.sh --rebuild # force rebuild tgz
 #
 # Expects sibling clone:
-#   ../immersive-web-sdk  (from OpenNexus3DStudio root)
+#   ../immersive-web-sdk  (from Weftspun3DStudio root)
 # Override:
 #   IWSDK_ROOT=/path/to/immersive-web-sdk bash scripts/link-iwsdk-local.sh
 

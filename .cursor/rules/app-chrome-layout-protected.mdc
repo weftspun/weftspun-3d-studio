@@ -13,7 +13,7 @@ alwaysApply: true
 |------|------|
 | Task progress | In **document flow** after `.scene-controls-row`; never `position: fixed` over header |
 | App content | No `.has-progress` margin hack — flex layout handles progress bar height |
-| Right rail top | `.opennexus-sidebar` uses measured `--app-content-top` on `:root`, not chrome calc alone |
+| Right rail top | `.weftspun-sidebar` uses measured `--app-content-top` on `:root`, not chrome calc alone |
 | CSS vars | Do **not** define `--app-content-top` on `.app` (shadows measured px value) |
 | Collapsed rails | Mirror left/right via shared `--collapsed-rail-*` tokens and paired selectors |
 | Z-index | Side panels ≤ 998; fix overlap by adjusting `top`, not raising panel z-index |

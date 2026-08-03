@@ -29,7 +29,7 @@ After `sync-from-dgx.ps1` pulls Pitch Deck, **run** `.\scripts\prune-sync-duplic
 ## Safe pattern (reference)
 
 ```powershell
-scp -r "Pitch Deck/." DGX-Local:/home/sifr/OpenNexus3DStudio/Pitch\ Deck/
+scp -r "Pitch Deck/." DGX-Local:/home/sifr/Weftspun3DStudio/Pitch\ Deck/
 ```
 
 Wrapped by `scripts/sync-pitch-deck-to-dgx.ps1`.

@@ -7,7 +7,7 @@ import fs from 'fs'
 // https://vitejs.dev/config/
 function remoteLogPlugin() {
   return {
-    name: 'open-nexus-remote-log-endpoint',
+    name: 'weftspun-remote-log-endpoint',
     configureServer(server) {
       const logsDir = path.resolve(__dirname, 'logs')
       const logFile = path.resolve(logsDir, 'remote-log.txt')

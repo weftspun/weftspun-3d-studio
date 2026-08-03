@@ -18,8 +18,8 @@
 ## Core  <!-- READ EVERY SESSION — keep under 50 lines total -->
 
 ### What this project is
-**OpenNexus3DStudio** — cross-platform 3D AIGC app (Web, Electron, XR) for VRM avatars, AI mesh generation via 3DAIGC-API, WebXR/WebGPU, and optional blockchain hooks. <!-- added: 2026-06-26 -->
-Canonical repo: AlfaOmegaGrafx/OpenNexus3DStudio (`opennexus` remote, `main`).
+**Weftspun3DStudio** — cross-platform 3D AIGC app (Web, Electron, XR) for VRM avatars, AI mesh generation via 3DAIGC-API, WebXR/WebGPU, and optional blockchain hooks. <!-- added: 2026-06-26 -->
+Canonical repo: AlfaOmegaGrafx/Weftspun3DStudio (`weftspun` remote, `main`).
 
 ### Stack
 Frontend: React 19, Vite, Three.js, @pixiv/three-vrm, IWSDK (`@iwsdk/core`) on `/xr`
@@ -27,9 +27,9 @@ Desktop: Electron | API: Axios → 3DAIGC-API | Tests: Vitest
 Surface dev: `npm run dev` (:3000 HTTPS) | DGX backend: 3DAIGC-API :7842
 
 ### Top decisions
-- DGX runs API only; OpenNexus dev server runs on Surface unless user explicitly asks otherwise <!-- added: 2026-06-26 -->
+- DGX runs API only; Weftspun dev server runs on Surface unless user explicitly asks otherwise <!-- added: 2026-06-26 -->
 - DGX ↔ Surface sync via scp scripts — agents must not git push/pull unless user asks <!-- added: 2026-06-26 -->
-- XR Voice stays on Surface `:8443` xr-hub-proxy → DGX hub `:8088`; not OpenNexus `/xr` route <!-- added: 2026-06-26 -->
+- XR Voice stays on Surface `:8443` xr-hub-proxy → DGX hub `:8088`; not Weftspun `/xr` route <!-- added: 2026-06-26 -->
 - **XR voice start:** DGX `mcp/scripts/start_xr_voice_full.sh` + verify; Surface proxy via scheduled task (SSH Start-Process dies) <!-- added: 2026-06-29 -->
 - MSF browser URL: `https://10.0.0.32:8453` (Surface msf-proxy → DGX MSF :8443); not Tailscale hostname until funnel fixed <!-- added: 2026-06-26 -->
 - Backend + frontend API contract changes must land in both repos (models.yaml ↔ aiModelsCatalog.js, taskManager.js, etc.) <!-- added: 2026-06-26 -->
@@ -44,8 +44,8 @@ Surface IP `10.0.0.32`, DGX `10.0.0.158`. Galaxy XR testing from Surface.
 
 | Machine | Role | Path |
 |---------|------|------|
-| Surface PC | Vite dev, Galaxy XR, msf-proxy :8453, xr-hub-proxy :8443 | `C:\Users\alfao\Documents\GitHub\OpenNexus3DStudio` |
-| DGX Spark | 3DAIGC-API :7842, MSF :8443, XR hub :8088 | `/home/sifr/OpenNexus3DStudio` (sync mirror) |
+| Surface PC | Vite dev, Galaxy XR, msf-proxy :8453, xr-hub-proxy :8443 | `C:\Users\alfao\Documents\GitHub\Weftspun3DStudio` |
+| DGX Spark | 3DAIGC-API :7842, MSF :8443, XR hub :8088 | `/home/sifr/Weftspun3DStudio` (sync mirror) |
 
 Key client modules: `src/library/taskManager.js`, `spatialFabricAdapter.js`, `xrHubConfig.js`, `aiModelsCatalog.js`
 SessionMem team: `.sessionmem-team/` | Cursor memory-bank: `memory-bank/` | Graphify: `graphify-out/`
@@ -78,7 +78,7 @@ SessionMem team: `.sessionmem-team/` | Cursor memory-bank: `memory-bank/` | Grap
 
 ## User Profile  <!-- READ EVERY SESSION — personal facts about the user -->
 
-3DAIGC / OpenNexus developer; Surface + DGX Spark split workflow. Agents execute ops directly (no "run this script" handoffs).
+3DAIGC / Weftspun developer; Surface + DGX Spark split workflow. Agents execute ops directly (no "run this script" handoffs).
 
 ---
 

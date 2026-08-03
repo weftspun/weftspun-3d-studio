@@ -2,7 +2,7 @@
 
 Session: 16
 Focus: Env-scan lock-in pushed
-Active: API f0182c6 + OpenNexus c0f88c3d on main
+Active: API f0182c6 + Weftspun c0f88c3d on main
 Next: restart API workers when idle; x402 SKUs later
 Blocked: none
 
@@ -13,5 +13,5 @@ Blocked: none
 
 ## Recently shipped
 - API wall-fallback gravity + PCA flatten + quat sanitize (f0182c6)
-- OpenNexus Phase A/B UI docs + LingBot splat seating (c0f88c3d)
+- Weftspun Phase A/B UI docs + LingBot splat seating (c0f88c3d)
 - Docs v3.3.7 env-scan Phase A/B (2026-07-30)

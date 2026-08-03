@@ -1,4 +1,4 @@
-# Rebuild OpenNexus XR Face launcher icon from raw/ic_app_icon.svg (no vector conversion).
+# Rebuild Weftspun XR Face launcher icon from raw/ic_app_icon.svg (no vector conversion).
 #
 # Edit: native/android-xr-face-bridge/app/src/main/res/raw/ic_app_icon.svg
 # Output: native/android-xr-face-bridge/app/src/main/res/drawable/ic_app_icon.png
@@ -74,7 +74,7 @@ Write-Host "   $pngPath"
 if (-not $Install) {
     Write-Host ""
     Write-Host "Next: cd native\android-xr-face-bridge; .\gradlew.bat :app:assembleDebug"
-    Write-Host "      adb uninstall com.opennexus3dstudio.xrfacebridge"
+    Write-Host "      adb uninstall com.weftspun.xrfacebridge"
     Write-Host "      adb install app\build\outputs\apk\debug\app-debug.apk"
     exit 0
 }
@@ -95,8 +95,8 @@ try {
 $apk = Join-Path $bridgeRoot 'app\build\outputs\apk\debug\app-debug.apk'
 if (-not (Test-Path $apk)) { throw "APK not found: $apk" }
 
-adb uninstall com.opennexus3dstudio.xrfacebridge | Out-Null
+adb uninstall com.weftspun.xrfacebridge | Out-Null
 adb install $apk
 if ($LASTEXITCODE -ne 0) { throw "adb install failed ($LASTEXITCODE)" }
 
-Write-Host "Installed com.opennexus3dstudio.xrfacebridge (launcher icon should update)."
+Write-Host "Installed com.weftspun.xrfacebridge (launcher icon should update)."

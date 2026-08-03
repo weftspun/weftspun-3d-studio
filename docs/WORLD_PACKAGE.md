@@ -1,6 +1,6 @@
 # World Package Format
 
-Explorable Gaussian-splat environments with optional mesh props for OpenNexus3DStudio / Galaxy XR.
+Explorable Gaussian-splat environments with optional mesh props for Weftspun3DStudio / Galaxy XR.
 
 ## Layout
 
@@ -89,7 +89,7 @@ If the API returns **404** for a job whose files still exist on DGX, rehydrate R
 
 ```bash
 /home/sifr/3DAIGC-API/venv/bin/python \
-  /home/sifr/OpenNexus3DStudio/scripts/dgx-rehydrate-world-job.py <job_id>
+  /home/sifr/Weftspun3DStudio/scripts/dgx-rehydrate-world-job.py <job_id>
 ```
 
 Client: `worldPackage.js` builds manifest URL candidates and surfaces a clearer 404 hint when rehydrate may help.

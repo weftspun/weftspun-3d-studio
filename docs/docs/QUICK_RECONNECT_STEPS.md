@@ -35,7 +35,7 @@ adb devices
 
 ### Step 4: Open Chrome DevTools
 1. Script will auto-open `chrome://inspect/#devices`
-2. Wait for device: **"OpenNexus3DStudio: SPACE-TIME EDITION"** at `https://10.0.0.32:3002/`
+2. Wait for device: **"Weftspun 3D Studio"** at `https://10.0.0.32:3002/`
 3. Click **"inspect"** link
 
 ### Step 5: Start Debugging

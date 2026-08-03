@@ -53,7 +53,7 @@ import {
   isPublicDemo,
 } from './library/runtimeUi.js';
 
-// Import OpenNexus3DStudio avatar panels (Appearance, Save, Mint, Load, Tools)
+// Import Weftspun3DStudio avatar panels (Appearance, Save, Mint, Load, Tools)
 import AppearanceSimple from './pages/AppearanceSimple';
 import SaveSimple from './pages/SaveSimple';
 import MintSimple from './pages/MintSimple';
@@ -88,7 +88,7 @@ function AppContent() {
   const [skeletonActive, setSkeletonActive] = useState(false);
   const [currentPanel, setCurrentPanel] = useState('appearance'); // Panel state - default to appearance
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Sidebar collapse state
-  const [openNexusSidebarCollapsed, setOpenNexusSidebarCollapsed] = useState(true); // OpenNexus avatar sidebar — default collapsed
+  const [weftspunSidebarCollapsed, setWeftspunSidebarCollapsed] = useState(true); // Weftspun avatar sidebar — default collapsed
   const combinedImportRef = useRef(null);
   const xrAiPanelRef = useRef(null);
   const headerRef = useRef(null);
@@ -165,50 +165,50 @@ function AppContent() {
   useEffect(() => {
     console.log('🔍 Class Debug:', {
       sidebarCollapsed,
-      openNexusSidebarCollapsed,
-      hasOpenNexusSidebar: !openNexusSidebarCollapsed,
+      weftspunSidebarCollapsed,
+      hasWeftspunSidebar: !weftspunSidebarCollapsed,
       mainSidebarCollapsed: sidebarCollapsed
     });
-  }, [sidebarCollapsed, openNexusSidebarCollapsed]);
+  }, [sidebarCollapsed, weftspunSidebarCollapsed]);
   
   // Synchronized hamburger handlers - when one collapses, the other expands
   const handleLeftHamburgerClick = () => {
     if (sidebarCollapsed) {
       // Left hamburger is expanding - collapse right hamburger
       setSidebarCollapsed(false);
-      setOpenNexusSidebarCollapsed(true);
+      setWeftspunSidebarCollapsed(true);
     } else {
       // Left hamburger is collapsing - expand right hamburger
       setSidebarCollapsed(true);
-      setOpenNexusSidebarCollapsed(false);
+      setWeftspunSidebarCollapsed(false);
     }
   };
 
   const handleRightHamburgerClick = () => {
-    if (openNexusSidebarCollapsed) {
+    if (weftspunSidebarCollapsed) {
       // Right hamburger is expanding - collapse left hamburger
-      setOpenNexusSidebarCollapsed(false);
+      setWeftspunSidebarCollapsed(false);
       setSidebarCollapsed(true);
     } else {
       // Right hamburger is collapsing - expand left hamburger
-      setOpenNexusSidebarCollapsed(true);
+      setWeftspunSidebarCollapsed(true);
       setSidebarCollapsed(false);
     }
   };
 
-  // OpenNexus3DStudio avatar panel menu cycling
-  const openNexusMenus = ['appearance', 'save', 'mint', 'load', 'tools'];
+  // Weftspun3DStudio avatar panel menu cycling
+  const weftspunMenus = ['appearance', 'save', 'mint', 'load', 'tools'];
   const [currentMenuIndex, setCurrentMenuIndex] = useState(0); // Default to appearance (index 0)
   
-  const handleOpenNexusNavigation = (direction) => {
+  const handleWeftspunNavigation = (direction) => {
     if (direction === 'next') {
-      const nextIndex = (currentMenuIndex + 1) % openNexusMenus.length;
+      const nextIndex = (currentMenuIndex + 1) % weftspunMenus.length;
       setCurrentMenuIndex(nextIndex);
-      setCurrentPanel(openNexusMenus[nextIndex]);
+      setCurrentPanel(weftspunMenus[nextIndex]);
     } else if (direction === 'back') {
-      const prevIndex = currentMenuIndex === 0 ? openNexusMenus.length - 1 : currentMenuIndex - 1;
+      const prevIndex = currentMenuIndex === 0 ? weftspunMenus.length - 1 : currentMenuIndex - 1;
       setCurrentMenuIndex(prevIndex);
-      setCurrentPanel(openNexusMenus[prevIndex]);
+      setCurrentPanel(weftspunMenus[prevIndex]);
     }
   };
   
@@ -264,7 +264,7 @@ function AppContent() {
   // XR iframe → adopt DGX job into Task Manager (no URL navigation)
   useEffect(() => {
     const onMessage = (event) => {
-      if (event.data?.type !== 'opennexus.xrHandoff') return;
+      if (event.data?.type !== 'weftspun.xrHandoff') return;
       const payload = event.data.payload || {};
       const jobId = String(payload.job_id || '').trim();
       if (!jobId) return;
@@ -942,11 +942,7 @@ function AppContent() {
       <header ref={headerRef} className="app-header">
         {/* Title bar — horizontal inline row on top */}
         <div className="title-bar">
-          <h1 className="main-title">OpenNexus3DStudio:</h1>
-          <span className="audiowave-text">
-            <span className="space-time-row">SPACE-TIME</span>
-            <span className="edition-row">EDITION</span>
-          </span>
+          <h1 className="main-title">Weftspun 3D Studio</h1>
           <div className="title-api-control">
             <div
               className="api-status-compact"
@@ -1264,7 +1260,7 @@ function AppContent() {
             </div>
           </div>
 
-          {/* OpenNexus3DStudio avatar panels */}
+          {/* Weftspun3DStudio avatar panels */}
           <div className="header-section four-button-section">
             <div className="header-section-title">Studio</div>
             <div className="header-controls-group studio-controls">
@@ -1273,7 +1269,7 @@ function AppContent() {
                 onClick={() => {
                   setCurrentPanel('appearance');
                   setCurrentMenuIndex(0);
-                  setOpenNexusSidebarCollapsed(false);
+                  setWeftspunSidebarCollapsed(false);
                 }}
                 title="Character Appearance"
               >
@@ -1284,7 +1280,7 @@ function AppContent() {
                 onClick={() => {
                   setCurrentPanel('save');
                   setCurrentMenuIndex(1);
-                  setOpenNexusSidebarCollapsed(false);
+                  setWeftspunSidebarCollapsed(false);
                 }}
                 title="Save Character"
               >
@@ -1295,7 +1291,7 @@ function AppContent() {
                 onClick={() => {
                   setCurrentPanel('mint');
                   setCurrentMenuIndex(2);
-                  setOpenNexusSidebarCollapsed(false);
+                  setWeftspunSidebarCollapsed(false);
                 }}
                 title="Mint Character"
               >
@@ -1306,7 +1302,7 @@ function AppContent() {
                 onClick={() => {
                   setCurrentPanel('load');
                   setCurrentMenuIndex(3);
-                  setOpenNexusSidebarCollapsed(false);
+                  setWeftspunSidebarCollapsed(false);
                 }}
                 title="Load Character"
               >
@@ -1317,7 +1313,7 @@ function AppContent() {
                 onClick={() => {
                   setCurrentPanel('tools');
                   setCurrentMenuIndex(4);
-                  setOpenNexusSidebarCollapsed(false);
+                  setWeftspunSidebarCollapsed(false);
                 }}
                 title="3D Tools & Export"
               >
@@ -1364,9 +1360,9 @@ function AppContent() {
           type="button"
           className="anchored-right-hamburger scene-controls-hamburger"
           onClick={handleRightHamburgerClick}
-          title={openNexusSidebarCollapsed ? 'Expand OpenNexus3DStudio' : 'Collapse OpenNexus3DStudio'}
+          title={weftspunSidebarCollapsed ? 'Expand Weftspun3DStudio' : 'Collapse Weftspun3DStudio'}
           aria-label={
-            openNexusSidebarCollapsed ? 'Expand OpenNexus3DStudio' : 'Collapse OpenNexus3DStudio'
+            weftspunSidebarCollapsed ? 'Expand Weftspun3DStudio' : 'Collapse Weftspun3DStudio'
           }
         >
           <div className="hamburger-icon">
@@ -1379,13 +1375,13 @@ function AppContent() {
 
       <TaskProgressBar tasks={tasks} />
 
-      {/* OpenNexus3DStudio avatar sidebar — fixed below header + scene-controls */}
-      <div className={`opennexus-sidebar ${openNexusSidebarCollapsed ? 'collapsed' : ''}`}>
+      {/* Weftspun3DStudio avatar sidebar — fixed below header + scene-controls */}
+      <div className={`weftspun-sidebar ${weftspunSidebarCollapsed ? 'collapsed' : ''}`}>
         <button
           type="button"
-          className="opennexus-sticky-hamburger"
+          className="weftspun-sticky-hamburger"
           onClick={handleRightHamburgerClick}
-          title={openNexusSidebarCollapsed ? 'Expand OpenNexus3DStudio' : 'Collapse OpenNexus3DStudio'}
+          title={weftspunSidebarCollapsed ? 'Expand Weftspun3DStudio' : 'Collapse Weftspun3DStudio'}
         >
           <div className="hamburger-icon">
             <span></span>
@@ -1394,13 +1390,13 @@ function AppContent() {
           </div>
         </button>
 
-        {openNexusSidebarCollapsed && (
-          <div className="collapsed-opennexus-icons">
+        {weftspunSidebarCollapsed && (
+          <div className="collapsed-weftspun-icons">
             <button
               type="button"
-              className={`opennexus-sidebar-icon ${currentPanel === 'appearance' ? 'active' : ''}`}
+              className={`weftspun-sidebar-icon ${currentPanel === 'appearance' ? 'active' : ''}`}
               onClick={() => {
-                setOpenNexusSidebarCollapsed(false);
+                setWeftspunSidebarCollapsed(false);
                 setCurrentPanel('appearance');
                 setCurrentMenuIndex(0);
               }}
@@ -1411,9 +1407,9 @@ function AppContent() {
             </button>
             <button
               type="button"
-              className={`opennexus-sidebar-icon ${currentPanel === 'save' ? 'active' : ''}`}
+              className={`weftspun-sidebar-icon ${currentPanel === 'save' ? 'active' : ''}`}
               onClick={() => {
-                setOpenNexusSidebarCollapsed(false);
+                setWeftspunSidebarCollapsed(false);
                 setCurrentPanel('save');
                 setCurrentMenuIndex(1);
               }}
@@ -1424,9 +1420,9 @@ function AppContent() {
             </button>
             <button
               type="button"
-              className={`opennexus-sidebar-icon ${currentPanel === 'mint' ? 'active' : ''}`}
+              className={`weftspun-sidebar-icon ${currentPanel === 'mint' ? 'active' : ''}`}
               onClick={() => {
-                setOpenNexusSidebarCollapsed(false);
+                setWeftspunSidebarCollapsed(false);
                 setCurrentPanel('mint');
                 setCurrentMenuIndex(2);
               }}
@@ -1437,9 +1433,9 @@ function AppContent() {
             </button>
             <button
               type="button"
-              className={`opennexus-sidebar-icon ${currentPanel === 'load' ? 'active' : ''}`}
+              className={`weftspun-sidebar-icon ${currentPanel === 'load' ? 'active' : ''}`}
               onClick={() => {
-                setOpenNexusSidebarCollapsed(false);
+                setWeftspunSidebarCollapsed(false);
                 setCurrentPanel('load');
                 setCurrentMenuIndex(3);
               }}
@@ -1450,9 +1446,9 @@ function AppContent() {
             </button>
             <button
               type="button"
-              className={`opennexus-sidebar-icon ${currentPanel === 'tools' ? 'active' : ''}`}
+              className={`weftspun-sidebar-icon ${currentPanel === 'tools' ? 'active' : ''}`}
               onClick={() => {
-                setOpenNexusSidebarCollapsed(false);
+                setWeftspunSidebarCollapsed(false);
                 setCurrentPanel('tools');
                 setCurrentMenuIndex(4);
               }}
@@ -1464,17 +1460,17 @@ function AppContent() {
           </div>
         )}
 
-        {!openNexusSidebarCollapsed && (
-          <div className="opennexus-content">
-            <div className="opennexus-header">
-              <h3 className="opennexus-title">OpenNexus3DStudio</h3>
+        {!weftspunSidebarCollapsed && (
+          <div className="weftspun-content">
+            <div className="weftspun-header">
+              <h3 className="weftspun-title">Weftspun3DStudio</h3>
             </div>
-            <div className="opennexus-panels">
-              {currentPanel === 'appearance' && <AppearanceSimple onNavigate={handleOpenNexusNavigation} />}
-              {currentPanel === 'save' && <SaveSimple onNavigate={handleOpenNexusNavigation} />}
-              {currentPanel === 'mint' && <MintSimple onNavigate={handleOpenNexusNavigation} />}
-              {currentPanel === 'load' && <LoadSimple onNavigate={handleOpenNexusNavigation} />}
-              {currentPanel === 'tools' && <ToolsSimple onNavigate={handleOpenNexusNavigation} />}
+            <div className="weftspun-panels">
+              {currentPanel === 'appearance' && <AppearanceSimple onNavigate={handleWeftspunNavigation} />}
+              {currentPanel === 'save' && <SaveSimple onNavigate={handleWeftspunNavigation} />}
+              {currentPanel === 'mint' && <MintSimple onNavigate={handleWeftspunNavigation} />}
+              {currentPanel === 'load' && <LoadSimple onNavigate={handleWeftspunNavigation} />}
+              {currentPanel === 'tools' && <ToolsSimple onNavigate={handleWeftspunNavigation} />}
             </div>
           </div>
         )}
@@ -1482,7 +1478,7 @@ function AppContent() {
 
       <div
         ref={appContentRef}
-        className={`app-content ${!openNexusSidebarCollapsed ? 'has-opennexus' : ''} ${sidebarCollapsed ? 'main-sidebar-collapsed' : ''}`}
+        className={`app-content ${!weftspunSidebarCollapsed ? 'has-weftspun' : ''} ${sidebarCollapsed ? 'main-sidebar-collapsed' : ''}`}
       >
         <div
           ref={sidebarScrollRef}

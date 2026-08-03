@@ -1,5 +1,5 @@
 /**
- * Spark.js Gaussian splat loading for OpenNexus3DStudio viewport.
+ * Spark.js Gaussian splat loading for Weftspun3DStudio viewport.
  * @see https://sparkjs.dev/docs/splat-mesh/
  */
 import { SparkRenderer, SplatMesh } from '@sparkjsdev/spark';

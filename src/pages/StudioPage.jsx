@@ -277,7 +277,7 @@ function StudioPageInner() {
           <Link to="/" className="studio-page-back">
             ← Viewport
           </Link>
-          <h1>OpenNexus Studio</h1>
+          <h1>Weftspun Studio</h1>
           <span className="studio-page-sub">
             Prompt · Canvas · Asset — local DGX via 3DAIGC-API
           </span>

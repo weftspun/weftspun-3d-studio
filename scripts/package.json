@@ -1,8 +1,8 @@
 {
-  "name": "opennexus3dstudio",
+  "name": "weftspun-3d-studio",
   "version": "1.0.0",
   "description": "A 3D AIGC application for completely locally deployed and free 3DAIGC workflows",
-  "homepage": "https://github.com/FishWoWater/OpenNexus3DStudio",
+  "homepage": "https://github.com/weftspun/weftspun-3d-studio",
   "scripts": {
     "dev": "vite --host",
     "dev:surface": "node node_modules/vite/bin/vite.js --host 10.0.0.32",
@@ -114,8 +114,8 @@
   },
   "main": "public/electron.js",
   "build": {
-    "appId": "com.opennexus3dstudio.app",
-    "productName": "OpenNexus3DStudio",
+    "appId": "com.weftspun.studio",
+    "productName": "Weftspun 3D Studio",
     "directories": {
       "output": "dist"
     },

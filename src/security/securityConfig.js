@@ -1,5 +1,5 @@
 /**
- * Security Configuration for OpenNexus3DStudio
+ * Security Configuration for Weftspun3DStudio
  * Centralized security settings and validation functions
  */
 

@@ -1,4 +1,4 @@
-# Verify agent continuity on Surface (OpenNexus3DStudio).
+# Verify agent continuity on Surface (Weftspun3DStudio).
 # Usage: .\scripts\verify-agent-continuity.ps1
 
 $ErrorActionPreference = 'Continue'
@@ -19,7 +19,7 @@ function Check-Dir($path, $label) {
   if (Test-Path -LiteralPath $path -PathType Container) { Ok $label } else { Fail "missing $label" }
 }
 
-Write-Host "=== OpenNexus3DStudio ($Root) ==="
+Write-Host "=== Weftspun3DStudio ($Root) ==="
 Check-File "$Root\CLAUDE.md" "CLAUDE.md"
 Check-File "$Root\AGENTS.md" "AGENTS.md"
 Check-Dir "$Root\.agent" ".agent/"
@@ -42,7 +42,7 @@ Check-Dir "$Root\.cursor\rules" ".cursor/rules/"
 @(
   'dgx-sync-reminder.mdc',
   'agent-run-instructions.mdc',
-  '3daigc-opennexus3dstudio-workflow.mdc',
+  '3daigc-weftspun3dstudio-workflow.mdc',
   'agent-continuity-startup.mdc'
 ) | ForEach-Object {
   if (Test-Path "$Root\.cursor\rules\$_") { Ok "rule $_" } else { Fail "rule missing: $_" }

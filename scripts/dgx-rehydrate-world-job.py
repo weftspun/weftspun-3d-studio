@@ -6,7 +6,7 @@ outputs/worlds/{job_id}/ (common after Redis TTL ~24h or API restart).
 
 Run on DGX (use 3DAIGC-API venv — system python may lack redis):
   /home/sifr/3DAIGC-API/venv/bin/python \\
-    /home/sifr/OpenNexus3DStudio/scripts/dgx-rehydrate-world-job.py <job_id>
+    /home/sifr/Weftspun3DStudio/scripts/dgx-rehydrate-world-job.py <job_id>
 """
 from __future__ import annotations
 

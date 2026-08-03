@@ -47,7 +47,7 @@ export function syncDocumentViewportInsets() {
 }
 
 /**
- * Pin animation bar container to the main 3D viewport (never over OpenNexus3DStudio avatar sidebar).
+ * Pin animation bar container to the main 3D viewport (never over Weftspun3DStudio avatar sidebar).
  *
  * @param {HTMLElement | null} container
  */
@@ -75,7 +75,7 @@ export function syncAnimationBarDock(container) {
   }
 
   const appRoot = viewport.closest('.app');
-  const sidebar = appRoot?.querySelector('.opennexus-sidebar');
+  const sidebar = appRoot?.querySelector('.weftspun-sidebar');
   const chipRightInset = 12;
   if (sidebar) {
     const sidebarRect = sidebar.getBoundingClientRect();

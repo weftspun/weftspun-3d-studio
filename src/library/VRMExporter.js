@@ -1,5 +1,5 @@
 /**
- * VRMExporter - VRM model export for OpenNexus3DStudio
+ * VRMExporter - VRM model export for Weftspun3DStudio
  * Based on upstream M3-org Character Studio VRM export patterns
  */
 import * as THREE from 'three';
@@ -405,8 +405,8 @@ export class VRMExporter {
       specVersion: "0.0",
       meta: {
         version: "0.0",
-        title: options.metadata?.title || 'OpenNexus3DStudio Export',
-        author: options.metadata?.author || 'OpenNexus3DStudio',
+        title: options.metadata?.title || 'Weftspun3DStudio Export',
+        author: options.metadata?.author || 'Weftspun3DStudio',
         contactInformation: "",
         reference: "",
         texture: -1,
@@ -449,7 +449,7 @@ export class VRMExporter {
     const vrmGltf = {
       asset: {
         version: "2.0",
-        generator: "OpenNexus3DStudio VRM Exporter"
+        generator: "Weftspun3DStudio VRM Exporter"
       },
       scene: 0,
       scenes: ensureArray(gltfData.scenes),
@@ -483,8 +483,8 @@ export class VRMExporter {
       specVersion: "0.0",
       meta: {
         version: "0.0",
-        title: options.metadata?.title || 'OpenNexus3DStudio Export',
-        author: options.metadata?.author || 'OpenNexus3DStudio',
+        title: options.metadata?.title || 'Weftspun3DStudio Export',
+        author: options.metadata?.author || 'Weftspun3DStudio',
         contactInformation: "",
         reference: "",
         texture: -1,
@@ -564,15 +564,15 @@ export class VRMExporter {
     const vrmFile = {
       asset: {
         version: "2.0",
-        generator: "OpenNexus3DStudio VRM Exporter"
+        generator: "Weftspun3DStudio VRM Exporter"
       },
       extensions: {
         VRM: {
           specVersion: "0.0",
           meta: {
             version: "0.0",
-            title: vrmData.meta?.title || "OpenNexus3DStudio Export",
-            author: vrmData.meta?.author || "OpenNexus3DStudio",
+            title: vrmData.meta?.title || "Weftspun3DStudio Export",
+            author: vrmData.meta?.author || "Weftspun3DStudio",
             contactInformation: "",
             reference: "",
             texture: -1,
@@ -689,15 +689,15 @@ export class VRMExporter {
     const vrmFile = {
       asset: {
         version: "2.0",
-        generator: "OpenNexus3DStudio VRM Exporter"
+        generator: "Weftspun3DStudio VRM Exporter"
       },
       extensions: {
         VRM: {
           specVersion: "0.0",
           meta: {
             version: "0.0",
-            title: vrmData.meta?.title || "OpenNexus3DStudio Export",
-            author: vrmData.meta?.author || "OpenNexus3DStudio",
+            title: vrmData.meta?.title || "Weftspun3DStudio Export",
+            author: vrmData.meta?.author || "Weftspun3DStudio",
             contactInformation: vrmData.meta?.contactInformation || "",
             reference: vrmData.meta?.reference || "",
             texture: vrmData.meta?.texture || -1,
@@ -1042,7 +1042,7 @@ export class VRMExporter {
    * @param {THREE.Object3D} root
    */
   stripCircularUserData(root) {
-    const keysToStrip = new Set(['gltf', 'parser', 'opennexus3dstudio', 'scene', 'parent']);
+    const keysToStrip = new Set(['gltf', 'parser', 'weftspun3dstudio', 'scene', 'parent']);
     root.traverse((node) => {
       if (!node.userData) return;
       for (const key of Object.keys(node.userData)) {

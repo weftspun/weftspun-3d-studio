@@ -1,4 +1,4 @@
-# OpenNexus3DStudio — protected paths (DGX canonical during reconcile).
+# Weftspun3DStudio — protected paths (DGX canonical during reconcile).
 # One repo-relative path per line. Lines starting with # are ignored.
 # Source: memory-bank/*-protected-state.md + .cursor/rules/*-protected.mdc
 
@@ -47,7 +47,7 @@ src/__tests__/animationManager.playback.test.js
 src/__tests__/kimodoMotionLoader.test.js
 src/__tests__/vrmMixamoPlaybackGuard.test.js
 .cursor/rules/vrm-animation-protected.mdc
-.cursor/rules/opennexus3d-vrm-animation-playback.mdc
+.cursor/rules/weftspun3d-vrm-animation-playback.mdc
 
 # --- App chrome layout ---
 src/App.jsx
@@ -65,7 +65,7 @@ src/components/GLBExport.jsx
 src/components/WorldLibrary.jsx
 src/__tests__/spatialFabricAdapter.test.js
 .cursor/rules/spatial-fabric-rp1-protected.mdc
-.cursor/rules/spacetime-moat-protected.mdc
+.cursor/rules/weftspun-moat-protected.mdc
 
 # --- XR floor anchoring ---
 src/library/worldSceneLoader.js

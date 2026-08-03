@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Patch 3DAIGC-API docs/api_documentation.md for text_to_motion + OpenNexus naming."""
+"""Patch 3DAIGC-API docs/api_documentation.md for text_to_motion + Weftspun naming."""
 from pathlib import Path
 
 DOC = Path("/home/sifr/3DAIGC-API/docs/api_documentation.md")
@@ -8,7 +8,7 @@ text = DOC.read_text(encoding="utf-8")
 MOTION_BLOCK = """
 ## Text-to-Motion Endpoints (Kimodo)
 
-Generates **studio motion JSON** from a natural-language prompt for playback in **OpenNexus3DStudio** (VRM or rigged GLB via `KimodoMotionPromptBar` → `kimodoMotionLoader.js`).
+Generates **studio motion JSON** from a natural-language prompt for playback in **Weftspun3DStudio** (VRM or rigged GLB via `KimodoMotionPromptBar` → `kimodoMotionLoader.js`).
 
 **Model:** `kimodo_text_to_motion` (Kimodo-SOMA-RP-v1.1 only — see `docs/MODEL_LICENSES.md`).
 
@@ -57,7 +57,7 @@ if "| Text to Motion |" not in text:
     text = text.replace(
         "| Image Mesh Editing | `voxhammer_image_mesh_editing` | VoxHammer image mesh edit |\n",
         "| Image Mesh Editing | `voxhammer_image_mesh_editing` | VoxHammer image mesh edit |\n"
-        "| Text to Motion | `kimodo_text_to_motion` | Kimodo SOMA → studio_motion.json for OpenNexus3DStudio |\n",
+        "| Text to Motion | `kimodo_text_to_motion` | Kimodo SOMA → studio_motion.json for Weftspun3DStudio |\n",
     )
 
 text = text.replace(

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { OpenNexus3DStudioBridge } from '../library/characterStudioBridge';
+import { Weftspun3DStudioBridge } from '../library/characterStudioBridge';
 
-const OpenNexus3DStudioImport = ({ onModelImported }) => {
+const Weftspun3DStudioImport = ({ onModelImported }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [validationResult, setValidationResult] = useState(null);
-  const [bridge] = useState(() => new OpenNexus3DStudioBridge());
+  const [bridge] = useState(() => new Weftspun3DStudioBridge());
   const fileInputRef = useRef(null);
 
   const handleFileSelect = async (event) => {
@@ -21,15 +21,15 @@ const OpenNexus3DStudioImport = ({ onModelImported }) => {
       setValidationResult(null);
 
       // Load and process the GLB file
-      const processedModel = await bridge.loadOpenNexus3DStudioGLB(file, {
+      const processedModel = await bridge.loadWeftspun3DStudioGLB(file, {
         convertToVRM: true,
         addVRMStructure: true,
-        optimizeForOpenNexus3DStudio: true,
+        optimizeForWeftspun3DStudio: true,
         addDefaultMaterials: true
       });
 
       // Validate the processed model
-      const validation = bridge.validateForOpenNexus3DStudio(processedModel);
+      const validation = bridge.validateForWeftspun3DStudio(processedModel);
       setValidationResult(validation);
 
       if (validation.valid) {
@@ -38,7 +38,7 @@ const OpenNexus3DStudioImport = ({ onModelImported }) => {
           onModelImported(processedModel, file);
         }
         
-        alert('Model imported successfully into OpenNexus3DStudio!');
+        alert('Model imported successfully into Weftspun3DStudio!');
       } else {
         console.warn('Model validation issues:', validation.issues);
         alert(`Model imported with issues: ${validation.issues.join(', ')}`);
@@ -56,16 +56,16 @@ const OpenNexus3DStudioImport = ({ onModelImported }) => {
   };
 
   return (
-    <div className="opennexus-import">
+    <div className="weftspun-import">
       <div className="card">
         <div className="card-header">
-          <h3 className="card-title">OpenNexus3DStudio GLB Import</h3>
+          <h3 className="card-title">Weftspun3DStudio GLB Import</h3>
         </div>
         
         <div className="import-content">
           <div className="import-info mb-3">
             <p className="text-sm text-gray-400 mb-2">
-              Import GLB files into OpenNexus3DStudio avatar workflows (VRM-ready)
+              Import GLB files into Weftspun3DStudio avatar workflows (VRM-ready)
             </p>
             <div className="feature-list">
               <div className="feature-item">
@@ -74,7 +74,7 @@ const OpenNexus3DStudioImport = ({ onModelImported }) => {
               </div>
               <div className="feature-item">
                 <span className="feature-icon">✓</span>
-                <span>OpenNexus3DStudio optimization</span>
+                <span>Weftspun3DStudio optimization</span>
               </div>
               <div className="feature-item">
                 <span className="feature-icon">✓</span>
@@ -107,7 +107,7 @@ const OpenNexus3DStudioImport = ({ onModelImported }) => {
                   Processing...
                 </>
               ) : (
-                'Import GLB for OpenNexus3DStudio'
+                'Import GLB for Weftspun3DStudio'
               )}
             </button>
           </div>
@@ -152,7 +152,7 @@ const OpenNexus3DStudioImport = ({ onModelImported }) => {
   );
 };
 
-export default OpenNexus3DStudioImport;
+export default Weftspun3DStudioImport;
 
 
 

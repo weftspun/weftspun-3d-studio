@@ -1,4 +1,4 @@
-package com.opennexus3dstudio.xrfacebridge
+package com.weftspun.xrfacebridge
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +18,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 /**
- * POSTs face payloads to the OpenNexus3dStudio dev server ([/__native_face_ingest])
+ * POSTs face payloads to the Weftspun3dStudio dev server ([/__native_face_ingest])
  * so Chrome WebXR on the headset can subscribe via same-origin SSE ([/__native_face_sse]).
  */
 object FaceHttpRelay {
@@ -35,14 +35,14 @@ object FaceHttpRelay {
     private var lastFailureLogMs = 0L
 
     /**
-     * @param openNexus3dStudioUrl e.g. https://YOUR_PC_LAN_IP:3000/ from [R.string.open_nexus_3d_studio_url]
+     * @param weftspun3dStudioUrl e.g. https://YOUR_PC_LAN_IP:3000/ from [R.string.weftspun_3d_studio_url]
      * @param trustDevCerts when true (debug), accept self-signed mkcert for LAN dev HTTPS
      */
     @Synchronized
-    fun configure(openNexus3dStudioUrl: String, trustDevCerts: Boolean) {
-        val base = openNexus3dStudioUrl.trim().trimEnd('/')
+    fun configure(weftspun3dStudioUrl: String, trustDevCerts: Boolean) {
+        val base = weftspun3dStudioUrl.trim().trimEnd('/')
         if (base.isEmpty()) {
-            Log.w(TAG, "Empty OpenNexus3dStudio URL — relay disabled")
+            Log.w(TAG, "Empty Weftspun3dStudio URL — relay disabled")
             stop()
             return
         }
@@ -51,7 +51,7 @@ object FaceHttpRelay {
             val portPart = if (uri.port > 0) ":${uri.port}" else ""
             "${uri.scheme}://${uri.host}$portPart$INGEST_PATH"
         } catch (e: Exception) {
-            Log.e(TAG, "Invalid OpenNexus3dStudio URL: $openNexus3dStudioUrl", e)
+            Log.e(TAG, "Invalid Weftspun3dStudio URL: $weftspun3dStudioUrl", e)
             null
         }
         client = buildClient(trustDevCerts)

@@ -1,14 +1,14 @@
 # Quickstart
 
 
-- Main repo: https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio
+- Main repo: https://github.com/weftspun/weftspun-3d-studio
 - Upstream attribution: https://github.com/M3-org/CharacterStudio (M3-org avatar-trait foundation)
 
 
 ```bash
 # Clone the repo and change directory into it
-git clone https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio
-cd OpenNexus3DStudio
+git clone https://github.com/weftspun/weftspun-3d-studio
+cd Weftspun3DStudio
 
 # Install dependencies with legacy peer deps flag to ignore React errors
 npm install --legacy-peer-deps
