@@ -69,6 +69,33 @@ model or a geometric algorithm.
 
 
 
+## See-Through component models
+
+The `seethrough_layer_decomposition` entry names one task. The task
+runs several models. The table names each component.
+
+| Component        | Base model          | Role                 | Runs on |
+| ---------------- | ------------------- | -------------------- | ------- |
+| lama             | LaMa                | Inpaints hidden area | Local   |
+| layerdiff-unet   | SDXL UNet           | Generates layers     | Local   |
+| layerdiff-te1    | CLIP text encoder   | Prompt encode        | Local   |
+| layerdiff-te2    | CLIP text encoder 2 | Prompt encode        | Local   |
+| layerdiff-vae    | SDXL VAE            | Latent decode        | Local   |
+| trans-vae        | TransparentVAE      | Alpha decode         | Local   |
+| marigold-unet    | Marigold            | Depth estimate       | Local   |
+| marigold-te      | CLIP text encoder   | Depth conditioning   | Local   |
+| marigold-vae     | Marigold VAE        | Depth decode         | Local   |
+
+Two runtimes exist for this task. The DGX API runs the Cog model
+from RFD 0006. see-through.cpp runs the same models on a local
+machine. see-through.cpp uses ggml with a Vulkan backend. It reads
+GGUF weights and writes a layered PSD.
+
+The local runtime needs no DGX connection. It uses the Apache 2.0
+license. The weights ship as GGUF files in a separate release.
+
+RFD 0019 selects the same ggml runtime for the Elixir core.
+
 ## Client and external models
 
 The avatar from photo task runs on AvatarSDK. AvatarSDK is an

@@ -547,3 +547,8 @@ native/android-xr-face-bridge/.jdk/
 
 # Creature / appearance pipeline modules are REQUIRED by App.jsx / catalogs on main
 # (were briefly ignored as "moat"; that broke Vercel). Keep them tracked.
+
+# Elixir studio core
+/weftspun_studio/_build/
+/weftspun_studio/deps/
+/weftspun_studio/burrito_out/
