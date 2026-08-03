@@ -548,10 +548,10 @@ function getVRMMeta( vrmMeta){
     authors:["Weftspun3DStudio"],
     metaVersion:"1",
     version:"v1",
-    name:"CharacterCreator",
+    name:"Weftspun3DStudio",
     licenseUrl:"https://vrm.dev/licenses/1.0/",
     commercialUssageName: "personalNonProfit",
-    contactInformation: "https://m3org.com/", 
+    contactInformation: "https://github.com/weftspun/weftspun-3d-studio",
     allowExcessivelyViolentUsage:false,
     allowExcessivelySexualUsage:false,
     allowPoliticalOrReligiousUsage:false,
@@ -570,7 +570,7 @@ async function parseVRM (glbModel, avatar, options){
     isVrm0 = false,
     vrmMeta = null,
     scale = 1,
-    vrmName = "CharacterCreator"
+    vrmName = "Weftspun3DStudio"
   } = options
   
   // OPTIMIZED: Convert screenshot to ImageBitmap format if needed (for VRMExporterv0 compatibility)

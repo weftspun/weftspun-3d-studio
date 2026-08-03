@@ -1,15 +1,16 @@
-name: Deploy to GitHub Pages
+name: CI
 
 on:
   push:
     branches:
-      - main # or the branch you want to trigger the deployment on
+      - main
+  pull_request:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - name: Checkout code
@@ -18,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # or the version you need
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -31,10 +32,3 @@ jobs:
           VITE_ASSET_PATH: https://m3-org.github.io/loot-assets/
           VITE_PUBLIC_DEMO: '1'
         run: npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./build
-          cname: studio.m3org.com
