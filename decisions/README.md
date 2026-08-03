@@ -27,6 +27,7 @@ See the STE policy below for the writing rules.
 | 0013 | Public demo deploy | published |
 | 0014 | Batch processing | published |
 | 0015 | Phygital passport | abandoned |
+| 0016 | Deep learning model inventory | published |
 
 ## DRY policy
 
