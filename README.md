@@ -514,10 +514,3 @@ graphics, and phygital concept assets are the property of their respective owner
 this project. Per the upstream trademark terms, this fork has been rebranded in full: all upstream product
 names, logos, and trade dress have been removed and replaced with Weftspun's own. References to the upstream
 project in this repository are nominative attribution only and imply no affiliation or endorsement.
-
-### Trademark & Brand Asset Reservation
-The name **"Weftspun"**, the Weftspun woven-lattice logo artwork, and all associated apparel designs, product
-names, graphics, and phygital concept assets are proprietary intellectual property of Weftspun.
-
-* **No Trademark License:** The open-source license applied to the source code **does not** grant any rights, implied or explicit, to use the "Weftspun" brand name, logo, or trade dress for commercial or non-commercial redistributions.
-* **Modification Requirement:** If you fork this repository or modify the code to distribute your own software or services, you **must** remove all "Weftspun" branding, logos, and references, and rebrand your version entirely under a unique name.
