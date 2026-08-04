@@ -10,7 +10,7 @@ holds three parts in one application:
 ## Acknowledgments
 
 The project started as Open3DStudio. It then took the name Weftspun
-3D Studio and added WebXR, WebGPU, and blockchain features.
+3D Studio and added WebXR and WebGPU.
 
 The avatar and VRM workflows now run in the same application. An
 earlier version held them apart, under the name Character Studio.
