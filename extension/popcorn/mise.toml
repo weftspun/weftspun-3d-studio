@@ -1,0 +1,5 @@
+# Popcorn 0.3.2 raises unless it sees exactly this toolchain, so the
+# versions here are a requirement and not a preference.
+[tools]
+erlang = "26.0.2"
+elixir = "1.17.3-otp-26"

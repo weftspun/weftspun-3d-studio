@@ -1,0 +1,59 @@
+{
+  "name": "weftspun-3d-studio",
+  "displayName": "Weftspun 3D Studio",
+  "description": "Runs the Weftspun minimal test as real Elixir, on AtomVM in WebAssembly, inside an editor panel.",
+  "version": "0.1.0",
+  "publisher": "fire",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weftspun/weftspun-3d-studio.git",
+    "directory": "extension"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "weftspun",
+    "elixir",
+    "popcorn",
+    "atomvm",
+    "webassembly"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "weftspun.runMinimalTest",
+        "title": "Run Minimal Test",
+        "category": "Weftspun"
+      }
+    ],
+    "configuration": {
+      "title": "Weftspun 3D Studio",
+      "properties": {
+        "weftspun.popcorn.distPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Folder that holds the built Popcorn artifacts. Leave this empty to use `popcorn/dist` inside the extension."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "test:browser": "node scripts/verify-bundle.mjs",
+    "package": "vsce package",
+    "publish:openvsx": "ovsx publish"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@vscode/vsce": "^3.2.1",
+    "ovsx": "^0.10.1"
+  }
+}

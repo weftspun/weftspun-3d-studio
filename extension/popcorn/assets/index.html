@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Weftspun minimal test</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 60rem;
+        margin: 0 auto;
+        padding: 1.5rem;
+        background: #161616;
+        color: #fcfcfc;
+      }
+      #status {
+        opacity: 0.75;
+      }
+      table {
+        border-collapse: collapse;
+        margin-top: 1rem;
+        width: 100%;
+      }
+      td {
+        border-bottom: 1px solid #333;
+        padding: 0.35rem 0.6rem;
+        vertical-align: top;
+      }
+      td:first-child {
+        width: 4rem;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Weftspun minimal test</h1>
+    <p id="status">Loading…</p>
+    <div id="output"></div>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>
