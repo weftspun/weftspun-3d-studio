@@ -8,7 +8,7 @@ Weftspun3DStudio does **not** commit asset binaries. They are fetched from that 
 |-------------|----------------|
 | **Local dev (Surface/DGX)** | `npm run get-assets` clones to `../loot-assets`, links `public/loot-assets` → clone |
 | **Vercel / CI** | `npm run build` runs `get-assets` first → shallow clone into `public/loot-assets` → Vite bundles into `build/` |
-| **git push** | Only app code; `public/loot-assets/` is gitignored (junction or build-time clone) |
+| **git push** | Only app code. `public/loot-assets/` is gitignored (junction or build-time clone) |
 
 Pointer file in repo root: `loot-assets.source`
 
@@ -53,7 +53,7 @@ npm run get-assets && vite build
 
 On Vercel, `VERCEL=1` → clone **into** `public/loot-assets` (no sibling folder). No submodule or manual asset upload required.
 
-Optional: point manifests at GitHub Pages CDN instead of bundling — see [VERCEL_LOOT_ASSETS.md](./VERCEL_LOOT_ASSETS.md):
+Optional: point manifests at GitHub Pages CDN instead of bundling, see [VERCEL_LOOT_ASSETS.md](./VERCEL_LOOT_ASSETS.md):
 
 ```env
 VITE_ASSET_PATH=https://m3-org.github.io/loot-assets/
@@ -63,13 +63,13 @@ VITE_ASSET_PATH=https://m3-org.github.io/loot-assets/
 
 ## App code
 
-No import path changes — `src/library/lootAssetsConfig.js` uses `/loot-assets/…`.
+No import path changes, `src/library/lootAssetsConfig.js` uses `/loot-assets/…`.
 
 ## Scripts
 
 | Command | Purpose |
 |---------|---------|
-| `npm run get-assets` | Clone m3-org/loot-assets if missing; link or inline per environment |
+| `npm run get-assets` | Clone m3-org/loot-assets if missing. Link or inline per environment |
 | `npm run link-assets` | Windows junction `public/loot-assets` → `../loot-assets` |
 
 Implementation: `scripts/loot-assets-paths.mjs`, `scripts/ensure-loot-assets.mjs`

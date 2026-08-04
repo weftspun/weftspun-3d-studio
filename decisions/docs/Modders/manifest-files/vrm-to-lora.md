@@ -4,15 +4,24 @@ sidebar_position: 4
 
 # VRM to LoRA data
 
-This manifest is inspired by the [VRM to LoRA guide](https://hackmd.io/@reneil1337/avatar-lora) by [reneil1337](https://github.com/reneil1337) will generate training data that can be used for training LoRAs using tools such as [Kohya](https://github.com/bmaltais/kohya_ss).
+This manifest generates training data for a LoRA. A tool such as
+[Kohya](https://github.com/bmaltais/kohya_ss) then trains on that
+data.
+
+The [VRM to LoRA guide](https://hackmd.io/@reneil1337/avatar-lora) by
+[reneil1337](https://github.com/reneil1337) is the source of this
+design.
 
 ![](/img/H1OJTfb36.jpg)
 
-Specifically this part automates the part of gathering screenshots and tagging them from any input VRM file, a time consuming process when done manually. The output will be images + text files like such:
+This part collects the screenshots from a VRM file and tags them.
+Manual work takes a long time. The output is a set of images and text
+files:
 
 ![Screenshot from 2024-02-14 12-17-25](/img/SkXX5KWnp.png)
 
-This is what all the text files from the output look like, the screenshots and associated text is all configurable via the manifest file:
+The output text files look like this. The manifest file controls
+each screenshot and its text:
 
 ```
 anata a person slowly walking, full shot plain white background
@@ -56,7 +65,12 @@ For the rest of the steps, follow this guide: https://hackmd.io/@reneil1337/avat
 
 ---
 
-Here's a snippet of a manifest.json file for exporting LoRA training data. The animations being used are no-skin mixamo animation files that used Y-bot as the character. In the future we plan to implement VRMA (VRM animation) file support.
+This part of a `manifest.json` file exports LoRA training data. The
+animations are mixamo files with no skin, which use Y-bot as the
+character.
+
+A later version adds support for VRMA files, the VRM animation
+format.
 
 ```json!
 {

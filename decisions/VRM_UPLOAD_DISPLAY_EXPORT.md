@@ -4,7 +4,7 @@
 
 **Canonical split with AIGC rigs:** [API_AVATAR_RIG_CONTRACT.md](API_AVATAR_RIG_CONTRACT.md) (VRM path vs avatar-from-image GLB path).
 
-This guide documents the **uploaded `.vrm` pipeline** we settled on after multi-skin VRM0 alignment work (UniGLTF exports such as Sifr2: body, head, eyes, cornea, hair — each with its own skin index, bones as scene siblings).
+This guide documents the **uploaded `.vrm` pipeline** we settled on after multi-skin VRM0 alignment work (UniGLTF exports such as Sifr2: body, head, eyes, cornea, hair, each with its own skin index, bones as scene siblings).
 
 ## Problem we fixed
 
@@ -17,12 +17,12 @@ Other VRM viewers load the file and render it. Weftspun3DStudio was **mutating**
 | Skeleton viz from humanoid `Normalized_*` nodes | Viz from primary skinned mesh (`AvatarBody` skeleton) |
 | Export always `rotateY(π)` | Export yaw only when `getWorldDirection().z > 0.5` |
 
-VRM0 UniGLTF layout: **skinned mesh nodes and the Hips bone tree are siblings**. Rotating only the armature changes bone world matrices relative to mesh nodes; per-skin bind drifts (worst on eyes and finger extremities).
+VRM0 UniGLTF layout: **skinned mesh nodes and the Hips bone tree are siblings**. Rotating only the armature changes bone world matrices relative to mesh nodes. Per-skin bind drifts (worst on eyes and finger extremities).
 
 Reference pattern (original Weftspun3DStudio / `@pixiv/three-vrm`):
 
 - `VRMUtils.rotateVRM0` → `scene.rotation.y += Math.PI` when needed
-- `src/library/load-utils.js` `loadVRM()` — scene root, not hips
+- `src/library/load-utils.js` `loadVRM()`, scene root, not hips
 - `src/library/modelOrientationUtils.js` → `applyVrm0SceneForwardFix(scene)`
 
 ## Upload path
@@ -31,7 +31,7 @@ Reference pattern (original Weftspun3DStudio / `@pixiv/three-vrm`):
 
 **Passthrough policy (uploads only):**
 
-1. **Facing (VRM0):** `applyVrm0SceneForwardFix(vrm.scene)` — **scene root only** when `forward.z > 0.5`
+1. **Facing (VRM0):** `applyVrm0SceneForwardFix(vrm.scene)`, **scene root only** when `forward.z > 0.5`
 2. **Flags:** `vrm.scene.userData.vrmNormalized = true`, `vrm.scene.userData.vrmBindPassthrough = true`
 3. **No** scale, center, floor snap, rebind, bone rename, or AIGC rig repair on upload
 
@@ -65,19 +65,19 @@ See also `.cursor/rules/remote-log-first.mdc`.
 | Concern | Rule |
 |---------|------|
 | Skeleton overlay | `getPrimarySkeletonBones(modelRoot)` from primary skinned mesh |
-| Joint gizmos | Fixed `SKELETON_JOINT_SPHERE_RADIUS` (0.012); uniform; `depthTest: false` overlay |
-| Bone gizmo position | `getBoneDisplayWorldPosition` — **no** AIGC display offset when `userData.vrm` or `vrmNormalized` |
+| Joint gizmos | Fixed `SKELETON_JOINT_SPHERE_RADIUS` (0.012). Uniform. `depthTest: false` overlay |
+| Bone gizmo position | `getBoneDisplayWorldPosition`, **no** AIGC display offset when `userData.vrm` or `vrmNormalized` |
 | `updateSkeletonDisplayCorrection` | Skip for uploaded VRM |
-| Trait / loot load | `characterManager`, `vrmManager`, `load-utils` — same scene-root forward fix + rebind, **never** hips-only rotation |
+| Trait / loot load | `characterManager`, `vrmManager`, `load-utils`, same scene-root forward fix + rebind, **never** hips-only rotation |
 
 ## Export path
 
 **Entry:** Save panel / `VRMExporter.exportToVRM` / `SceneManager.exportToVRM`.
 
-1. **Rebind** skinned meshes before GLTF parse when `userData.vrm` or `vrmNormalized`  
-2. **Yaw:** only if model world forward has `z > 0.5` (same rule as upload); do not blind `rotateY(π)` on already-correct uploads  
-3. **Strip** internal flags from exported GLB: `vrmNormalized`, `preserveExportedOrientation`, `fromAigc`, etc. (`glbExportUtils.stripInternalExportUserData`)  
-4. Restore viewport quaternion after export if a temporary yaw was applied  
+1. **Rebind** skinned meshes before GLTF parse when `userData.vrm` or `vrmNormalized`
+2. **Yaw:** only if model world forward has `z > 0.5` (same rule as upload). Do not blind `rotateY(π)` on already-correct uploads
+3. **Strip** internal flags from exported GLB: `vrmNormalized`, `preserveExportedOrientation`, `fromAigc`, etc. (`glbExportUtils.stripInternalExportUserData`)
+4. Restore viewport quaternion after export if a temporary yaw was applied
 
 Round-trip test: export Sifr2 → re-import → eyes and finger bones still align in skeleton mode.
 
@@ -96,8 +96,8 @@ Round-trip test: export Sifr2 → re-import → eyes and finger bones still alig
 
 ## Re-test checklist
 
-1. Hard refresh dev tab (`Ctrl+Shift+R`)  
-2. Upload Sifr2 (or any multi-skin VRM0)  
-3. Grep remote log for `[VRM] Multi-skin layout` and scene-root rotation line  
-4. Solid mode: textures OK; skeleton mode: eye bones on eye mesh, finger joints on finger mesh  
-5. Export VRM → re-import → same alignment  
+1. Hard refresh dev tab (`Ctrl+Shift+R`)
+2. Upload Sifr2 (or any multi-skin VRM0)
+3. Grep remote log for `[VRM] Multi-skin layout` and scene-root rotation line
+4. Solid mode: textures OK. Skeleton mode: eye bones on eye mesh, finger joints on finger mesh
+5. Export VRM → re-import → same alignment

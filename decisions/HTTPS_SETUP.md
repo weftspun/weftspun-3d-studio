@@ -83,5 +83,5 @@ To access from your Galaxy XR device:
 ## Troubleshooting
 
 - **Certificate errors**: Make sure certificates are in `certs/` directory with correct names
-- **Connection refused**: Check firewall settings, ensure port 3000 is open
-- **WebXR still not working**: Verify you're using HTTPS (not HTTP) and have accepted the certificate warning
+- **Connection refused**: Check firewall settings, make sure port 3000 is open
+- **WebXR still not working**: Verify you are using HTTPS (not HTTP) and have accepted the certificate warning

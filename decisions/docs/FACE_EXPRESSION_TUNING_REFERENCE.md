@@ -4,12 +4,12 @@ This document is the **checkpoint baseline** for `src/library/xrExpressionTracki
 
 ## Pipeline (unchanged concepts)
 
-1. **Neutral baseline** — First snapshot or explicit `setFaceExpressionNeutralBaselineFromRecord`; subsequent frames are deltas.
-2. **Lateral mirror** — All `_left` / `_right` tracker pairs are swapped (`MIRROR_FACE_TRACKING_LATERAL`) so the avatar matches a mirror view.
-3. **Brow raiser polarity** — Inner/outer brow raiser weights are **not** flipped (`1−v`); raise → higher delta after neutral.
-3. **Preprocess** — Sideways mouth damp (when mouth not clearly open), lip-seal gate, eye/brow/look gains, lip corner puller gain.
-4. **`inferVRMMorphTargets`** — Blink + preset visemes (`aa`, `ee`, `ih`, `oh`, `ou`) with jaw vs sideways de-bleed, lip seal on jaw, angry-snarl gate on closed jaw.
-5. **Emotion presets** — `happy` / `sad` / `angry` / `surprised` composites; `happy` is scaled down when fine-grained smile cues are already mapped.
+1. **Neutral baseline**, First snapshot or explicit `setFaceExpressionNeutralBaselineFromRecord`. Subsequent frames are deltas.
+2. **Lateral mirror**, All `_left` / `_right` tracker pairs are swapped (`MIRROR_FACE_TRACKING_LATERAL`) so the avatar matches a mirror view.
+3. **Brow raiser polarity**, Inner/outer brow raiser weights are **not** flipped (`1−v`). Raise → higher delta after neutral.
+3. **Preprocess**, Sideways mouth damp (when mouth not clearly open), lip-seal gate, eye/brow/look gains, lip corner puller gain.
+4. **`inferVRMMorphTargets`**, Blink + preset visemes (`aa`, `ee`, `ih`, `oh`, `ou`) with jaw vs sideways de-bleed, lip seal on jaw, angry-snarl gate on closed jaw.
+5. **Emotion presets**, `happy` / `sad` / `angry` / `surprised` composites. `happy` is scaled down when fine-grained smile cues are already mapped.
 
 ## Constants (baseline snapshot)
 
@@ -44,7 +44,7 @@ This document is the **checkpoint baseline** for `src/library/xrExpressionTracki
 
 ### Lip pucker vs open mouth (preprocess + `inferVRMMorphTargets`)
 
-When average pucker/funneler ≥ `LIP_PUCKER_SUPPRESS_OPEN_AT` (0.13) and pucker **dominates** jaw (`puckerAvg > jaw × 1.35 + 0.06`), **unless** the mouth is clearly open (`jaw ≥ 0.25` and `jaw > puckerAvg × 1.02`), attenuate `jaw_drop`, `jaw_thrust`, and `lips_toward` in preprocess; in viseme inference use `jawForOpen` and reduced `lipsTowardAa` / `upperLipAa` for **`aa`** and for **`jawOh` / `jawOu`** so forward lips do not read as a wide jaw-down open mouth.
+When average pucker/funneler ≥ `LIP_PUCKER_SUPPRESS_OPEN_AT` (0.13) and pucker **dominates** jaw (`puckerAvg > jaw × 1.35 + 0.06`), **unless** the mouth is clearly open (`jaw ≥ 0.25` and `jaw > puckerAvg × 1.02`), attenuate `jaw_drop`, `jaw_thrust`, and `lips_toward` in preprocess. In viseme inference use `jawForOpen` and reduced `lipsTowardAa` / `upperLipAa` for **`aa`** and for **`jawOh` / `jawOu`** so forward lips do not read as a wide jaw-down open mouth.
 
 ### Closed-lip smile vs open mouth (`inferVRMMorphTargets`)
 
@@ -52,11 +52,11 @@ When smile (corners / cheek) is above `CLOSED_SMILE_AA_SUPPRESS_AT` (0.22), `jaw
 
 ### Preset `oh` / `ou` (no pucker term)
 
-`oh` and `ou` use `lips_toward`, `jawOh` / `jawOu`, and `lip_stretcher` average only — **not** `puckerAvg`, so lip pucker does not fire the same blendshape as a spoken “O”, and real vowel **oh** stays jaw-driven.
+`oh` and `ou` use `lips_toward`, `jawOh` / `jawOu`, and `lip_stretcher` average only, **not** `puckerAvg`, so lip pucker does not fire the same blendshape as a spoken “O”, and real vowel **oh** stays jaw-driven.
 
 ### Lip sync merge (`setXRDriverLipSyncVisemeOverride` + `isFaceExpressionDriverFresh`)
 
-FFT lip sync from `lipsync.js` writes per-VRM overrides; `applyVisemePresetFill` blends `xr * (1 − strength) + lip * strength` for `aa` / `ee` / `ih` / `oh` / `ou`. When face tracking is fresh (~140 ms), LipSync skips direct `setValue` on those presets so XR smoothing is not overwritten. While speaking, **`happy`** is multiplied down slightly from viseme activity so the mouth can move with vowels.
+FFT lip sync from `lipsync.js` writes per-VRM overrides. `applyVisemePresetFill` blends `xr * (1 − strength) + lip * strength` for `aa` / `ee` / `ih` / `oh` / `ou`. When face tracking is fresh (~140 ms), LipSync skips direct `setValue` on those presets so XR smoothing is not overwritten. While speaking, **`happy`** is multiplied down slightly from viseme activity so the mouth can move with vowels.
 
 ### Happy composite (inside `applyEmotionCompositePresets`)
 

@@ -12,7 +12,7 @@ ThirdWeb provides an MCP server that enables blockchain operations through natur
 2. A ThirdWeb project with a secret key
 3. Cursor IDE installed
 
-### Step 1: Obtain Your ThirdWeb Secret Key
+### Step 1: Get Your ThirdWeb Secret Key
 
 1. Log in to your [ThirdWeb Dashboard](https://thirdweb.com/dashboard)
 2. Navigate to your project settings
@@ -32,7 +32,7 @@ ThirdWeb provides an MCP server that enables blockchain operations through natur
    - **URL**: `https://api.thirdweb.com/mcp?secretKey=YOUR_SECRET_KEY_HERE`
      - Replace `YOUR_SECRET_KEY_HERE` with your actual ThirdWeb secret key
 
-**Important**: If you configure via the UI, you don't need a `.cursor/mcp.json` file. Using both will create duplicate entries.
+**Important**: If you configure via the UI, you do not need a `.cursor/mcp.json` file. Using both will create duplicate entries.
 
 #### Option B: Using Configuration File (Alternative)
 
@@ -48,7 +48,7 @@ If you prefer file-based configuration, add the following to your `.cursor/mcp.j
 }
 ```
 
-**Note**: Use either the UI configuration OR the file-based configuration, not both. If the `.cursor` directory doesn't exist, create it first.
+**Note**: Use either the UI configuration OR the file-based configuration, not both. If the `.cursor` directory does not exist, create it first.
 
 ### Step 3: Optional - Specify Specific Tools
 
@@ -108,7 +108,7 @@ After configuration, test the integration by asking Cursor to:
 
 1. "List my server wallets"
 2. "Create a server wallet called 'treasury'"
-3. "What's the balance of treasury wallet?"
+3. "What is the balance of treasury wallet?"
 4. "List my contracts"
 5. "Approve 100 USDC from treasury wallet to executor wallet"
 
@@ -125,14 +125,14 @@ After configuration, test the integration by asking Cursor to:
 
 1. Verify your secret key is correct
 2. Check your internet connection
-3. Ensure the URL format is correct (no extra spaces or characters)
+3. Make sure the URL format is correct (no extra spaces or characters)
 4. Check Cursor's MCP logs for error messages
 
 #### Tools Not Available
 
 1. Verify the tools are included in the URL if you specified a tool list
 2. Check that your ThirdWeb account has the necessary permissions
-3. Ensure your project is active in the ThirdWeb dashboard
+3. Make sure your project is active in the ThirdWeb dashboard
 
 ## Playwright MCP (browser automation)
 
@@ -140,22 +140,22 @@ Playwright MCP lets Cursor drive a browser (navigate, click, snapshot) for e2e c
 
 ### Setup
 
-1. **Chrome extension (bridge)**  
+1. **Chrome extension (bridge)**
    Install the **Playwright MCP Bridge** extension in Chrome:
    - Chrome Web Store: search for "Playwright MCP Bridge", or
    - Extension ID: `jakfalbnbhgkpmoaakfflhflbfpkailf`
 
-2. **MCP server**  
+2. **MCP server**
    Configure Playwright MCP once in **Settings → Tools → MCP** (global). Do not add it to the workspace `.cursor/mcp.json` or it will appear twice.
 
-3. **Extension token**  
+3. **Extension token**
    Set the token in the environment where Cursor (the MCP client) runs so the Playwright MCP server can connect to the extension:
    - **Variable**: `PLAYWRIGHT_MCP_EXTENSION_TOKEN`
    - **Value**: The token shown in the Playwright MCP Bridge extension UI (copy from the extension).
    - **Where to set**: In Cursor, if your Playwright MCP server config supports env vars, add it there. Otherwise set it in your system/user environment or in a `.env` file that Cursor loads (do not commit the real token).
 
-4. **Connect**  
-   Open a browser tab via the Playwright MCP Bridge extension and ensure the token in the extension matches the one in your environment. Once connected, you can ask Cursor to e.g. "Open localhost:3000 and check the Cam button."
+4. **Connect**
+   Open a browser tab via the Playwright MCP Bridge extension and make sure the token in the extension matches the one in your environment. Once connected, you can ask Cursor to e.g. "Open localhost:3000 and check the Cam button."
 
 ### Additional Resources
 

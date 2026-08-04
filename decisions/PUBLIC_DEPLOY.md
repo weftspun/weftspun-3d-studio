@@ -5,7 +5,7 @@ Weftspun3DStudio ships two deployment modes:
 | Mode | Where | AI backend | Secrets |
 |------|-------|------------|---------|
 | **Local dev** | `npm run dev` on your PC / DGX | `VITE_API_ENDPOINT`, `DEV_API_PROXY_TARGET` | `.env` (gitignored) |
-| **Public demo** | Vercel (`vercel.json`) | None — viewport, VRM upload, traits UI | No client secrets |
+| **Public demo** | Vercel (`vercel.json`) | None, viewport, VRM upload, traits UI | No client secrets |
 
 ## Vercel (recommended public demo)
 
@@ -16,10 +16,10 @@ Weftspun3DStudio ships two deployment modes:
 
 `vercel.json` sets safe build-time flags only:
 
-- `VITE_PUBLIC_DEMO=1` — hides API status panel; shows user-friendly “no AI backend” copy; **XR Voice sidebar** shows a static demo preview (no DGX iframe).
-- `VITE_ASSET_PATH=https://m3-org.github.io/loot-assets/` — CDN loot assets (no full clone in CI).
+- `VITE_PUBLIC_DEMO=1`, hides API status panel. Shows user-friendly “no AI backend” copy. **XR Voice sidebar** shows a static demo preview (no DGX iframe).
+- `VITE_ASSET_PATH=https://m3-org.github.io/loot-assets/`, CDN loot assets (no full clone in CI).
 
-The XR Voice panel appears at the **top of the left sidebar** when `VITE_PUBLIC_DEMO=1` (`XrAiPanel.jsx`). It is a visual demo only on Vercel — mic/camera and task handoff require local dev + DGX Spark.
+The XR Voice panel appears at the **top of the left sidebar** when `VITE_PUBLIC_DEMO=1` (`XrAiPanel.jsx`). It is a visual demo only on Vercel, mic/camera and task handoff require local dev + DGX Spark.
 
 ### Do **not** set on Vercel
 
@@ -33,9 +33,9 @@ These are inlined into the browser bundle (`import.meta.env.VITE_*`):
 | `VITE_PINATA_*`, `VITE_ALCHEMY_*`, `VITE_BASE_X402_*`, `VITE_VANA_*` | Service secrets |
 | `VITE_HELIUS_KEY`, `VITE_OPENSEA_KEY` | Paid API keys |
 | `VITE_API_ENDPOINT` pointing at LAN/DGX/Tailscale | Private infra leak |
-| `VITE_XR_HUB_URL` / `VITE_MSF_PUBLIC_URL` with `10.0.0.*` or LAN IPs | Private infra leak — use Tailscale Funnel HTTPS on Vercel |
-| `MSF_EDIT_KEY`, `MSF_DB_PASSWORD`, `VITE_3DAIGC_API_KEY` | Server/edit secrets — never `VITE_*` |
-| `DEV_API_PROXY_TARGET` | Dev-only; not used in production build |
+| `VITE_XR_HUB_URL` / `VITE_MSF_PUBLIC_URL` with `10.0.0.*` or LAN IPs | Private infra leak, use Tailscale Funnel HTTPS on Vercel |
+| `MSF_EDIT_KEY`, `MSF_DB_PASSWORD`, `VITE_3DAIGC_API_KEY` | Server/edit secrets, never `VITE_*` |
+| `DEV_API_PROXY_TARGET` | Dev-only. Not used in production build |
 
 `npm run build` **fails on Vercel/CI** if any forbidden variable is present (`scripts/verify-public-build-env.mjs`).
 
@@ -46,7 +46,7 @@ These are inlined into the browser bundle (`import.meta.env.VITE_*`):
 | `VITE_THIRDWEB_CLIENT_ID` | Public wallet client id |
 | `VITE_AVATARSDK_CLIENT_ID` | Public AvatarSDK client id (no secret) |
 | `VITE_JOB_STATUS_PATH` | Only if you expose a **public** API URL |
-| `VITE_XR_HUB_URL` | Local dev / self-hosted only — live Spark hub iframe (not used on Vercel public demo) |
+| `VITE_XR_HUB_URL` | Local dev / self-hosted only, live Spark hub iframe (not used on Vercel public demo) |
 
 ## Local development (unchanged)
 
@@ -72,4 +72,4 @@ VERCEL=1 CI=1 VITE_PUBLIC_DEMO=1 \
 
 ## Full-stack (private)
 
-Run [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API) on your GPU machine and point local `.env` at it. Do not put DGX URLs on Vercel — use a public HTTPS API or keep AI generation local-only.
+Run [3DAIGC-API](https://github.com/AlfaOmegaGrafx/3DAIGC-API) on your GPU machine and point local `.env` at it. Do not put DGX URLs on Vercel, use a public HTTPS API or keep AI generation local-only.

@@ -1,7 +1,7 @@
 # Three.js WebGPU & WebXR Migration Guide
 
-**Version**: 1.0.0  
-**Date**: December 2025  
+**Version**: 1.0.0
+**Date**: December 2025
 **Status**: Implementation Complete
 
 ---
@@ -10,7 +10,7 @@
 
 This guide documents the migration of Weftspun3DStudio's SceneManager from WebGL-only to a modern rendering stack with WebGPU support, WebXR integration, enhanced audio, and advanced post-processing effects.
 
-## ✅ What's Been Implemented
+## ✅ What is Been Implemented
 
 ### 1. **WebGPU Renderer Support** 🚀
 - Automatic WebGPU detection and initialization
@@ -332,7 +332,7 @@ function updateAvatar(bodyData, faceData) {
 
 ### WebGPU Benefits
 - **30-50% performance improvement** for complex scenes
-- Better GPU utilization
+- Better GPU use
 - Lower CPU overhead
 - Future-proof rendering pipeline
 
@@ -359,14 +359,14 @@ function updateAvatar(bodyData, faceData) {
 - **Check**: `sceneManager.rendererType` to see which renderer is active
 
 ### WebXR Not Working
-- **Symptom**: VR/AR buttons don't appear or don't work
-- **Solution**: 
-  - Ensure HTTPS (required for WebXR)
+- **Symptom**: VR/AR buttons do not appear or do not work
+- **Solution**:
+  - Make sure HTTPS (required for WebXR)
   - Check browser WebXR support
   - Verify headset is connected and recognized
 
 ### VR Camera Position
-- **Implementation**: Scene content is wrapped in a group that's offset when entering VR
+- **Implementation**: Scene content is wrapped in a group that is offset when entering VR
 - **Default Offset**: Scene moved back 0.5 units (Z-) and up 0.5 units (Y+) to position camera correctly
 - **Restoration**: Scene structure is automatically restored when exiting VR mode
 - **Customization**: Offset can be adjusted in `enableVR()` method by modifying `vrSceneWrapper.position`
@@ -374,7 +374,7 @@ function updateAvatar(bodyData, faceData) {
 ### AR Pass-through Mode
 - **Transparent Background**: Scene background is set to transparent (`null`) for pass-through viewing
 - **Alpha Blending**: Renderer configured with `alpha: true` and `premultipliedAlpha: false` for proper transparency
-- **Lighting**: Automatic ambient light is added if scene has no lights to ensure model visibility
+- **Lighting**: Automatic ambient light is added if scene has no lights to make sure model visibility
 - **Clear Color**: Renderer clear color set to transparent (alpha = 0)
 - **Restoration**: Original scene background and lighting are restored when exiting AR mode
 - **Reference**: Based on [Android XR Passthrough Camera State Extension](https://developer.android.com/develop/xr/openxr/extensions/XR_ANDROID_passthrough_camera_state)
@@ -385,9 +385,9 @@ function updateAvatar(bodyData, faceData) {
 
 ### Audio Not Working
 - **Symptom**: No audio playback
-- **Solution**: 
+- **Solution**:
   - Check browser audio permissions
-  - Ensure user interaction before playing audio
+  - Make sure user interaction before playing audio
   - Verify audio files are loaded correctly
 
 ---
@@ -395,14 +395,14 @@ function updateAvatar(bodyData, faceData) {
 ## 🔮 Future Enhancements
 
 ### Planned Features
-1. **Face Tracking Integration**: Web path in [`xrExpressionTrackingDriver.js`](../src/library/xrExpressionTrackingDriver.js); native OpenXR path documented in **[OPENXR_FACE_TRACKING_ANDROID_XR.md](./OPENXR_FACE_TRACKING_ANDROID_XR.md)** and scaffold **[`native/android-xr-face-bridge/README.md`](../native/android-xr-face-bridge/README.md)**
+1. **Face Tracking Integration**: Web path in [`xrExpressionTrackingDriver.js`](../src/library/xrExpressionTrackingDriver.js). Native OpenXR path documented in **[OPENXR_FACE_TRACKING_ANDROID_XR.md](./OPENXR_FACE_TRACKING_ANDROID_XR.md)** and scaffold **[`native/android-xr-face-bridge/README.md`](../native/android-xr-face-bridge/README.md)**
 2. **Body Tracking Integration**: Real-time skeletal animation from IMU sensors
 3. **Advanced Post-Processing**: More effects (motion blur, depth of field, etc.)
 4. **Audio Visualization**: Real-time audio analysis for lip-sync
 5. **Performance Monitoring**: FPS tracking and optimization suggestions
 
 ### Android XR Integration
-- Native Android XR app using OpenXR (`XR_ANDROID_face_tracking`) — see [OPENXR_FACE_TRACKING_ANDROID_XR.md](./OPENXR_FACE_TRACKING_ANDROID_XR.md)
+- Native Android XR app using OpenXR (`XR_ANDROID_face_tracking`), see [OPENXR_FACE_TRACKING_ANDROID_XR.md](./OPENXR_FACE_TRACKING_ANDROID_XR.md)
 - Face tracking data streaming to web app via `window.__weftspun3dStudioNativeFace` ([`nativeFaceBridge.js`](../src/library/nativeFaceBridge.js))
 - Complete avatar animation (body + face + eye)
 
@@ -432,13 +432,13 @@ function updateAvatar(bodyData, faceData) {
 - [ ] Test WebGPU on various browsers
 - [x] Test WebXR on Android XR devices (Samsung Galaxy XR)
 - [ ] Test post-processing performance
-- [x] Integrate face tracking data (web: `expression-tracking`; native: `nativeFaceBridge` + [`OPENXR_FACE_TRACKING_ANDROID_XR.md`](./OPENXR_FACE_TRACKING_ANDROID_XR.md))
+- [x] Integrate face tracking data (web: `expression-tracking`. Native: `nativeFaceBridge` + [`OPENXR_FACE_TRACKING_ANDROID_XR.md`](./OPENXR_FACE_TRACKING_ANDROID_XR.md))
 - [ ] Integrate body tracking data
 
 ---
 
-**Document Status**: Complete  
-**Last Updated**: December 2025  
+**Document Status**: Complete
+**Last Updated**: December 2025
 **Next Review**: After Android XR integration testing
 
 

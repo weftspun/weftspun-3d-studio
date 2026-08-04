@@ -2,15 +2,15 @@
 
 ## Quick path
 
-1. Connect to **3DAIGC-API** (DGX)  
-2. Task: **Avatar from Image (mesh + template VRM)**  
-3. Upload photo → wait for mesh + template rig  
-4. Viewport loads rigged GLB  
-5. Optional: **Download VRM after pipeline** → browser saves `*.vrm`  
+1. Connect to **3DAIGC-API** (DGX)
+2. Task: **Avatar from Image (mesh + template VRM)**
+3. Upload photo → wait for mesh + template rig
+4. Viewport loads rigged GLB
+5. Optional: **Download VRM after pipeline** → browser saves `*.vrm`
 
 ## What “VRM export from rigged GLB” means
 
-**Yes — it downloads a file.** The API returns a rigged **GLB**. Weftspun3DStudio’s existing `VRMExporter` (Save panel or post-pipeline hook) builds a **`.vrm`** blob and triggers a **browser download**. Nothing is uploaded unless you Mint/save elsewhere.
+**Yes, it downloads a file.** The API returns a rigged **GLB**. Weftspun3DStudio's existing `VRMExporter` (Save panel or post-pipeline hook) builds a **`.vrm`** blob and triggers a **browser download**. Nothing is uploaded unless you Mint/save elsewhere.
 
 Flow:
 
@@ -21,7 +21,7 @@ Photo → API (TRELLIS) → GLB
      → exportAvatarPipelineVrm() → user downloads avatar.vrm
 ```
 
-Template **expression names** can be embedded in VRM meta; **mesh morphs** require wrap (see API `MESH_WRAP_ROADMAP.md`).
+Template **expression names** can be embedded in VRM meta. **mesh morphs** require wrap (see API `MESH_WRAP_ROADMAP.md`).
 
 ## Task types
 
@@ -39,9 +39,9 @@ API export is validated against [API_AVATAR_RIG_CONTRACT.md](API_AVATAR_RIG_CONT
 
 If the rig was **backward** or **floating at hips**, re-run after pulling latest API. The Blender script aligns on **Z-up** (Blender's vertical after glTF import), not glTF Y.
 
-- Feet (foot bones) aligned to mesh ground  
-- Skeleton no longer inverted (head at top, feet at bottom)  
-- Weftspun3DStudio skips auto 180° re-orient and rig-repair heuristics for `fromAigc` loads  
+- Feet (foot bones) aligned to mesh ground
+- Skeleton no longer inverted (head at top, feet at bottom)
+- Weftspun3DStudio skips auto 180° re-orient and rig-repair heuristics for `fromAigc` loads
 - Client validates pre-process and post-viewport-layout (no client-side rig hacks)
 
 
@@ -49,12 +49,12 @@ If the rig was **backward** or **floating at hips**, re-run after pulling latest
 
 | Source | Expressions |
 |--------|-------------|
-| `template.vrm` | 124+ morphs, ARKit/Vive — **on template topology** |
+| `template.vrm` | 124+ morphs, ARKit/Vive, **on template topology** |
 | Rigged AIGC mesh | Skeleton only until wrap |
 | [Arc2Avatar](https://arc2avatar.github.io/) (future) | FLAME on head **splats** |
 | TripoSplat | Preview only, not rigged VRM |
 
-XR face tracking needs wrap or head-stitch — tracked in API docs.
+XR face tracking needs wrap or head-stitch, tracked in API docs.
 
 ## Uploaded VRM (not AIGC)
 
@@ -64,9 +64,9 @@ User-uploaded `.vrm` files use a **separate** path from rigged GLBs. See [VRM_UP
 
 `CombinedImport` + `vrmTemplateMetadata.js`:
 
-- Drag `.vrm` → parse extensions (`VRM` / `VRMC_vrm`)  
-- Store presets in `sessionStorage`  
-- Optional pairing with splat preview URL (`attachSplatPreviewMetadata`)  
+- Drag `.vrm` → parse extensions (`VRM` / `VRMC_vrm`)
+- Store presets in `sessionStorage`
+- Optional pairing with splat preview URL (`attachSplatPreviewMetadata`)
 
 ## Key files
 

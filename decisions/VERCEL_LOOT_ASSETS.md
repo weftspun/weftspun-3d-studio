@@ -4,7 +4,7 @@ Use [m3-org/loot-assets](https://github.com/m3-org/loot-assets) on **GitHub Page
 
 ## One-line setup (recommended)
 
-This repo’s `vercel.json` already sets:
+This repo's `vercel.json` already sets:
 
 ```env
 VITE_ASSET_PATH=https://m3-org.github.io/loot-assets/
@@ -13,7 +13,7 @@ VITE_PUBLIC_DEMO=1
 
 Full security checklist: [PUBLIC_DEPLOY.md](./PUBLIC_DEPLOY.md)
 
-Deploy from the Vercel dashboard or CLI — no extra env vars required unless you override them.
+Deploy from the Vercel dashboard or CLI, no extra env vars required unless you override them.
 
 ## Dashboard (manual)
 
@@ -23,7 +23,7 @@ Deploy from the Vercel dashboard or CLI — no extra env vars required unless yo
    | Name | Value | Environments |
    |------|--------|--------------|
    | `VITE_ASSET_PATH` | `https://m3-org.github.io/loot-assets/` | Production, Preview, Development |
-   | `VITE_PUBLIC_DEMO` | `1` | Production, Preview — hides API Status panel |
+   | `VITE_PUBLIC_DEMO` | `1` | Production, Preview, hides API Status panel |
 
 Do **not** set `VITE_API_ENDPOINT` on the public Vercel demo (users configure API in self-hosted builds).
 
@@ -76,7 +76,7 @@ npm run get-assets
 npm run dev
 ```
 
-You do **not** need a full `../loot-assets` clone for CDN mode — only the small icon set for the build.
+You do **not** need a full `../loot-assets` clone for CDN mode, only the small icon set for the build.
 
 ## Bundled mode (alternative)
 
@@ -84,7 +84,7 @@ Remove `VITE_ASSET_PATH` from Vercel env and `vercel.json`. Build will shallow-c
 
 ## Security (public Vercel)
 
-- **Not a breach by itself:** disconnected-state UI only names env vars (`VITE_API_ENDPOINT`, etc.) — not their values.
-- **Never set on Vercel:** `VITE_3DAIGC_API_KEY`, `VITE_AVATARSDK_CLIENT_SECRET`, `VITE_THIRDWEB_SECRET_KEY`, Pinata/Alchemy secrets — Vite embeds `VITE_*` in the client bundle.
+- **Not a breach by itself:** disconnected-state UI only names env vars (`VITE_API_ENDPOINT`, etc.), not their values.
+- **Never set on Vercel:** `VITE_3DAIGC_API_KEY`, `VITE_AVATARSDK_CLIENT_SECRET`, `VITE_THIRDWEB_SECRET_KEY`, Pinata/Alchemy secrets, Vite embeds `VITE_*` in the client bundle.
 - **Production build** hides the API Status panel when `VITE_PUBLIC_DEMO=1`, dev troubleshooting, endpoint editor, and sidebar debug panel.
-- **Audit:** Vercel → Settings → Environment Variables → remove any secret `VITE_*` keys; redeploy.
+- **Audit:** Vercel → Settings → Environment Variables → remove any secret `VITE_*` keys. Redeploy.

@@ -62,11 +62,11 @@ Or download manually:
 | Device shows "unauthorized" | Check device screen for popup, tap "Allow" |
 | Device shows "offline" | Run `adb kill-server && adb start-server` |
 | Device not detected | Check USB cable, port, and USB debugging enabled |
-| Chrome doesn't show device | Wait a few seconds, refresh page, verify app is running |
+| Chrome does not show device | Wait a few seconds, refresh page, verify app is running |
 
 ## Network Target (if needed)
 
-If device doesn't appear automatically:
+If device does not appear automatically:
 1. In `chrome://inspect`, click **"Configure..."**
 2. Add: `10.0.0.32:3002`
 3. Click **"Done"**

@@ -1,4 +1,4 @@
-# HY-World 2.0 full image-to-world — integration scope
+# HY-World 2.0 full image-to-world, integration scope
 
 Scope for replacing/enhancing `weftspun_image_to_world` (TripoSplat env + TRELLIS props) with Tencent [HY-World 2.0](https://github.com/AlfaOmegaGrafx/HY-World-2.0) **World Generation** pipeline.
 
@@ -15,7 +15,7 @@ Scope for replacing/enhancing `weftspun_image_to_world` (TripoSplat env + TRELLI
 | Scale | Room-ish splat blob | Navigable scene with trajectory |
 | Props | Optional TRELLIS.2 bbox crops | WorldStereo keyframes + composition |
 | Client | `world.manifest.json` + Spark + IWSDK | Same manifest contract (extend) |
-| DGX cost | ~20 GB VRAM, minutes | **Multi-stage, hours; 17B+ models** |
+| DGX cost | ~20 GB VRAM, minutes | **Multi-stage, hours. 17B+ models** |
 
 ---
 
@@ -90,13 +90,13 @@ image_to_world:
 }
 ```
 
-Client: no new task type — same **Image to World** with model picker `hyworld2_image_to_world`.
+Client: no new task type, same **Image to World** with model picker `hyworld2_image_to_world`.
 
 ---
 
 ## Adapter architecture (3DAIGC-API)
 
-**`adapters/hyworld2_image_to_world_adapter.py`** — orchestrator, not monolithic inference:
+**`adapters/hyworld2_image_to_world_adapter.py`**, orchestrator, not monolithic inference:
 
 ```
 _process_request():
@@ -113,7 +113,7 @@ _process_request():
 
 Progress callbacks: write `job_progress.json` per stage for client polling.
 
-**Failure policy:** stage timeout + log tail; do not partial-publish manifest unless stage ≥5 completes.
+**Failure policy:** stage timeout + log tail. Do not partial-publish manifest unless stage ≥5 completes.
 
 ---
 
@@ -124,10 +124,10 @@ Progress callbacks: write `job_progress.json` per stage for client polling.
 | HY-World repo | `thirdparty/HY-World-2.0` ✅ cloned |
 | WorldMirror | ✅ shipped for splat reconstruction |
 | worldgen deps | `requirements_git.txt`, submodules, `gsplat_maskgaussian`, navmesh |
-| **vLLM server** | Separate process; Qwen3-VL-8B for traj stages 1–2 |
+| **vLLM server** | Separate process. Qwen3-VL-8B for traj stages 1, 2 |
 | HF weights | HY-Pano-2, WorldStereo-2, WorldMirror (partial ✅) |
-| Disk | 50–100 GB per world job (intermediates) |
-| GPU policy | Serialize with other 23GB+ jobs; dedicated queue recommended |
+| Disk | 50, 100 GB per world job (intermediates) |
+| GPU policy | Serialize with other 23GB+ jobs. Dedicated queue recommended |
 
 **Not on single Spark GPU today:** Full 8-GPU torchrun paths. Phase rollout should support **reduced GPU count** or stage skipping for smoke tests.
 
@@ -135,26 +135,26 @@ Progress callbacks: write `job_progress.json` per stage for client polling.
 
 ## Phased rollout
 
-### Phase A — Panorama only (smoke)
+### Phase A, Panorama only (smoke)
 - Adapter runs HY-Pano-2-Qwen on input photo → 360° panorama PNG
 - Client preview in IWSDK skybox / world layer placeholder
 - **Validates:** panogen install, HF auth, VRAM
 
-### Phase B — Trajectory + render (no WorldStereo)
+### Phase B, Trajectory + render (no WorldStereo)
 - vLLM sidecar in `scripts/start_vllm_worldgen.sh`
-- Stages 1–2 only; export camera path JSON on manifest
+- Stages 1, 2 only. Export camera path JSON on manifest
 - **Validates:** LLM integration, navmesh submodule
 
-### Phase C — WorldStereo expansion
-- Stage 3 `video_gen.py` on 1–2 GPUs (reduced config)
+### Phase C, WorldStereo expansion
+- Stage 3 `video_gen.py` on 1, 2 GPUs (reduced config)
 - **Validates:** 17B model load, FSDP on GB200
 
-### Phase D — Full 3DGS train + manifest
-- Stages 4–5 → `.ply` → existing Spark/IWSDK world loader
+### Phase D, Full 3DGS train + manifest
+- Stages 4, 5 → `.ply` → existing Spark/IWSDK world loader
 - Feature flag `hyworld2_image_to_world.enabled: true`
 - A/B vs TripoSplat on same photos
 
-### Phase E — Text-to-world
+### Phase E, Text-to-world
 - Optional prompt → HY-Pano text mode → same pipeline
 
 ---
@@ -164,9 +164,9 @@ Progress callbacks: write `job_progress.json` per stage for client polling.
 | Area | Change |
 |------|--------|
 | `aiModelsCatalog.js` | `hyworld2_image_to_world` entry |
-| `TaskManager.jsx` | Model picker for image-to-world; progress UI for multi-stage |
+| `TaskManager.jsx` | Model picker for image-to-world. Progress UI for multi-stage |
 | `taskManager.js` | Poll `job_progress` / stage field if API adds it |
-| `worldPackage.js` | Manifest v2 `generator` field; same splat load path |
+| `worldPackage.js` | Manifest v2 `generator` field. Same splat load path |
 | `iwsdkWorldPackage.js` | No change if `.ply` + manifest unchanged |
 
 ---
@@ -175,10 +175,10 @@ Progress callbacks: write `job_progress.json` per stage for client polling.
 
 | Risk | Mitigation |
 |------|------------|
-| 8-GPU assumption in upstream | Patch torchrun `--nproc_per_node=1` for Spark; document quality tradeoff |
+| 8-GPU assumption in upstream | Patch torchrun `--nproc_per_node=1` for Spark. Document quality tradeoff |
 | vLLM ops burden | Optional: skip VLM traj, use fixed camera orbit for MVP |
 | Job runtime hours | `max_workers: 1`, queue priority, user-facing ETA |
-| License | Tencent HY-World license — add to `docs/MODEL_LICENSES.md` |
+| License | Tencent HY-World license, add to `docs/MODEL_LICENSES.md` |
 
 ---
 
@@ -200,6 +200,6 @@ curl -X POST .../world-generation/image-to-world \
 
 ## Related docs
 
-- `docs/MULTI_IMAGE_SPLAT_ROADMAP.md` — WorldMirror reconstruction (done)
-- `thirdparty/HY-World-2.0/hyworld2/worldgen/README.md` — upstream stages
-- `Weftspun3DStudio/docs/WORLD_PACKAGE.md` — client manifest contract
+- `docs/MULTI_IMAGE_SPLAT_ROADMAP.md`, WorldMirror reconstruction (done)
+- `thirdparty/HY-World-2.0/hyworld2/worldgen/README.md`, upstream stages
+- `Weftspun3DStudio/docs/WORLD_PACKAGE.md`, client manifest contract

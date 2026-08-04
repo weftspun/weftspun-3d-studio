@@ -11,8 +11,8 @@ That document reflects the current correct VR behavior:
 
 ### Reference Space Types
 - **`bounded-floor`** (PRIORITY): Uses Galaxy XR's configured boundary and floor level settings. Y=0 is physical floor as configured in device settings. This is the preferred option for Galaxy XR (same as AR mode).
-- **`local-floor`**: Floor-aligned, Y=0 is physical floor (no boundaries). Fallback if bounded-floor isn't available.
-- **`local`**: Not floor-aligned, origin is at headset position. Fallback if floor-aligned spaces aren't supported.
+- **`local-floor`**: Floor-aligned, Y=0 is physical floor (no boundaries). Fallback if bounded-floor is not available.
+- **`local`**: Not floor-aligned, origin is at headset position. Fallback if floor-aligned spaces are not supported.
 - **`viewer`**: Not floor-aligned, origin follows headset. Last resort fallback.
 
 ### Galaxy XR Floor Level Settings
@@ -28,7 +28,7 @@ When `hasFloorAlignment` is true (using `bounded-floor` or `local-floor`):
 - Y=0 in the reference space = physical floor level
 - When using `bounded-floor`, Y=0 uses Galaxy XR's configured floor level from device settings
 - Model's bottom is anchored to Y=0 (floor level) via bounding box calculation
-- The position is fixed in the reference space (doesn't move with headset)
+- The position is fixed in the reference space (does not move with headset)
 - Camera in VR should be at head height (~1.6-1.8m) above the floor, so model appears correctly
 
 ### Position Calculation
@@ -48,7 +48,7 @@ const finalY = floorAlignmentY;
 - **Y = calculated from bounding box**: Model bottom anchored to floor (Y=0)
 - **Z = -0.5**: Scene content moved back 0.5 units from camera starting position
 
-**Note**: The Y position is automatically calculated from the model's bounding box to anchor the model's bottom to the floor (Y=0). The floor alignment comes from using `bounded-floor` or `local-floor` reference space, which ensures Y=0 is at the physical floor level (from Galaxy XR settings when using bounded-floor).
+**Note**: The Y position is automatically calculated from the model's bounding box to anchor the model's bottom to the floor (Y=0). The floor alignment comes from using `bounded-floor` or `local-floor` reference space, which makes sure Y=0 is at the physical floor level (from Galaxy XR settings when using bounded-floor).
 
 ## Implementation Details
 
@@ -60,7 +60,7 @@ The code now properly:
 4. Stores reference space in `this.xrReferenceSpace` for consistency with AR mode
 
 ### Position Preservation
-The VR render loop ensures the fixed position is preserved:
+The VR render loop makes sure the fixed position is preserved:
 - Checks if `vrSceneOffset.userData.isFixedInReferenceSpace` is true
 - Resets position if it was changed (keeps it fixed in reference space)
 - Prevents accidental position updates during VR session
@@ -70,7 +70,7 @@ VR mode now uses the same floor-aligned reference space approach as AR mode:
 - Both prioritize `bounded-floor` for Galaxy XR floor level settings
 - Both use the same reference space handling
 - Both align Y=0 with physical floor from Galaxy XR settings
-- Ensures consistent behavior between VR and AR modes
+- Makes sure consistent behavior between VR and AR modes
 
 ## Testing
 
@@ -128,7 +128,7 @@ VR mode now uses the same floor-aligned reference space approach as AR mode:
 
 ### Model Still Not at Correct Height
 1. **Check if bounded-floor is being used**: Look for console log "Galaxy XR floor level settings are ACTIVE"
-2. **Verify Galaxy XR floor level settings**: Ensure floor level is properly configured in Galaxy XR device settings
+2. **Verify Galaxy XR floor level settings**: Make sure floor level is properly configured in Galaxy XR device settings
 3. Check console for reference space setup errors
 4. Verify reference space type supports floor alignment (should be `bounded-floor` or `local-floor`)
 5. Check if model has valid geometry (not empty or invalid)
@@ -137,7 +137,7 @@ VR mode now uses the same floor-aligned reference space approach as AR mode:
 ### Bounded-Floor Not Available
 If `bounded-floor` reference space is not available:
 - The code will automatically fall back to `local-floor`
-- Floor alignment will still work, but Galaxy XR boundary settings won't be used
+- Floor alignment will still work, but Galaxy XR boundary settings will not be used
 - Check console logs to see which reference space type was successfully obtained
 
 ### Model Position Resets

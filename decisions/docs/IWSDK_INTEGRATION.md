@@ -1,6 +1,6 @@
 # IWSDK Integration Reference
 
-Reference for [Immersive Web SDK (IWSDK)](https://github.com/facebook/immersive-web-sdk) in Weftspun3DStudio — what is installed, what is optional, and when to add more packages.
+Reference for [Immersive Web SDK (IWSDK)](https://github.com/facebook/immersive-web-sdk) in Weftspun3DStudio, what is installed, what is optional, and when to add more packages.
 
 **Fork (Meta sync):** [AlfaOmegaGrafx/immersive-web-sdk](https://github.com/AlfaOmegaGrafx/immersive-web-sdk). We consume published npm packages (`@iwsdk/*`), not the monorepo source. When `main` is ahead of npm, watch for a new release or cherry-pick only what you need into this app.
 
@@ -10,13 +10,13 @@ Reference for [Immersive Web SDK (IWSDK)](https://github.com/facebook/immersive-
 
 | Target | Command / URL | Role |
 |--------|----------------|------|
-| **Samsung Galaxy XR (truth)** | `npm run dev` → `https://<PC-LAN-IP>:3000/xr` | Real WebXR input, rendering, grab — validate here |
-| **PC localhost emulator** | `npm run dev:iwsdk` or Vite `iwsdkDev` on localhost only | Optional Quest-like smoke tests; **not** a substitute for headset |
+| **Samsung Galaxy XR (truth)** | `npm run dev` → `https://<PC-LAN-IP>:3000/xr` | Real WebXR input, rendering, grab, validate here |
+| **PC localhost emulator** | `npm run dev:iwsdk` or Vite `iwsdkDev` on localhost only | Optional Quest-like smoke tests. **not** a substitute for headset |
 | **Automation** | `npm run iwsdk:xr-smoke`, Playwright | CI / agent checks on PC only |
 
 Default **`npm run dev`** is **Vite on port 3000** so the headset always hits the same URL as the main app. Use a **full page reload** on `/xr` before Enter VR (HMR can kill the session). Headset logs forward to `logs/remote-log.txt` in dev.
 
-Main VRM authoring stays on **`/`** (`SceneManager`). **`/xr`** is an IWSDK-only lab — see [Monetization roadmap](../MONETIZATION_ROADMAP.md) **v3.2.8** (May 27, 2026).
+Main VRM authoring stays on **`/`** (`SceneManager`). **`/xr`** is an IWSDK-only lab, see [Monetization roadmap](../MONETIZATION_ROADMAP.md) **v3.2.8** (May 27, 2026).
 
 ---
 
@@ -31,7 +31,7 @@ c:\Users\alfao\Documents\GitHub\Weftspun3DStudio\
    └─ @iwsdk\...
 ```
 
-IWSDK is a normal npm dependency—not copied into `src/`. Code imports from `@iwsdk/core` when wired up.
+IWSDK is a normal npm dependency, not copied into `src/`. Code imports from `@iwsdk/core` when wired up.
 
 ---
 
@@ -50,7 +50,7 @@ Installed via:
 npm install @iwsdk/core
 ```
 
-`three` is already in this project; do not pin a second conflicting Three.js unless IWSDK docs require a specific range.
+`three` is already in this project. Do not pin a second conflicting Three.js unless IWSDK docs require a specific range.
 
 ### npm / Thirdweb note
 
@@ -68,7 +68,7 @@ Legacy `@thirdweb-dev/react` and `@thirdweb-dev/sdk` (v4, `ethers@^5` only) were
 | `@iwsdk/cli` | `iwsdk dev up`, `iwsdk xr …`, `iwsdk browser screenshot`, `iwsdk mcp stdio` |
 | `@iwsdk/reference` | Semantic IWSDK API search MCP (`iwsdk-reference`) |
 
-MCP config (Cursor): `.cursor/mcp.json` — servers `iwsdk-runtime` and `iwsdk-reference`. Regenerate with `npm run iwsdk:adapter-sync`.
+MCP config (Cursor): `.cursor/mcp.json`, servers `iwsdk-runtime` and `iwsdk-reference`. Regenerate with `npm run iwsdk:adapter-sync`.
 
 ### First-time setup
 
@@ -89,7 +89,7 @@ npm run dev:runtime      # same as npm run dev
 
 If `npm run dev` fails with **port already in use**, stop the old server (`Ctrl+C` in the terminal that ran it) or run `npx iwsdk dev down`, then retry.
 
-The Playwright tab sets `window.__IWER_MCP_MANAGED`; the app auto-redirects to `/xr` in dev.
+The Playwright tab sets `window.__IWER_MCP_MANAGED`. The app auto-redirects to `/xr` in dev.
 
 ### Autonomous XR tests (CLI, no headset)
 
@@ -102,7 +102,7 @@ npm run iwsdk:xr-deep-test      # full: grab, hand-only, exit panel, scene inspe
 
 Screenshots and `report.json` are written to `logs/iwsdk-deep-test/`.
 
-**Headset note:** Remote log on `/xr` (dev auto-enables) shows crashes if visual adapters are hijacked — keep the pointer-only patch. **Distance grab** = ray + trigger; **proximity grab** = walk up + grip squeeze.
+**Headset note:** Remote log on `/xr` (dev auto-enables) shows crashes if visual adapters are hijacked, keep the pointer-only patch. **Distance grab** = ray + trigger. **proximity grab** = walk up + grip squeeze.
 
 ### Useful CLI commands
 
@@ -123,19 +123,19 @@ npm shortcuts: `iwsdk:adapter-status`, `iwsdk:mcp-inspect`, `iwsdk:scene-hierarc
 
 See [Getting Started (AI)](https://iwsdk.dev/ai/) and [MCP Tools](https://iwsdk.dev/ai/mcp-tools). Agent entry files on the fork: `llms.txt`, `go.md`, `skill.md` (published on [iwsdk.dev](https://iwsdk.dev/ai/)).
 
-### Add later — product features
+### Add later, product features
 
 | Package | Purpose | Install when |
 |---------|---------|--------------|
 | `@iwsdk/vite-plugin-uikitml` | Compile UIKitML → JSON for spatial in-headset UI | Building XR-native panels (not flat React overlays) |
-| `@iwsdk/vite-plugin-gltf-optimizer` | Optimize GLTF/GLB at build time | Large world/prop assets; slow loads on headset |
+| `@iwsdk/vite-plugin-gltf-optimizer` | Optimize GLTF/GLB at build time | Large world/prop assets. Slow loads on headset |
 | `@iwsdk/vite-plugin-metaspatial` | Meta Spatial Editor → GLXF / component discovery | Using Meta Spatial Editor in the pipeline |
 
 ### Do not install for this repo
 
 | Package | Purpose | Why skip |
 |---------|---------|----------|
-| `@iwsdk/create` | `npm create @iwsdk@latest` — scaffolds a **new** app | Weftspun3DStudio already exists |
+| `@iwsdk/create` | `npm create @iwsdk@latest`, scaffolds a **new** app | Weftspun3DStudio already exists |
 
 ---
 
@@ -143,7 +143,7 @@ See [Getting Started (AI)](https://iwsdk.dev/ai/) and [MCP Tools](https://iwsdk.
 
 | Path | Component | Notes |
 |------|-----------|--------|
-| `/xr` | `src/pages/IwsdkImmersive.jsx` | IWSDK `World` only — no SceneManager |
+| `/xr` | `src/pages/IwsdkImmersive.jsx` | IWSDK `World` only, no SceneManager |
 | `/` | `src/App.jsx` | Existing Weftspun3DStudio |
 
 Bootstrap: `src/library/iwsdkWorld.js` (`createIwsdkWorld`, `disposeIwsdkWorld`).
@@ -157,21 +157,21 @@ Open locally: `https://localhost:3000/xr` (HTTPS required for WebXR on device).
 | Move | Left thumbstick |
 | Turn | Right thumbstick (horizontal) |
 | Teleport | Push right thumbstick forward (aim), release to land |
-| Distance grab | Point at the demo cube (white **dot**), **trigger** or **pinch** — ray and dot turn **yellow** while pinching |
-| Proximity grab | Walk within ~arm&apos;s reach; **grip squeeze** on the slightly larger hit volume |
-| Hand-only (controllers down) | Hands take primary input; rays stay active; red Exit panel follows your head |
-| Exit XR | Controller **Menu** or **B**; ray-select red **Exit** panel (head-locked); **Exit XR** button or **Escape** on phone/PC |
+| Distance grab | Point at the demo cube (white **dot**), **trigger** or **pinch**, ray and dot turn **yellow** while pinching |
+| Proximity grab | Walk within ~arm&apos;s reach. **grip squeeze** on the slightly larger hit volume |
+| Hand-only (controllers down) | Hands take primary input. Rays stay active. Red Exit panel follows your head |
+| Exit XR | Controller **Menu** or **B**. Ray-select red **Exit** panel (head-locked). **Exit XR** button or **Escape** on phone/PC |
 
 `src/library/iwsdkXrEnhancements.js` runs a headset input pipeline: controllers stay primary for locomotion, hands stay tracked when docked, ray + grab pointers, walkable floor, session `inputsourceschange` hooks. Pinch/select feedback uses a **yellow** ray and cursor (`0xffdd00`). Demo cube uses **both** `DistanceGrabbable` and a `OneHandGrabbable` proximity volume. `layers: false` avoids some Galaxy XR black-frame issues. `@iwsdk/core` 0.4.1+ restores the browser camera after XR exit (`xr.restoreCameraOnExit`, default `true`).
 
 ## Recommended order of work
 
-1. ~~**Wire `@iwsdk/core` in code**~~ — done (`/xr` route + `iwsdkWorld.js`).
-2. ~~**Add dev tooling**~~ — `vite-plugin-dev` + `cli` + `reference` + MCP sync (done).
-3. **Galaxy XR / Chrome** — test WebXR on device (HTTPS required; see `docs/HTTPS_SETUP.md`).
-4. **Later** — UIKitML, GLTF optimizer, Meta Spatial, optional Gaussian splat worlds (e.g. [sensai-webxr-worldmodels](https://github.com/V4C38/sensai-webxr-worldmodels)).
+1. ~~**Wire `@iwsdk/core` in code**~~, done (`/xr` route + `iwsdkWorld.js`).
+2. ~~**Add dev tooling**~~, `vite-plugin-dev` + `cli` + `reference` + MCP sync (done).
+3. **Galaxy XR / Chrome**, test WebXR on device (HTTPS required. See `docs/HTTPS_SETUP.md`).
+4. **Later**, UIKitML, GLTF optimizer, Meta Spatial, optional Gaussian splat worlds (e.g. [sensai-webxr-worldmodels](https://github.com/V4C38/sensai-webxr-worldmodels)).
 
-Face tracking in Chrome XR remains a separate concern (relay / future `expression-tracking`); **not wired on `/xr`**. For VRM + APK face relay, use the main app at `https://<PC-LAN-IP>:3000/?nativeFaceRelay=1` (see [WEBCAM_AVATAR_CONTROL.md](./WEBCAM_AVATAR_CONTROL.md)).
+Face tracking in Chrome XR remains a separate concern (relay / future `expression-tracking`). **not wired on `/xr`**. For VRM + APK face relay, use the main app at `https://<PC-LAN-IP>:3000/?nativeFaceRelay=1` (see [WEBCAM_AVATAR_CONTROL.md](./WEBCAM_AVATAR_CONTROL.md)).
 
 ---
 
@@ -199,6 +199,6 @@ npm ls @iwsdk/core @iwsdk/locomotor @iwsdk/xr-input @iwsdk/glxf --depth=1
 
 | Date | Change |
 |------|--------|
-| 2026-05-27 | Initial doc: core installed; optional packages catalog; Thirdweb v4 removed |
-| 2026-05-27 | Galaxy XR–first dev strategy; `npm run dev` vs `dev:iwsdk`; headset logging |
-| 2026-05-28 | Yellow pinch ray/cursor; fork sync note; extra `iwsdk:*` npm scripts; CLI scene/ecs/adapter docs |
+| 2026-05-27 | Initial doc: core installed. Optional packages catalog. Thirdweb v4 removed |
+| 2026-05-27 | Galaxy XR, first dev strategy. `npm run dev` vs `dev:iwsdk`. Headset logging |
+| 2026-05-28 | Yellow pinch ray/cursor. Fork sync note. Extra `iwsdk:*` npm scripts. CLI scene/ecs/adapter docs |

@@ -1,8 +1,8 @@
 # NVIDIA XR AI + 3DAIGC (DGX Spark)
 
-Voice-driven **vision + 3D generation** on Galaxy XR using NVIDIA’s **xr-ai** stack on DGX Spark, wired to **3DAIGC-API** through HTTP MCP.
+Voice-driven **vision + 3D generation** on Galaxy XR using NVIDIA's **xr-ai** stack on DGX Spark, wired to **3DAIGC-API** through HTTP MCP.
 
-**Status:** Integrated on DGX (Jun 2026). Sample: `3daigc-vlm-example` — “make a 3D model of this” from headset camera + mic.
+**Status:** Integrated on DGX (Jun 2026). Sample: `3daigc-vlm-example`, “make a 3D model of this” from headset camera + mic.
 
 ## Architecture
 
@@ -23,16 +23,16 @@ Voice-driven **vision + 3D generation** on Galaxy XR using NVIDIA’s **xr-ai** 
 [Weftspun3DStudio]  load completed GLB/VRM in viewport (separate client path)
 ```
 
-This is **complementary** to Weftspun3DStudio’s Task Manager UI — same inference backend, different XR voice UX.
+This is **complementary** to Weftspun3DStudio's Task Manager UI, same inference backend, different XR voice UX.
 
 ## Repos and paths (DGX only)
 
 | Path | Role |
 |------|------|
-| `/home/sifr/xr-ai` | NVIDIA **xr-ai** — hub, STT/TTS/VLM servers, agent samples |
+| `/home/sifr/xr-ai` | NVIDIA **xr-ai**, hub, STT/TTS/VLM servers, agent samples |
 | `/home/sifr/xr-ai/agent-samples/3daigc-vlm-example` | Voice VLM + 3DAIGC mesh orchestrator |
 | `/home/sifr/3DAIGC-API` | Inference API (`:7842`) |
-| `/home/sifr/3DAIGC-API/mcp` | **3daigc-mcp-http** (`:8260`) — MCP tools over completed API |
+| `/home/sifr/3DAIGC-API/mcp` | **3daigc-mcp-http** (`:8260`), MCP tools over completed API |
 | `/home/sifr/Weftspun3DStudio/scripts/xr-spark-hub-proxy.mjs` | Optional Surface proxy (Galaxy XR → Spark hub) |
 
 Overlay config (copy reference): `3DAIGC-API/mcp/yaml/xr_ai_3daigc_overlay.yaml`
@@ -44,8 +44,8 @@ Overlay config (copy reference): `3DAIGC-API/mcp/yaml/xr_ai_3daigc_overlay.yaml`
 | **7842** | 3DAIGC-API |
 | **8260** | 3daigc-mcp-http (`/mcp`) |
 | **8088** | xr-ai **XR Media Hub** web UI (HTTPS) |
-| **7880–7882** | LiveKit (WebRTC) for xr-ai hub |
-| **8443** | Surface **xr-spark-hub-proxy** (optional; forwards to `https://10.0.0.158:8088`) |
+| **7880, 7882** | LiveKit (WebRTC) for xr-ai hub |
+| **8443** | Surface **xr-spark-hub-proxy** (optional. Forwards to `https://10.0.0.158:8088`) |
 
 ## Start stack (DGX)
 
@@ -56,7 +56,7 @@ bash /home/sifr/3DAIGC-API/mcp/scripts/start_xr_voice_full.sh
 bash /home/sifr/3DAIGC-API/mcp/scripts/verify_xr_voice_stack.sh
 ```
 
-DGX hub only (no Surface proxy — headset will get **connection refused** on `10.0.0.32:8443`):
+DGX hub only (no Surface proxy, headset will get **connection refused** on `10.0.0.32:8443`):
 
 ```bash
 bash /home/sifr/3DAIGC-API/mcp/scripts/run_xr_ai_3daigc_stack.sh
@@ -82,7 +82,7 @@ Monitor logs:
 bash /home/sifr/3DAIGC-API/mcp/scripts/monitor_xr_ai_3daigc_stack.sh
 ```
 
-Open hub UI on DGX LAN: `https://10.0.0.158:8088` (accept self-signed cert). Start mic; try *“make a 3D model of this”*.
+Open hub UI on DGX LAN: `https://10.0.0.158:8088` (accept self-signed cert). Start mic. Try *“make a 3D model of this”*.
 
 ## Galaxy XR + router client isolation
 
@@ -103,15 +103,15 @@ On Galaxy XR Chrome: `https://<Surface-LAN-IP>:8443` → proxies to Spark hub.
 
 Typical voice-agent flow:
 
-1. `upload_image` — frame from XR camera  
-2. `image_to_textured_mesh` — queue mesh job (e.g. TRELLIS.2)  
-3. `wait_for_job` — poll until complete (minutes on Spark)  
-4. Optional: `generate_rig` with `rig_mode=template` for avatars  
+1. `upload_image`, frame from XR camera
+2. `image_to_textured_mesh`, queue mesh job (e.g. TRELLIS.2)
+3. `wait_for_job`, poll until complete (minutes on Spark)
+4. Optional: `generate_rig` with `rig_mode=template` for avatars
 
-Worker config: `xr-ai/agent-samples/3daigc-vlm-example/yaml/3daigc_vlm_example_worker.yaml`  
+Worker config: `xr-ai/agent-samples/3daigc-vlm-example/yaml/3daigc_vlm_example_worker.yaml`
 `daigc_mcp_url: http://localhost:8260`
 
-VLM backend: `model_backend: nim` uses hosted NVIDIA NIM (`NGC_API_KEY`); `local` runs on-Spark `vlm-server`.
+VLM backend: `model_backend: nim` uses hosted NVIDIA NIM (`NGC_API_KEY`). `local` runs on-Spark `vlm-server`.
 
 ## Relationship to Weftspun3DStudio
 
@@ -124,17 +124,17 @@ VLM backend: `model_backend: nim` uses hosted NVIDIA NIM (`NGC_API_KEY`); `local
 
 ## Related docs
 
-- [Dev machine topology](DEV_MACHINE_TOPOLOGY.md) — Surface vs DGX roles  
-- [3DAIGC API](api/api.md) — REST endpoints MCP wraps  
-- [Spatial fabric](SPATIAL_FABRIC_INTEGRATION.md) — publish completed meshes to OMB/RP1  
-- `memory-bank/scripts-cheatsheet.md` §22 — operator commands  
+- [Dev machine topology](DEV_MACHINE_TOPOLOGY.md), Surface vs DGX roles
+- [3DAIGC API](api/api.md), REST endpoints MCP wraps
+- [Spatial fabric](SPATIAL_FABRIC_INTEGRATION.md), publish completed meshes to OMB/RP1
+- `memory-bank/scripts-cheatsheet.md` §22, operator commands
 
 ## Troubleshooting
 
 | Symptom | Check |
 |---------|--------|
-| Stack exits on start | `curl -sf http://127.0.0.1:7842/api/v1/system/health` — restart API |
-| MCP probe fails | Port 8260 in use; `bash …/mcp/scripts/run_http.sh` |
+| Stack exits on start | `curl -sf http://127.0.0.1:7842/api/v1/system/health`, restart API |
+| MCP probe fails | Port 8260 in use. `bash …/mcp/scripts/run_http.sh` |
 | Headset cannot reach `:8088` | Run **xr-spark-hub-proxy** on Surface `:8443` |
-| Mesh never finishes | `monitor_xr_ai_3daigc_stack.sh`; Redis queue / GPU logs in `3DAIGC-API/logs/` |
-| NIM errors | `NGC_API_KEY` set; or switch worker to `model_backend: local` + `HF_TOKEN` |
+| Mesh never finishes | `monitor_xr_ai_3daigc_stack.sh`. Redis queue / GPU logs in `3DAIGC-API/logs/` |
+| NIM errors | `NGC_API_KEY` set. Or switch worker to `model_backend: local` + `HF_TOKEN` |

@@ -1,25 +1,31 @@
 # Webcam Avatar Control
 
-Webcam Avatar Control drives the current VRM avatar’s face (and optional head rotation) from your webcam using [Kalidokit](https://github.com/AlfaOmegaGrafx/kalidokit) and [MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holistic.html), in the same spirit as [XR Animator](https://github.com/AlfaOmegaGrafx/SystemAnimatorOnline) and Kalidoface-style VTuber apps.
+Webcam Avatar Control drives the face of the current VRM avatar
+from your webcam. It can also rotate the head.
+
+It uses [Kalidokit](https://github.com/AlfaOmegaGrafx/kalidokit) and
+[MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holistic.html).
+[XR Animator](https://github.com/AlfaOmegaGrafx/SystemAnimatorOnline)
+and the Kalidoface VTuber apps work the same way.
 
 ## Features
 
 - **Face tracking**: Blink (and optional left/right blink), mouth shapes (Ah, Ee, Oh, Ou) from Kalidokit `Face.solve()`.
 - **Head rotation**: Neck and head bone rotation from face landmarks (smoothed).
-- **WebXR-safe**: The driver does **not** run or apply when WebXR is presenting (VR/AR). When you enter VR or AR mode, webcam control **auto-stops**: the camera is released, the detection loop ends, and the avatar returns to neutral so nothing conflicts with headset tracking or Galaxy XR. You can turn Cam back on after exiting VR/AR.
+- **WebXR-safe**: The driver does **not** run or apply when WebXR is presenting (VR/AR). Webcam control **stops by itself** when you enter VR or AR mode. It frees the camera, ends the detection loop, and returns the avatar to neutral. Nothing then conflicts with headset tracking or with Galaxy XR. You can turn Cam back on after exiting VR/AR.
 
 ## Usage
 
 1. Load a VRM model.
 2. In the bottom control bar, click **Cam** to start webcam avatar control.
-3. Allow camera access when prompted. The avatar’s face will follow your face (blinks, mouth, head).
+3. Allow camera access when prompted. The avatar's face will follow your face (blinks, mouth, head).
 4. Click **Cam on** (or the same button again) to stop.
 
 ## Technical notes
 
 - **Stack**: MediaPipe Holistic (face landmarks) → Kalidokit `Face.solve()` → VRM `expressionManager` and humanoid bones.
-- **Module**: `src/library/webcamAvatarDriver.js`. It is created and started/stopped from `SceneContext`; the UI toggle lives in `BottomDisplayMenu`.
-- **VRMs**: The driver applies to the same VRM(s) as the rest of the app (character manager avatars or the current scene VRM). It does not modify WebXR, `enableVR()` / `enableAR()`, or reference spaces.
+- **Module**: `src/library/webcamAvatarDriver.js`. It is created and started/stopped from `SceneContext`. The UI toggle lives in `BottomDisplayMenu`.
+- **VRMs**: The driver acts on the same VRM files as the rest of the app. Those are the character manager avatars, or the current scene VRM. It does not modify WebXR, `enableVR()` / `enableAR()`, or reference spaces.
 
 ## Galaxy XR and WebXR Expression Tracking
 
@@ -29,9 +35,9 @@ On supported UAs (Chrome on **Android XR**, e.g. Samsung Galaxy XR where enabled
 
 **Implemented:**
 
-- **`src/library/xrExpressionTrackingDriver.js`** — reads `XRFrame.expressions`, maps weights heuristically to VRM presets (`Blink`, `Ah`, `Ee`, `Oh`, `Ou`), with light smoothing per VRM instance.
-- **`SceneManager`** — adds `expression-tracking` to **`optionalFeatures`** for AR (`ARButton`) and manual VR (`requestSession('immersive-vr')`), logs once when `session.enabledFeatures` includes `expression-tracking`, and applies mappings each XR render frame.
-- **`SceneContext`** — registers the same **VRM list** resolver as webcam control (`characterManager` avatars, else `sceneManager.currentVRM`).
+- **`src/library/xrExpressionTrackingDriver.js`**, reads `XRFrame.expressions`, maps weights heuristically to VRM presets (`Blink`, `Ah`, `Ee`, `Oh`, `Ou`), with light smoothing per VRM instance.
+- **`SceneManager`**, adds `expression-tracking` to **`optionalFeatures`** for AR (`ARButton`) and manual VR (`requestSession('immersive-vr')`), logs once when `session.enabledFeatures` includes `expression-tracking`, and applies mappings each XR render frame.
+- **`SceneContext`**, registers the same **VRM list** resolver as webcam control (`characterManager` avatars, else `sceneManager.currentVRM`).
 
 OpenXR naming for native stacks:
 
@@ -46,7 +52,7 @@ Web platform naming:
 
 ### Why you might not see a “second” permission for face
 
-On **Android XR**, Chrome can fold several sensitive capabilities into the **initial WebXR / spatial mapping consent** rather than showing a separate dialog per sensor. The [Develop for the web on Android XR](https://developer.android.com/develop/xr/web) page notes that permissions can include **access to tracked face, eye, and hand data** when the experience needs them—so **no extra prompt** after entering AR/VR is often expected.
+On **Android XR**, Chrome can fold several sensitive capabilities into the **initial WebXR / spatial mapping consent** rather than showing a separate dialog per sensor. The [Develop for the web on Android XR](https://developer.android.com/develop/xr/web) page notes that permissions can include **access to tracked face, eye, and hand data** when the experience needs them, so **no extra prompt** after entering AR/VR is often expected.
 
 Separately, **`expression-tracking` is optional**: if your Chrome build does not implement the draft **`XRFrame.expressions`** API yet, `session.enabledFeatures` may **not** list `expression-tracking`, and you will not get XR-driven mouth/blink (the avatar face stays neutral in XR unless you use another path).
 
@@ -58,9 +64,9 @@ Separately, **`expression-tracking` is optional**: if your Chrome build does not
 
 ### Remote logging from the headset (`?remoteLog=1`)
 
-1. Start the dev server (`npm run dev` — default **https://** on port **3000** when certs exist; see `docs/HTTPS_SETUP.md`).
-2. On the **headset**, open the app at **`https://<your-PC-LAN-IP>:3000/?remoteLog=1`** (and add `&xrExpressionProbe=1` if you want the extra probe). **`https://localhost:3000` on the headset** targets the **headset itself**, not your PC—use the PC’s LAN address.
-3. Logs are **POSTed** to `/__remote_log` on the same origin; Vite prints them and appends **`logs/remote-log.txt`**.
+1. Start the dev server (`npm run dev`, default **https://** on port **3000** when certs exist. See `docs/HTTPS_SETUP.md`).
+2. On the **headset**, open the app at **`https://<your-PC-LAN-IP>:3000/?remoteLog=1`** (and add `&xrExpressionProbe=1` if you want the extra probe). **`https://localhost:3000` on the headset** targets the **headset itself**, not your PC, use the PC's LAN address.
+3. Logs are **POSTed** to `/__remote_log` on the same origin. Vite prints them and appends **`logs/remote-log.txt`**.
 4. You should see a browser console line: **`[RemoteLog] Forwarding console to /__remote_log`** when the client is active.
 
 References:
@@ -68,4 +74,4 @@ References:
 - [WebXR Expression Tracking draft (index.bs)](https://github.com/immersive-web/webxr-face-tracking-1/blob/main/index.bs)
 - [OpenXR XR_ANDROID_face_tracking](https://registry.khronos.org/OpenXR/specs/1.1/man/html/XR_ANDROID_face_tracking.html)
 
-Current behavior: **Webcam Avatar Control stays off during WebXR**. **XR Expression Tracking applies only inside an immersive session** when the UA exposes `expressions`; otherwise avatar face stays unchanged from non-XR drivers.
+Current behavior: **Webcam Avatar Control stays off during WebXR**. **XR Expression Tracking applies only inside an immersive session** when the UA exposes `expressions`. Otherwise avatar face stays unchanged from non-XR drivers.

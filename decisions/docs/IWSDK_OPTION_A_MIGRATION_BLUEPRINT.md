@@ -24,7 +24,7 @@ If a migration step introduces a second renderer/session/loop, treat it as a **s
 
 ---
 
-### What “migrates” from IWSDK (and what doesn’t)
+### What “migrates” from IWSDK (and what does not)
 
 - **Migrate (high-value)**:
   - hand/controller abstraction
@@ -41,7 +41,7 @@ If a migration step introduces a second renderer/session/loop, treat it as a **s
 
 ## World building stack (Spark / sensai / image-blaster)
 
-**One-line direction:** Weftspun3DStudio Core owns the scene and XR session; **Spark** renders splat environments; **IWSDK** (Option A) drives presence; **DGX Hunyuan** builds props; **image-blaster-style pipelines** produce world packages—not a fourth runtime.
+**One-line direction:** Weftspun3DStudio Core owns the scene and XR session. **Spark** renders splat environments. **IWSDK** (Option A) drives presence. **DGX Hunyuan** builds props. **image-blaster-style pipelines** produce world packages, not a fourth runtime.
 
 Use all three repos as **layers**, not as three parallel apps:
 
@@ -58,23 +58,23 @@ Use all three repos as **layers**, not as three parallel apps:
 | Repo | Role | Use in Weftspun3DStudio |
 |------|------|-------------------------|
 | [spark](https://github.com/AlfaOmegaGrafx/spark) | Gaussian splat **renderer** for Three.js | npm dependency when Core loads `.spz`/`.ply` worlds in SceneManager |
-| [sensai-webxr-worldmodels](https://github.com/AlfaOmegaGrafx/sensai-webxr-worldmodels) | IWSDK + Spark **XR world template** | Reference lab only—copy splat loader, collision mesh for locomotion, LoD/render-order patterns; do not ship as second app |
-| [image-blaster](https://github.com/AlfaOmegaGrafx/image-blaster) | Image → world **generation pipeline** | Pipeline spec (static splat + dynamic meshes + optional SFX); implement via DGX/API where possible, not a second Hunyuan path in-app |
+| [sensai-webxr-worldmodels](https://github.com/AlfaOmegaGrafx/sensai-webxr-worldmodels) | IWSDK + Spark **XR world template** | Reference lab only, copy splat loader, collision mesh for locomotion, LoD/render-order patterns. Do not ship as second app |
+| [image-blaster](https://github.com/AlfaOmegaGrafx/image-blaster) | Image → world **generation pipeline** | Pipeline spec (static splat + dynamic meshes + optional SFX). Implement via DGX/API where possible, not a second Hunyuan path in-app |
 
 **Redundancy rules**
 
 | Overlap | Keep |
 |---------|------|
-| Hunyuan (image-blaster FAL vs DGX) | **DGX only** in Core; image-blaster as optional offline/cloud pipeline |
-| Spark (spark vs sensai) | **One** Spark integration in SceneManager; sensai is cookbook, not second renderer |
-| IWSDK (sensai vs `/xr`) | **One** interaction stack after Option A; `/xr` stays regression lab |
-| Marble / `.spz` generation | Import + URL first (sensai pattern); generation via Marble/image-blaster when API is ready |
+| Hunyuan (image-blaster FAL vs DGX) | **DGX only** in Core. Image-blaster as optional offline/cloud pipeline |
+| Spark (spark vs sensai) | **One** Spark integration in SceneManager. Sensai is cookbook, not second renderer |
+| IWSDK (sensai vs `/xr`) | **One** interaction stack after Option A. `/xr` stays regression lab |
+| Marble / `.spz` generation | Import + URL first (sensai pattern). Generation via Marble/image-blaster when API is ready |
 
 **Relation to Option A phases**
 
-- **Phases 0–5** (this doc): IWSDK interaction in `/` — required before worlds feel good in XR.
-- **World building** (after core XR is stable): add Spark + world package import; use sensai-webxr-worldmodels for integration pitfalls (collision GLB, LoD, UI depth).
-- **Authoring + experiencing**: desktop precision + DGX for meshes; XR for spatial staging and performance; hybrid is expected.
+- **Phases 0, 5** (this doc): IWSDK interaction in `/`, required before worlds feel good in XR.
+- **World building** (after core XR is stable): add Spark + world package import. Use sensai-webxr-worldmodels for integration pitfalls (collision GLB, LoD, UI depth).
+- **Authoring + experiencing**: desktop precision + DGX for meshes. XR for spatial staging and performance. Hybrid is expected.
 
 See also `docs/IWSDK_INTEGRATION.md` (Gaussian splat worlds noted as a later track).
 
@@ -82,21 +82,21 @@ See also `docs/IWSDK_INTEGRATION.md` (Gaussian splat worlds noted as a later tra
 
 ## Capture / VTubing (spectator camera vs observer view)
 
-**Spectator camera (near-term, in-app)** — not deferred to a distant future.
+**Spectator camera (near-term, in-app)**, not deferred to a distant future.
 
 - A normal Three.js camera in the scene, rendered to a stream/canvas/OBS (third-person or staged framing).
 - Works on Galaxy XR and desktop without relying on optional WebXR APIs.
-- Integrate **after Phases 3–4** (input + grab stable) or in parallel once a VRM is present in XR; before full world-building (Spark) if VTubing is a priority.
+- Integrate **after Phases 3, 4** (input + grab stable) or in parallel once a VRM is present in XR. Before full world-building (Spark) if VTubing is a priority.
 
 **WebXR observer / first-person observer view (optional bonus)**
 
-- Runtime-provided extra view in `XRViewerPose.views` when `secondary-views` is granted—not the same as multiplayer.
-- Use when available for watchable capture; do not block VTubing on it.
-- VRM first-person (embedded look) handles “hide head from wearer”; observer view handles “camera for audience.”
+- Runtime-provided extra view in `XRViewerPose.views` when `secondary-views` is granted, not the same as multiplayer.
+- Use when available for watchable capture. Do not block VTubing on it.
+- VRM first-person (embedded look) handles “hide head from wearer”. Observer view handles “camera for audience.”
 
 ---
 
-## Phase 0 — Preconditions (make migration safe)
+## Phase 0, Preconditions (make migration safe)
 
 ### 0.1 Define a “XR ownership contract” in `SceneManager`
 
@@ -125,7 +125,7 @@ This becomes the baseline for comparing `/` vs `/xr`.
 
 ---
 
-## Phase 1 — Unify XR SessionMode + Reference Spaces
+## Phase 1, Unify XR SessionMode + Reference Spaces
 
 Your `/xr` world uses:
 
@@ -135,7 +135,7 @@ Your `/xr` world uses:
 
 For Option A, replicate the **same intent** in `SceneManager` XR start:
 
-- **SessionMode**: ensure `/` can request VR and AR with the same default choices as `/xr`
+- **SessionMode**: make sure `/` can request VR and AR with the same default choices as `/xr`
 - **Reference space**: use the same fallback order (`bounded-floor` → `local-floor` → `local` → `viewer`)
 - **Layers**: keep the “do not request layers” stance if Galaxy XR is unstable
 
@@ -144,7 +144,7 @@ For Option A, replicate the **same intent** in `SceneManager` XR start:
 
 ---
 
-## Phase 2 — Port IWSDK headset robustness patches (no gameplay yet)
+## Phase 2, Port IWSDK headset robustness patches (no gameplay yet)
 
 IWSDK-side code contains Galaxy XR survivability fixes (e.g. safe controller animation update, pointer update behavior).
 
@@ -152,7 +152,7 @@ Goal: take the *principles* of these fixes into the `/` XR input layer:
 
 - avoid “throw in frame loop” failure modes
 - handle reduced gamepad mappings safely
-- ensure hands can become primary when controllers are dormant
+- make sure hands can become primary when controllers are dormant
 
 **Success criteria**
 - XR session no longer black-screens due to a thrown exception in the loop.
@@ -160,7 +160,7 @@ Goal: take the *principles* of these fixes into the `/` XR input layer:
 
 ---
 
-## Phase 3 — Input model: rays + select/squeeze events
+## Phase 3, Input model: rays + select/squeeze events
 
 Build an IWSDK-inspired “input surface” inside `/` that produces a stable, device-agnostic set of events:
 
@@ -169,7 +169,7 @@ Build an IWSDK-inspired “input surface” inside `/` that produces a stable, d
 - `selectStart/selectEnd`
 - `squeezeStart/squeezeEnd`
 
-Do not implement grab/locomotion yet—just normalize input.
+Do not implement grab/locomotion yet, just normalize input.
 
 **Success criteria**
 - Both controllers and hands can produce select events.
@@ -177,7 +177,7 @@ Do not implement grab/locomotion yet—just normalize input.
 
 ---
 
-## Phase 4 — Grabbing (distance first, then proximity)
+## Phase 4, Grabbing (distance first, then proximity)
 
 Implement distance grab first (ray + trigger/pinch), then add proximity grab.
 
@@ -186,7 +186,7 @@ Suggested minimal order:
 1. **Distance grab**:
    - raycast into scene
    - on selectStart: pick target
-   - while held: move target toward a hand-relative anchor point (IWSDK’s “move towards target” feel)
+   - while held: move target toward a hand-relative anchor point (IWSDK's “move towards target” feel)
    - on selectEnd: release
 
 2. **Proximity grab**:
@@ -198,7 +198,7 @@ Suggested minimal order:
 
 ---
 
-## Phase 5 — Locomotion (turn/move/teleport)
+## Phase 5, Locomotion (turn/move/teleport)
 
 Port locomotion in the order that minimizes side effects:
 
@@ -206,7 +206,7 @@ Port locomotion in the order that minimizes side effects:
 2. slide movement
 3. teleport (optional)
 
-Key integration point: locomotion should move the **XR world root** (or a dedicated player rig group), not break SceneManager’s model anchoring rules.
+Key integration point: locomotion should move the **XR world root** (or a dedicated player rig group), not break SceneManager's model anchoring rules.
 
 **Success criteria**
 - Locomotion works without moving “anchored” content that must remain fixed (e.g. floor-anchored VRM stage).
@@ -214,7 +214,7 @@ Key integration point: locomotion should move the **XR world root** (or a dedica
 
 ---
 
-## Phase 6 — AR-only: hit-test + anchors (when needed)
+## Phase 6, AR-only: hit-test + anchors (when needed)
 
 Only implement these in `/` if you intend to support AR placement in the main app.
 
@@ -222,11 +222,11 @@ Only implement these in `/` if you intend to support AR placement in the main ap
 - **Anchors**: persist placement across minor tracking adjustments
 
 **Success criteria**
-- AR placement is stable and doesn’t regress VR behavior.
+- AR placement is stable and does not regress VR behavior.
 
 ---
 
-## Phase 7 — Compositor policy + UI policy
+## Phase 7, Compositor policy + UI policy
 
 Treat these as policies, not “features”:
 
@@ -234,15 +234,15 @@ Treat these as policies, not “features”:
 - scene background + renderer clear alpha rules
 - overlay UI vs world-space UI
 
-The important migration rule is: **don’t add a second policy engine**. Keep a single “XR compositor policy” in `SceneManager`.
+The important migration rule is: **do not add a second policy engine**. Keep a single “XR compositor policy” in `SceneManager`.
 
 **Success criteria**
-- Passthrough (if used) doesn’t break skyboxes/opaque VR.
+- Passthrough (if used) does not break skyboxes/opaque VR.
 - UI is readable and consistent in VR vs AR.
 
 ---
 
-## Phase 8 — Decommission `/xr` as a dependency (keep it as a lab)
+## Phase 8, Decommission `/xr` as a dependency (keep it as a lab)
 
 Even after migration, `/xr` can remain a:
 
@@ -270,7 +270,7 @@ Option A migration is “done” when:
 
 **Parallel tracks (not blocking Option A “done”, but ordered)**
 
-1. **Spectator camera** — in-app capture for VTubing/streaming (sooner; see Capture / VTubing above).
-2. **World building** — Spark + world package import (after core XR interaction is stable).
-3. **Observer view** — only if the runtime exposes it; optional enhancement on top of spectator camera.
+1. **Spectator camera**, in-app capture for VTubing/streaming (sooner. See Capture / VTubing above).
+2. **World building**, Spark + world package import (after core XR interaction is stable).
+3. **Observer view**, only if the runtime exposes it. Optional enhancement on top of spectator camera.
 

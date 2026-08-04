@@ -214,7 +214,7 @@ const handleLighting = (lighting) => {
 
 ## 🔄 Migration from Current System
 
-If you're replacing existing scene controls:
+If you are replacing existing scene controls:
 
 1. **Backup current controls** (if needed)
 2. **Copy the backup files** to active locations
@@ -228,7 +228,7 @@ If you're replacing existing scene controls:
 - **Missing sceneManager methods**: Add the required methods to your SceneManager class
 - **Styling conflicts**: Check CSS specificity and import order
 - **Responsive issues**: Verify media queries are working
-- **Event handlers**: Ensure callbacks are properly connected
+- **Event handlers**: Make sure callbacks are properly connected
 
 ### Debug Tips
 - Check browser console for missing method errors

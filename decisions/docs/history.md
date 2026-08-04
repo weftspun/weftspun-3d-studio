@@ -28,7 +28,7 @@ This project stands on the shoulders of giants with years of history from open s
 
 
 
-Some more development screenshots featuring additional character classes, the AI personality generator, and mint functionality from a livestream recorded in January 2023:
+More development screenshots, from a livestream of January 2023. They show more character classes, the AI personality generator, and the mint function:
 
 |  [![Screenshot_2024-02-16_18-22-15](/img/S1Oaao6iT.jpg)](/img/S1Oaao6iT.jpg) |   [![Screenshot_2024-02-16_22-56-01](/img/HJRyjhpia.jpg)](/img/HJRyjhpia.jpg)  |
 | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -48,12 +48,17 @@ Some more development screenshots featuring additional character classes, the AI
 
 ## Roadmap
 
-- **Immersive XR (in repo)**: Main app **WebXR** via `SceneManager` (VR/AR, floor anchoring); **IWSDK lab** at `/xr` for locomotion/grab experiments ([`docs/IWSDK_INTEGRATION.md`](../IWSDK_INTEGRATION.md)); **Galaxy XR** + optional [**Weftspun XR Face** APK](../../native/android-xr-face-bridge/README.md) for blend-shape relay when Chrome lacks expression-tracking ([`docs/OPENXR_FACE_TRACKING_ANDROID_XR.md`](../OPENXR_FACE_TRACKING_ANDROID_XR.md))
+- **Immersive XR (in repo)**:
+  - The main app runs **WebXR** through `SceneManager`, for VR and AR, with floor anchoring.
+  - The **IWSDK lab** at `/xr` holds the locomotion and grab experiments. See [`docs/IWSDK_INTEGRATION.md`](../IWSDK_INTEGRATION.md).
+  - **Galaxy XR** takes an optional [**Weftspun XR Face** APK](../../native/android-xr-face-bridge/README.md). That APK relays blend shapes when Chrome has no expression tracking. See [`docs/OPENXR_FACE_TRACKING_ANDROID_XR.md`](../OPENXR_FACE_TRACKING_ANDROID_XR.md).
 - **Kimodo text-to-motion**: Animation bar → **3DAIGC-API** `text_to_motion` (Kimodo SOMA-RP-v1.1) → studio motion JSON → VRM / rigged GLB playback in viewport
-- AI features: Create/Load personality and talk to your VRM (**companion runtime**, parallel apps — **not** merged): **[moeChat](https://github.com/moeru-ai/chat)** ([demo](https://chat.moeru.ai/)) **default** for WebXR + VRM + voice + AI model settings; **optional [AIRI](https://github.com/AlfaOmegaGrafx/airi)** for extended companion depth — export/handoff/shared config from Weftspun3DStudio only
+- AI features: create or load a personality, then talk to your VRM. These are **companion runtimes**. They run beside the app, and the project does **not** merge them.
+  - **[moeChat](https://github.com/moeru-ai/chat)** is the **default**. See the [demo](https://chat.moeru.ai/). It covers WebXR, VRM, voice, and the AI model settings.
+  - **[AIRI](https://github.com/AlfaOmegaGrafx/airi)** is optional, and gives more companion depth. Weftspun 3D Studio supplies only the export, the handoff, and the shared configuration.
 - Connect wallet to load profiles or mint files
-- Support loading profiles and AI personality from user‑controlled personal data exports (e.g. local personal server / data connectors) while keeping credentials on the user’s device
-- Use an on‑prem or self‑hosted 3D AIGC backend (e.g. 3DAIGC‑API on DGX‑class hardware) as the primary inference engine, including optional profile/personality context for personalized text/image‑to‑3D and editing workflows
-- Integrate with external 3D launchpads (e.g. Solana/Arweave‑based VRM/GLB minting) so avatars and wearables minted there can be assembled from wallet‑owned assets inside Weftspun3DStudio
+- Load a profile and an AI personality from a personal data export that the user controls, such as a local personal server or a data connector. The credentials stay on the device of the user.
+- Use a local or self hosted 3D AIGC backend as the main inference engine. 3DAIGC-API on DGX class hardware is one example. It can take profile and personality context, for personal text to 3D, image to 3D, and editing work.
+- Connect to an external 3D launchpad, such as a Solana or Arweave mint for VRM and GLB files. Weftspun 3D Studio then assembles those avatars and wearables from wallet owned assets.
 
-Product and revenue detail for the above (x402, tiers, NFT commissions, §11 personalized AI pathway): see [`MONETIZATION_ROADMAP.md`](../../MONETIZATION_ROADMAP.md) at the repository root.
+The product and revenue detail sits in [`MONETIZATION_ROADMAP.md`](../../MONETIZATION_ROADMAP.md), at the repository root. It covers x402, the tiers, the NFT commissions, and the personal AI pathway of section 11.

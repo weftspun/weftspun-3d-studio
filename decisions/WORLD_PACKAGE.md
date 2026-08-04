@@ -52,12 +52,12 @@ Avatar loads never replace world/props. World loads never replace avatar.
 
 ## XR interaction (Galaxy XR)
 
-Mesh props are grabbable in the **main app** (`/`) via SceneManager IWSDK Option A — distance/proximity grab, thumbstick locomotion, grip → context menu on hit / pan on miss.
+Mesh props are grabbable in the **main app** (`/`) via SceneManager IWSDK Option A, distance/proximity grab, thumbstick locomotion, grip → context menu on hit / pan on miss.
 
 | Input (Galaxy XR) | Main `/` session |
 |-------------------|------------------|
 | **Trigger (select)** | Grab (distance + proximity) |
-| **Grip (squeeze)** | Ray hit → right-click / model menu; miss → Ctrl+pan |
+| **Grip (squeeze)** | Ray hit → right-click / model menu. Miss → Ctrl+pan |
 | **Right stick** | Locomotion / teleport aim |
 
 The **`/xr`** IWSDK lab remains for regression (`iwsdkWorldPackage.js`):
@@ -83,7 +83,7 @@ Or from World Library → **XR** button. Implementation: `worldSceneLoader.js` (
 
 Walk / Galaxy XR physical replica scans use `POST /api/v1/world-generation/environment-scan` (LingBot-Map). Pass `metric_calibration` so `environment.transform.scale` is meters (1:1). Manifest metadata includes `metric_calibration.one_to_one` and `coordinate_units: "meters"`.
 
-**Phase A / Phase B:** set `refine_to_3dgs: true` for isotropic Spark Gaussians (Phase A). Optionally `train_3dgs: true` (or later `POST /train-3dgs`) for photometric gsplat train — prefer **7–10k** steps, densify **off**. Door metric: `mode: reference_length`, `axis: horizontal`, `true_meters: 0.762` (30 in), measured `recon_length`. Gravity uses floor RANSAC by default (`prefer_floor`); wall-heavy close-ups fall back to camera-up. Client loads LingBot Gaussians with `orientationMode: 'none'`. See `3DAIGC-API/docs/LINGBOT_MAP_ENVIRONMENT_SCAN.md`.
+**Phase A / Phase B:** set `refine_to_3dgs: true` for isotropic Spark Gaussians (Phase A). Optionally `train_3dgs: true` (or later `POST /train-3dgs`) for photometric gsplat train, prefer **7, 10k** steps, densify **off**. Door metric: `mode: reference_length`, `axis: horizontal`, `true_meters: 0.762` (30 in), measured `recon_length`. Gravity uses floor RANSAC by default (`prefer_floor`). Wall-heavy close-ups fall back to camera-up. Client loads LingBot Gaussians with `orientationMode: 'none'`. See `3DAIGC-API/docs/LINGBOT_MAP_ENVIRONMENT_SCAN.md`.
 
 If the API returns **404** for a job whose files still exist on DGX, rehydrate Redis on DGX:
 
@@ -96,10 +96,10 @@ Client: `worldPackage.js` builds manifest URL candidates and surfaces a clearer 
 
 ## API
 
-`POST /api/v1/world-generation/image-to-world` — DGX-local pipeline (TripoSplat + optional TRELLIS props).
+`POST /api/v1/world-generation/image-to-world`, DGX-local pipeline (TripoSplat + optional TRELLIS props).
 
-`POST /api/v1/world-generation/environment-scan` — walk video / ≥3 frames → LingBot-Map world package (optional Phase A/B 3DGS) + `metric_calibration` for 1:1 meters.
+`POST /api/v1/world-generation/environment-scan`, walk video / ≥3 frames → LingBot-Map world package (optional Phase A/B 3DGS) + `metric_calibration` for 1:1 meters.
 
-`POST /api/v1/world-generation/train-3dgs` — Phase B gsplat train on an existing env-scan world with `gs_dataset/`.
+`POST /api/v1/world-generation/train-3dgs`, Phase B gsplat train on an existing env-scan world with `gs_dataset/`.
 
 See `3DAIGC-API/docs/LINGBOT_MAP_ENVIRONMENT_SCAN.md`.

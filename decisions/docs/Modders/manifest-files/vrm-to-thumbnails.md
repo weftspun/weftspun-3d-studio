@@ -4,9 +4,12 @@ sidebar_position: 6
 
 # VRM to Thumbnails
 
-The thumbnails generator allows you to create thumbnails with the assets that will be  loaded in each trait group.
+The thumbnails generator makes a thumbnail for each asset in a trait group.
 
-A single image for each asset will be taken and saved into disk with trait groups subdirectories. You can use these generated thumbnails to update your character manifest.json.
+It takes one image per asset. It writes each image to disk, in a
+subdirectory named for the trait group.
+
+Use these thumbnails to update your character `manifest.json`.
 
 ---
 

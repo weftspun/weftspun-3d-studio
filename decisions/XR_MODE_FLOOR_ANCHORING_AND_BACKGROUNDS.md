@@ -2,12 +2,12 @@
 
 Last updated: 2026-06-27
 
-> **Protected baseline (2026-06-27):** Do not regress Galaxy XR floor alignment. See `memory-bank/xr-floor-anchor-protected-state.md` and `.cursor/rules/xr-floor-anchor-protected.mdc`. Good log: `[XR][floor] AR alignment { floorAlignmentY: ~0 }` — bad: `floorAlignmentY: 1` with grid/axes in wrap.
+> **Protected baseline (2026-06-27):** Do not regress Galaxy XR floor alignment. See `memory-bank/xr-floor-anchor-protected-state.md` and `.cursor/rules/xr-floor-anchor-protected.mdc`. Good log: `[XR][floor] AR alignment { floorAlignmentY: ~0 }`, bad: `floorAlignmentY: 1` with grid/axes in wrap.
 
 ## Goals (Current Correct Behavior)
 
 - **VR mode**
-  - Uses a **virtual sky background** (the app’s sky image).
+  - Uses a **virtual sky background** (the app's sky image).
   - Background must be **opaque** (no pass-through).
   - Scene content (models) is **floor-anchored** using floor-aligned reference spaces.
 
@@ -39,12 +39,12 @@ We request reference spaces in this order:
 
 ### Why `bounded-floor` matters on Android XR
 
-On Galaxy XR, `bounded-floor` uses the device’s **boundaries floor-level calibration**:
+On Galaxy XR, `bounded-floor` uses the device's **boundaries floor-level calibration**:
 
 - Settings → XR → Boundaries → Adjust Floor Level
 - In `bounded-floor`, **Y=0 corresponds to the physical floor level** configured by the user.
 
-No additional “manual floor height” code is needed—WebXR provides a floor-aligned origin.
+No additional “manual floor height” code is needed, WebXR provides a floor-aligned origin.
 
 ## Floor Anchoring (Model Bottom to Y=0)
 
@@ -60,7 +60,7 @@ When entering either VR or AR:
    - `y = floorAlignmentY`
    - `z = -0.5`
 
-This aligns the model’s bottom to \(Y=0\) in the chosen reference space (physical floor in floor-aligned spaces).
+This aligns the model's bottom to \(Y=0\) in the chosen reference space (physical floor in floor-aligned spaces).
 
 ## AR Pass-Through (Physical Background Visible)
 
@@ -77,7 +77,7 @@ In AR, you may optionally set `scene.environment` for lighting, while keeping `s
 
 ### Background State Snapshot and Restore
 
-To ensure the 3D viewer returns to the exact same sky orientation after exiting AR, the app captures a **full snapshot** of the background state before entering any XR session:
+To make sure the 3D viewer returns to the exact same sky orientation after exiting AR, the app captures a **full snapshot** of the background state before entering any XR session:
 
 - **For textures**: Stores `{ textureRef, mapping, colorSpace, flipY, needsUpdate }`
 - **For colors**: Stores a cloned `THREE.Color` instance
@@ -85,11 +85,11 @@ To ensure the 3D viewer returns to the exact same sky orientation after exiting 
 
 On AR exit (`handleXRSessionEnd('ar')`), the snapshot is restored **exactly** as captured, including all texture properties. This prevents the sky from appearing flipped or incorrectly oriented after AR sessions.
 
-**Implementation**: The snapshot is captured in the unified `setSession` override before any XR-specific background modifications occur. It's stored in `this.preXRBackgroundSnapshot` and cleared after restoration.
+**Implementation**: The snapshot is captured in the unified `setSession` override before any XR-specific background modifications occur. It is stored in `this.preXRBackgroundSnapshot` and cleared after restoration.
 
 ## VR Background (Sky in Immersive VR)
 
-Some WebXR immersive VR runtimes can be unreliable with `scene.background` alone. The robust approach is:
+Some WebXR immersive VR runtimes can be unreliable with `scene.background` alone. The reliable approach is:
 
 - Keep an **opaque clear alpha** (`renderer.getClearAlpha() === 1`)
 - Use a **mesh-based sky** (large sphere / skybox mesh) mapped with the sky texture, rendered behind everything.
@@ -99,20 +99,20 @@ Some WebXR immersive VR runtimes can be unreliable with `scene.background` alone
 XR wrapper X must remain centered:
 
 - When we set the wrapper position, we set `x=0`.
-- In AR, the wrapper is “anchored” and restored if it drifts; the anchor is also forced to `x=0`.
+- In AR, the wrapper is “anchored” and restored if it drifts. The anchor is also forced to `x=0`.
 - In VR, the render loop enforces `VRSceneWrapper.position.x === 0` as a safety guard.
 
 ### Auto-centering on XR session start
 
-On XR session start, the app also **auto-centers the reference space** once (on the first XR frame) so the viewer begins at **X=0** relative to the app's world/grid. This avoids the common "I start a couple squares to the left/right of the grid center" issue on some runtimes.
+On XR session start, the app also **auto-centers the reference space** once (on the first XR frame) so the viewer starts at **X=0** relative to the app's world/grid. This avoids the common "I start a couple squares to the left/right of the grid center" issue on some runtimes.
 
 ### Software Recenter (Long-Press Gesture)
 
-The app supports software-based recenter via long-press gestures on XR input sources (controllers/headset touchpads). This is a fallback when platform-level recenter (Home button) doesn't affect the app.
+The app supports software-based recenter via long-press gestures on XR input sources (controllers/headset touchpads). This is a fallback when platform-level recenter (Home button) does not affect the app.
 
 **Implementation details**:
 
-- **Hold tracking**: Uses `WeakMap` keyed by **stable `XRSpace` objects** (`inputSource.targetRaySpace`) instead of `XRInputSource` object refs. This ensures tracking persists even if `session.inputSources` yields different object instances than `event.inputSource`.
+- **Hold tracking**: Uses `WeakMap` keyed by **stable `XRSpace` objects** (`inputSource.targetRaySpace`) instead of `XRInputSource` object refs. This makes sure tracking persists even if `session.inputSources` yields different object instances than `event.inputSource`.
 - **Long-press threshold**: 900ms
 - **Supported inputs**:
   - `selectstart`/`selectend` events (for headsets/controllers without gamepad API)

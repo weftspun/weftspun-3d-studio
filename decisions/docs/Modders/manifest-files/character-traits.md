@@ -6,7 +6,7 @@ sidebar_position: 3
 # Character Traits
 
 
-Setting up this manifest will populate the asset trait section with your own traits that people can select from. It will also serve the Weftspun3DStudio for cull trait model options (remove faces underneath) based on the layers, so the triangles disappear underneath the clothing for example.
+Setting up this manifest will populate the asset trait section with your own traits that people can select from. It also drives the trait culling options. Weftspun 3D Studio removes the faces under a layer, so the triangles under a garment disappear.
 
 ![](/img/By1NZXbhT.jpg)
 
@@ -25,7 +25,7 @@ Includes generic and important information such as root assets location, and tra
 ### assetsLocation
 *required string*
 
-Root location where all assets will be taken from:
+The root location of every asset:
 
 Example:
 ```json
@@ -38,7 +38,7 @@ Example:
 ### traitsDirectory
 *optional string*
 
-Alternative subfolder location where your traits will be loaded from:
+The subfolder that holds your traits:
 
 Example:
 
@@ -46,7 +46,7 @@ Example:
 "traitsDirectory":"/traits/"
 ```
 
-Weftspun3DStudio will search on assetLocation + traitsDirectory: 
+Weftspun3DStudio will search on assetLocation + traitsDirectory:
 
 ```./character-assets/traits/```
 
@@ -54,7 +54,7 @@ Weftspun3DStudio will search on assetLocation + traitsDirectory:
 ### thumbnailsDirectory
 *optional string*
 
-Alternative subfolder location where thumbnails for traits will be loaded from:
+The subfolder that holds the trait thumbnails:
 
 Example:
 
@@ -62,7 +62,7 @@ Example:
 "thumbnailsDirectory":"/traitsThumbnails/"
 ```
 
-Weftspun3DStudio will search on assetLocation + thumbnailsDirectory: 
+Weftspun3DStudio will search on assetLocation + thumbnailsDirectory:
 
 ```./character-assets/traitThumbnails/```
 
@@ -70,7 +70,7 @@ Weftspun3DStudio will search on assetLocation + thumbnailsDirectory:
 ### traitIconsDirectorySvg
 *optional string*
 
-Alternative subfolder location where SVG icons for traits will be loaded from:
+The subfolder that holds the trait SVG icons:
 
 Example:
 
@@ -78,7 +78,7 @@ Example:
 "traitIconsDirectorySvg":"/traitIcons/"
 ```
 
-Weftspun3DStudio will search on assetLocation + traitIconsDirectorySvg: 
+Weftspun3DStudio will search on assetLocation + traitIconsDirectorySvg:
 
 ```./character-assets/traitIcons/```
 
@@ -119,7 +119,7 @@ Example:
 ### initialTraits
 *optional object*
 
-Initial traits that will be selected when the character is loaded. Keys are trait group IDs and values are trait IDs.
+The traits the app selects when it loads the character. Keys are trait group IDs and values are trait IDs.
 
 Example:
 ```json
@@ -132,7 +132,7 @@ Example:
 ### requiredTraits
 *optional string array*
 
-Trait group names that must have at least one option selected. Trait group names are defined inside trait collections.
+Trait group names that must have at least one option selected. The trait collections hold the trait group names.
 
 Example:
 ```json
@@ -142,7 +142,7 @@ Example:
 ### randomTraits
 *optional string array*
 
-Trait group names that will be randomized when clicking randomize button. Trait group names are defined inside trait collections.
+The trait groups the randomize button changes. The trait collections hold the trait group names.
 
 Example:
 ```json
@@ -152,7 +152,7 @@ Example:
 ### colliderTraits
 *optional string array*
 
-Trait group names that will be considered for getting collider information from VRM file spec.
+The trait groups that supply collider data, from the VRM file specification.
 
 Example:
 ```json
@@ -162,7 +162,7 @@ Example:
 ### lipSyncTraits
 *optional string array*
 
-Trait group names that will be considered for preview lip sync animation when testing.
+The trait groups the lip sync preview uses during a test.
 
 Example:
 ```json
@@ -172,7 +172,7 @@ Example:
 ### blinkerTraits
 *optional string array*
 
-Trait group names that will be considered for preview blinking animation when testing.
+The trait groups the blink preview uses during a test.
 
 Example:
 ```json
@@ -184,9 +184,9 @@ Example:
 
 Definition for what traits cannot be together with other traits or types
 
-**restrictedTraits *(optional string array)***: What traits cannot go when this trait is selected.
+**restrictedTraits *(optional string array)***: The traits that this trait excludes.
 
-**restrictedTypes *(optional string array)***: What types cannot go when this trait is selected.
+**restrictedTypes *(optional string array)***: The types that this trait excludes.
 
 
 Example:
@@ -204,7 +204,7 @@ Example:
 
 Definition for what types cannot be together with other types
 
-**type object *(optional string array)***: What types cannot be selected when another type is selected.
+**type object *(optional string array)***: The types that another type excludes.
 
 
 
@@ -218,9 +218,9 @@ Example:
 ### defaultCullingLayer
 *optional number (integer)*
 
-Default culling layer for every trait model in the collection, can be overriden by its trait group culling layer, or its directly within the trait. Default is -1. Use integers only.
+The default culling layer for every trait model in the collection. The trait group, or the trait itself, can override it. Default is -1. Use integers only.
 
-Culling layers go from -1 to any number. Lowest layer number trait (starting from 0) will get culled by higher layer number trait. Layers with number -1 will be ignored in this process.
+Culling layers go from -1 to any number. Lowest layer number trait (starting from 0) will get culled by higher layer number trait. This process skips a layer numbered -1.
 
 Example:
 ```json
@@ -230,7 +230,7 @@ Example:
 ### defaultCullingDistance
 *optional array[2] number*
 
-Default culling distance (array of 2 numbers) for every trait model in the collection, can be overriden by its trait group culling distance, or directly within the trait. Default is [0,0].
+The default culling distance for every trait model in the collection, as an array of two numbers. The trait group, or the trait itself, can override it. Default is [0,0].
 
 Example:
 ```json
@@ -252,7 +252,7 @@ Example:
 ### canDownload
 *optional boolean*
 
-Whether the character can be downloaded. Default is true.
+Whether a user may download the character. Default is true.
 
 Example:
 ```json
@@ -284,7 +284,7 @@ Includes export download options for final downloaded 3d model.
 ### vrmMeta
 *optional object*
 
-Metadata that will be saved to final VRM file after download happens.
+The metadata that the download writes into the final VRM file.
 
 Example:
 ```json
@@ -369,7 +369,7 @@ Example:
 ### purchasable
 *optional boolean*
 
-Whether the default value of the assets is set to purchsable or not
+Whether an asset defaults to purchasable.
 
 Example:
 ```json
@@ -379,7 +379,7 @@ Example:
 ### locked
 *optional boolean*
 
-Whether the default value of the assets is set to locked or not
+Whether an asset defaults to locked.
 
 Example:
 ```json
@@ -392,7 +392,7 @@ ___
 *required object array*
 
 Includes trait collection and group specific information such as culling values.
-Every option from below will be enclosed in an array, this is an example of a full trait option:
+An array holds every option below. This example shows a full trait option:
 ```json
   "traits": [
     {
@@ -413,7 +413,7 @@ Every option from below will be enclosed in an array, this is an example of a fu
 ### trait
 *required string*
 
-ID for this group trait, this will be used to segment each trait groups into different types of traits
+The id of this trait group. It separates the trait groups into types.
 
 Example:
 
@@ -424,7 +424,7 @@ Example:
 ### name
 *required string*
 
-Display name for this group trait. 
+Display name for this group trait.
 
 Example:
 
@@ -448,7 +448,7 @@ Example:
 ### cullingLayer
 *optional number (integer)*
 
-Override for default culling layer, this setting this value will make all the traits from this collection to have this cullingLayer (Unless specific traits have a custom culling Layer)
+An override for the default culling layer. Every trait in this collection takes this `cullingLayer` value. A trait with its own culling layer keeps that value.
 
 Example:
 ```json
@@ -458,7 +458,7 @@ Example:
 ### cullingDistance
 *optional array[2] number*
 
-Override for default culling distance (array of 2 numbers) for every trait model in the collection, can be overriden by its trait group culling distance, or directly within the trait. Default is [0,0].
+An override for the default culling distance, as an array of two numbers. The trait group, or the trait itself, can override it again. Default is [0,0].
 
 Example:
 ```json
@@ -468,7 +468,7 @@ Example:
 ### cameraTarget
 *required object*
 
-Where will the camera move to when this trait is selected.
+Where the camera moves when a user selects this trait.
 
 **distance**: Zoom distance from the Character.
 
@@ -490,7 +490,7 @@ An array of all the traits that will be available for this trait group.
 
 Each element from the array represent a single trait. This will be your options in the side menu when selecting any group trait
 
-**id *(required string)***: Unique ID for this trait (can be used by nft metadata to fetch this value by id).
+**id *(required string)***: The unique id of this trait. NFT metadata can fetch the value by this id.
 
 **name *(required string)***: Display Name for this trait.
 
@@ -504,9 +504,9 @@ Each element from the array represent a single trait. This will be your options 
 
 **type *(optional array string)***: An array of type description of this trait, can be any descriptive word
 
-**textureCollection *(optional string)***: Texture Collection ID from which user will be able to decide the texture to apply to this trait (May either choose textureCollection or colorCollection)
+**textureCollection *(optional string)***: The texture collection id. A user picks a texture from it for this trait. Use `textureCollection` or `colorCollection`, but not both.
 
-**colorCollection *(optional string)***: Color Collection ID from which user will be able to decide the color to apply to this trait (May either choose textureCollection or colorCollection)
+**colorCollection *(optional string)***: The color collection id. A user picks a color from it for this trait. Use `textureCollection` or `colorCollection`, but not both.
 
 Example:
 ```json
@@ -525,8 +525,8 @@ Example:
 ]
 ```
 
-**blendshapeTraits *(optional Object[])***: An array of Blendshape Trait definition. Let's you define blendshapes as traits. These blendshapes will be removed at export stage.
-Note that we currently treat every blendshape trait (those defined in the manifest) as binary. I.e. they're either on or off.
+**blendshapeTraits *(optional Object[])***: An array of Blendshape Trait definition. Let us you define blendshapes as traits. The export stage removes these blendshapes.
+Note that we currently treat every blendshape trait (those defined in the manifest) as binary. I.e. they are either on or off.
 
 ```json
 ...
@@ -574,7 +574,7 @@ A BlendshapeTrait Group definition has the following properties:
 ___
 
 ## Texture Collection Section (textureCollections):
-Used to define a collections of textures that can be assigned to specific traits.
+Defines a collection of textures. A trait can take one of them.
 
 ```json
   "textureCollections": [
@@ -589,7 +589,7 @@ Used to define a collections of textures that can be assigned to specific traits
 
 An array of all the textures that will be available for this texture trait id.
 
-**id *(required string)***: Unique ID for this trait (can be used by nft metadata to fetch this value by id).
+**id *(required string)***: The unique id of this trait. NFT metadata can fetch the value by this id.
 
 **name *(optional string)***: Display Name for this texture trait.
 
@@ -609,7 +609,7 @@ An array of all the textures that will be available for this texture trait id.
 ```
 ___
 ## Color Collection Section (colorCollections):
-Used to define a collections of colors that can be assigned to specific traits.
+Defines a collection of colors. A trait can take one of them.
 
 ```json
   "colorCollections": [
@@ -624,7 +624,7 @@ Used to define a collections of colors that can be assigned to specific traits.
 
 An array of all the textures that will be available for this texture trait id.
 
-**id *(required string)***: Unique ID for this color trait (can be used by nft metadata to fetch this value by id).
+**id *(required string)***: The unique id of this color trait. NFT metadata can fetch the value by this id.
 
 **name *(optional string)***: Display Name for this texture trait.
 
@@ -643,7 +643,7 @@ An array of all the textures that will be available for this texture trait id.
 ___
 
 ## Decal Collection Section (decalCollections):
-Used to define a collections of decals that can be assigned to specific traits.
+Defines a collection of decals. A trait can take one of them.
 
 ```json
   "decalCollections": [
@@ -658,7 +658,7 @@ Used to define a collections of decals that can be assigned to specific traits.
 
 An array of all the decals that will be available for this decal trait id.
 
-**id *(required string)***: Unique ID for this decal trait (can be used by nft metadata to fetch this value by id).
+**id *(required string)***: The unique id of this decal trait. NFT metadata can fetch the value by this id.
 
 **name *(optional string)***: Display Name for this decal trait.
 
@@ -680,10 +680,10 @@ An array of all the decals that will be available for this decal trait id.
 ___
 # Culling Distance
 
-Culling distance is defined in an array of 2 numbers [outer, innner]
+An array of two numbers holds the culling distance: `[outer, inner]`.
 
-Outer represents how far a raycast will go outside in normal direction before it detects collision, if it collides, it means the vertex is not visible as it is blocked by another trait with higher culling layer.
+`Outer` sets how far a raycast travels along the outward normal before it hits something. A hit means a trait with a higher culling layer blocks the vertex, so the vertex stays hidden.
 
-Innner represents how far a raycast will go inside in normal direction before it detects collision, if it collides, it means the vertex is not visible as it is blocked by another trait with higher culling layer.
+`Inner` sets how far a raycast travels along the inward normal before it hits something. A hit means a trait with a higher culling layer blocks the vertex, so the vertex stays hidden.
 
-This options only affects how the trait is affected by other traits.
+This option changes only how other traits act on this trait.

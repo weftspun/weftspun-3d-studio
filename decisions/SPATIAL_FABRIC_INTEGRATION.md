@@ -22,9 +22,9 @@ This is **separate** from in-app world packages (Spark splats + `worldSceneLoade
 
 | UI | Action |
 |----|--------|
-| **Task Manager** | **Publish RP1** on completed mesh jobs; **OMB** opens Scene Assembler |
-| **GLB Export** | **Validate OMB tier**; **Send To Metaverse Browser** (viewport GLB + compression settings) |
-| **World Library** | **Open Metaverse Browser** / per-world **RP1** (publishes **mesh props** from manifest); **XR** loads splat + props in main `/` session |
+| **Task Manager** | **Publish RP1** on completed mesh jobs. **OMB** opens Scene Assembler |
+| **GLB Export** | **Validate OMB tier**. **Send To Metaverse Browser** (viewport GLB + compression settings) |
+| **World Library** | **Open Metaverse Browser** / per-world **RP1** (publishes **mesh props** from manifest). **XR** loads splat + props in main `/` session |
 
 ## API endpoints (3DAIGC-API)
 
@@ -63,7 +63,7 @@ Guidelines: [OMB spatial fabric model guidelines](https://omb.wiki/en/spatial-fa
 | Entry point | Publishes | Works when |
 |-------------|-----------|------------|
 | **Task Manager → Publish RP1** | Completed **mesh job** GLB → MSF object library | Any finished text/image-to-3D job with on-disk GLB |
-| **World Library → RP1** | **Mesh props** listed in `world.manifest.json` | World has `props[]` with `mesh_url` (TRELLIS props). **Splat-only** worlds (`prop_count` 0) cannot RP1-publish — environment splats are not MSF props |
+| **World Library → RP1** | **Mesh props** listed in `world.manifest.json` | World has `props[]` with `mesh_url` (TRELLIS props). **Splat-only** worlds (`prop_count` 0) cannot RP1-publish, environment splats are not MSF props |
 
 Log markers: `[SpatialFabric] publish complete` (mesh job) vs `[SpatialFabric] world publish complete` (world props).
 
@@ -79,6 +79,6 @@ Log markers: `[SpatialFabric] publish complete` (mesh job) vs `[SpatialFabric] w
 
 ## Related
 
-- [World Package Format](docs/WORLD_PACKAGE.md) — splat + props in SceneManager (not MSF fabric)
-- [IWSDK Option A Migration Blueprint](IWSDK_OPTION_A_MIGRATION_BLUEPRINT.md) — XR interaction in main `/` session
-- DGX: `/home/sifr/MSF_Map_Svc` — MSF Map Service + Scene Assembler
+- [World Package Format](docs/WORLD_PACKAGE.md), splat + props in SceneManager (not MSF fabric)
+- [IWSDK Option A Migration Blueprint](IWSDK_OPTION_A_MIGRATION_BLUEPRINT.md), XR interaction in main `/` session
+- DGX: `/home/sifr/MSF_Map_Svc`, MSF Map Service + Scene Assembler

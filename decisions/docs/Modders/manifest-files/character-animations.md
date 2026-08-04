@@ -1,9 +1,11 @@
 # Character animations
-There are 2 ways to add animations to characters:
+Two ways add animations to a character.
 
 ## Default animations
 
-The animation files are referenced via main manifest in the defaultAnimations array section. You can add as many as you want, and all the loaded characters will have these animations:
+The `defaultAnimations` array in the main manifest names the
+animation files. Add as many as you need. Every character that loads
+gets these animations.
 
 ```json!
 {
@@ -38,7 +40,9 @@ The animation files are referenced via main manifest in the defaultAnimations ar
 
 ## Per character animations
 
-The animation files are referenced via `animationPath` in the manifest.json file, here's an example ([source](https://github.com/M3-org/loot-assets/blob/main/loot/models/manifest.json)):
+The `animationPath` field in `manifest.json` names the animation
+files. This example comes from the
+[loot-assets manifest](https://github.com/M3-org/loot-assets/blob/main/loot/models/manifest.json):
 
 ```json!
 {
@@ -61,21 +65,32 @@ The animation files are referenced via `animationPath` in the manifest.json file
   ],
 ...
 ```
-Pro tip: The first animation file in the list is really important for batch processing manifest.json files when using Weftspun3DStudio as a way to assemble many VRMs.
+The first animation file in the list matters most. Batch processing
+of many `manifest.json` files depends on it, when you assemble many
+VRM files at once.
 
-1. The first animation file is used when taking screenshots of VRMs so you can get a preview of what the collection looks like before exporting the actual files (which can take much longer).
+1. A screenshot of a VRM uses the first animation file. The
+   screenshot previews the collection. An export of the real files
+   takes much longer.
 
 
-Here the avatars are being overrided with an a-pose.fbx animation for previews:
+Here an `a-pose.fbx` animation overrides the avatars, for previews:
 ![](/img/5erJutX.gif)
 
 
-2. They're also useful during batch processing since you can load many manifest.json files and then scroll through them while it's playing the default animation. You can use this to catch clipping / weight issues faster:
+2. The animations also help during batch processing. Load many
+   `manifest.json` files, then scroll through them while the default
+   animation plays. This finds clipping and weight problems more
+   quickly.
 
 ![](/img/LbTte4L.gif)
 
 
-We're currently using mixamo rigged animations **without skin** to retarget the VRM avatars with. You will want to check the box for `In place` whenever, otherwise your avatar will walk off screen :joy:. Check out the useful links below.
+The project retargets VRM avatars with mixamo rigged animations
+**without skin**. Always select the `In place` box. If you do not,
+the avatar walks off the screen.
+
+These links help:
 
 - https://www.mixamo.com/
 - https://github.com/M3-org/CharacterStudio/tree/main/public/3d/animations

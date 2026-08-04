@@ -4,23 +4,29 @@ sidebar_position: 5
 
 # VRM to Spritesheet
 
-The spritesheet generator works very similar to the LoRA generator with the exception that the image outputs are turned into an atlas alongside a gif preview. Here's a very simple example of a manifest file that can generate a spritesheet:
+The spritesheet generator works much like the LoRA generator. It
+differs in one way: it puts the output images into an atlas, and it
+also writes a gif preview.
+
+This manifest file generates a spritesheet:
 
 ![](/img/simple-spritesheet-manifest.png)
 
 ![](/img/joy2.gif)
 
-You'll most likely want a walk cycle animation for a general usecase sprite sheet that can be used in gamedev or as a fallback avatar in supported platforms.
+A general purpose spritesheet usually needs a walk cycle animation.
+A game can use that sheet. A platform that supports sprite avatars
+can also use it as a fallback avatar.
 
 ![](/img/walk2.gif)
 
 ---
 
-The shot sizes being used for screenshots borrow from this cheatsheet:
+The screenshots use the shot sizes in this cheatsheet:
 
 ![](/img/shotsize-cheatsheet.png)
 
-There's 4 different `cameraFrame` positions as referenced in `src/library/screenshotManager.js`:
+`src/library/screenshotManager.js` holds four `cameraFrame` positions:
 
 ```javascript
   frameCloseupShot(){
@@ -43,7 +49,10 @@ There's 4 different `cameraFrame` positions as referenced in `src/library/screen
 
 **WIP**
 
-M3 is currently doing research on creating a glTF extension for spritesheets that can be used as avatars: https://hackmd.io/@XR/vrm-spritesheet. Here is a rough idea of how an implementation might look like:
+M3 researches a glTF extension for spritesheets that work as
+avatars. See https://hackmd.io/@XR/vrm-spritesheet.
+
+An implementation might look like this:
 
 ```json
 {

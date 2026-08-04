@@ -4,16 +4,16 @@ sidebar_position: 1
 
 # Overview
 
-The manifest files are essential if you want to mod Weftspun3DStudio with your own assets and selection screens. They are found in various parts of the project, and basically are the main file other than art assets that you would need to modify to make an avatar builder program. For more info go to the full documentation page for any manifest in the sidebar.
+The manifest files are essential if you want to mod Weftspun3DStudio with your own assets and selection screens. They sit in several parts of the project. Apart from the art assets, they are the main files you change to build an avatar builder. For more info go to the full documentation page for any manifest in the sidebar.
 
 
 ## [Character Selection](./character-select.md)
 
-The first manifest.json file is for the select screen that loads up profiles for character bases models and their associated assets. Think of each of these as a new character template, like picking a class in an MMO or choosing your fighter in a video game. They point to the manifest.json files for each character profile's traits.
+The first `manifest.json` file drives the select screen. That screen loads the profiles for the character base models and their assets. Each entry is a character template. It works like a class in an MMO, or a fighter in a video game. They point to the manifest.json files for each character profile's traits.
 
 ![Screenshot from 2024-02-16 02-27-37](/img/HkU6ZQWhT.png)
 
-This section is also where it can be possible to load up characters or traits you own after connecting to the app with a web3 wallet, although this functionality is not built in yet.
+This screen can also load characters and traits that a user owns, after that user connects a web3 wallet. The project does not do this yet.
 
 <details>
 
@@ -42,14 +42,14 @@ This section is also where it can be possible to load up characters or traits yo
 
 </details>
 
-The next section will have more information about the manifest.json files being referenced.
+The next section describes those `manifest.json` files.
 
 
 ---
 
 ## [Character Traits](./character-traits.md)
 
-Setting up this manifest will populate the asset trait section with your own traits that people can select from. It will also serve the Weftspun3DStudio for cull trait model options (remove faces underneath) based on the layers, so the triangles disappear underneath the clothing for example.
+Setting up this manifest will populate the asset trait section with your own traits that people can select from. It also drives the trait culling options. Weftspun 3D Studio removes the faces under a layer, so the triangles under a garment disappear.
 
 ![Screenshot from 2024-02-19 13-42-19](/img/By1NZXbhT.jpg)
 
@@ -270,11 +270,11 @@ Setting up this manifest will populate the asset trait section with your own tra
 
 ## [VRM to LoRAs Training Data](./vrm-to-lora.md)
 
-This manifest is inspired by the [VRM to LoRA guide](https://hackmd.io/@reneil1337/avatar-lora) by [reneil1337](https://github.com/reneil1337) will generate training data that can be used for training LoRAs using tools such as [Kohya](https://github.com/bmaltais/kohya_ss). It automates a tedious part of the process when capturing screenshots and tagging the data, then it's up to you to train.
+This manifest is inspired by the [VRM to LoRA guide](https://hackmd.io/@reneil1337/avatar-lora) by [reneil1337](https://github.com/reneil1337) will generate training data that can be used for training LoRAs using tools such as [Kohya](https://github.com/bmaltais/kohya_ss). It does the slow part: it captures the screenshots and tags the data. You then run the training.
 
 ![rendercombined](/img/H1OJTfb36.jpg)
 
-Here's a snippet of an [example manifest](https://github.com/M3-org/CharacterStudio/blob/lora-data-creator/public/lora-assets/manifest.json) for exporting LoRA training data. The animations being used are no-skin mixamo animation files that used Y-bot as the character. In the future we plan to implement VRMA (VRM animation) file support.
+Here is a snippet of an [example manifest](https://github.com/M3-org/CharacterStudio/blob/lora-data-creator/public/lora-assets/manifest.json) for exporting LoRA training data. The animations are mixamo files with no skin, which use Y-bot as the character. In the future we plan to implement VRMA (VRM animation) file support.
 
 <details>
 
@@ -305,12 +305,12 @@ Here's a snippet of an [example manifest](https://github.com/M3-org/CharacterStu
 
 </details>
 
-For more information don't forget to check out this guide: https://hackmd.io/@reneil1337/avatar-lora
+For more information do not forget to check out this guide: https://hackmd.io/@reneil1337/avatar-lora
 
 ---
 
 
-This is an experimental feature for prepopulating and customizing personalities for VRM avatars for AI chatbot application use cases. There's also an ongoing effort to standardize this type of metadata as a [gltf extension](https://github.com/omigroup/gltf-extensions/tree/main/extensions/2.0/OMI_personality) if interested.
+This is an experimental feature for prepopulating and customizing personalities for VRM avatars for AI chatbot application use cases. There is also an ongoing effort to standardize this type of metadata as a [gltf extension](https://github.com/omigroup/gltf-extensions/tree/main/extensions/2.0/OMI_personality) if interested.
 
 ![Screenshot from 2024-02-19 13-46-05](/img/B11GGmZnT.jpg)
 
@@ -356,19 +356,19 @@ This is an experimental feature for prepopulating and customizing personalities 
 
 Some useful scripts for generating manifest files for use in https://github.com/M3-org/chagithub.com/M3-org/characterstudio## Adding Your Own Traits
 
-This is for the typical usecase of creating your own avatar builder with your traits, like you see on the left side of the screenshot below.
+This serves the common case: you build your own avatar builder from your own traits. The left side of the screenshot below shows it.
 
-> Note: You'll need to generate your own screenshots. I recommend [screenshot-glb](https://github.com/Shopify/screenshot-glb) which works with VRM files as well and keep the base filenames same as the VRM files.
+> Note: You will need to generate your own screenshots. Use [screenshot-glb](https://github.com/Shopify/screenshot-glb). It also reads VRM files. Keep the base filenames the same as the VRM files.
 
 ![Screenshot from 2024-02-19 21-15-46](/img/BkMdoF-2T.jpg)
 
-You will need to modify the paths for the templates, it's currently configured for https://github.com/m3-org/loot-assets.
+You will need to modify the paths for the templates, it is currently configured for https://github.com/m3-org/loot-assets.
 
 **Here is how the folder structure looks before generating manifest.json**
 
 ![image](/img/HyonISbnT.png)
 
-This is the script I'm using for generating a manifest for https://github.com/m3-org/loot-assets
+This is the script I am using for generating a manifest for https://github.com/m3-org/loot-assets
 
 
 ```python!
@@ -466,7 +466,7 @@ if __name__ == "__main__":
 
 **Handling Messy NFT Metadata**
 
-Oftentimes metadata traits in NFT collections will contain a bunch of special characters and may not always match 1:1 with the visual trait. In these cases you will want a higher abstraction level system if you want to do things like to match the original metadata filenames to renamed versions you're using when handling the actual assets.
+Metadata traits in an NFT collection often hold special characters. They also do not always match the visual trait one to one. In these cases you will want a higher abstraction level system if you want to do things like to match the original metadata filenames to renamed versions you are using when handling the actual assets.
 
 First, we create a schema on how we go about renaming from the NFT metadata traits to a machine readable version with a CSV file containing every unique trait per row. For Anata project it looks like this:
 

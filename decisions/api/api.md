@@ -939,11 +939,11 @@ Skinned humanoid GLB exports must satisfy the [API avatar rig contract](../API_A
   - `mesh_file_id`: File ID from upload endpoint (**recommended**)
 - **Parameters**:
   - `rig_mode`: Rig mode (`skeleton`, `skin`, `full`, or **`template`** for humanoid template VRM)
-  - `humanoid_template_id`: When `rig_mode` is `template`, template id (default **`template`**; legacy alias `sifr2`)
+  - `humanoid_template_id`: When `rig_mode` is `template`, template id (default **`template`**. Legacy alias `sifr2`)
   - `output_format`: Output format (`glb` recommended for template mode)
   - `model_preference`: Model to use for rigging (`unirig_auto_rig`)
 
-**Template rig example** (bones-only; facial morphs require mesh wrap — see Weftspun3DStudio `docs/AVATAR_PIPELINE.md`):
+**Template rig example** (bones-only. Facial morphs require mesh wrap, see Weftspun3DStudio `docs/AVATAR_PIPELINE.md`):
 
 ```json
 {
@@ -1124,7 +1124,7 @@ See also `docs/AVATAR_PIPELINE.md` for combining splats with avatar-from-image i
   - `*_path`: Local file path (for server-side files)
   - `*_base64`: Base64 encoded data
   - `*_file_id`: File ID from upload endpoint (**recommended**)
-- **Mask Options**: 
+- **Mask Options**:
   - **2D Mask Image**: Provide one of `mask_image_path`, `mask_image_base64`, or `mask_image_file_id`
   - **3D Mask**: Provide one of `mask_bbox` or `mask_ellipsoid`
 - **Parameters**:
@@ -1865,8 +1865,8 @@ Enabled models match `3DAIGC-API/config/models.yaml` and the Weftspun3DStudio ca
 - Check the interactive API documentation at `/docs`
 - Monitor system status at `/api/v1/system/status`
 - Review job logs and error messages in responses
-- Ensure adequate VRAM is available for model operations
+- Make sure adequate VRAM is available for model operations
 
 
 *Last updated: [2026.06.21]*
-*API Version: 2.0.0* 
+*API Version: 2.0.0*

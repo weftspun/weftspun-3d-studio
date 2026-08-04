@@ -14,7 +14,7 @@ That document is the single source of truth for current XR positioning:
 Since WebXR controls the camera position in VR mode, we cannot directly adjust the camera. Instead, we create a `vrSceneOffset` group that wraps all scene content and positions it relative to the reference space. This allows us to:
 1. Anchor the model to the physical floor (Y=0) using bounding box calculation
 2. Control the initial viewing distance in VR (Z = -0.5)
-3. Ensure the model appears correctly positioned relative to the user's viewpoint
+3. Make sure the model appears correctly positioned relative to the user's viewpoint
 
 ### Floor Anchoring
 
@@ -22,7 +22,7 @@ When using floor-aligned reference spaces (`bounded-floor` or `local-floor`):
 - Y=0 represents the physical floor level (from Galaxy XR settings when using `bounded-floor`)
 - The model's bounding box is calculated to find its bottom Y coordinate
 - The VR scene offset Y position is adjusted by `-modelBottomY` to align the model's bottom with Y=0
-- This ensures the model sits on the physical floor, and the camera (at head height) views it correctly
+- This makes sure the model sits on the physical floor, and the camera (at head height) views it correctly
 
 ### Changing the Position
 

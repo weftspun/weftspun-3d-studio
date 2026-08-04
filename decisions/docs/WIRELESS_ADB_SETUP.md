@@ -104,7 +104,7 @@ Once connected and port forwarding is set up:
 ### "Unable to connect to device"
 
 **Solutions:**
-1. Ensure device and computer are on the same Wi-Fi network
+1. Make sure device and computer are on the same Wi-Fi network
 2. Check firewall settings (may need to allow ADB)
 3. Try disconnecting and reconnecting:
    ```bash
@@ -125,7 +125,7 @@ Once connected and port forwarding is set up:
 **Solutions:**
 1. Generate a new pairing code on device
 2. Try pairing again with the new code
-3. Make sure you're using the pairing port, not the connection port
+3. Make sure you are using the pairing port, not the connection port
 
 ### "ADB not found"
 
@@ -140,7 +140,7 @@ Once connected and port forwarding is set up:
 **Solutions:**
 1. Keep device screen on during debugging
 2. Disable battery optimization for Developer options
-3. Ensure stable Wi-Fi connection
+3. Make sure stable Wi-Fi connection
 4. Try reconnecting:
    ```bash
    adb disconnect

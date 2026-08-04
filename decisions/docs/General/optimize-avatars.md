@@ -25,7 +25,7 @@ Overall deciding to merge to mtoon or standard shader will result in less draw c
 
 ![image](/img/S1J-b0jip.png)
 
-In this example I was able to shave an extra 20% off the filesize from choosing to merge to mtoon shader. Here's results from other files we tested:
+In this example I was able to shave an extra 20% off the filesize from choosing to merge to mtoon shader. Here is results from other files we tested:
 
 ![image](/img/B19_9WDNa.png)
 https://twitter.com/dankvr/status/1724189158623654346

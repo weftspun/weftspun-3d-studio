@@ -1,7 +1,7 @@
 # Create an Avatar
 
 
-There's a few ways to make an avatar with Weftspun3DStudio:
+There is a few ways to make an avatar with Weftspun3DStudio:
 
 - Select from preloaded assets
 - Drag and drop your own 3D models and textures
@@ -9,7 +9,7 @@ There's a few ways to make an avatar with Weftspun3DStudio:
 
 ## Select traits
 
-The easy way to dress your avatar is to select from the assets that are loaded into the app to mix and match your style, similar to other character creator programs. 
+The simple way to dress an avatar is to pick from the assets the app loads. Mix them to build a style, as other character creator programs do.
 
 ![](/img/v2zJEiy.gif)
 
@@ -19,7 +19,7 @@ If you want to create your own preloaded asset configuration, check the manifest
 
 > Note: Files must be in VRM format, recommended to use version 0.0 for now
 
-Weftspun3DStudio also features the ability to overwrite textures in a similar way as well. Select the trait you want to overwrite the texture of then drag and drop the image file into the browser window to change. It would help if the image had a matching UV of the base mesh.
+Weftspun3DStudio also features the ability to overwrite textures in a similar way as well. Select the trait whose texture you want to replace. Then drag the image file into the browser window. It would help if the image had a matching UV of the base mesh.
 
 
 https://www.youtube.com/watch?v=zhpFK4Htxdo
@@ -30,10 +30,20 @@ Note: Make sure to click the category you are overwriting the trait for before d
 
 > WIP
 
-Weftspun3DStudio has the ability to assemble and export VRMs by loading a JSON file containing information about the traits. This process has been custom tailored for batch assembling Anata VRMs and isn't really fully fleshed out for general purpose yet.
+Weftspun3DStudio has the ability to assemble and export VRMs by loading a JSON file containing information about the traits. This process suits batch assembly of Anata VRM files. It does not yet serve a general purpose.
 
-We are exploring ways to read owned assets from a connected wallet in order to configure avatars and wearables programmatically. One idea is to load POAPs and other whitelisted collections as [badges / pins](https://sketchfab.com/3d-models/3d-skill-role-badges-and-pins-e3329ed59b874aad98586657a5f11630) you can attach as wearables for your wearables. 
+The project studies ways to read owned assets from a connected
+wallet. Code could then configure avatars and wearables.
+
+One idea loads POAPs and other approved collections as
+[badges and pins](https://sketchfab.com/3d-models/3d-skill-role-badges-and-pins-e3329ed59b874aad98586657a5f11630).
+You attach these to a wearable.
 
 ![](/img/rFV2t9G.png)
 
-If you want to learn more about how to configure avatars programmatically or want to create a VRM collection then I suggest to join the [M3 discord](https://m3org.com/discord) and make a quick introduction. If you're a technical person you may want to look into documentation on the manifest files we're using, and should also join the discord to discuss this method of assembling avatars.
+To learn how to configure an avatar from code, or to create a VRM
+collection, join the [M3 discord](https://m3org.com/discord) and
+introduce yourself.
+
+A developer can also read the documentation on the manifest files.
+The discord holds discussion about this method of avatar assembly.

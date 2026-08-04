@@ -52,7 +52,7 @@ Avatar loads never replace world/props. World loads never replace avatar.
 
 ## XR interaction (Galaxy XR / IWSDK)
 
-Mesh props are grabbable in **`/xr`** via IWSDK — not custom Three.js raycast:
+Mesh props are grabbable in **`/xr`** via IWSDK, not custom Three.js raycast:
 
 | Input | IWSDK component | Galaxy XR action |
 |-------|-----------------|------------------|
@@ -71,4 +71,4 @@ Or from World Library → **XR** button. Implementation: `src/library/iwsdkWorld
 
 ## API
 
-`POST /api/v1/world-generation/image-to-world` — DGX-local pipeline (TripoSplat + optional TRELLIS props).
+`POST /api/v1/world-generation/image-to-world`, DGX-local pipeline (TripoSplat + optional TRELLIS props).

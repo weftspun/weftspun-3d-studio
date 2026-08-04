@@ -1,6 +1,6 @@
 # Three.js WebGPU & WebXR Quick Start
 
-Quick reference for using the new Three.js enhancements in Weftspun3DStudio.
+A quick reference to the Three.js features in Weftspun 3D Studio.
 
 ## 🚀 Quick Examples
 
@@ -71,13 +71,13 @@ function onFaceTrackingData(faceData) {
 
 ## 🔧 Troubleshooting
 
-**WebGPU not working?** → Normal, falls back to WebGL automatically  
-**WebXR not available?** → Requires HTTPS and compatible browser  
-**Post-processing slow?** → Disable with `setPostProcessingEnabled(false)`
+**WebGPU does not work.** This is normal. The renderer falls back to WebGL.
+**WebXR is not available.** It needs HTTPS and a browser that supports it.
+**Post-processing is slow.** Turn it off with `setPostProcessingEnabled(false)`.
 
 ---
 
-For detailed documentation, see [THREEJS_WEBGPU_WEBXR_MIGRATION.md](./THREEJS_WEBGPU_WEBXR_MIGRATION.md)
+For the full documentation, see [THREEJS_WEBGPU_WEBXR_MIGRATION.md](./THREEJS_WEBGPU_WEBXR_MIGRATION.md)
 
 
 

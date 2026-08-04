@@ -21,13 +21,18 @@ yarn run dev
 
 ## Troubleshooting
 
-This project has been mainly tested with node v16, it's recommended to install nvm to easily switch: https://github.com/nvm-sh/nvm
+Most tests of this project use node v16. Install nvm to change
+version quickly. See https://github.com/nvm-sh/nvm.
 
-Copy custom asset packs to the `public/` folder. For modding / reskinning you'll mainly only need to touch files there.
+Copy custom asset packs to the `public/` folder. To mod or reskin
+the project, change the files there.
 
-If assets aren't showing up doublecheck the `.env` file, you can either point to a remote host (can use github pages) like https://m3-org.github.io/loot-assets/loot/ or a path in public directory such as `VITE_ASSET_PATH=./loot-assets`.
+If the assets do not show, check the `.env` file. Point it at a
+remote host, such as https://m3-org.github.io/loot-assets/loot/. A
+GitHub Pages host also works. Or point it at a path in the public
+directory, such as `VITE_ASSET_PATH=./loot-assets`.
 
-If you change the project name you need to also edit
+If you change the project name, also change these files:
 
 - `vite.config.js`
 - `package.json`

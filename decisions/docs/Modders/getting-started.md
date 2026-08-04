@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Getting Started with Manifest Files
 
-This guide will help you set up your first character collection for Weftspun3DStudio. We'll walk through creating a manifest file that tells the studio how to display and organize your 3D models, textures, and other assets.
+This guide will help you set up your first character collection for Weftspun3DStudio. We will walk through creating a manifest file that tells the studio how to display and organize your 3D models, textures, and other assets.
 
 ## What is a Manifest File?
 
@@ -58,7 +58,7 @@ character-assets/
 
 ### Step 4: Add Your First Trait
 
-Let's add a body trait. Replace the empty `"traits": []` with:
+Let us add a body trait. Replace the empty `"traits": []` with:
 
 ```json
 "traits": [
@@ -238,7 +238,7 @@ Go back to traits and connect decals to desired trait model, example:
 
 ## Adding Your Collection to Weftspun3DStudio
 
-Now that you've created your character collection manifest, you need to add it to the main manifest file that Weftspun3DStudio uses to load all available collections.
+Now that you have created your character collection manifest, you need to add it to the main manifest file that Weftspun3DStudio uses to load all available collections.
 
 ### Step 1: Find the Main Manifest File
 
@@ -249,7 +249,7 @@ Weftspun3DStudio/public/manifest.json
 
 ### Step 2: Add Your Collection
 
-Open the main manifest file and add your collection to the `collections` array. Here's an example:
+Open the main manifest file and add your collection to the `collections` array. Here is an example:
 
 ```json
 {
@@ -271,7 +271,7 @@ Open the main manifest file and add your collection to the `collections` array. 
 
 - `id`: A unique identifier for your collection (use lowercase, no spaces)
 - `name`: The display name of your collection
-- `description`: A brief description of what's in your collection
+- `description`: A brief description of what is in your collection
 - `thumbnail`: Path to your collection's thumbnail image
 - `manifest`: Path to your collection's manifest file
 - `authors`: Array of author names
@@ -279,7 +279,7 @@ Open the main manifest file and add your collection to the `collections` array. 
 
 ### Step 4: Example with Multiple Collections
 
-Here's how the main manifest might look with multiple collections:
+Here is how the main manifest might look with multiple collections:
 
 ```json
 {
@@ -367,11 +367,11 @@ For more details, see the [Animation Documentation](./character-traits.md#animat
 - Base body should be layer 0
 - Clothing should be layer 1
 - Accessories should be layer 2 or higher
-- Use -1 for things that shouldn't cull (like hair)
+- Use -1 for things that should not cull (like hair)
 
 ## Common Issues and Solutions
 
-### My models don't show up
+### My models do not show up
 - Check if the file paths in the manifest match your folder structure
 - Make sure your VRM files are properly exported
 - Verify that the file names match exactly (including case)
@@ -381,11 +381,11 @@ For more details, see the [Animation Documentation](./character-traits.md#animat
 - Verify the texture paths in the manifest
 - Make sure your UV maps are correct
 
-### Colors don't apply
+### Colors do not apply
 - Check if the color values are in the correct format (#RRGGBB)
 - Verify that the trait IDs match between traits and color collections
 
-### Collection doesn't appear in Weftspun3DStudio
+### Collection does not appear in Weftspun3DStudio
 - Make sure your collection is properly added to the main manifest file
 - Verify that all paths in the main manifest are correct
 - Check that your collection's manifest file is in the right location
@@ -399,4 +399,4 @@ For more details, see the [Animation Documentation](./character-traits.md#animat
 5. Add your collection to the main manifest file
 6. Explore additional manifest sections for LoRAs, sprites, and animations
 
-For more detailed information about each field, refer to the [Character Traits Documentation](./character-traits.md). 
+For more detailed information about each field, refer to the [Character Traits Documentation](./character-traits.md).

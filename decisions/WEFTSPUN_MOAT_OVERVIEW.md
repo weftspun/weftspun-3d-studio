@@ -18,12 +18,12 @@ The public [Vercel demo](../docs/PUBLIC_DEPLOY.md) runs viewport/VRM features **
 
 | Area | Why it is not “free to copy” |
 |------|------------------------------|
-| **Trademark** | “Weftspun”, Weftspun3DStudio branding, logo, apparel designs — see README Legal & Trademark |
+| **Trademark** | “Weftspun”, Weftspun3DStudio branding, logo, apparel designs, see README Legal & Trademark |
 | **Hosted AI** | Commercial **3DAIGC-API** queue, model matrix tuning, and quality gates on operator hardware |
-| **Payments** | Micropayment facilitator and API billing (x402 / wallet rails) — secrets stay server-side |
+| **Payments** | Micropayment facilitator and API billing (x402 / wallet rails), secrets stay server-side |
 | **Phygital registry** | Official garment serial IDs, NFC secure-url validation, signed digital-twin downloads |
 | **Marketplace graph** | Curated mint paths, soulbound identity + equippable assets, official secondary listings |
-| **Personalization service** | Optional user-approved profile context for generation — compute product, not sale of raw user data |
+| **Personalization service** | Optional user-approved profile context for generation, compute product, not sale of raw user data |
 
 Forking the repo does **not** grant rights to operate as “Weftspun”, to issue official passport serials, or to use our payment/registry backends.
 
@@ -42,6 +42,6 @@ Forking the repo does **not** grant rights to operate as “Weftspun”, to issu
 
 ## Related public docs
 
-- [Public deploy](./PUBLIC_DEPLOY.md) — safe CI/Vercel boundaries
+- [Public deploy](./PUBLIC_DEPLOY.md), safe CI/Vercel boundaries
 
-**Internal strategy** (pricing, ARR, full revenue map) lives in local-only files synced to DGX over SSH — **not** in this repository’s public git history.
+**Internal strategy** (pricing, ARR, full revenue map) lives in local-only files synced to DGX over SSH, **not** in this repository's public git history.

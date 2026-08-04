@@ -1,4 +1,4 @@
-# DGX Spark — two devices
+# DGX Spark, two devices
 
 ## What is what
 
@@ -9,9 +9,9 @@
 
 **DGX-Local in SSH config is correct.** Prefer **Remote SSH → DGX-Local** or **DGX-Remote**.
 
-**Old Cursor session still says `dgx-spark.local`?** That hostname is not a third machine — it is the address under DGX-Local. Cursor uses `~/.ssh/config-cursor` (includes main config + maps `dgx-spark.local` → user `sifr`). NVIDIA Sync still uses `~/.ssh/config` (two hosts only).
+**Old Cursor session still says `dgx-spark.local`?** That hostname is not a third machine, it is the address under DGX-Local. Cursor uses `~/.ssh/config-cursor` (includes main config + maps `dgx-spark.local` → user `sifr`). NVIDIA Sync still uses `~/.ssh/config` (two hosts only).
 
-NVIDIA Sync uses `~/.ssh/config` + `nvsync.key`. If Sync fails but Cursor worked before, the key on the Spark needs reinstalling — not deleting `DGX-Local`.
+NVIDIA Sync uses `~/.ssh/config` + `nvsync.key`. If Sync fails but Cursor worked before, the key on the Spark needs reinstalling, not deleting `DGX-Local`.
 
 ## Auto-guard (keeps this layout after updates)
 
@@ -26,7 +26,7 @@ cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio
 
 Manual check: `npm run dgx:guard`
 
-The guard **does not** re-pair NVIDIA Sync or delete hosts — it only restores config files, strips bad `Include` lines, fixes BOMs, and resets Cursor SSH settings. Use the repair scripts below if auth or remote pairing breaks.
+The guard **does not** re-pair NVIDIA Sync or delete hosts, it only restores config files, strips bad `Include` lines, fixes BOMs, and resets Cursor SSH settings. Use the repair scripts below if auth or remote pairing breaks.
 
 ## Fix auth (from repo root)
 
@@ -42,7 +42,7 @@ This script:
 
 ## Fix DGX Sparks remote only (`knownhost: remote host not known`)
 
-Local already works — use this script. It does **not** change DGX-Local.
+Local already works, use this script. It does **not** change DGX-Local.
 
 ```powershell
 cd C:\Users\alfao\Documents\GitHub\Weftspun3DStudio

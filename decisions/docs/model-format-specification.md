@@ -1,6 +1,6 @@
 # Model Format Specification
 
-This document defines the shared model format between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio to ensure seamless model transfer and compatibility.
+This document defines the shared model format between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio to make sure smooth model transfer and compatibility.
 
 ## Overview
 
@@ -46,7 +46,7 @@ The bridge between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio uses GLB
    - Remove duplicate vertices
 
 2. **Material Processing**
-   - Ensure PBR materials
+   - Make sure PBR materials
    - Optimize texture usage
    - Set proper color spaces
    - Add VRM material properties
@@ -258,7 +258,7 @@ model.glb
 - Compatible material systems
 - Unified error handling
 
-This specification ensures seamless model transfer between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio while maintaining compatibility and performance.
+This specification makes sure smooth model transfer between Open3DStudio (Weftspun3DStudio) and Weftspun3DStudio while maintaining compatibility and performance.
 
 
 

@@ -39,7 +39,7 @@ WebXR (AR/VR) requires HTTPS to work. This guide explains how to set up HTTPS fo
 
 6. **Access via HTTPS:**
    - `https://localhost:3000`
-   - `https://<your-dev-workstation-LAN-IP>:3000` (for Galaxy XR — same machine that runs `npm run dev`)
+   - `https://<your-dev-workstation-LAN-IP>:3000` (for Galaxy XR, same machine that runs `npm run dev`)
 
 ### Option 2: Using OpenSSL
 
@@ -79,12 +79,12 @@ This is safe for local development.
 To access from your Galaxy XR device:
 
 1. Make sure both devices are on the same network
-2. Find your **dev workstation** LAN IP (Surface: `ipconfig`; e.g. `10.0.0.32`)
+2. Find your **dev workstation** LAN IP (Surface: `ipconfig`. E.g. `10.0.0.32`)
 3. Add the IP to the certificate (see mkcert step 3 above)
 4. Access via `https://<Surface-LAN-IP>:3000` on the Galaxy XR device (see [`DEV_MACHINE_TOPOLOGY.md`](./DEV_MACHINE_TOPOLOGY.md))
 
 ## Troubleshooting
 
 - **Certificate errors**: Make sure certificates are in `certs/` directory with correct names
-- **Connection refused**: Check firewall settings, ensure port 3000 is open
-- **WebXR still not working**: Verify you're using HTTPS (not HTTP) and have accepted the certificate warning
+- **Connection refused**: Check firewall settings, make sure port 3000 is open
+- **WebXR still not working**: Verify you are using HTTPS (not HTTP) and have accepted the certificate warning

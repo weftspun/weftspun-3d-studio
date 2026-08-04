@@ -19,15 +19,15 @@ That document reflects the current correct AR behavior:
 #### Step 4: Lock Position in Render Loop
 1. The XR render loop checks if wrapper position has changed
 2. If position changed, restores it to the anchor position
-3. Ensures wrapper stays fixed in world space (reference space coordinates)
+3. Makes sure wrapper stays fixed in world space (reference space coordinates)
 4. Camera moves, but wrapper (and models) stay anchored to floor
 
 ## Technical Details
 
 ### Reference Space Types
 - **`bounded-floor`** (PRIORITY): Uses Galaxy XR's configured boundary and floor level settings. Y=0 is physical floor as configured in device settings. This is the preferred option for Galaxy XR (same as VR mode).
-- **`local-floor`**: Floor-aligned, Y=0 is physical floor (no boundaries). Fallback if bounded-floor isn't available.
-- **`local`**: Not floor-aligned, origin is at headset position. Fallback if floor-aligned spaces aren't supported.
+- **`local-floor`**: Floor-aligned, Y=0 is physical floor (no boundaries). Fallback if bounded-floor is not available.
+- **`local`**: Not floor-aligned, origin is at headset position. Fallback if floor-aligned spaces are not supported.
 - **`viewer`**: Not floor-aligned, origin follows headset. Last resort fallback.
 
 ### Galaxy XR Floor Level Settings
@@ -43,7 +43,7 @@ When using `bounded-floor` or `local-floor`:
 - Y=0 in the reference space = physical floor level
 - When using `bounded-floor`, Y=0 uses Galaxy XR's configured floor level from device settings
 - Model's bottom is anchored to Y=0 (floor level) via bounding box calculation
-- The position is fixed in the reference space (doesn't move with headset/camera)
+- The position is fixed in the reference space (does not move with headset/camera)
 - Models appear correctly positioned relative to the physical floor
 
 ### AR Pass-Through
@@ -77,7 +77,7 @@ this.vrSceneWrapper.userData.anchorPosition = position.clone();
 - **Y = calculated from bounding box**: Model bottom anchored to floor (Y=0)
 - **Z = -0.5**: Scene content moved back 0.5 units from camera starting position
 
-**Note**: The Y position is automatically calculated from the model's bounding box to anchor the model's bottom to the floor (Y=0). The floor alignment comes from using `bounded-floor` or `local-floor` reference space, which ensures Y=0 is at the physical floor level (from Galaxy XR settings when using bounded-floor).
+**Note**: The Y position is automatically calculated from the model's bounding box to anchor the model's bottom to the floor (Y=0). The floor alignment comes from using `bounded-floor` or `local-floor` reference space, which makes sure Y=0 is at the physical floor level (from Galaxy XR settings when using bounded-floor).
 
 ## Implementation Details
 
@@ -96,12 +96,12 @@ The code enables pass-through by:
 4. Restoring background on session end
 
 ### Position Locking
-The AR render loop ensures the fixed position is preserved:
+The AR render loop makes sure the fixed position is preserved:
 - Checks if `vrSceneWrapper.userData.isAnchored` is true
 - Verifies position matches `userData.anchorPosition`
 - Restores position if it was changed (keeps it fixed in reference space)
 - Prevents accidental position updates during AR session
-- Updates matrix world to ensure proper rendering
+- Updates matrix world to make sure proper rendering
 
 ### Consistency with VR Mode
 AR mode now uses the same floor-aligned reference space approach as VR mode:
@@ -109,7 +109,7 @@ AR mode now uses the same floor-aligned reference space approach as VR mode:
 - Both use the same reference space handling
 - Both align Y=0 with physical floor from Galaxy XR settings
 - Both use the same wrapper positioning logic
-- Ensures consistent behavior between VR and AR modes
+- Makes sure consistent behavior between VR and AR modes
 
 ## Testing
 
@@ -164,11 +164,11 @@ AR mode now uses the same floor-aligned reference space approach as VR mode:
 - **Both lock wrapper position** to prevent movement with head/camera
 
 ### Differences
-- **AR Mode**: 
+- **AR Mode**:
   - Enables video pass-through (transparent background)
   - Physical background visible through camera feed
   - Models appear overlaid on real world
-- **VR Mode**: 
+- **VR Mode**:
   - Opaque background (immersive virtual environment)
   - No physical background visible
   - Fully virtual environment
@@ -177,7 +177,7 @@ AR mode now uses the same floor-aligned reference space approach as VR mode:
 Both modes anchor model to floor for proper alignment:
 - In AR: Model appears to sit on physical floor, visible through pass-through
 - In VR: Model appears to sit on virtual floor (which matches physical floor via Galaxy XR settings)
-- Camera/head movement doesn't affect model position in either mode
+- Camera/head movement does not affect model position in either mode
 - Both use the same reference space for consistency
 
 ## Troubleshooting
@@ -199,7 +199,7 @@ Both modes anchor model to floor for proper alignment:
 
 ### Model Still Not at Correct Height
 1. **Check if bounded-floor is being used**: Look for console log "Using Android XR floor level from boundaries settings"
-2. **Verify Galaxy XR floor level settings**: Ensure floor level is properly configured in Galaxy XR device settings
+2. **Verify Galaxy XR floor level settings**: Make sure floor level is properly configured in Galaxy XR device settings
 3. Check console for reference space setup errors
 4. Verify reference space type supports floor alignment (should be `bounded-floor` or `local-floor`)
 5. Check if model has valid geometry (not empty or invalid)
@@ -208,7 +208,7 @@ Both modes anchor model to floor for proper alignment:
 ### Bounded-Floor Not Available
 If `bounded-floor` reference space is not available:
 - The code will automatically fall back to `local-floor`
-- Floor alignment will still work, but Galaxy XR boundary settings won't be used
+- Floor alignment will still work, but Galaxy XR boundary settings will not be used
 - Check console logs to see which reference space type was successfully obtained
 
 ### Model Position Resets

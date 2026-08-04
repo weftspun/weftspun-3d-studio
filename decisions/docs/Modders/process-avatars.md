@@ -1,6 +1,6 @@
 # Preparing Assets
 
-After cloning and installing [Weftspun3DStudio](https://github.com/weftspun/weftspun-3d-studio), you will want to then copy your assets into the public folder and check the `.env` variable to ensure it's configured to the right location.
+Clone and install [Weftspun3DStudio](https://github.com/weftspun/weftspun-3d-studio). Then copy your assets into the public folder and check the `.env` variable to make sure it is configured to the right location.
 
 
 ---
@@ -13,23 +13,23 @@ After cloning and installing [Weftspun3DStudio](https://github.com/weftspun/weft
 
 **When modeling traits**
 
-It's recommended to separate traits into different blend files for each trait type (clothing, hair, etc). You don't want blend files to get too big or it'll be hard to open and debug later.
+Keep each trait type in its own blend file. Use one file for clothing, one for hair, and so on. You do not want blend files to get too big or it will be hard to open and debug later.
 
-Pro tip: Artists designing traits should always import the rigged base mesh in order to keep things aligned so everything can merge correctly as a VRM file. We don't have the ability to adjust position/scale/rotation after importing in the app yet, so adjust in blender.
+Pro tip: An artist who designs a trait must import the rigged base mesh. The base mesh keeps the parts aligned, so they merge correctly into a VRM file. We do not have the ability to adjust position/scale/rotation after importing in the app yet, so adjust in blender.
 
 **Preparing to export**
 
-> Note: If you encounter issues try Blender LTS 3.6, when we last tested Blender 4.0 the material export was not working properly.
+> Note: If you find problems, use Blender LTS 3.6. In the last test of Blender 4.0, the material export did not work correctly.
 
-You should first have the [Saturday06 VRM add-on](https://github.com/saturday06/VRM-Addon-for-Blender) downloaded and installed first. Every trait is parented to a VRM armature, of which we are mainly using version VRM 0. Some traits might have additional bones than others, which is why we have every trait parented to their own VRM armatures vs parenting everything to 1 VRM armature.
+You should first have the [Saturday06 VRM add-on](https://github.com/saturday06/VRM-Addon-for-Blender) downloaded and installed first. Each trait has a VRM armature as its parent. The project mostly uses VRM version 0. Some traits hold more bones than others. Each trait therefore has its own VRM armature, and not one shared armature.
 
 ![](/img/SJebjntDeT.jpg)
 
 **REMEMBER TO CHANGE EXPORT PATH!**
 
-We have written a blender python script to help with batch exporting VRM files, make sure to modify the export path to destination folder, all the VRM files will export there.
+A Blender python script exports VRM files in a batch. Change the export path to your destination folder. The script writes every VRM file there.
 
-Here's how to run it: `blender -b -P scripts/blender_export.py -- blends/Waist.blend`
+Here is how to run it: `blender -b -P scripts/blender_export.py -- blends/Waist.blend`
 
 ```python!
 import bpy
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     export_vrm(input_blend)
 ```
 
-You can either use the Scripting tab in the blender gui to run it or run it headlessly by saving as a python script then passing the blend file as an argument like so:
+Run the script from the Scripting tab of the Blender interface. Or save it as a python script and run Blender with no window. Pass the blend file as an argument:
 
 `blender -b -P blender_export.py -- clothing_traits.blend`
 

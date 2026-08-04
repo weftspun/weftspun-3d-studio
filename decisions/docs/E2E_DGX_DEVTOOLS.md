@@ -44,7 +44,7 @@ To inspect **network requests** (e.g. to the DGX Spark API) and **console messag
 1. **Open the app in Chrome** (with Chrome DevTools MCP connected to that browser):
    - Start dev server: `npm run dev` (app at `http://localhost:3000` unless `PORT` is set).
    - In Cursor, use **Chrome DevTools MCP** → `navigate_page` to your app URL, e.g. `http://localhost:3000`.
-   - If you see `net::ERR_EMPTY_RESPONSE`, ensure the dev server is running and reachable (no HTTPS/cert issues).
+   - If you see `net::ERR_EMPTY_RESPONSE`, make sure the dev server is running and reachable (no HTTPS/cert issues).
 
 2. **List network requests** (after triggering an AI task):
    - Use the `list_network_requests` tool (optionally with `resourceTypes: ["fetch", "xhr"]`) to see calls to your DGX Spark endpoint.
@@ -70,24 +70,24 @@ This helps verify that:
 2. Use Chrome DevTools MCP to **navigate** to `http://localhost:3000`.
 3. Use Chrome DevTools MCP to **list_network_requests** and **list_console_messages** (optional: clear or note state before next step).
 4. Either:
-   - **Manual**: In the same Chrome window, open the Tasks panel, enter a prompt, click Start, then use DevTools MCP again to list network requests and console messages; or
-   - **Playwright**: Run the e2e test in **headed** mode so you see the browser; in parallel, use Chrome DevTools MCP on a **different** Chrome tab/window that you opened to `http://localhost:3000` and perform the same flow manually there, then inspect with MCP.  
-   For a single-browser flow, prefer: open app in Chrome → use DevTools MCP to navigate and inspect; run Playwright in headed mode only when you want to automate and watch the same machine.
+   - **Manual**: In the same Chrome window, open the Tasks panel, enter a prompt, click Start, then use DevTools MCP again to list network requests and console messages. Or
+   - **Playwright**: Run the e2e test in **headed** mode so you see the browser. In parallel, use Chrome DevTools MCP on a **different** Chrome tab/window that you opened to `http://localhost:3000` and perform the same flow manually there, then inspect with MCP.
+   For a single-browser flow, prefer: open app in Chrome → use DevTools MCP to navigate and inspect. Run Playwright in headed mode only when you want to automate and watch the same machine.
 
 ## Relevant E2E Files
 
-- `tests/e2e/app-load.spec.js` – App load and basic UI.
-- `tests/e2e/ai-task-dgx.spec.js` – Opens Tasks, submits a Text-to-3D task, and checks that a request to the mesh-generation API was sent or a task row appears.
+- `tests/e2e/app-load.spec.js`, App load and basic UI.
+- `tests/e2e/ai-task-dgx.spec.js`, Opens Tasks, submits a Text-to-3D task, and checks that a request to the mesh-generation API was sent or a task row appears.
 
 ## API Endpoints (DGX Spark)
 
 The app uses the real DGX Spark API (no mock). Main endpoints:
 
-- `GET /health` – Connection check.
-- `POST /api/v1/mesh-generation/text-to-textured-mesh` – Text-to-3D (prompt, options).
-- `POST /api/v1/mesh-generation/image-to-textured-mesh` – Image-to-3D (image + options).
-- `GET /api/v1/system/models` – Available models (optional).
+- `GET /health`, Connection check.
+- `POST /api/v1/mesh-generation/text-to-textured-mesh`, Text-to-3D (prompt, options).
+- `POST /api/v1/mesh-generation/image-to-textured-mesh`, Image-to-3D (image + options).
+- `GET /api/v1/system/models`, Available models (optional).
 
-**Job status polling:** The 3DAIGC-API exposes job status at `GET /api/v1/system/jobs/{job_id}`. Set in `.env`: `VITE_JOB_STATUS_PATH=api/v1/system/jobs` (no trailing slash; the app appends `/{jobId}`). Related endpoints: `GET .../jobs/{job_id}/download`, `.../thumbnail`, `.../info`. If no status endpoint is available, the app tries several default paths; after a few 404s it stops polling and leaves the task as “Job submitted; status endpoint not available” so the console is not spammed with 404s.
+**Job status polling:** The 3DAIGC-API exposes job status at `GET /api/v1/system/jobs/{job_id}`. Set in `.env`: `VITE_JOB_STATUS_PATH=api/v1/system/jobs` (no trailing slash. The app appends `/{jobId}`). Related endpoints: `GET .../jobs/{job_id}/download`, `.../thumbnail`, `.../info`. If no status endpoint is available, the app tries several default paths. After a few 404s it stops polling and leaves the task as “Job submitted. Status endpoint not available” so the console is not spammed with 404s.
 
-Ensure the DGX Spark server is running and that `VITE_API_ENDPOINT` points to it so the app and E2E tests hit the correct host.
+Make sure the DGX Spark server is running and that `VITE_API_ENDPOINT` points to it so the app and E2E tests hit the correct host.
