@@ -1,0 +1,33 @@
+build:
+  gpu: true
+  cuda: "12.4"
+  python_version: "3.11"
+
+  system_packages:
+    - libgl1
+    - libglib2.0-0
+
+  python_packages:
+    - "torch==2.5.1"
+    - "numpy==2.1.3"
+    - "safetensors==0.4.5"
+    - "trimesh==4.5.3"
+    # RFD 0053. OpenUSD is the internal format.
+    - "usd-core==25.5"
+
+  run:
+    - command: pget -f https://weights.invalid/p3sam/p3sam.safetensors /weights/p3sam.safetensors
+
+predict: "predict.py:Predictor"
+
+x-weftspun:
+  model_id: "p3sam_mesh_segmentation"
+  license: "MIT"
+  parameters: "0.4 B"
+  bf16_weights: "0.8 GB"
+  q4_k_m_weights: "0.22 GB"
+  format: "bf16"
+  composite: false
+  replaces: "partfield"
+  internal_format: "usd"
+  transmission_format: "glb"

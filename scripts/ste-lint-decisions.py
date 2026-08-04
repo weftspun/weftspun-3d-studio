@@ -111,7 +111,12 @@ if __name__ == "__main__":
   except OSError:
    continue
   flag = 'FAIL' if r['total_per100w'] > _THRESHOLD else 'ok'
-  print(f"{flag} {os.path.basename(f):36} per100w={r['total_per100w']:6.2f} total={r['total']:3d}")
+  # Each RFD is a folder holding README.md, so the basename alone
+  # names every file the same. Show the folder instead.
+  label = os.path.basename(f)
+  if label == 'README.md':
+   label = os.path.basename(os.path.dirname(os.path.abspath(f)))
+  print(f"{flag} {label:44} per100w={r['total_per100w']:6.2f} total={r['total']:3d}")
   if r['total_per100w'] > _THRESHOLD: _fail = 1
  _sys.exit(_fail)
 

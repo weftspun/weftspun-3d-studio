@@ -1,0 +1,43 @@
+# Incomplete on purpose. RFD 0050 stays in prediscussion until the
+# parameter count, the license, and the door metric source exist.
+build:
+  gpu: true
+  cuda: "12.4"
+  python_version: "3.11"
+
+  system_packages:
+    - libgl1
+    - libglib2.0-0
+    - ffmpeg
+
+  python_packages:
+    - "torch==2.5.1"
+    - "numpy==2.1.3"
+    - "safetensors==0.4.5"
+    - "plyfile==1.1"
+    # RFD 0053. The room twin is a USD stage.
+    - "usd-core==25.5"
+
+  run: []
+
+predict: "predict.py:Predictor"
+
+x-weftspun:
+  model_id: "lingbot_map_environment_scan"
+  license: "unknown"
+  parameters: "unknown"
+  bf16_weights: "unknown"
+  format: "unknown"
+  composite: true
+  components: 2
+  domain: "domain.ex"
+  problem: "problem.ex"
+  internal_format: "usd"
+  transmission_format: "ply"
+  # decisions/agent/DECISIONS.md, 2026-07-26. Never the X-flip, and
+  # never the XYZRGB point stride.
+  orientation_mode: "none"
+  measure_first:
+    - "parameter count, for RFD 0026 and RFD 0027"
+    - "license, for the RFD 0028 gate"
+    - "door metric source, for the calibration gate"

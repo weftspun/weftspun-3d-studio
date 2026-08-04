@@ -1,0 +1,37 @@
+# The primary image to 3D Cog. RFD 0040 records why the memory keys
+# below are still unknown, and how to measure them.
+build:
+  gpu: true
+  cuda: "12.4"
+  python_version: "3.11"
+
+  system_packages:
+    - libgl1
+    - libglib2.0-0
+
+  python_packages:
+    - "torch==2.5.1"
+    - "numpy==2.1.3"
+    - "safetensors==0.4.5"
+    - "trimesh==4.5.3"
+    # RFD 0053. OpenUSD is the internal format.
+    - "usd-core==25.5"
+    - "pillow==11.0.0"
+
+  run: []
+
+predict: "predict.py:Predictor"
+
+x-weftspun:
+  model_id: "pixal3d_image_to_textured_mesh"
+  license: "unknown"
+  parameters: "unknown"
+  bf16_weights: "unknown"
+  format: "unknown"
+  composite: false
+  primary_for: "image_to_textured_mesh"
+  measure_first:
+    - "parameter count, for RFD 0026 and RFD 0027"
+    - "license, for the RFD 0028 gate"
+  internal_format: "usd"
+  transmission_format: "glb"

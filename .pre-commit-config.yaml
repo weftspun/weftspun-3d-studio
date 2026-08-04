@@ -1,0 +1,47 @@
+# Runs with prek, which reads the pre-commit config format.
+#
+#   prek install
+#   prek run --all-files
+#
+# The Elixir hook covers the RECTGTN HTN domains and problems that sit
+# beside their RFDs. RFD 0037 records why those files are Elixir DSL,
+# and .formatter.exs names the tree they live in.
+repos:
+  - repo: local
+    hooks:
+      - id: mix-format
+        name: mix format (taskweft domains)
+        description: >-
+          Formats decisions/**/*.ex against .formatter.exs. A domain is
+          real Elixir, thus the formatter is the first check it passes.
+        entry: mix format --check-formatted
+        language: system
+        files: '^decisions/.*\.exs?$'
+        pass_filenames: false
+
+      - id: elixir-parses
+        name: elixir parses (taskweft domains)
+        description: >-
+          Rejects a domain that is not valid Elixir. The formatter
+          catches this as well, and this hook names the failure.
+        entry: elixir scripts/check-elixir-parses.exs
+        language: system
+        files: '^decisions/.*\.exs?$'
+
+      - id: ste-lint
+        name: ASD-STE100 lint (RFDs)
+        description: >-
+          RFD 0000 requires Simplified Technical English. The linter
+          fails above 2.5 violations per 100 words.
+        entry: python scripts/ste-lint-decisions.py
+        language: system
+        files: '^decisions/0[0-9]{3}-[^/]+/README\.md$'
+
+      - id: cog-yaml-parses
+        name: cog.yaml parses
+        description: >-
+          Each model folder carries a Cog build. RFD 0036 gives the
+          rules, and a broken YAML fails the build much later.
+        entry: python scripts/check-cog-yaml.py
+        language: system
+        files: '^decisions/.*/cog\.yaml$'
