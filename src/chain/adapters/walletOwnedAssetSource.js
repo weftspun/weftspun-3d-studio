@@ -56,7 +56,68 @@ export function makeWalletOwnedAssetSource(options = {}) {
         return [];
       }
     },
+
+    async listCollectionTraits(query) {
+      const { collectionId, chainName, dataSource, wallet = null } = query ?? {};
+      if (!collectionId || !chainName || !dataSource) return empty();
+
+      try {
+        const owned = await (
+          await getWallet()
+        ).getTraitsFromCollection(collectionId, chainName, dataSource, wallet);
+        return normaliseUnlocked(owned);
+      } catch {
+        return empty();
+      }
+    },
+
+    async listPurchasedTraits(query) {
+      const { delegateAddress = null, collectionName, wallet = null } = query ?? {};
+      // The collection name is what the read needs. A delegate address
+      // is optional, and most manifests carry none.
+      if (!collectionName) return empty();
+
+      try {
+        const owned = await (
+          await getWallet()
+        ).getSolanaPurchasedAssets({ delegateAddress, collectionName }, wallet);
+        return normaliseUnlocked(owned);
+      } catch {
+        return empty();
+      }
+    },
   };
+}
+
+/** What the adapter answers when it unlocks nothing. */
+function empty() {
+  return { ownedIDs: [], ownedTraits: {} };
+}
+
+/**
+ * The wallet layer answers with an OwnedNFTTraitIDs, with a plain
+ * object, or with null when the read failed. The port answers with one
+ * shape, so this makes one.
+ *
+ * The copy is not a nicety. The wallet layer holds its answer, and a
+ * caller that writes to the returned arrays would reach the next
+ * caller through it.
+ */
+function normaliseUnlocked(owned) {
+  if (!owned) return empty();
+
+  const ownedIDs = Array.isArray(owned.ownedIDs)
+    ? owned.ownedIDs.filter((id) => typeof id === 'string')
+    : [];
+
+  const ownedTraits = {};
+  for (const [group, ids] of Object.entries(owned.ownedTraits ?? {})) {
+    if (Array.isArray(ids)) {
+      ownedTraits[group] = ids.filter((id) => typeof id === 'string');
+    }
+  }
+
+  return { ownedIDs, ownedTraits };
 }
 
 /** Accepts the several shapes the wallet layer returns. */

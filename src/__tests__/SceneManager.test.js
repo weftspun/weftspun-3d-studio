@@ -9,12 +9,21 @@ vi.mock('../library/cull-mesh.js', () => ({
 }));
 
 // Mock Three.js
-vi.mock('three', () => ({
+//
+// importOriginal fills every symbol this file does not name. The mock
+// was a closed list, so each new symbol the source reached threw
+// `No "X" export is defined on the "three" mock`, and the whole suite
+// failed to load. Euler was the one that broke it. The overrides below
+// still win, and they keep the renderer out of jsdom.
+vi.mock('three', async (importOriginal) => ({
+  ...(await importOriginal()),
   Scene: vi.fn(() => ({
     add: vi.fn(),
     remove: vi.fn(),
     clear: vi.fn(),
-    getObjectByName: vi.fn()
+    getObjectByName: vi.fn(),
+    traverse: vi.fn(),
+    children: [],
   })),
   PerspectiveCamera: vi.fn(() => ({
     position: { set: vi.fn() },
@@ -90,6 +99,10 @@ vi.mock('three/examples/jsm/loaders/GLTFLoader.js', () => ({
     load: vi.fn(),
     setDRACOLoader: vi.fn(),
     register: vi.fn(),
+    setRequestHeader: vi.fn(),
+    setPath: vi.fn(),
+    setCrossOrigin: vi.fn(),
+    parse: vi.fn(),
   }))
 }));
 

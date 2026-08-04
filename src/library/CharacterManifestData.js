@@ -1,6 +1,6 @@
 import { getAsArray } from "./utils";
 import { ManifestRestrictions } from "./manifestRestrictions";
-import { WalletCollections } from "../chain/walletCollections";
+import { makeNullOwnedAssetSource } from "../core/adapters/nullOwnedAssetSource";
 
 
 
@@ -33,8 +33,11 @@ export class CharacterManifestData{
      * Creates a new CharacterManifestData instance
      * @param {Object} manifest - The manifest data object
      * @param {string} collectionID - The collection identifier
+     * @param {import('../core/ports/ownedAssetSource.contract.js').OwnedAssetSource|Promise<import('../core/ports/ownedAssetSource.contract.js').OwnedAssetSource>} [ownedAssetSource]
+     *        Which assets the owner may use. The null adapter by
+     *        default, so a content-only build reaches no chain.
      */
-    constructor(manifest, collectionID){
+    constructor(manifest, collectionID, ownedAssetSource){
       const {
         chainName,
         collectionLockID,
@@ -74,8 +77,16 @@ export class CharacterManifestData{
       this.collectionID = collectionID;
       // chainName:c.chainName || "ethereum",
       // dataSource:c.dataSource || "attributes"
-      this.walletCollections = new WalletCollections();
-      
+      //
+      // The port, not a wallet. This module is content code, and RFD
+      // 0023 forbids content code from reaching a chain. The composition
+      // root picks which adapter arrives here.
+      //
+      // It is held as a promise, because the root builds the wallet
+      // adapter through a dynamic import, and the constructor cannot
+      // wait.
+      this.ownedAssetSource = Promise.resolve(ownedAssetSource || makeNullOwnedAssetSource());
+
 
       this.chainName = chainName;
       this.dataSource = dataSource;
@@ -170,10 +181,13 @@ export class CharacterManifestData{
       this.createModelTraits(traits, false);
       this.manifestRestrictions._init()
       
-      this.unlockPurchasedAssetsWithWallet();
-      // if (this.solanaPurchaseAssets){
-      //   this.walletCollections.getSolanaPurchasedAssets(this.solanaPurchaseAssets).then(owned=>{console.log("owned", owned)})
-      // }
+      // A constructor cannot wait, so this runs on its own. It must
+      // not reject into nothing, so it reports and carries on. The
+      // manifest is usable either way, with the purchased traits still
+      // locked.
+      this.unlockPurchasedAssetsWithWallet().catch((err) => {
+        console.warn("Could not unlock purchased assets:", err);
+      });
       //this.unlockWalletOwnedTraits();
     }
 
@@ -206,22 +220,17 @@ export class CharacterManifestData{
      * @param {Object} [testWallet] - Optional test wallet object
      * @returns {Promise} Promise that resolves when assets are unlocked
      */
-    unlockPurchasedAssetsWithWallet(testWallet){
+    async unlockPurchasedAssetsWithWallet(testWallet){
       if (this.solanaPurchaseAssets == null){
-        return Promise.resolve();
+        return;
       }
-      return new Promise((resolve)=>{
-        this.walletCollections
-          .getSolanaPurchasedAssets(this.solanaPurchaseAssets,testWallet)
-          .then(userOwnedTraits => {
-            this.unlockTraits(userOwnedTraits)
-            resolve()
-          })
-          .catch(err => {
-            console.log(err);
-            resolve();
-          });
-      }); 
+
+      const source = await this.ownedAssetSource;
+      this.unlockTraits(await source.listPurchasedTraits({
+        delegateAddress: this.solanaPurchaseAssets.delegateAddress,
+        collectionName: this.solanaPurchaseAssets.collectionName,
+        wallet: testWallet ?? null,
+      }));
     }
 
     /**
@@ -229,22 +238,18 @@ export class CharacterManifestData{
      * @param {Object} [testWallet] - Optional test wallet object
      * @returns {Promise} Promise that resolves when assets are unlocked
      */
-    unlockNFTAssetsWithWallet(testWallet = null){
+    async unlockNFTAssetsWithWallet(testWallet = null){
       if (this.collectionLockID == null){
-        return Promise.resolve();
+        return;
       }
-      else{
-        return new Promise((resolve)=>{
-          this.walletCollections.getTraitsFromCollection(this.collectionLockID, this.chainName, this.dataSource, testWallet)
-          .then(userOwnedTraits=>{
-            this.unlockTraits(userOwnedTraits)
-            resolve();
-          })
-          .catch(err=>{
-            resolve();
-          })
-        })
-      }
+
+      const source = await this.ownedAssetSource;
+      this.unlockTraits(await source.listCollectionTraits({
+        collectionId: this.collectionLockID,
+        chainName: this.chainName,
+        dataSource: this.dataSource,
+        wallet: testWallet,
+      }));
     }
 
     /**
@@ -1517,12 +1522,17 @@ class SolanaPurchaseAssets{
     const {
       merkleTreeAddress,
       depositAddress,
-      collectionName
+      collectionName,
+      delegateAddress
     } = solanapurchaseAssetsDefinition;
 
     this.merkleTreeAddress = merkleTreeAddress;
     this.collectionName = collectionName;
     this.depositAddress = depositAddress;
+    // The purchase read asks for delegateAddress, and this class
+    // dropped it, so the read always got undefined. It is carried now.
+    // A manifest without the field reads as it did before.
+    this.delegateAddress = delegateAddress;
   }
 }
 

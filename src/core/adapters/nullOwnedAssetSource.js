@@ -27,5 +27,15 @@ export function makeNullOwnedAssetSource() {
     async listOwnedTraitIds() {
       return [];
     },
+
+    // A fresh object each call. A caller that keeps the answer, and
+    // then writes to it, must not reach the next caller.
+    async listCollectionTraits() {
+      return { ownedIDs: [], ownedTraits: {} };
+    },
+
+    async listPurchasedTraits() {
+      return { ownedIDs: [], ownedTraits: {} };
+    },
   };
 }

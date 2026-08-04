@@ -65,4 +65,21 @@ describe('makeOwnedAssetSource', () => {
 
     expect(source.isEnabled()).toBe(false);
   });
+
+  it('the null adapter unlocks no trait for any manifest', async () => {
+    // What a content-only deployment shows: the locked set. A manifest
+    // still loads, and the picker offers what is not locked.
+    const source = await makeOwnedAssetSource({ env: {} });
+
+    await expect(
+      source.listCollectionTraits({
+        collectionId: 'anata',
+        chainName: 'ethereum',
+        dataSource: 'attributes',
+      }),
+    ).resolves.toEqual({ ownedIDs: [], ownedTraits: {} });
+    await expect(
+      source.listPurchasedTraits({ delegateAddress: '0xd', collectionName: 'anata' }),
+    ).resolves.toEqual({ ownedIDs: [], ownedTraits: {} });
+  });
 });

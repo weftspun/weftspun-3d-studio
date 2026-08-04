@@ -1,8 +1,14 @@
 /**
  * Validates AIGC avatar GLBs against docs/API_AVATAR_RIG_CONTRACT.md.
  * Does not modify the model — reports failures for DGX/API export fixes.
+ *
+ * The contract here is a rig contract, not a blockchain contract. This
+ * module reads bones and meshes, and it touches no chain. RFD 0023
+ * first put it in `src/chain/` by its name, which made `src/chain/`
+ * depend on three.js and on rigBoneUtils.js. It belongs with the
+ * rendering code it reads.
  */
-import * as THREE from '../library/three.js';
+import * as THREE from './three.js';
 import {
   collectModelBones,
   findBoneByName,
@@ -12,7 +18,7 @@ import {
   getMeshLayoutBounds,
   getSkinnedDisplayWorldBounds,
   modelHasSkinnedMesh,
-} from '../library/rigBoneUtils.js';
+} from './rigBoneUtils.js';
 
 /** @typedef {'pass'|'fail'} AigcRigContractStatus */
 

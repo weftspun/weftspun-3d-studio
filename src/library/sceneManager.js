@@ -95,7 +95,7 @@ import {
   needsSkinnedMeshRigRepair,
   rebindSkinnedMeshes,
 } from './rigBoneUtils.js';
-import { validateAigcRigContract } from '../chain/aigcRigContract.js';
+import { validateAigcRigContract } from './aigcRigContract.js';
 import {
   isBlenderExportedGltf,
   isDgxApiExportedGltf,

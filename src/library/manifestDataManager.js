@@ -2,7 +2,14 @@ import { CharacterManifestData } from "./CharacterManifestData";
 import { getAsArray } from "./utils";
 
 export class ManifestDataManager{
-    constructor(){
+    /**
+     * @param {object} [options]
+     * @param {import('../core/ports/ownedAssetSource.contract.js').OwnedAssetSource|Promise<import('../core/ports/ownedAssetSource.contract.js').OwnedAssetSource>} [options.ownedAssetSource]
+     *        Passed to every manifest this manager builds. The
+     *        composition root picks it. See RFD 0023.
+     */
+    constructor(options = {}){
+      this.ownedAssetSource = options.ownedAssetSource ?? null;
       this.mainManifestData = null;
       this.manifestDataCollection = [];
       this.manifestDataByIdentifier = {};
@@ -105,7 +112,7 @@ export class ManifestDataManager{
     setCustomManifest(){
       const manifest = {colliderTraits:["CUSTOM"],traits:[{name:"Custom", trait:"CUSTOM", collection:[]}]};
       this.setManifestDefaultValues(manifest);
-      this.mainManifestData = new CharacterManifestData(manifest, "_custom");
+      this.mainManifestData = new CharacterManifestData(manifest, "_custom", this.ownedAssetSource);
       this.manifestDataCollection.push(this.mainManifestData);
       this.manifestDataByIdentifier["_custom"] = this.mainManifestData;
     }
@@ -161,7 +168,7 @@ export class ManifestDataManager{
         try{
           if (manifest) {
             // Create a CharacterManifestData instance based on the fetched manifest
-            const manifestData = new CharacterManifestData(manifest, identifier);
+            const manifestData = new CharacterManifestData(manifest, identifier, this.ownedAssetSource);
   
             if (this.mainManifestData == null){
               this.mainManifestData = manifestData;

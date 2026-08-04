@@ -60,7 +60,68 @@ global.HTMLCanvasElement.prototype.getContext = function(contextId) {
       getProgramParameter: () => true,
     }
   }
+  // A 2D context, because @iwsdk/xr-input draws its cursor texture at
+  // module scope. jsdom gave null here, so importing the XR world
+  // package threw before any test ran. See RFD 0023 on load-time work.
+  if (contextId === '2d') {
+    return {
+      canvas: this,
+      clearRect: () => {},
+      fillRect: () => {},
+      strokeRect: () => {},
+      beginPath: () => {},
+      closePath: () => {},
+      arc: () => {},
+      moveTo: () => {},
+      lineTo: () => {},
+      fill: () => {},
+      stroke: () => {},
+      save: () => {},
+      restore: () => {},
+      translate: () => {},
+      rotate: () => {},
+      scale: () => {},
+      drawImage: () => {},
+      putImageData: () => {},
+      createRadialGradient: () => ({ addColorStop: () => {} }),
+      createLinearGradient: () => ({ addColorStop: () => {} }),
+      measureText: () => ({ width: 0 }),
+      fillText: () => {},
+      strokeText: () => {},
+      getImageData: (x, y, w = 1, h = 1) => ({
+        data: new Uint8ClampedArray(Math.max(1, w * h) * 4),
+        width: w,
+        height: h,
+      }),
+    }
+  }
   return null
+}
+
+// Observers jsdom does not implement. The app shell measures its
+// layout with both, and an undefined global throws during render.
+if (typeof global.ResizeObserver === 'undefined') {
+  global.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+}
+
+if (typeof global.IntersectionObserver === 'undefined') {
+  global.IntersectionObserver = class IntersectionObserver {
+    constructor() {
+      this.root = null
+      this.rootMargin = ''
+      this.thresholds = []
+    }
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() {
+      return []
+    }
+  }
 }
 
 // Mock URL.createObjectURL

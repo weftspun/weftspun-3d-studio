@@ -8,7 +8,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative, resolve } from 'node:path';
+import { join, relative, resolve, sep } from 'node:path';
 
 // Vitest rewrites import.meta.url to a served path, so deriving the
 // directory from it gives "/src". Resolve from the project root
@@ -27,11 +27,24 @@ const CHAIN_LIBS = ['thirdweb', 'ethers', '@solana/web3.js', '@web3-react'];
  * name here is a decision, not a fix.
  */
 const KNOWN_CHAIN_LEAKS = [
+  // Mixes avatar loading with minting. Minting is commerce, not
+  // content, so it stays in src/chain/. Untangling the module needs
+  // its own change.
   'library/characterManager.js',
-  'library/CharacterManifestData.js',
-  'library/sceneManager.js',
+  // Reads a contract with ethers, in a page. Not content code.
   'pages/Load.jsx',
 ];
+
+/**
+ * A repo-relative path, with forward slashes on every platform.
+ *
+ * node:path returns backslashes on Windows, and the names above are
+ * written with forward slashes. Comparing the two raw made the list
+ * useless on a Windows checkout.
+ */
+function rel(file) {
+  return relative(SRC, file).split(sep).join('/');
+}
 
 /**
  * Every JavaScript file under a directory.
@@ -97,7 +110,7 @@ describe('src/core does not depend on a chain', () => {
     for (const file of walk(CORE)) {
       const bad = importsChainLib(importsOf(file));
       if (bad.length > 0) {
-        offenders.push(`${relative(SRC, file)} -> ${bad.join(', ')}`);
+        offenders.push(`${rel(file)} -> ${bad.join(', ')}`);
       }
     }
 
@@ -110,7 +123,7 @@ describe('src/core does not depend on a chain', () => {
     for (const file of walk(CORE)) {
       const bad = importsOf(file).filter((s) => /(^|\/)chain\//.test(s));
       if (bad.length > 0) {
-        offenders.push(`${relative(SRC, file)} -> ${bad.join(', ')}`);
+        offenders.push(`${rel(file)} -> ${bad.join(', ')}`);
       }
     }
 
@@ -129,7 +142,7 @@ describe('src/core/domain holds pure rules', () => {
         (s) => s.startsWith('.') && (s.includes('../') || s.includes('/adapters/')),
       );
       if (bad.length > 0) {
-        offenders.push(`${relative(SRC, file)} -> ${bad.join(', ')}`);
+        offenders.push(`${rel(file)} -> ${bad.join(', ')}`);
       }
     }
 
@@ -142,7 +155,7 @@ describe('src/core/domain holds pure rules', () => {
     for (const file of walk(DOMAIN)) {
       const bad = importsOf(file).filter((s) => ['react', 'three'].includes(s));
       if (bad.length > 0) {
-        offenders.push(`${relative(SRC, file)} -> ${bad.join(', ')}`);
+        offenders.push(`${rel(file)} -> ${bad.join(', ')}`);
       }
     }
 
@@ -161,7 +174,7 @@ describe('the chain leak into src/library', () => {
         specifiers.some((s) => /(^|\/)chain\//.test(s));
 
       if (touchesChain) {
-        found.push(relative(SRC, file));
+        found.push(rel(file));
       }
     }
 
@@ -194,14 +207,33 @@ describe('src/chain is the only home for chain libraries', () => {
     const offenders = [];
 
     for (const file of walk(SRC)) {
-      const rel = relative(SRC, file);
-      if (rel.startsWith('chain/') || rel.includes('__tests__') || rel.endsWith('.test.js')) {
+      const name = rel(file);
+      if (name.startsWith('chain/') || name.includes('__tests__') || name.endsWith('.test.js')) {
         continue;
       }
-      if (KNOWN_CHAIN_LEAKS.includes(rel)) continue;
+      if (KNOWN_CHAIN_LEAKS.includes(name)) continue;
 
       if (importsChainLib(importsOf(file)).length > 0) {
-        offenders.push(rel);
+        offenders.push(name);
+      }
+    }
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('holds nothing that renders', () => {
+    // A module lands in src/chain/ for what it imports, not for what
+    // it is called. aigcRigContract.js validates a rig contract, and
+    // its name put it here. It pulled three.js and rigBoneUtils.js in
+    // behind it. Rendering is not a chain concern.
+    const offenders = [];
+
+    for (const file of walk(CHAIN)) {
+      const bad = importsOf(file).filter(
+        (s) => s === 'three' || s.startsWith('three/') || /(^|\/)library\/three/.test(s),
+      );
+      if (bad.length > 0) {
+        offenders.push(`${rel(file)} -> ${bad.join(', ')}`);
       }
     }
 

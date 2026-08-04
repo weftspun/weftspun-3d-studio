@@ -13,8 +13,21 @@ const COLLECTIONS = [
   { id: 'on1', name: '0N1 Force' },
 ];
 
-function stubWallet(owned) {
-  return { getOwnedTraitIDs: vi.fn(async () => owned) };
+/**
+ * Stands in for WalletCollections.
+ *
+ * It holds one answer and hands the same object back every call, the
+ * way the real layer does. That is what makes the contract's mutation
+ * test mean something: a leak through the returned arrays would show.
+ */
+function stubWallet(owned, unlocked = { ownedIDs: [], ownedTraits: {} }) {
+  return {
+    getOwnedTraitIDs: vi.fn(async () => owned),
+    getTraitsFromCollection: vi.fn(async (collectionId) =>
+      collectionId === 'sample-collection' ? unlocked : null,
+    ),
+    getSolanaPurchasedAssets: vi.fn(async () => unlocked),
+  };
 }
 
 describeOwnedAssetSourceContract('null', () => makeNullOwnedAssetSource());
@@ -22,7 +35,10 @@ describeOwnedAssetSourceContract('null', () => makeNullOwnedAssetSource());
 describeOwnedAssetSourceContract('wallet', () =>
   makeWalletOwnedAssetSource({
     collections: COLLECTIONS,
-    walletCollections: stubWallet(['trait_a', 'trait_b']),
+    walletCollections: stubWallet(['trait_a', 'trait_b'], {
+      ownedIDs: ['trait_a'],
+      ownedTraits: { Head: ['head_1'] },
+    }),
   }),
 );
 
@@ -82,5 +98,62 @@ describe('walletOwnedAssetSource', () => {
     await source.listOwnedTraitIds('');
 
     expect(wallet.getOwnedTraitIDs).not.toHaveBeenCalled();
+  });
+
+  it('reads a locked collection with the arguments the manifest gave', async () => {
+    const wallet = stubWallet([], { ownedIDs: ['head_1'], ownedTraits: { Head: ['head_1'] } });
+    const source = makeWalletOwnedAssetSource({ walletCollections: wallet });
+
+    const unlocked = await source.listCollectionTraits({
+      collectionId: 'sample-collection',
+      chainName: 'ethereum',
+      dataSource: 'attributes',
+      wallet: '0xabc',
+    });
+
+    expect(wallet.getTraitsFromCollection).toHaveBeenCalledWith(
+      'sample-collection',
+      'ethereum',
+      'attributes',
+      '0xabc',
+    );
+    expect(unlocked).toEqual({ ownedIDs: ['head_1'], ownedTraits: { Head: ['head_1'] } });
+  });
+
+  it('does not read the wallet when the manifest names no collection', async () => {
+    const wallet = stubWallet([]);
+    const source = makeWalletOwnedAssetSource({ walletCollections: wallet });
+
+    await source.listCollectionTraits({ chainName: 'ethereum', dataSource: 'attributes' });
+
+    expect(wallet.getTraitsFromCollection).not.toHaveBeenCalled();
+  });
+
+  it('passes the purchase definition through as the wallet layer expects it', async () => {
+    const wallet = stubWallet([], { ownedIDs: ['bought_1'], ownedTraits: {} });
+    const source = makeWalletOwnedAssetSource({ walletCollections: wallet });
+
+    const unlocked = await source.listPurchasedTraits({
+      delegateAddress: '0xdelegate',
+      collectionName: 'anata',
+      wallet: '0xabc',
+    });
+
+    expect(wallet.getSolanaPurchasedAssets).toHaveBeenCalledWith(
+      { delegateAddress: '0xdelegate', collectionName: 'anata' },
+      '0xabc',
+    );
+    expect(unlocked.ownedIDs).toEqual(['bought_1']);
+  });
+
+  it('reads a null answer as nothing unlocked', async () => {
+    // getSolanaPurchasedAssets resolves with null when the read fails.
+    const wallet = stubWallet([]);
+    wallet.getSolanaPurchasedAssets = vi.fn(async () => null);
+    const source = makeWalletOwnedAssetSource({ walletCollections: wallet });
+
+    await expect(
+      source.listPurchasedTraits({ delegateAddress: '0xd', collectionName: 'anata' }),
+    ).resolves.toEqual({ ownedIDs: [], ownedTraits: {} });
   });
 });

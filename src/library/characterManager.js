@@ -14,7 +14,9 @@ import { LipSync } from "./lipsync";
 import { LookAtManager } from "./lookatManager";
 import OverlayedTextureManager from "./OverlayTextureManager";
 import { ManifestDataManager } from "./manifestDataManager";
-import { WalletCollections } from "../chain/walletCollections";
+import { makeOwnedAssetSource } from "../composition.js";
+// Commerce, not content. RFD 0023 leaves minting in src/chain/,
+// because a content system never writes to a chain.
 import { buySolanaPurchasableAssets } from "../chain/mint-utils"
 import { OwnedNFTTraitIDs } from "../chain/ownedNFTTraitIDs";
 
@@ -76,7 +78,9 @@ export class CharacterManager {
         parentModel = null,
         renderCamera = null,
         manifestURL = null,
-        manifestIdentifier = null
+        manifestIdentifier = null,
+        // Left unset, the composition root picks it. A test injects one.
+        ownedAssetSource = null
       }= options;
 
      
@@ -101,12 +105,16 @@ export class CharacterManager {
       this.overlayedTextureManager = new OverlayedTextureManager(this)
       this.blinkManager = new BlinkManager(0.1, 0.1, 0.5, 5)
       this.emotionManager = new EmotionManager();
-      this.walletCollections = new WalletCollections();
 
       this.rootModel.add(this.characterModel)
       this.renderCamera = renderCamera;
 
-      this.manifestDataManager = new ManifestDataManager();
+      // The manifests ask the port which assets the owner may use. The
+      // composition root chose the adapter, and this passes the promise
+      // straight through, so no caller has to wait for it here.
+      this.manifestDataManager = new ManifestDataManager({
+        ownedAssetSource: ownedAssetSource ?? makeOwnedAssetSource(),
+      });
       if (manifestURL){
         this.manifestDataManager.loadManifest(manifestURL,manifestIdentifier).then(()=>{
           this.animationManager.setScale(this.manifestDataManager.getDisplayScale());

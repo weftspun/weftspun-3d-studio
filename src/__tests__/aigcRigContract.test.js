@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import * as THREE from '../library/three.js';
-import { validateAigcRigContract } from '../chain/aigcRigContract.js';
+import { validateAigcRigContract } from '../library/aigcRigContract.js';
 
 describe('aigcRigContract', () => {
   it('fails when mesh and bones are vertically separated', () => {
