@@ -37,7 +37,7 @@ model or a geometric algorithm.
 | seethrough_layer_decomposition  | Deep learning       | Image to layers     | DGX API |
 | kimodo_text_to_motion           | Deep learning       | Text to motion      | DGX API |
 | skintokens_auto_rig             | Deep learning       | Auto rig (full)     | DGX API |
-| autoremesher_retopology         | Geometric algorithm | Mesh retopology     | DGX API |
+| quadwild_retopology             | Geometric algorithm | Mesh retopology     | DGX API |
 | instant_meshes_retopology       | Geometric algorithm | Mesh retopology     | DGX API |
 | xatlas_uv_unwrapping            | Geometric algorithm | UV unwrapping       | DGX API |
 | voxhammer_text_mesh_editing     | Deep learning       | Text mesh editing   | DGX API |
