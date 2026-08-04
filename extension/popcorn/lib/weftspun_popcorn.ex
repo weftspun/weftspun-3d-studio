@@ -2,14 +2,22 @@ defmodule WeftspunPopcorn do
   @moduledoc """
   The minimal test, run inside the editor.
 
-  It answers one question: does a real Elixir VM start in the webview
-  and run this project's code? Everything here executes in AtomVM,
-  compiled to WebAssembly by Popcorn.
+  It answers two questions. Does a real Elixir VM start in the panel?
+  Does WGSL that Elixir generated run on the GPU and come back right?
 
-  The checks are deterministic, so a wrong answer means the VM is
-  wrong, and not that the test is flaky.
+  JavaScript drives the exchange, because `Popcorn.Wasm.run_js/3` is
+  synchronous and every WebGPU call is asynchronous. Elixir cannot
+  await a dispatch, thus the page calls in twice. It asks for the plan,
+  runs the kernels, and sends the buffers back for a verdict.
+
+  Elixir keeps what matters: it writes the WGSL, it computes the
+  expected values, and it decides pass or fail. WebGPU only executes.
   """
   use GenServer
+
+  import Popcorn.Wasm, only: [is_wasm_message: 1]
+  alias Popcorn.Wasm
+  alias WeftspunPopcorn.Wgsl
 
   @process_name :main
 
@@ -17,27 +25,77 @@ defmodule WeftspunPopcorn do
     GenServer.start_link(__MODULE__, args, name: @process_name)
   end
 
-  @impl true
+  @impl GenServer
   def init(_arg) do
-    report(run_checks())
-    Popcorn.Wasm.ready()
-    :ignore
+    Wasm.ready(@process_name)
+    {:ok, %{}}
+  end
+
+  @impl GenServer
+  def handle_info(raw, state) when is_wasm_message(raw) do
+    {:noreply, Wasm.handle_message!(raw, &handle_wasm(&1, state))}
+  end
+
+  # The checks that need no GPU. These prove the VM itself.
+  defp handle_wasm({:wasm_call, ["vm_checks"]}, state) do
+    checks =
+      Enum.map(vm_checks(), fn {name, ok?, detail} ->
+        %{"name" => name, "passed" => ok?, "detail" => detail}
+      end)
+
+    report = %{
+      "elixir" => System.version(),
+      "otp" => to_string(:erlang.system_info(:otp_release)),
+      "machine" => to_string(:erlang.system_info(:machine)),
+      "checks" => checks
+    }
+
+    {:resolve, report, state}
+  end
+
+  # The WGSL, the inputs, and the length of each answer. The expected
+  # values stay here, because the page must not be able to mark its own
+  # homework.
+  defp handle_wasm({:wasm_call, ["gpu_plan"]}, state) do
+    jobs = Wgsl.jobs()
+
+    plan =
+      Enum.map(jobs, fn job ->
+        %{
+          "name" => job.name,
+          "source" => job.source,
+          "buffers" => job.buffers,
+          "length" => job.length
+        }
+      end)
+
+    expected = Map.new(jobs, &{&1.name, &1.expected})
+    {:resolve, plan, Map.put(state, :expected, expected)}
+  end
+
+  defp handle_wasm({:wasm_call, ["gpu_verify", name, actual]}, state) do
+    case get_in(state, [:expected, name]) do
+      nil ->
+        {:resolve, %{"passed" => false, "detail" => "no expected values for #{name}"}, state}
+
+      expected ->
+        {ok?, detail} = Wgsl.compare(expected, actual)
+        {:resolve, %{"passed" => ok?, "detail" => detail}, state}
+    end
   end
 
   @doc """
-  Runs every check and returns them as a list.
+  Checks that need no GPU.
 
-  Each entry is `{name, passed?, detail}`. This function is pure, so
-  the same list can run outside the browser under `mix test`.
+  Each entry is `{name, passed?, detail}`. The list is pure, thus it
+  runs the same way outside a browser.
   """
-  def run_checks do
+  def vm_checks do
     [
       check("arithmetic", Enum.sum(1..100), 5050),
       check("binaries", String.upcase("weftspun"), "WEFTSPUN"),
-      check("pattern match", {:ok, [1, 2, 3]} |> elem(1) |> length(), 3),
-      check("map update", %{traits: 1} |> Map.update!(:traits, &(&1 + 1)) |> Map.get(:traits), 2),
       check("processes", spawn_and_reply(), :pong),
-      check("reduce", Enum.reduce([1, 2, 3, 4], 1, &(&1 * &2)), 24)
+      check("wgsl codegen", wgsl_declares_workgroup?(), true)
     ]
   end
 
@@ -45,8 +103,8 @@ defmodule WeftspunPopcorn do
     {name, actual == expected, "#{inspect(actual)} == #{inspect(expected)}"}
   end
 
-  # A real message round trip, which is the part a plain expression
-  # would not prove. AtomVM must schedule a second process for this.
+  # A real message round trip. A plain expression would not prove that
+  # AtomVM schedules a second process.
   defp spawn_and_reply do
     parent = self()
     spawn(fn -> send(parent, :pong) end)
@@ -58,40 +116,32 @@ defmodule WeftspunPopcorn do
     end
   end
 
-  defp report(checks) do
-    passed = Enum.count(checks, fn {_, ok?, _} -> ok? end)
-    total = length(checks)
-
-    rows =
-      checks
-      |> Enum.map(fn {name, ok?, detail} ->
-        ~s({"name":"#{name}","passed":#{ok?},"detail":"#{escape(detail)}"})
-      end)
-      |> Enum.join(",")
-
-    IO.puts("weftspun minimal test: #{passed}/#{total} passed")
-
-    # Popcorn evaluates this in a hidden iframe, and that iframe holds
-    # the VM. `srcdoc` keeps it on the parent origin, thus the panel is
-    # reachable through `window.parent`. Writing to `document` here
-    # would only change the hidden frame, and nobody would see it.
-    Popcorn.Wasm.run_js("""
-    () => {
-      window.parent.weftspunReport({
-        elixir: "#{System.version()}",
-        otp: "#{:erlang.system_info(:otp_release)}",
-        machine: "#{:erlang.system_info(:machine)}",
-        passed: #{passed},
-        total: #{total},
-        checks: [#{rows}]
-      });
-    }
-    """)
+  # Does Nx run on AtomVM at all? This is the assumption a WGSL backend
+  # for Nx rests on, thus it is worth a check and not a hope.
+  defp nx_sum do
+    try do
+      Nx.tensor([1, 2, 3]) |> Nx.sum() |> Nx.to_number()
+    rescue
+      e -> "raised: #{inspect(e.__struct__)}"
+    catch
+      kind, value -> "threw: #{inspect(kind)} #{inspect(value)}"
+    end
   end
 
-  defp escape(text) do
-    text
-    |> String.replace("\\", "\\\\")
-    |> String.replace("\"", "\\\"")
+  defp nx_add do
+    try do
+      Nx.add(Nx.tensor([1, 2, 3]), Nx.tensor([4, 5, 6])) |> Nx.to_flat_list()
+    rescue
+      e -> "raised: #{inspect(e.__struct__)}"
+    catch
+      kind, value -> "threw: #{inspect(kind)} #{inspect(value)}"
+    end
+  end
+
+  defp wgsl_declares_workgroup? do
+    String.contains?(
+      Wgsl.binary("probe", "+").source,
+      "@workgroup_size(#{Wgsl.workgroup_size()})"
+    )
   end
 end

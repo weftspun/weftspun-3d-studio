@@ -29,12 +29,21 @@
         width: 4rem;
         font-weight: 600;
       }
+      h2 { font-size: 1rem; margin: 1.2rem 0 0.3rem; }
+      .pass { color: #4ec9b0; }
+      .fail { color: #f48771; }
+      .dim { opacity: 0.7; }
     </style>
   </head>
   <body>
     <h1>Weftspun minimal test</h1>
     <p id="status">Loading…</p>
-    <div id="output"></div>
+    <h2>Elixir VM</h2>
+    <div id="vm"></div>
+    <h2>WebGPU adapter</h2>
+    <div id="gpu"></div>
+    <h2>WGSL kernels, written by Elixir</h2>
+    <div id="kernels"></div>
     <script type="module" src="./index.js"></script>
   </body>
 </html>

@@ -1,8 +1,8 @@
 {
   "name": "weftspun-3d-studio",
   "displayName": "Weftspun 3D Studio",
-  "description": "Runs the Weftspun minimal test as real Elixir, on AtomVM in WebAssembly, inside an editor panel.",
-  "version": "0.1.0",
+  "description": "Runs the Weftspun minimal test as real Elixir on AtomVM, and runs Elixir-generated WGSL on the GPU, inside an editor panel.",
+  "version": "0.2.2",
   "publisher": "fire",
   "license": "MIT",
   "repository": {
@@ -49,7 +49,8 @@
     "test": "node --test",
     "test:browser": "node scripts/verify-bundle.mjs",
     "package": "vsce package",
-    "publish:openvsx": "ovsx publish"
+    "publish:openvsx": "ovsx publish",
+    "test:csp": "node scripts/verify-csp.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.0",

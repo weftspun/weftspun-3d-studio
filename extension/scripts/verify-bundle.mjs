@@ -53,7 +53,9 @@ const server = http.createServer((request, response) => {
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const base = `http://127.0.0.1:${server.address().port}/`;
 
-const browser = await chromium.launch();
+// channel: 'chromium', because the headless shell exposes navigator.gpu
+// and then hands back no adapter. Only the full build has one.
+const browser = await chromium.launch({ channel: 'chromium' });
 const page = await browser.newPage();
 page.on('pageerror', (error) => console.error('  [pageerror]', error.message));
 
@@ -81,7 +83,7 @@ for (const check of result.checks) {
 }
 console.log(
   `\n${result.passed}/${result.total} passed on Elixir ${result.elixir}, ` +
-    `OTP ${result.otp}, ${result.machine}`,
+    `OTP ${result.otp}, ${result.machine}, GPU ${result.gpu || 'none'}`,
 );
 
 process.exit(result.ok ? 0 : 1);

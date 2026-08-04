@@ -6,7 +6,6 @@
  * what came back.
  */
 const path = require('node:path');
-const crypto = require('node:crypto');
 const vscode = require('vscode');
 const { resolveDistPath, missingArtifacts } = require('./popcornBundle');
 
@@ -67,23 +66,34 @@ function openMinimalTestPanel(context) {
  * @returns {string}
  */
 function renderHtml(webview, distPath) {
-  const nonce = crypto.randomBytes(16).toString('base64');
   const asUri = (...parts) =>
     webview.asWebviewUri(vscode.Uri.file(path.join(distPath, ...parts))).toString();
 
-  // Popcorn runs the VM in a hidden `srcdoc` iframe, thus `frame-src`
-  // must allow it. `wasm-unsafe-eval` is for AtomVM, which is
-  // WebAssembly. `unsafe-eval` is for the bridge, which evaluates the
-  // function Elixir sends through run_js. The nonce holds those
-  // permissions to the scripts this file writes.
+  // This policy is the one `scripts/verify-csp.mjs` runs the bundle
+  // under. Every permission here answers a block that a stricter
+  // policy caused, and each block stopped the VM from starting.
+  //
+  // `unsafe-inline` and no nonce: Popcorn runs the VM in a hidden
+  // `srcdoc` iframe, and it writes an inline module script into that
+  // frame. A `srcdoc` frame inherits this policy. A nonce in
+  // `script-src` makes the browser ignore `unsafe-inline`, thus a
+  // nonce here blocks the frame that holds the VM.
+  //
+  // `wasm-unsafe-eval` is for AtomVM, which is WebAssembly.
+  // `unsafe-eval` is for the bridge, which evaluates the function
+  // Elixir sends through run_js.
+  //
+  // `worker-src` names the webview origin, and not only `blob:`,
+  // because AtomVM starts its worker from `AtomVM.mjs`.
   const csp = [
     "default-src 'none'",
     `img-src ${webview.cspSource} data:`,
     `style-src ${webview.cspSource} 'unsafe-inline'`,
-    `script-src 'nonce-${nonce}' 'wasm-unsafe-eval' 'unsafe-eval' ${webview.cspSource}`,
-    `connect-src ${webview.cspSource}`,
-    "frame-src 'self' data:",
-    'worker-src blob:',
+    `script-src ${webview.cspSource} 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval'`,
+    `connect-src ${webview.cspSource} blob: data:`,
+    `frame-src ${webview.cspSource} 'self' data:`,
+    `worker-src ${webview.cspSource} blob:`,
+    `child-src ${webview.cspSource} blob:`,
   ].join('; ');
 
   return `<!DOCTYPE html>
@@ -101,21 +111,30 @@ function renderHtml(webview, distPath) {
     line-height: 1.5;
   }
   h1 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+  h2 { font-size: 1rem; margin: 1.2rem 0 0.3rem; }
   #status { opacity: 0.75; font-size: 0.9em; }
-  table { border-collapse: collapse; margin-top: 1rem; width: 100%; }
+  table { border-collapse: collapse; margin-top: 0.3rem; width: 100%; }
   td {
     border-bottom: 1px solid var(--vscode-panel-border, #3c3c3c);
     padding: 0.3rem 0.6rem;
     vertical-align: top;
   }
   td:first-child { width: 4rem; font-weight: 600; }
+  .pass { color: var(--vscode-testing-iconPassed, #4ec9b0); }
+  .fail { color: var(--vscode-testing-iconFailed, #f48771); }
+  .dim { opacity: 0.7; }
 </style>
 </head>
 <body>
   <h1>Weftspun minimal test</h1>
   <p id="status">Loading…</p>
-  <div id="output"></div>
-  <script nonce="${nonce}">
+  <h2>Elixir VM</h2>
+  <div id="vm"></div>
+  <h2>WebGPU adapter</h2>
+  <div id="gpu"></div>
+  <h2>WGSL kernels, written by Elixir</h2>
+  <div id="kernels"></div>
+  <script>
     // An editor webview serves files from a vscode-webview: origin, so
     // the runtime needs absolute URIs. A relative path would miss.
     window.WEFTSPUN_POPCORN = {
@@ -123,7 +142,7 @@ function renderHtml(webview, distPath) {
       wasmDir: "${asUri('')}"
     };
   </script>
-  <script nonce="${nonce}" type="module" src="${asUri('index.js')}"></script>
+  <script type="module" src="${asUri('index.js')}"></script>
 </body>
 </html>`;
 }
