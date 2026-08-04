@@ -101,9 +101,11 @@ returns `text_to_textured_mesh` at 0.52.
 The library is a Git dependency, not a Hex package. A build therefore
 needs network access to GitHub. Publishing to Hex is a later step.
 
-The Lean proofs cover the integer grid the atoms come from, not the
-f64 arithmetic that runs the algebra. A float bug would pass them.
-The Elixir tests cover that gap, through the golden fixture.
+The library stores radians, not turns. A radian phase is irrational,
+so the exactness result does not reach it. The measured cost is
+2.2e-15, which is 2.3e-11 of one grid step, and similarity after a
+round trip reads 1.0. Turns would remove the gap and break the golden
+fixture, so the library keeps radians.
 
 ## Proofs
 
@@ -122,6 +124,21 @@ The cleanup recall walk from the same file did not move. It modelled
 `fire/plausible-witness-dag`. The restored model needs no dependency,
 and no axiom beyond `propext` and `Quot.sound`.
 
+`PhaseRat.lean` is new. It carries the grid result across to the
+arithmetic that runs it. A phase is a rational with a power-of-two
+denominator, so component `k` stands for `k / 2^16` of a turn.
+Binary64 holds a value exactly while its significand stays under
+`2^53`. Binding adds two numerators below `2^p`, so the exact sum
+needs `p + 1` bits, and `p = 16` leaves 36 bits spare. The addition
+and the subtraction therefore never round.
+
+Three bridge theorems tie that file to `HrrModel`, so the bounds
+apply to the proved algebra and not to a lookalike.
+
+Lean's `Float` is opaque and carries no formal semantics, so no proof
+mentions it. The theorems bound the significand, and the standard
+binary64 criterion does the rest.
+
 ## Status
 
 Done:
@@ -131,6 +148,8 @@ Done:
 - The migration rewrote all 29 rows to 8192 bytes each.
 - The whole suite passes with 78 tests.
 - The Lean proofs build and run under Lean 4.32.2.
+- `PhaseRat` bounds the significand, so binary64 does not round the
+  algebra at this precision.
 
 Open:
 
