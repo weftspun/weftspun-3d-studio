@@ -30,6 +30,23 @@ See the STE policy below for the writing rules.
 | 0016 | Deep learning model inventory | published |
 | 0017 | Fork rebrand to Weftspun | published |
 | 0018 | M3 documentation removal | discussion |
+| 0019 | Strangler fig studio core | published |
+| 0020 | CockroachDB persistence | published |
+| 0021 | Shared HRR library | published |
+| 0022 | Hexagonal client | published |
+| 0023 | Ports and adapters with headless CMS style | published |
+| 0024 | Nx and ggml | ideation |
+| 0025 | Model memory arithmetic | published |
+| 0026 | bf16 memory per model | published |
+| 0027 | GPU residency budget | published |
+| 0028 | Model license gate | published |
+| 0029 | FOSS model replacements | published |
+| 0030 | See-Through component models | published |
+| 0031 | Geometry refinement and alpha wrap | discussion |
+| 0032 | Alpha wrap rebuild on Geogram | ideation |
+| 0033 | Geometric algorithms in the catalog | published |
+| 0034 | Krea memory cross-check | published |
+| 0035 | Legacy model identifiers | published |
 
 ## DRY policy
 
