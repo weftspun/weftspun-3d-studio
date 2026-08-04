@@ -17,6 +17,7 @@ import {
 } from './avatarPipelineCatalog.js';
 import { CREATURE_TEMPLATE_RIG_MODEL_ID } from './creaturePipelineCatalog.js';
 import { inferAppearanceSlot, isAppearanceClothingName } from './appearanceClothing.js';
+import { entriesForFeature, sortRecommendedFirst } from '../core/domain/catalog.js';
 
 /** @type {{ value: string, label: string, feature: string }[]} */
 export const ALL_MODELS = [
@@ -143,27 +144,26 @@ export const TASK_TYPE_TO_FEATURE = {
   'avatar-from-photo': null,
 };
 
+// The selection rules live in src/core/domain/catalog.js, so the
+// static and HTTP catalog adapters cannot answer differently. RFD
+// 0022 records the split.
 function sortModelsRecommendedFirst(models, preferredId) {
-  return [...models].sort((a, b) => {
-    if (a.value === preferredId) return -1;
-    if (b.value === preferredId) return 1;
-    const aLegacy = LEGACY_MODEL_IDS.has(a.value) ? 1 : 0;
-    const bLegacy = LEGACY_MODEL_IDS.has(b.value) ? 1 : 0;
-    return aLegacy - bLegacy;
-  });
+  return sortRecommendedFirst(models, { preferredId, legacyIds: LEGACY_MODEL_IDS });
 }
 
 export function getModelsForTaskType(taskType) {
   const feature = TASK_TYPE_TO_FEATURE[taskType];
   if (!feature) return [];
-  const models = ALL_MODELS.filter((m) => m.feature === feature);
-  return sortModelsRecommendedFirst(models, DEFAULT_MODEL_BY_FEATURE[feature]);
+  return sortModelsRecommendedFirst(
+    entriesForFeature(ALL_MODELS, feature),
+    DEFAULT_MODEL_BY_FEATURE[feature],
+  );
 }
 
 /** Models used for world prop mesh generation (image → textured mesh). */
 export function getPropMeshModelsForWorld() {
   return sortModelsRecommendedFirst(
-    ALL_MODELS.filter((m) => m.feature === 'image_to_textured_mesh'),
+    entriesForFeature(ALL_MODELS, 'image_to_textured_mesh'),
     'trellis2_image_to_textured_mesh',
   );
 }

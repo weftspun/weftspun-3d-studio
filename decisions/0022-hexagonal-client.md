@@ -133,4 +133,21 @@ both. The port marks which one is current.
 
 ## Status
 
-Open. Nothing is built yet.
+Done:
+
+- `src/core/` holds `domain/`, `ports/`, and `adapters/`.
+- The `CatalogSource` contract test runs against both adapters.
+- `staticCatalogSource` and `httpCatalogSource` both pass it.
+- `src/core/composition.js` picks one from `VITE_STUDIO_API`.
+- The selection rules moved into `domain/catalog.js`.
+  `aiModelsCatalog.js` now calls them, so one implementation serves
+  every consumer.
+- 47 tests cover the port, the rules, and the composition step.
+- The client still builds, and the suite holds at the 33 failures it
+  carried before this work.
+
+Open:
+
+- Ports for the job lifecycle, assets, and the scene.
+- The other 38 direct network call sites.
+- The 33 inherited test failures.

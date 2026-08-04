@@ -50,6 +50,30 @@ export function entriesForFeature(entries, feature) {
 }
 
 /**
+ * Orders models for a picker: the recommended one first, legacy last.
+ *
+ * The preferred model wins even when it is also legacy, because an
+ * explicit recommendation beats a general rule.
+ *
+ * `Array.prototype.sort` is stable, so models that tie keep the order
+ * the catalog gives them.
+ *
+ * @template {{value: string}} T
+ * @param {readonly T[]} entries
+ * @param {{preferredId?: string, legacyIds?: Set<string>}} [options]
+ * @returns {T[]}
+ */
+export function sortRecommendedFirst(entries, options = {}) {
+  const { preferredId, legacyIds = new Set() } = options;
+
+  return [...entries].sort((a, b) => {
+    if (a.value === preferredId) return -1;
+    if (b.value === preferredId) return 1;
+    return (legacyIds.has(a.value) ? 1 : 0) - (legacyIds.has(b.value) ? 1 : 0);
+  });
+}
+
+/**
  * True when the entry has the three fields the port requires.
  *
  * The HTTP adapter uses this to reject a malformed payload at the
