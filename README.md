@@ -29,4 +29,4 @@ does work similar to
 - [Webaverse](https://github.com/webaverse-studios/CharacterCreator) (MIT). Carried that avatar creator forward, as Character Creator.
 - [M3-org](https://github.com/M3-org) for the upstream avatar-trait foundation
 - [Character Studio](https://github.com/M3-org/CharacterStudio) (M3-org, MIT). The upstream avatar toolkit this project grew from.
-- OpenNexus3DStudio: SPACE-TIME EDITION (MIT). The upstream project of this fork. Weftspun rebranded in full, as the trademark terms require.
+- [OpenNexus3DStudio](https://github.com/AlfaOmegaGrafx/OpenNexus3DStudio): SPACE-TIME EDITION (MIT). The upstream project of this fork.
