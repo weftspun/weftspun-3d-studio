@@ -26,65 +26,64 @@ The repository uses 28 model identifiers. The table groups them by
 task. The type column states whether the model is a deep learning
 model or a geometric algorithm.
 
-| Model id                                | Type                | Task                         | Runs on |
-| --------------------------------------- | ------------------- | ---------------------------- | ------- |
-| trellis2_image_to_textured_mesh         | Deep learning       | Image to 3D                  | DGX API |
-| trellis2_image_mesh_painting            | Deep learning       | Image mesh painting          | DGX API |
-| pixal3d_image_to_textured_mesh          | Deep learning       | Image to 3D (PBR)            | DGX API |
-| p3sam_mesh_segmentation                 | Deep learning       | Mesh segmentation            | DGX API |
-| krea2_turbo_text_to_image               | Deep learning       | Text to image                | DGX API |
-| qwen_q4_k_m_image_edit                  | Deep learning       | Image editing                | DGX API |
-| seethrough_layer_decomposition          | Deep learning       | Image to layers              | DGX API |
-| kimodo_text_to_motion                   | Deep learning       | Text to motion               | DGX API |
-| skintokens_auto_rig                     | Deep learning       | Auto rig (full)              | DGX API |
-| instant_meshes_retopology               | Geometric algorithm | Mesh retopology              | DGX API |
-| xatlas_uv_unwrapping                    | Geometric algorithm | UV unwrapping                | DGX API |
-| voxhammer_text_mesh_editing             | Deep learning       | Text mesh editing            | DGX API |
-| voxhammer_image_mesh_editing            | Deep learning       | Image mesh editing           | DGX API |
+| Model id                        | Type                | Task                | Runs on |
+| ------------------------------- | ------------------- | ------------------- | ------- |
+| trellis2_image_to_textured_mesh | Deep learning       | Image to 3D         | DGX API |
+| trellis2_image_mesh_painting    | Deep learning       | Image mesh painting | DGX API |
+| pixal3d_image_to_textured_mesh  | Deep learning       | Image to 3D (PBR)   | DGX API |
+| p3sam_mesh_segmentation         | Deep learning       | Mesh segmentation   | DGX API |
+| krea2_turbo_text_to_image       | Deep learning       | Text to image       | DGX API |
+| qwen_q4_k_m_image_edit          | Deep learning       | Image editing       | DGX API |
+| seethrough_layer_decomposition  | Deep learning       | Image to layers     | DGX API |
+| kimodo_text_to_motion           | Deep learning       | Text to motion      | DGX API |
+| skintokens_auto_rig             | Deep learning       | Auto rig (full)     | DGX API |
+| autoremesher_retopology         | Geometric algorithm | Mesh retopology     | DGX API |
+| instant_meshes_retopology       | Geometric algorithm | Mesh retopology     | DGX API |
+| xatlas_uv_unwrapping            | Geometric algorithm | UV unwrapping       | DGX API |
+| voxhammer_text_mesh_editing     | Deep learning       | Text mesh editing   | DGX API |
+| voxhammer_image_mesh_editing    | Deep learning       | Image mesh editing  | DGX API |
 
-| Environment Model id                    | Type                | Task                         | Runs on |
-| --------------------------------------- | ------------------- | ---------------------------- | ------- |
-| weftspun_image_to_world                | Deep learning       | Image to world               | DGX API |
-| lingbot_map_environment_scan            | Deep learning       | Environment scan             | DGX API |
+| Environment Model id         | Type          | Task             | Runs on |
+| ---------------------------- | ------------- | ---------------- | ------- |
+| weftspun_image_to_world      | Deep learning | Image to world   | DGX API |
+| lingbot_map_environment_scan | Deep learning | Environment scan | DGX API |
 
-| Splat Model id                          | Type                | Task                         | Runs on |
-| --------------------------------------- | ------------------- | ---------------------------- | ------- |
-| worldmirror2_reconstruct                | Deep learning       | Photos to splat              | DGX API |
-| triposplat_image_to_splat               | Deep learning       | Image to splat               | DGX API |
-| colmap_3dgs_reconstruct                 | Geometric algorithm | Photos to splat              | DGX API |
+| Splat Model id            | Type                | Task            | Runs on |
+| ------------------------- | ------------------- | --------------- | ------- |
+| worldmirror2_reconstruct  | Deep learning       | Photos to splat | DGX API |
+| triposplat_image_to_splat | Deep learning       | Image to splat  | DGX API |
+| colmap_3dgs_reconstruct   | Geometric algorithm | Photos to splat | DGX API |
 
-| Legacy Model id                          | Type                | Task                        | Runs on |
-| --------------------------------------- | ------------------- | ---------------------------- | ------- |
-| trellis_text_to_textured_mesh           | Deep learning       | Text to 3D                   | DGX API |
-| trellis_image_to_textured_mesh          | Deep learning       | Image to 3D (legacy)         | DGX API |
-| trellis_image_mesh_painting             | Deep learning       | Image mesh painting (legacy) | DGX API |
-| trellis_text_mesh_painting              | Deep learning       | Text mesh painting           | DGX API |
-| ~~hunyuan3dv21_image_to_textured_mesh~~ | Deep learning       | Image to 3D                  | DGX API |
-| ~~hunyuan3dv21_image_to_raw_mesh~~      | Deep learning       | Image to raw mesh            | DGX API |
-| ~~ultrashape_image_to_raw_mesh~~        | Deep learning       | Image to raw mesh            | DGX API |
-| ~~hunyuan3dv21_image_mesh_painting~~    | Deep learning       | Image mesh painting          | DGX API |
-| ~~unirig_auto_rig~~                     | Deep learning       | Auto rig (template VRM)      | DGX API |
-| ~~appearance_component_auto_rig~~       | Deep learning       | Auto rig (appearance)        | DGX API |
-| ~~creature_template_auto_rig~~          | Deep learning       | Auto rig (creature)          | DGX API |
-
-
+| Legacy Model id                         | Type          | Task                         | Runs on |
+| --------------------------------------- | ------------- | ---------------------------- | ------- |
+| trellis_text_to_textured_mesh           | Deep learning | Text to 3D                   | DGX API |
+| trellis_image_to_textured_mesh          | Deep learning | Image to 3D (legacy)         | DGX API |
+| trellis_image_mesh_painting             | Deep learning | Image mesh painting (legacy) | DGX API |
+| trellis_text_mesh_painting              | Deep learning | Text mesh painting           | DGX API |
+| ~~hunyuan3dv21_image_to_textured_mesh~~ | Deep learning | Image to 3D                  | DGX API |
+| ~~hunyuan3dv21_image_to_raw_mesh~~      | Deep learning | Image to raw mesh            | DGX API |
+| ~~ultrashape_image_to_raw_mesh~~        | Deep learning | Image to raw mesh            | DGX API |
+| ~~hunyuan3dv21_image_mesh_painting~~    | Deep learning | Image mesh painting          | DGX API |
+| ~~unirig_auto_rig~~                     | Deep learning | Auto rig (template VRM)      | DGX API |
+| ~~appearance_component_auto_rig~~       | Deep learning | Auto rig (appearance)        | DGX API |
+| ~~creature_template_auto_rig~~          | Deep learning | Auto rig (creature)          | DGX API |
 
 ## See-Through component models
 
 The `seethrough_layer_decomposition` entry names one task. The task
 runs several models. The table names each component.
 
-| Component        | Base model          | Role                 | Runs on |
-| ---------------- | ------------------- | -------------------- | ------- |
-| lama             | LaMa                | Inpaints hidden area | Local   |
-| layerdiff-unet   | SDXL UNet           | Generates layers     | Local   |
-| layerdiff-te1    | CLIP text encoder   | Prompt encode        | Local   |
-| layerdiff-te2    | CLIP text encoder 2 | Prompt encode        | Local   |
-| layerdiff-vae    | SDXL VAE            | Latent decode        | Local   |
-| trans-vae        | TransparentVAE      | Alpha decode         | Local   |
-| marigold-unet    | Marigold            | Depth estimate       | Local   |
-| marigold-te      | CLIP text encoder   | Depth conditioning   | Local   |
-| marigold-vae     | Marigold VAE        | Depth decode         | Local   |
+| Component      | Base model          | Role                 | Runs on |
+| -------------- | ------------------- | -------------------- | ------- |
+| lama           | LaMa                | Inpaints hidden area | Local   |
+| layerdiff-unet | SDXL UNet           | Generates layers     | Local   |
+| layerdiff-te1  | CLIP text encoder   | Prompt encode        | Local   |
+| layerdiff-te2  | CLIP text encoder 2 | Prompt encode        | Local   |
+| layerdiff-vae  | SDXL VAE            | Latent decode        | Local   |
+| trans-vae      | TransparentVAE      | Alpha decode         | Local   |
+| marigold-unet  | Marigold            | Depth estimate       | Local   |
+| marigold-te    | CLIP text encoder   | Depth conditioning   | Local   |
+| marigold-vae   | Marigold VAE        | Depth decode         | Local   |
 
 Two runtimes exist for this task. The DGX API runs the Cog model
 from RFD 0006. see-through.cpp runs the same models on a local
