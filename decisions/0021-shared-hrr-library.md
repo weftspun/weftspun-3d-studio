@@ -101,9 +101,26 @@ returns `text_to_textured_mesh` at 0.52.
 The library is a Git dependency, not a Hex package. A build therefore
 needs network access to GitHub. Publishing to Hex is a later step.
 
-The earlier ADR states that Lean proofs of the phase algebra remain
-in `formal/RecommenderModel.lean`. They do not. That file now holds
-only the codec proofs. The algebra carries tests, and no proof.
+The Lean proofs cover the integer grid the atoms come from, not the
+f64 arithmetic that runs the algebra. A float bug would pass them.
+The Elixir tests cover that gap, through the golden fixture.
+
+## Proofs
+
+The earlier repository proved the algebra in Lean 4, then deleted the
+proofs in commit 7303244 once the HRR code left it. The algebra now
+has a home again, so the proofs moved with it, into `formal/` of the
+library.
+
+`unbind_bind` and `bind_comm` come across unchanged. `bind_assoc`,
+`unbind_bind_left`, and the two grid bounds are new. Together they say
+that binding is a commutative and associative group operation on
+`ℤ/65536`, and that unbinding inverts it exactly.
+
+The cleanup recall walk from the same file did not move. It modelled
+`Recommender.Memory.recommend`, which no longer exists, and it needed
+`fire/plausible-witness-dag`. The restored model needs no dependency,
+and no axiom beyond `propext` and `Quot.sound`.
 
 ## Status
 
@@ -113,8 +130,10 @@ Done:
 - `WeftspunStudio.FactVector` replaces `WeftspunStudio.Hrr`.
 - The migration rewrote all 29 rows to 8192 bytes each.
 - The whole suite passes with 78 tests.
+- The Lean proofs build and run under Lean 4.32.2.
 
 Open:
 
 - Publish the library to Hex.
-- Restore the Lean proofs of the phase algebra, or drop the claim.
+- Run `lake build` in continuous integration, so a change to the
+  algebra cannot pass without the proofs.
