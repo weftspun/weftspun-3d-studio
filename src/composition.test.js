@@ -4,7 +4,7 @@
  */
 import { describe, it, expect, vi } from 'vitest';
 
-import { makeCatalogSource } from './composition.js';
+import { makeCatalogSource, makeOwnedAssetSource } from './composition.js';
 
 describe('makeCatalogSource', () => {
   it('takes the static list when VITE_STUDIO_API is unset', async () => {
@@ -39,5 +39,30 @@ describe('makeCatalogSource', () => {
     const source = makeCatalogSource({ env: { VITE_STUDIO_API: '' } });
 
     await expect(source.listModels()).resolves.toBeInstanceOf(Array);
+  });
+});
+
+describe('makeOwnedAssetSource', () => {
+  it('takes the null adapter when VITE_ENABLE_CHAIN is unset', async () => {
+    const source = await makeOwnedAssetSource({ env: {} });
+
+    expect(source.isEnabled()).toBe(false);
+    await expect(source.listOwnedTraitIds('0xabc')).resolves.toEqual([]);
+  });
+
+  it('takes the wallet adapter when VITE_ENABLE_CHAIN is 1', async () => {
+    const source = await makeOwnedAssetSource({
+      env: { VITE_ENABLE_CHAIN: '1' },
+      collections: [{ id: 'anata', name: 'Anata' }],
+    });
+
+    expect(source.isEnabled()).toBe(true);
+    await expect(source.listCollections()).resolves.toEqual([{ id: 'anata', name: 'Anata' }]);
+  });
+
+  it('treats any other value as off', async () => {
+    const source = await makeOwnedAssetSource({ env: { VITE_ENABLE_CHAIN: 'true' } });
+
+    expect(source.isEnabled()).toBe(false);
   });
 });

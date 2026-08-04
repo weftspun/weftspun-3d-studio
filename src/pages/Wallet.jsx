@@ -9,8 +9,8 @@ import { SceneContext } from "../context/SceneContext"
 import { SoundContext } from "../context/SoundContext"
 import { AudioContext } from "../context/AudioContext"
 
-import { connectWallet } from "../library/mint-utils"
-// import { getOpenseaCollection } from "../library/mint-utils"
+import { connectWallet } from "../chain/mint-utils"
+// import { getOpenseaCollection } from "../chain/mint-utils"
 
 function Wallet() {
   

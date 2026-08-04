@@ -5,7 +5,7 @@ import { SceneContext } from "../context/SceneContext"
 import CustomButton from "../components/custom-button"
 import { SoundContext } from "../context/SoundContext"
 import { AudioContext } from "../context/AudioContext"
-import { mintAsset } from "../library/mint-utils"
+import { mintAsset } from "../chain/mint-utils"
 
 // Import loot-assets icons
 import specialIcon from "/loot-assets/icons/Special.svg";

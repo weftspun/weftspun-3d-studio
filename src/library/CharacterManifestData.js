@@ -1,6 +1,6 @@
 import { getAsArray } from "./utils";
 import { ManifestRestrictions } from "./manifestRestrictions";
-import { WalletCollections } from "./walletCollections";
+import { WalletCollections } from "../chain/walletCollections";
 
 
 

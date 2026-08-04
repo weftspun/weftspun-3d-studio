@@ -6,7 +6,7 @@ import { SoundContext } from "../context/SoundContext"
 import { AudioContext } from "../context/AudioContext"
 import { SceneContext } from "../context/SceneContext"
 
-import { connectWallet } from "../library/mint-utils"
+import { connectWallet } from "../chain/mint-utils"
 
 const opensea_Key = import.meta.env.VITE_OPENSEA_KEY;
 

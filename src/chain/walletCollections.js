@@ -1,7 +1,7 @@
-import { fetchOwnedNFTs, ownsCollection, fetchSolanaPurchasedAssets } from "./mint-utils";
-import { getAsArray } from "./utils";
-import { OwnedNFTTraitIDs } from "./ownedNFTTraitIDs";
-import { connectWallet } from "./mint-utils";
+import { fetchOwnedNFTs, ownsCollection, fetchSolanaPurchasedAssets } from "../chain/mint-utils";
+import { getAsArray } from "../library/utils";
+import { OwnedNFTTraitIDs } from "../chain/ownedNFTTraitIDs";
+import { connectWallet } from "../chain/mint-utils";
 
 /**
  * Handles wallet operations and NFT collection interactions.

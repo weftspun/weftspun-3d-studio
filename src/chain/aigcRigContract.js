@@ -2,7 +2,7 @@
  * Validates AIGC avatar GLBs against docs/API_AVATAR_RIG_CONTRACT.md.
  * Does not modify the model — reports failures for DGX/API export fixes.
  */
-import * as THREE from './three.js';
+import * as THREE from '../library/three.js';
 import {
   collectModelBones,
   findBoneByName,
@@ -12,7 +12,7 @@ import {
   getMeshLayoutBounds,
   getSkinnedDisplayWorldBounds,
   modelHasSkinnedMesh,
-} from './rigBoneUtils.js';
+} from '../library/rigBoneUtils.js';
 
 /** @typedef {'pass'|'fail'} AigcRigContractStatus */
 

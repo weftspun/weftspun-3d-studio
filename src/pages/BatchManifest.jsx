@@ -16,7 +16,7 @@ import ModelInformation from "../components/ModelInformation"
 import MergeOptions from "../components/MergeOptions"
 import { local } from "../library/store"
 import { ZipManager } from "../library/zipManager"
-import { connectWallet } from "../library/mint-utils"
+import { connectWallet } from "../chain/mint-utils"
 
 function BatchManifest() {
   const { isLoading, setViewMode, setIsLoading } = React.useContext(ViewContext)

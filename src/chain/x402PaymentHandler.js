@@ -4,8 +4,8 @@
  * Supports both Base network and Thirdweb's multi-chain x402 facilitator
  */
 
-import BaseX402Manager from './baseX402Manager';
-import ThirdwebX402Manager from './thirdwebX402Manager';
+import BaseX402Manager from '../chain/baseX402Manager';
+import ThirdwebX402Manager from '../chain/thirdwebX402Manager';
 
 export class X402PaymentHandler {
   constructor(config = {}) {

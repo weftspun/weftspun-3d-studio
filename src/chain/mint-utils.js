@@ -1,7 +1,7 @@
 import { ethers } from "ethers"
-import { getVRMBlobData } from "./download-utils"
+import { getVRMBlobData } from "../library/download-utils"
 import { CharacterContract, EternalProxyContract, webaverseGenesisAddress } from "../components/Contract"
-import { SolanaManager } from "./solanaManager"
+import { SolanaManager } from "../library/solanaManager"
 import { Connection, Transaction } from "@solana/web3.js";
 // import { Connection, PublicKey } from '@solana/web3.js';
 // import { Metaplex } from '@metaplex-foundation/js';
@@ -289,8 +289,8 @@ export function connectWallet(network, walletType = null) {
           // Check for Thirdweb wallet types first
           if (walletType === 'thirdweb-smart' || walletType === 'thirdweb-inapp') {
             try {
-              const { ThirdwebSmartWalletManager } = await import('./thirdwebSmartWallet');
-              const { ThirdwebInAppWalletManager } = await import('./thirdwebInAppWallet');
+              const { ThirdwebSmartWalletManager } = await import('../chain/thirdwebSmartWallet');
+              const { ThirdwebInAppWalletManager } = await import('../chain/thirdwebInAppWallet');
               
               if (walletType === 'thirdweb-smart') {
                 const smartWallet = new ThirdwebSmartWalletManager({ chain: network.toLowerCase() });

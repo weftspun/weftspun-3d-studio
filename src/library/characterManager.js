@@ -14,9 +14,9 @@ import { LipSync } from "./lipsync";
 import { LookAtManager } from "./lookatManager";
 import OverlayedTextureManager from "./OverlayTextureManager";
 import { ManifestDataManager } from "./manifestDataManager";
-import { WalletCollections } from "./walletCollections";
-import { buySolanaPurchasableAssets } from "./mint-utils"
-import { OwnedNFTTraitIDs } from "./ownedNFTTraitIDs";
+import { WalletCollections } from "../chain/walletCollections";
+import { buySolanaPurchasableAssets } from "../chain/mint-utils"
+import { OwnedNFTTraitIDs } from "../chain/ownedNFTTraitIDs";
 
 //import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
 

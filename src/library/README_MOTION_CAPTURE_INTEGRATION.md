@@ -55,7 +55,7 @@ The motion capture system integrates:
   - UI navigation and gesture recognition
   - Left and right hand device management
 
-- **VanaDataManager** (`src/library/vanaDataManager.js`)
+- **VanaDataManager** (`src/chain/vanaDataManager.js`)
   - Decentralized data collection
   - Data pool management
   - Marketplace integration
@@ -128,7 +128,7 @@ await manager.sendToWebhook(motionData);
 ```javascript
 import { MbientLabsManager } from './library/mbientLabsManager';
 import { TapStrapManager } from './library/tapStrapManager';
-import { VanaDataManager } from './library/vanaDataManager';
+import { VanaDataManager } from '../chain/vanaDataManager';
 
 class CompleteMotionCaptureSystem {
   constructor() {
@@ -234,7 +234,7 @@ await system.stopCapture();
 ### 4. Vana Protocol Integration
 
 ```javascript
-import { VanaDataManager } from './library/vanaDataManager';
+import { VanaDataManager } from '../chain/vanaDataManager';
 
 const vana = new VanaDataManager({
   apiKey: process.env.VITE_VANA_API_KEY,
@@ -267,7 +267,7 @@ await vana.submitTrackingData(motionData, pool.id, {
 
 ```javascript
 import { MbientLabsManager } from './library/mbientLabsManager';
-import { VanaDataManager } from './library/vanaDataManager';
+import { VanaDataManager } from '../chain/vanaDataManager';
 
 class MotionCaptureSystem {
   constructor() {
