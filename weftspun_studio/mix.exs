@@ -12,6 +12,7 @@ defmodule WeftspunStudio.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       releases: releases(),
+      aliases: aliases(),
       elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
@@ -32,14 +33,34 @@ defmodule WeftspunStudio.MixProject do
       # XLA_TARGET=cuda12 to get the NVIDIA accelerated client.
       {:nx, "~> 0.13"},
       {:exla, "~> 0.13"},
+      # The phase algebra behind fact retrieval. One definition shared
+      # across the weftspun repositories. RFD 0021 records the move.
+      {:hrr, github: "weftspun/elixir-holographic-reduced-representation"},
+      # Provisions and runs the local CockroachDB host. It downloads
+      # the same V-Sekai 22.1 build that RFD 0020 selects.
+      {:cockroach_local, github: "weftspun/cockroach-local"},
       # Single-binary packaging. Needs Zig at build time.
       {:burrito, "~> 1.0"},
       {:jason, "~> 1.4"},
       # HTTP surface. Smallest slice that serves the client.
       {:bandit, "~> 1.5"},
       {:plug, "~> 1.16"},
+      # Persistence. CockroachDB speaks the PostgreSQL wire protocol,
+      # so Ecto drives it through Postgrex. RFD 0020 records why.
+      {:ecto_sql, "~> 3.12"},
+      {:postgrex, "~> 0.19"},
       # Mocks for the API surface the UI consumes.
       {:mox, "~> 1.1", only: :test}
+    ]
+  end
+
+  # `mix test` prepares a clean database first. CockroachDB holds no
+  # per-connection advisory lock, so the migration lock stays off.
+  defp aliases do
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 

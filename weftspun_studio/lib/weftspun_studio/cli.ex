@@ -15,12 +15,18 @@ defmodule WeftspunStudio.CLI do
       weftspun models list [--group GROUP] [--json]
       weftspun models verify [--catalog PATH]
       weftspun compute info
+      weftspun db migrate
+      weftspun db seed
+      weftspun db status
       weftspun version
 
   COMMANDS
       models list      Print the model inventory from RFD 0016.
       models verify    Compare the inventory against the client catalog.
       compute info     Report the EXLA backend state.
+      db migrate       Apply every pending database migration.
+      db seed          Write the RFD 0016 inventory into the database.
+      db status        Report the database connection and the row count.
       version          Print the version.
 
   OPTIONS
@@ -36,6 +42,9 @@ defmodule WeftspunStudio.CLI do
   def main(["models", "list" | rest]), do: models_list(rest)
   def main(["models", "verify" | rest]), do: models_verify(rest)
   def main(["compute", "info" | _rest]), do: compute_info()
+  def main(["db", "migrate" | _rest]), do: db_migrate()
+  def main(["db", "seed" | _rest]), do: db_seed()
+  def main(["db", "status" | _rest]), do: db_status()
   def main(["version" | _rest]), do: puts_ok(version())
   def main([]), do: puts_ok(@usage)
   def main(["help" | _]), do: puts_ok(@usage)
@@ -120,6 +129,51 @@ defmodule WeftspunStudio.CLI do
 
         1
     end
+  end
+
+  defp db_migrate do
+    WeftspunStudio.Release.migrate()
+    puts_ok("migrations applied")
+  rescue
+    error -> db_error(error)
+  end
+
+  defp db_seed do
+    {:ok, count} = WeftspunStudio.Release.seed()
+    puts_ok("seeded #{count} facts from the RFD 0016 inventory")
+  rescue
+    error -> db_error(error)
+  end
+
+  defp db_status do
+    alias WeftspunStudio.{Facts.Fact, Repo}
+
+    if Repo.up?() do
+      config = Repo.config()
+
+      """
+      connection: up
+      host: #{config[:hostname]}:#{config[:port]}
+      database: #{config[:database]}
+      facts: #{Repo.aggregate(Fact, :count)}
+      """
+      |> puts_ok()
+    else
+      IO.puts(:stderr, "connection: down")
+      1
+    end
+  end
+
+  defp db_error(error) do
+    IO.puts(:stderr, """
+    the database is not reachable: #{Exception.message(error)}
+
+    Start a local cluster with:
+        cockroach start-single-node --insecure \\
+          --store=.crdb/data --listen-addr=127.0.0.1:26257
+    """)
+
+    1
   end
 
   defp report_side(_label, []), do: :ok

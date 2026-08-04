@@ -16,14 +16,14 @@ defmodule WeftspunStudio.FactStore do
 
   use Agent
 
-  alias WeftspunStudio.{Adapters.InventoryCatalog, Hrr}
+  alias WeftspunStudio.{Adapters.InventoryCatalog, FactVector}
 
   @behaviour WeftspunStudio.Ports.FactSink
 
   @doc "Starts the store and seeds it from the inventory."
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
-    dim = Keyword.get(opts, :dim, Hrr.default_dim())
+    dim = Keyword.get(opts, :dim, FactVector.default_dim())
     seed = Keyword.get_lazy(opts, :seed, fn -> InventoryCatalog.list_facts(nil) end)
 
     Agent.start_link(fn -> build(seed, dim) end, name: name)
@@ -32,10 +32,10 @@ defmodule WeftspunStudio.FactStore do
   defp build(seed, dim) do
     facts =
       Map.new(seed, fn fact ->
-        {fact.fact_id, Map.put(fact, :hrr_vector, Hrr.encode_fact(fact, dim))}
+        {fact.fact_id, Map.put(fact, :hrr_vector, FactVector.encode(fact, dim))}
       end)
 
-    %{dim: dim, facts: facts, codebook: Hrr.codebook(seed, dim)}
+    %{dim: dim, facts: facts, codebook: FactVector.codebook(seed, dim)}
   end
 
   @doc "Every fact, highest trust first."
@@ -67,7 +67,7 @@ defmodule WeftspunStudio.FactStore do
       |> Map.values()
       |> Enum.filter(&(&1.trust_score >= min_trust))
       |> Enum.map(fn fact ->
-        score = Nx.to_number(Hrr.similarity(probe, fact.hrr_vector))
+        score = HRR.similarity(probe, fact.hrr_vector)
         {fact, score * fact.trust_score}
       end)
       |> Enum.sort_by(&elem(&1, 1), :desc)
@@ -75,35 +75,14 @@ defmodule WeftspunStudio.FactStore do
     end)
   end
 
-  defp query_vector(query, dim) do
-    terms =
-      query
-      |> String.downcase()
-      |> String.split(~r/[^a-z0-9_.]+/u, trim: true)
-
-    case terms do
-      [] ->
-        Nx.broadcast(0.0, {dim})
-
-      terms ->
-        Hrr.bundle(
-          Enum.flat_map(terms, fn t ->
-            [
-              Hrr.bind(Hrr.role(:id, dim), Hrr.vector(t, dim)),
-              Hrr.bind(Hrr.role(:category, dim), Hrr.vector(t, dim)),
-              Hrr.bind(Hrr.role(:tag, dim), Hrr.vector(t, dim))
-            ]
-          end)
-        )
-    end
-  end
+  defp query_vector(query, dim), do: FactVector.query(query, dim)
 
   @doc "Recovers the symbol bound to one role of a stored fact."
   def probe_role(name \\ __MODULE__, fact_id, role) do
     Agent.get(name, fn %{dim: dim, facts: facts, codebook: codebook} ->
       case Map.fetch(facts, fact_id) do
         {:ok, fact} ->
-          fact.hrr_vector |> Hrr.unbind(Hrr.role(role, dim)) |> Hrr.cleanup(codebook)
+          FactVector.probe(fact.hrr_vector, role, codebook, dim)
 
         :error ->
           nil
@@ -114,12 +93,15 @@ defmodule WeftspunStudio.FactStore do
   @impl true
   def upsert_fact(name, fact_id, attrs) do
     Agent.update(name, fn %{dim: dim, facts: facts, codebook: codebook} = state ->
-      fact = attrs |> Map.put(:fact_id, fact_id) |> then(&Map.put(&1, :hrr_vector, Hrr.encode_fact(&1, dim)))
+      fact =
+        attrs
+        |> Map.put(:fact_id, fact_id)
+        |> then(&Map.put(&1, :hrr_vector, FactVector.encode(&1, dim)))
 
       %{
         state
         | facts: Map.put(facts, fact_id, fact),
-          codebook: Map.merge(codebook, Hrr.codebook([fact], dim))
+          codebook: Map.merge(codebook, FactVector.codebook([fact], dim))
       }
     end)
   end

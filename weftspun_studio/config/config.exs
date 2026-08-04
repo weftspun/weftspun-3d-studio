@@ -1,5 +1,10 @@
 import Config
 
+# Persistence. RFD 0020 selects the V-Sekai CockroachDB build. It
+# speaks the PostgreSQL wire protocol, so the Postgres adapter drives
+# it without change.
+config :weftspun_studio, ecto_repos: [WeftspunStudio.Repo]
+
 # RFD 0019 selects EXLA on CUDA. Build the dependency with
 # XLA_TARGET=cuda12 to get the NVIDIA accelerated client. That build
 # also needs the NVIDIA runtime libraries on the host.
@@ -24,3 +29,7 @@ config :exla,
   ],
   default_client:
     String.to_atom(System.get_env("WEFTSPUN_EXLA_CLIENT", to_string(default_client)))
+
+# Per environment settings follow. The database name and the pool
+# differ between a developer machine and the test suite.
+import_config "#{config_env()}.exs"

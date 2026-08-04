@@ -7,7 +7,8 @@ defmodule WeftspunStudio.Application do
   def start(_type, _args) do
     # The RFD 0016 inventory seeds the fact store at boot.
     children =
-      [WeftspunStudio.FactStore] ++
+      repo() ++
+        [WeftspunStudio.FactStore] ++
         if serve?() do
           [{Bandit, plug: WeftspunStudio.Router, port: port()}]
         else
@@ -35,6 +36,17 @@ defmodule WeftspunStudio.Application do
   end
 
   defp release?, do: System.get_env("RELEASE_NAME") != nil
+
+  # The inventory commands need no database, so a Burrito binary can
+  # run `models list` on a host with no cluster. Set WEFTSPUN_DB=0 to
+  # leave the pool out.
+  defp repo do
+    if System.get_env("WEFTSPUN_DB", "1") == "1" do
+      [WeftspunStudio.Repo]
+    else
+      []
+    end
+  end
 
   # The HTTP surface stays off during tests, which call the router
   # directly through Plug.Test.
