@@ -36,7 +36,9 @@ tables to maintain.
 
 ## The schema sketch
 
-`domain.ex`, shared across all 15,000 problems:
+`domain.ex`, shared across all 15,000 problems, holds the trait map
+and one new action, `a_resolve_trait`. It has no fixed capability
+list. The list grows as Claude's vision inspection meets new values.
 
 ```elixir
 @variables %{
@@ -47,26 +49,39 @@ tables to maintain.
 }
 
 @capabilities %{
-  hair_color: ["black", "brown", "blonde", "red", "silver", "..."],
-  eye_color: ["black", "brown", "blue", "green", "violet", "..."],
-  pose: ["standing", "sitting", "action", "portrait"],
-  clothing: ["school_uniform", "casual", "fantasy_armor", "..."]
+  hair_color: %{},
+  eye_color: %{},
+  pose: %{},
+  clothing: %{}
+}
+
+@actions %{
+  a_resolve_trait: %{
+    params: [:role, :caption_text],
+    bind: [
+      {:capability_id, {HRR.Cleanup, :resolve_or_mint, ["{role}", "{caption_text}"]}}
+    ],
+    body: [
+      %{pointer_set: "/trait/{role}", value: "{capability_id}"}
+    ]
+  }
 }
 ```
 
-Each `problem.ex` for one dataset row overrides only `trait`, with a
-`:ref` per key, for example `hair_color: "red"`, and never a free
-caption sentence. The capability id is the superkey component RFD
-0065's Decision names. The trait map key, `hair_color` itself, is the
-functional dependency's determining side, matching the `have`/
-`handle`/`loaded` shape already in `decisions/0044-cog-seethrough
--layer-decomposition/domain.ex`.
+`HRR.Cleanup.resolve_or_mint/2` is the RFD 0021 library, called from
+inside taskweft, not from `WeftspunStudio.FactVector`. It binds the
+role and the caption text, and it checks the bound vector against the
+existing codebook. A near match returns the existing capability id.
+No match mints one and adds it to the codebook. Each `problem.ex`
+then calls `a_resolve_trait` once per trait, and stores only the
+returned `:ref`, never the caption text.
 
 ## What this schema does not need
 
-No per-trait join table, and no per-character-pair table. The
-15,000 `problem.ex` files repeat only a capability id, never a
-caption string, so the redundant-tuple problem the paper's Example
+No per-trait join table, no per-character-pair table, and no
+hand-maintained enum list. The 15,000 `problem.ex` files repeat only
+a capability id. Near-duplicate captions collapse to one id through
+`HRR.Cleanup`, so the redundant-tuple problem the paper's Example
 1.1 shows never appears here.
 
 ## Source
