@@ -71,6 +71,15 @@ defmodule WeftspunStudio.Router do
     json(conn, 200, %{status: "ok", version: WeftspunStudio.CLI.version()})
   end
 
+  # No frontend route exists yet. RFD 0062 names the built browser
+  # client as a later step, not something this deployment carries.
+  # A bare 404 at "/" reads as the whole app being down, so this
+  # answers with the same status the health route already gives,
+  # not the router's generic catch-all below.
+  get "/" do
+    json(conn, 200, %{status: "ok", version: WeftspunStudio.CLI.version()})
+  end
+
   # ---------- jobs, passed through to Replicate ----------
 
   post "/api/v1/jobs" do
