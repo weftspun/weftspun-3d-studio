@@ -23,7 +23,7 @@ holds the neural models.
 | xatlas_uv_unwrapping      | UV unwrapping   | MIT     |
 | colmap_3dgs_reconstruct   | Photos to splat | BSD-3   |
 
-All four run on the DGX API.
+Each one runs as its own Cog on Replicate, per RFD 0036.
 
 ## How they scale
 

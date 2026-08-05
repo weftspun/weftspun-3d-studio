@@ -17,8 +17,9 @@ location. The live list filters the catalog when the API connects.
 
 ## Inventory
 
-Every model below is a deep learning model, and every one runs on the
-DGX API. RFD 0033 lists the geometric algorithms.
+Every model below is a deep learning model. Each one runs as its own
+Cog on Replicate, per RFD 0036. RFD 0033 lists the geometric
+algorithms.
 
 | Model id                        | Task                |
 | ------------------------------- | ------------------- |

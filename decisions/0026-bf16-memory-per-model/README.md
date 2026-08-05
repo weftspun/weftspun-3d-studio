@@ -17,9 +17,14 @@ RFD 0027 permits two formats. bf16 holds one parameter in 2 bytes, and
 Q4_K_M holds one in about 0.55 bytes. The table gives both.
 
 The Source column says where each number comes from. `published` means
-the model card states the count. `estimated` means this document
-derives the count from the architecture. `unknown` means no count is
-available yet.
+the model card states the count. `measured` means this document read
+the checkpoint sizes. `estimated` means this document derives the
+count from the architecture. `unknown` means no count is available
+yet.
+
+Prefer `measured` over every other source, and prefer bf16 over fp16
+where a checkpoint offers both. The two formats cost the same memory,
+and bf16 carries the wider exponent range.
 
 ## Weights per model
 
@@ -27,6 +32,7 @@ available yet.
 | ------------------------------- | ---------: | -------: | -------: | --------- |
 | qwen_q4_k_m_image_edit          |     27.0 B |  54.0 GB | 14.85 GB | published |
 | krea2_turbo_text_to_image       |     16.9 B |  33.8 GB |  9.30 GB | estimated |
+| pixal3d_image_to_textured_mesh  |    12.02 B | 24.05 GB |  6.61 GB | measured  |
 | seethrough_layer_decomposition  |      4.9 B |   9.8 GB |  2.70 GB | estimated |
 | trellis2_image_to_textured_mesh |      4.0 B |   8.0 GB |  2.20 GB | estimated |
 | trellis_image_to_textured_mesh  |      1.8 B |   3.6 GB |  0.99 GB | estimated |
@@ -36,7 +42,6 @@ available yet.
 | p3sam_mesh_segmentation         |      0.4 B |   0.8 GB |  0.22 GB | estimated |
 | kimodo_text_to_motion           |      0.3 B |   0.6 GB |  0.17 GB | estimated |
 | unirig_auto_rig                 |    0.125 B |  0.25 GB |  0.07 GB | estimated |
-| pixal3d_image_to_textured_mesh  |    unknown |  unknown |  unknown | unknown   |
 | lingbot_map_environment_scan    |    unknown |  unknown |  unknown | unknown   |
 | voxhammer_text_mesh_editing     |          0 |        0 |        0 | published |
 | voxhammer_image_mesh_editing    |          0 |        0 |        0 | published |
