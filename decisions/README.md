@@ -71,6 +71,7 @@ See the STE policy below for the writing rules.
 | 0057 | Open work | published |
 | 0058 | Zero trust networking | discussion |
 | 0059 | Continuous integration, in one step | discussion |
+| 0060 | A thirdparty/ reset | discussion |
 
 ## DRY policy
 

@@ -54,7 +54,7 @@
     "setup-https": "node scripts/setup-https.js",
     "update-roadmap": "node scripts/update-roadmap-date.js",
     "verify:build-deps": "node scripts/verify-build-deps.mjs",
-    "lint:ste": "python3 scripts/ste-lint-decisions.py decisions/0*/README.md"
+    "lint:ste": "python3 ../../scripts/ste-lint-decisions.py ../../decisions/0*/README.md"
   },
   "dependencies": {
     "@iwsdk/core": "^0.4.2",

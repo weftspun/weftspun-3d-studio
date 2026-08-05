@@ -25,7 +25,7 @@ history section.
 
 | What | Evidence |
 | ---- | -------- |
-| The planner composes three documents | `pipeline_test.exs`, 105 tests pass |
+| The planner composes three documents | `pipeline_test.exs`, 100 of 105 pass on this box; the other 5 need `taskweft_nif`, see below |
 | The model image serves HTTP | RFD 0040, run in Docker on this machine |
 | CockroachDB provisions and runs | RFD 0020, 92 tests with the node up |
 | taskweft composition | PRs 207, 208, 209, merged upstream |
@@ -53,6 +53,11 @@ when its model is next worked on, and not in a sweep.
 **`_to_usd` in the worker.** RFD 0053. The layer records the GLB as an
 asset attribute, because `usd-core` alone reads no glTF. A glTF file
 format plugin would let it be a reference arc.
+
+**`taskweft_nif` on x86_64.** `deps/taskweft_nif/priv/libtaskweft_nif.so`
+is an ARM aarch64 binary; `file` confirms it. It fails to load on
+this x86_64 box, and 5 of the 105 `pipeline_test.exs` tests fail with
+it. Rebuild the NIF for x86_64, or fetch an x86_64 release.
 
 ## Unknown, and blocking a number
 

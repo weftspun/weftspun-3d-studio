@@ -12,6 +12,10 @@
 # images. Each step must pass before the next starts — the same
 # ordering .github/workflows/main.yml uses, so a green run here means
 # a green run there.
+#
+# RFD 0060 swapped the repo layout: weftspun_studio's content now
+# sits at the repo root, and the JS app RFD 0060 calls thirdparty/
+# lives at thirdparty/3d_studio/.
 
 set -euo pipefail
 
@@ -23,7 +27,7 @@ step() { printf '\n=== %s ===\n' "$1"; }
 # --- JS: test, then build -------------------------------------------
 
 step "JS: install"
-cd "$ROOT"
+cd "$ROOT/thirdparty/3d_studio"
 npm install --legacy-peer-deps
 
 step "JS: unit tests"

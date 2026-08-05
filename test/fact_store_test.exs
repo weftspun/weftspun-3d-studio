@@ -25,7 +25,7 @@ defmodule WeftspunStudio.FactStoreTest do
 
   test "the seed leads the client catalog by the known drift", %{store: s} do
     seeded = FactStore.list(s) |> Enum.map(& &1.fact_id) |> MapSet.new()
-    {:ok, client} = WeftspunStudio.JsCatalog.ids("../src/library/aiModelsCatalog.js")
+    {:ok, client} = WeftspunStudio.JsCatalog.ids("thirdparty/3d_studio/src/library/aiModelsCatalog.js")
 
     assert MapSet.difference(seeded, MapSet.new(client)) ==
              MapSet.new(["qwen_q4_k_m_image_edit"])

@@ -5,14 +5,16 @@ defmodule WeftspunStudio.JsCatalog do
   This module is the seam of the strangler fig in RFD 0019. Phase 1
   compares the Elixir inventory against the JavaScript catalog and
   reports a difference. It changes nothing, because
-  `src/library/aiModelsCatalog.js` stays authoritative until phase 2.
+  `thirdparty/3d_studio/src/library/aiModelsCatalog.js` stays
+  authoritative until phase 2. RFD 0060 moved that file's parent tree
+  under `thirdparty/`; the path here follows it.
 
   The parser is deliberately narrow. It reads `value: '...'` entries
   from the catalog and nothing else. A real JavaScript parser would
   be a larger dependency than the check justifies.
   """
 
-  @default_path "../src/library/aiModelsCatalog.js"
+  @default_path "thirdparty/3d_studio/src/library/aiModelsCatalog.js"
 
   # Matches `value: 'some_model_id'` and `value: "some_model_id"`.
   @value_re ~r/(?:^|[\s{,])value:\s*['"]([a-z0-9_]+)['"]/m

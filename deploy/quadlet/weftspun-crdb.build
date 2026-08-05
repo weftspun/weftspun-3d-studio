@@ -1,14 +1,15 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 K. S. Ernest (iFire) Lee
 #
-# Builds the vendored-CockroachDB image from
-# weftspun_studio/deploy/Dockerfile.crdb. scripts/deploy-weftspun-quadlet.sh
-# syncs the repo to /opt/weftspun/src; that path is fixed by
-# convention for a single-box deployment (RFD 0058).
+# Builds the vendored-CockroachDB image from deploy/Dockerfile.crdb,
+# at the repo root since RFD 0060's swap.
+# scripts/deploy-weftspun-quadlet.sh syncs the repo to
+# /opt/weftspun/src; that path is fixed by convention for a
+# single-box deployment (RFD 0058).
 
 [Build]
 ImageTag=localhost/weftspun-crdb:latest
-File=/opt/weftspun/src/weftspun_studio/deploy/Dockerfile.crdb
+File=/opt/weftspun/src/deploy/Dockerfile.crdb
 SetWorkingDirectory=file
 # Rootful Podman's netavark bridge cannot reach the internet at all
 # on this host — not just a DNS gap, `getent` itself times out on

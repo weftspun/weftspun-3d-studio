@@ -8,7 +8,7 @@ defmodule WeftspunStudio.CatalogParityTest do
 
   alias WeftspunStudio.Adapters.InventoryCatalog
 
-  @catalog "../src/library/aiModelsCatalog.js"
+  @catalog "thirdparty/3d_studio/src/library/aiModelsCatalog.js"
 
   test "every served id appears in the client catalog" do
     assert {:ok, js_ids} = WeftspunStudio.JsCatalog.ids(@catalog)
