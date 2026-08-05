@@ -14,8 +14,10 @@ OpenUSD intermediate format.
 Encode useful combinations of character concepts into taskweft, and
 run it on Fly.io with Nx, with no GPU acceleration.
 
-1. Use taskweft to generate a character description, from a vision
-   inspection of the training dataset. This is the Gall's law step.
+1. Claude inspects each dataset row by vision, and writes the
+   character as a taskweft `problem.ex`. One shared `domain.ex`
+   holds the actions and guards, per RFD 0037. This is the Gall's
+   law step.
 2. Postpone RFD 0042 (Krea 2 Turbo) for image generation.
 3. Postpone RFD 0043 (Qwen image edit) to match a T-pose character
    pose.
@@ -31,9 +33,6 @@ run it on Fly.io with Nx, with no GPU acceleration.
 
 ## Related
 
-RFD 0042 gives Krea 2 Turbo text-to-image. RFD 0043 gives Qwen image
-edit. RFD 0044 gives See-Through layer decomposition. RFD 0040 gives
-Pixal3D, and RFD 0045 gives Kimodo text-to-motion.
-
-RFD 0046 gives SkinTokens auto rig. `DETAILS.md` holds the reference
-links.
+RFD 0037 gives the domain/problem split. RFD 0042, RFD 0043, RFD
+0044, RFD 0040, RFD 0045, and RFD 0046 give the postponed stages.
+`DETAILS.md` holds the reference links.
