@@ -77,13 +77,12 @@ defmodule WeftspunStudio.Router do
     json(conn, 200, %{status: "ok", version: WeftspunStudio.CLI.version()})
   end
 
-  # No frontend route exists yet. RFD 0062 names the built browser
-  # client as a later step, not something this deployment carries.
-  # A bare 404 at "/" reads as the whole app being down, so this
-  # answers with the same status the health route already gives,
-  # not the router's generic catch-all below.
+  # RFD 0062's full browser client is not wired in yet, but the RFD
+  # 0073 billboard gallery already is. Sketchfab and Fab both put
+  # the 3D preview at the root, not under a sub-path, so this does
+  # the same rather than answer "/" with a bare status stub.
   get "/" do
-    json(conn, 200, %{status: "ok", version: WeftspunStudio.CLI.version()})
+    send_gallery_index(conn)
   end
 
   # Plug.Static answers /gallery/index.html and every asset under it
