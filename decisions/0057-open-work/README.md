@@ -45,6 +45,11 @@ needs a rented card.
 **The vast.ai host.** RFD 0055 Phase 2. No instance is rented, and no
 worker answers.
 
+**The Fly.io / 4090 split.** RFD 0062. No `fly.toml`, no worker-side
+job-receiving adapter, no Tailscale join between a Fly machine and
+this box, no CockroachDB migration off this box. RFD 0062 names the
+target; none of it runs yet.
+
 ## Measured, and not built
 
 **Thirteen model folders.** RFD 0036. Each still carries a `cog.yaml`
@@ -85,4 +90,5 @@ cost something. Measure before choosing.
 RFD 0055 selects the host. RFD 0056 selects the development system.
 RFD 0036 packages the models. RFD 0026 holds the memory numbers.
 RFD 0058 gives the Quadlet deployment. RFD 0059 gives the one-step
-build. RFD 0061 gives the `idtx_core` upload-prep decision.
+build. RFD 0061 gives the `idtx_core` upload-prep decision. RFD 0062
+gives the Fly.io / 4090 split.
