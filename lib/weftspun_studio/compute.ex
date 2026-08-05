@@ -9,8 +9,8 @@ defmodule WeftspunStudio.Compute do
 
   XLA publishes no Windows archive, and nine of its nine release assets
   are for other systems. Develop in the dev container, which runs
-  Linux. RFD 0056 records it, and vast.ai runs Linux too, thus the
-  container matches production.
+  Linux. RFD 0056 records it, and this box's own Quadlets run Linux
+  too, thus the container matches production.
 
   A machine with no CUDA device still runs. EXLA falls back to the host
   client.

@@ -34,8 +34,8 @@ defmodule WeftspunStudio.MixProject do
       # this project builds against.
       #
       # XLA publishes no Windows archive. Develop in the dev container,
-      # which runs Linux, and RFD 0056 records it. vast.ai runs Linux
-      # too, thus the container matches production.
+      # which runs Linux, and RFD 0056 records it. This box's own
+      # Quadlets run Linux too, thus the container matches production.
       {:nx, "~> 0.13"},
       {:exla, "~> 0.13"},
       # The phase algebra behind fact retrieval. One definition shared
@@ -52,8 +52,8 @@ defmodule WeftspunStudio.MixProject do
       {:plug, "~> 1.16"},
       # Outbound HTTP. The job routes pass through to Replicate, which
       # runs each model as its own Cog. RFD 0055 keeps that passthrough
-      # until one vast.ai worker answers. RFD 0036 packages the model
-      # images that replace it, and it no longer selects Cog.
+      # until this box's own worker answers. RFD 0036 packages the
+      # model images that replace it, and it no longer selects Cog.
       {:req, "~> 0.5"},
       # The HTN planner. RFD 0037 models each pipeline as a RECTGTN
       # domain, and priv/domains holds them.

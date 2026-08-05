@@ -10,16 +10,18 @@ carried its own weight loader, its own CUDA pin, and its own output
 writer. There is no DGX now, and none of those adapters run anywhere.
 
 This RFD first selected Replicate Cog. Cog is a good package format,
-and it targets one host. The host is vast.ai, and vast.ai rents an
-instance and runs a plain Docker image on it.
+and it targets one host. RFD 0055 now runs the worker on this box's
+own 4090 first, plain Docker, no rental. vast.ai stays priced for
+later, the same plain-Docker shape once this box is not enough.
 
 ## Decision
 
 Package each model as a plain Docker image that serves HTTP.
 
 No Cog. Cog wraps a `Predictor` class and builds an image around it,
-and that image expects Replicate's own runtime. A vast.ai instance
-starts a container and maps a port, and nothing more.
+and that image expects Replicate's own runtime. Neither this box's
+own worker nor a vast.ai instance needs that. Each one starts a
+container and maps a port, and nothing more.
 
 Each model gets a folder under `decisions/`, and each folder holds
 this RFD, a `Dockerfile`, a `server.py`, and a `test_input.json`.

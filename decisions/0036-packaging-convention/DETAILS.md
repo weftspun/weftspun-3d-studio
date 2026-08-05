@@ -12,11 +12,12 @@ That is what makes one card type enough.
 
 - One model per image. An image that holds two cannot scale one
   without the other.
-- Load the weights at start, and not per request. An instance is
-  rented by the hour, thus a load per request buys nothing and costs
-  every response.
-- Serve `/health` and `/predict`. vast.ai runs no health probe of its
-  own, thus a caller polls `/health` until the instance is ready.
+- Load the weights at start, and not per request. Whether the host
+  is this box or a rented instance, a load per request buys nothing
+  and costs every response.
+- Serve `/health` and `/predict`. Neither this box's own worker nor
+  vast.ai runs a health probe of its own, thus a caller polls
+  `/health` until the instance is ready.
 - Download the weights at build time. A cold start that pulls 24 GB is
   a cold start that times out.
 - Pin every version, and pin the upstream commit. A moved tag changes

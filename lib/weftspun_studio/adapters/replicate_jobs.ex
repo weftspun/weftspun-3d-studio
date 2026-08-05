@@ -8,7 +8,7 @@ defmodule WeftspunStudio.Adapters.ReplicateJobs do
   RFD 0019 gave the job ports a later phase, and the port doc named
   the DGX backend. There is no DGX. Replicate runs each model as its
   own Cog, thus this adapter forwards and translates. RFD 0055 keeps
-  this passthrough until one vast.ai worker answers.
+  this passthrough until this box's own worker answers.
 
   It holds no queue and no state. Replicate owns the prediction, and
   this module maps two vocabularies:

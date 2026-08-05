@@ -12,8 +12,8 @@ import json
 import sys
 from pathlib import Path
 
-# RFD 0036. vast.ai runs no health probe of its own, thus a caller
-# polls /health until the instance is ready.
+# RFD 0036. Neither this box's own worker nor vast.ai runs a health
+# probe of its own, thus a caller polls /health until ready.
 REQUIRED_ROUTES = ["/health", "/predict"]
 
 
@@ -50,7 +50,7 @@ def check_dockerfile(path: Path) -> list[str]:
 
     # Cog is gone. RFD 0036 records why.
     if "cog.yaml" in source or "runpod" in source.lower():
-        problems.append("names Cog or RunPod, and RFD 0036 selects plain Docker on vast.ai")
+        problems.append("names Cog or RunPod, and RFD 0036 selects plain Docker instead")
 
     return problems
 
