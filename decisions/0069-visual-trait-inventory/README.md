@@ -49,4 +49,5 @@ RFD 0064 gives the dataset this RFD scans. RFD 0065 gives the
 resolve step a detected trait feeds. RFD 0044 gives the composite
 this RFD runs beside. RFD 0048 takes a segmented crop as its
 reference image. RFD 0021 gives the `HRR` library. RFD 0028 gives
-the license gate this RFD's model choice must clear.
+the license gate this RFD's model choice must clear. RFD 0072 reads
+this RFD's license check as its own precedent.

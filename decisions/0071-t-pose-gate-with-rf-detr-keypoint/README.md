@@ -30,4 +30,5 @@ not yet fix, and the open question of where the retry loop lives.
 
 RFD 0064 names the T-pose requirement this RFD checks. RFD 0043 is
 the edit this RFD gates. RFD 0040 is the stage this RFD protects.
-RFD 0069 selects the RF-DETR tier and confirms its license.
+RFD 0069 selects the RF-DETR tier and confirms its license. RFD 0072
+measures this RFD's tolerance and closes its anime-domain gap.

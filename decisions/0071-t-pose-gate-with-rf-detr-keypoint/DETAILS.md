@@ -24,7 +24,8 @@ shape, and not a number. A T-pose gate needs an angle tolerance per
 joint pair, such as the shoulder-elbow-wrist angle against 180
 degrees, before this RFD moves past discussion. Measure a set of
 known-good T-pose edits from RFD 0043, and derive the tolerance from
-that set, rather than guess one.
+that set, rather than guess one. RFD 0072 proposes GEM as the source
+of that measurement.
 
 ## Open questions
 
@@ -40,6 +41,7 @@ real-photo corpus, and RFD 0064's dataset is anime character art.
 A T-pose anime figure may carry joint proportions the COCO-trained
 keypoint model was never shown. Measure this gate's accuracy on a
 sample of RFD 0064's dataset before trusting it as a hard reject.
+RFD 0072 proposes closing this gap with distilled labels.
 
 **A retry ceiling.** A pose that never converges would loop RFD 0043
 forever. This RFD needs a retry limit, and a path for the caller
