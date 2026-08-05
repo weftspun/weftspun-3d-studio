@@ -63,12 +63,12 @@ See the STE policy below for the writing rules.
 | 0051 | Model image for worldmirror2_reconstruct              | abandoned      |
 | 0052 | Model image for triposplat_image_to_splat             | abandoned      |
 | 0053 | OpenUSD as the internal format                        | discussion     |
-| 0054 | The planner inside the studio core                    | discussion     |
+| 0054 | The planner inside the studio core                    | published      |
 | 0055 | BEAM workers on vast.ai                               | discussion     |
 | 0056 | Develop in a dev container                            | discussion     |
 | 0057 | Open work                                             | published      |
 | 0058 | Zero trust networking                                 | discussion     |
-| 0059 | Continuous integration, in one step                   | discussion     |
+| 0059 | Continuous integration, in one step                   | published      |
 | 0060 | A thirdparty/ reset                                   | discussion     |
 | 0061 | GLB upload prep moves to idtx_core, later             | discussion     |
 | 0062 | A Fly.io toplevel, and the 4090 as a worker node      | discussion     |
@@ -76,7 +76,7 @@ See the STE policy below for the writing rules.
 | 0064 | Character Concept Generator                           | pre-discussion |
 | 0065 | Taskweft domain schema in essential tuple normal form | discussion     |
 | 0066 | Differential Mamba for caption encoding               | abandoned      |
-| 0067 | CockroachDB, reranked against FoundationDB            | discussion     |
+| 0067 | CockroachDB, reranked against FoundationDB            | published      |
 | 0070 | Keep options open                                     | published      |
 
 ## DRY policy

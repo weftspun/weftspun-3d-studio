@@ -1,6 +1,6 @@
 # RFD 0059: Continuous integration, in one step
 
-**State:** discussion
+**State:** published
 **Scope:** `scripts/ci.sh`, `.github/workflows/main.yml`
 
 ## Problem

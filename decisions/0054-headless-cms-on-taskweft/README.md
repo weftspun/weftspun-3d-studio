@@ -1,6 +1,6 @@
 # RFD 0054: The planner inside the studio core
 
-**State:** discussion
+**State:** published
 **Scope:** `weftspun_studio/`
 
 ## Problem

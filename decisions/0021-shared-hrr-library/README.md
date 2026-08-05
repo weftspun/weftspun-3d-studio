@@ -1,6 +1,6 @@
 # RFD 0021: A shared holographic algebra library
 
-**State:** discussion
+**State:** published
 **Scope:** `weftspun_studio/`, `weftspun/elixir-holographic-reduced-representation`
 
 ## Problem

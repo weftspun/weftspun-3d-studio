@@ -1,6 +1,6 @@
 # RFD 0067: CockroachDB, reranked against FoundationDB
 
-**State:** discussion
+**State:** published
 **Scope:** `weftspun_studio/`, `character_taxonomy/`
 
 ## Problem
