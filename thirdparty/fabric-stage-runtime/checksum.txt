@@ -1,0 +1,4 @@
+sha256:0fdda9f6730ea1be1c7e342ed84670d54d423f49b4eab7d69665ca7956d1c621  openusd-26.05-x86_64-windows-msvc.tar.gz
+sha256:5eabcdbddb7cf3930068035424e1112e8817221ee617c1d6724b5d6bd0423bf7  openusd-26.05-x86_64-linux-gnu.tar.gz
+sha256:97aedba407fbf36f79d29eaf130970e2840d4c808e49da97f7c5232d5a4ccf4e  openusd-26.05-aarch64-apple-darwin.tar.gz
+sha256:eb34706503e3c7fe351c0bd065a9694c139572f6c06592365409d988b3fdaaa9  openusd-26.05-x86_64-windows-gnu.tar.gz

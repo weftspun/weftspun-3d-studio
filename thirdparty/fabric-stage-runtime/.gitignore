@@ -1,0 +1,11 @@
+/_build/
+/deps/
+/doc/
+erl_crash.dump
+*.ez
+openusd-*-src/
+openusd-*.tar.gz
+/cover/
+
+__pycache__/
+*.pyc
