@@ -15,7 +15,7 @@ repos:
           Every port is a Mox mock, and the planning documents stay
           real. RFD 0054 records that split. The database tests need a
           local CockroachDB, which mix weftspun.crdb provisions.
-        entry: bash -c "cd weftspun_studio && mix test"
+        entry: bash scripts/studio-test.sh
         language: system
         files: '^weftspun_studio/.*\.exs?$'
         pass_filenames: false

@@ -1,0 +1,48 @@
+{
+  "name": "weftspun-3d-studio",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+
+  // systemd runs as pid 1, so quadlet units start. Without both of
+  // these the container runs the default command instead, and quadlet
+  // has no systemd to generate for.
+  "overrideCommand": false,
+  "privileged": true,
+  "runArgs": [
+    "--cgroupns=host",
+    "--tmpfs=/run",
+    "--tmpfs=/run/lock"
+  ],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "JakeBecker.elixir-ls",
+        "ms-azuretools.vscode-docker",
+        "ms-python.python"
+      ],
+      "settings": {
+        "elixirLS.projectDir": "weftspun_studio",
+        "files.eol": "\n"
+      }
+    }
+  },
+
+  // 26257 is CockroachDB, 4000 is the studio API, and 8000 is a model
+  // image under test.
+  "forwardPorts": [26257, 4000, 8000],
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  // The BEAM writes many small files into _build and deps. A bind
+  // mount from a Windows host makes both slow, thus each takes a
+  // volume. The source stays a bind mount, because an edit on the host
+  // must reach the container with no copy.
+  "mounts": [
+    "source=weftspun-build,target=${containerWorkspaceFolder}/weftspun_studio/_build,type=volume",
+    "source=weftspun-deps,target=${containerWorkspaceFolder}/weftspun_studio/deps,type=volume"
+  ],
+
+  "remoteUser": "vscode"
+}

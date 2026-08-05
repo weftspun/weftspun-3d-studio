@@ -29,12 +29,15 @@ defmodule WeftspunStudio.MixProject do
 
   defp deps do
     [
-      # Tensor work. RFD 0019 first selected EXLA, and XLA publishes no
-      # Windows archive. Torchx binds LibTorch, which ships for
-      # Windows, macOS, and Linux with a CUDA build for each. Set
-      # LIBTORCH_TARGET=cu124 for the NVIDIA build.
+      # Tensor work. RFD 0019 selects EXLA, and nothing else. EXLA
+      # compiles Nx.Defn graphs with XLA, and it is the only backend
+      # this project builds against.
+      #
+      # XLA publishes no Windows archive. Develop in the dev container,
+      # which runs Linux, and RFD 0056 records it. vast.ai runs Linux
+      # too, thus the container matches production.
       {:nx, "~> 0.13"},
-      {:torchx, "~> 0.13"},
+      {:exla, "~> 0.13"},
       # The phase algebra behind fact retrieval. One definition shared
       # across the weftspun repositories. RFD 0021 records the move.
       {:hrr, github: "weftspun/elixir-holographic-reduced-representation"},

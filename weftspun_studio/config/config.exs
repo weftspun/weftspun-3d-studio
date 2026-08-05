@@ -5,15 +5,38 @@ import Config
 # it without change.
 config :weftspun_studio, ecto_repos: [WeftspunStudio.Repo]
 
-# RFD 0019 first selected EXLA. XLA publishes no Windows archive, thus
-# Torchx replaces it. Torchx binds LibTorch, which ships for every host
-# this project runs on. Build with LIBTORCH_TARGET=cu124 for CUDA.
+# RFD 0019 selects EXLA, and nothing else. EXLA compiles Nx.Defn
+# graphs with XLA. Build it with XLA_TARGET=cuda12 for the NVIDIA
+# client, which also needs the NVIDIA runtime libraries on the host.
 #
-# Nx falls back to its binary backend when Torchx is absent. Naming a
-# backend that did not build would crash the first tensor op.
-if Code.ensure_loaded?(Torchx) do
-  config :nx, default_backend: Torchx.Backend
+# XLA publishes no Windows archive. Develop in the dev container,
+# which runs Linux. RFD 0056 records it.
+#
+# A build without EXLA still starts, on the Nx binary backend. Naming a
+# backend that did not build crashes the first tensor op.
+if Code.ensure_loaded?(EXLA) do
+  config :nx,
+    default_backend: EXLA.Backend,
+    default_defn_options: [compiler: EXLA]
 end
+
+# The EXLA client follows the build target. A CPU build of XLA
+# registers only the Host platform, thus asking for :cuda there would
+# crash on the first tensor op.
+default_client =
+  if System.get_env("XLA_TARGET", "") =~ ~r/^cuda/ do
+    :cuda
+  else
+    :host
+  end
+
+config :exla,
+  clients: [
+    cuda: [platform: :cuda],
+    host: [platform: :host]
+  ],
+  default_client:
+    String.to_atom(System.get_env("WEFTSPUN_EXLA_CLIENT", to_string(default_client)))
 
 # Per environment settings follow. The database name and the pool
 # differ between a developer machine and the test suite.
