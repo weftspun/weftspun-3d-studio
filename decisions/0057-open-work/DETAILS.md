@@ -60,6 +60,14 @@ lands.
 **The Q4_K_M quality cost.** RFD 0043. Quantization is a price choice
 now, and no measurement compares the two formats.
 
+**The browser client's own test suite.** RFD 0059. Failures span
+`skintokensLoadOrientation.test.js`,
+`taskAdvancedOptionsDecimation.test.js` (multiple, past the three
+already skipped), `viewportAnimationTarget.test.js`, and
+`src/library/taskModelUrl.test.js`, unrelated to each other and to
+any one commit. `.github/workflows/main.yml` is deleted until this
+is fixed, not patched test by test under a deadline.
+
 ## Decided, and waiting on order
 
 **The Replicate passthrough.** RFD 0055 Phase 1 step 3 removes it.

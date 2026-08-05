@@ -33,6 +33,13 @@ duplicates a step the script already runs.
 See `DETAILS.md` for the three steps in order, why one script beats
 three CI steps, and what this deliberately does not cover.
 
+`.github/workflows/main.yml` is deleted, on purpose. `scripts/ci.sh`
+still exists, still runs the same one command, and a developer still
+runs it before committing. The browser client's own test suite
+carries many pre-existing failures across several files, unrelated
+to any one commit, and every push turned red for that reason alone.
+RFD 0057 tracks restoring the workflow once that suite is fixed.
+
 ## Related
 
 RFD 0058 gives the two container images this script builds. RFD 0020
