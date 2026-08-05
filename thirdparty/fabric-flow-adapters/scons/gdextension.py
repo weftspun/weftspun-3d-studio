@@ -1,0 +1,463 @@
+"""
+SCons tool: gdextension
+Builds the GDExtension library for IDTXFlow and installs it into the addon directory for use by the Godot editor.
+
+This step requires the OpenUSD SDK, MDL SDK, and IXWebSocket library to be built. This can be done with the
+respective SCons tools for those dependencies.
+
+Usage in SConstruct:
+    env.BuildGdExtension()
+"""
+import configparser
+import datetime
+import glob
+import os
+import platform
+import re
+import shutil
+import stat
+
+def generate(env):
+    env.AddMethod(_build_extension, 'BuildGdExtension')
+
+def exists(env):
+    return True
+
+def find_absl_libs(lib_dir, extension):
+    print("search abls libs")
+    libs = []
+    for path in glob.glob(os.path.join(lib_dir, f"*absl_*.{extension}")):
+        libname = os.path.basename(path)
+        if libname.endswith(f".{extension}"):
+            if libname.startswith("lib"):
+                lib = libname[3:-2]  # strip "lib" prefix and ".a" suffix
+            else:
+                lib = libname
+            libs.append(lib)
+    return libs
+
+def _build_extension(env):
+    print("Building Godot Extension...")
+
+    # Get OpenUSD version from environment
+    openusd_version = env.get('openusd_version', '')
+    
+    godot_cpp_path = "thirdparty/godot-cpp"
+    usd_root = f"thirdparty/openusd-{openusd_version}"
+    mdl_sdk_path = "./thirdparty/mdl_sdk"
+    ixws_path = "thirdparty/ixwebsocket"
+    # Hexagonal layout (flow/ cluster): this builder is the Godot host
+    # adapter — its sources live under flow/adapters/godot, the core's
+    # OpenUSD-dependent converter framework headers (<idtxflow/...>) under
+    # flow/core/include, and the C ABI port headers under flow/ports.
+    adapter_root = "flow/adapters/godot"
+    core_include_path = "flow/core/include"
+    usd_extension_path = "flow/core/usd"
+
+    platform_name = env["platform_name"]
+    build_target = env["target"]
+    build_arch = env["arch"]
+    # double-precision Godot builds need a matching godot-cpp and a
+    # distinctly-named DLL (see idtxflow.gdextension's *.double.* entries).
+    is_double = env.get("precision", "single") == "double"
+
+    ixws_build_dir = f"{ixws_path}/build_{platform_name}_{build_target}"
+    
+    extension_env = env.Clone()
+
+    # Parallel MSVC PDB safety: the extension links with /DEBUG (its own
+    # program database via mspdbsrv) while libidtx_usd compiles with /Zi
+    # (the shared vc140.pdb, also mspdbsrv). Under `-j` both talk to the one
+    # default mspdbsrv endpoint and contend, which surfaces as an
+    # intermittent `LNK1201: error writing to program database`. Giving each
+    # target family its own endpoint spawns a separate mspdbsrv per family:
+    # intra-family /FS sharing stays safe, cross-family contention is gone.
+    if platform_name == "windows":
+        extension_env["ENV"]["_MSPDBSRV_ENDPOINT_"] = f"idtxflow_ext_{build_target}_{build_arch}"
+
+    # Include paths
+    extension_env.Append(CPPPATH=[
+        f"{adapter_root}/src",
+        f"{adapter_root}/include",
+        f"{usd_root}/include",
+        f"{mdl_sdk_path}/include",
+        f"{godot_cpp_path}/gdextension",
+        f"{godot_cpp_path}/include",
+        f"{godot_cpp_path}/gen/include",
+        f"{core_include_path}",
+        f"{ixws_path}",
+        f"{usd_extension_path}/include",
+        # libidtx_core — engine-agnostic C ABI. Avatar conversion logic
+        # lives here so the Unity P/Invoke assembly can share it.
+        "flow/ports/include",
+        # CHI-312: generated dlopen table (idtx_core_stubs.{h,cc}) +
+        # libidtx_core.<plat>.def — the extension loads core at runtime via
+        # this table instead of link-binding it (and its static OpenUSD).
+        "flow/ports/generated",
+        # LEMON (cgg-bern/lemon @ cgg) — vendored under
+        # flow/adapters/godot/libs/lemon for the CHI-253 tris-to-quads
+        # max-weight matching in src/exporter/UsdGodotStageExporter.cpp.
+        # libs/lemon-config ships our hand-written lemon/config.h (the
+        # upstream one is CMake-generated and we don't run CMake on it).
+        f"{adapter_root}/libs/lemon-config",
+        f"{adapter_root}/libs/lemon",
+    ])
+
+    # Library paths
+    extension_env.Append(LIBPATH=[
+        f"{usd_root}/lib",
+        f"{godot_cpp_path}/bin",
+        f"{mdl_sdk_path}/lib",
+        f"{ixws_build_dir}/Release" if platform_name == "windows" else f"{ixws_build_dir}",
+        f"{usd_extension_path}/libs/{platform_name}",
+        "build/idtx_core",
+    ])
+
+    # OpenSSL library/include paths (platform-specific)
+    # prefer system/Homebrew OpenSSL, fall back to vcpkg install
+    if platform_name == "windows":
+        # vcpkg-installed OpenSSL (always used on Windows)
+        vcpkg_triplet = "x64-windows-static"
+        vcpkg_installed = os.path.join("thirdparty", "vcpkg", "installed", vcpkg_triplet)
+        extension_env.Append(LIBPATH=[os.path.join(vcpkg_installed, "lib")])
+        extension_env.Append(CPPPATH=[os.path.join(vcpkg_installed, "include")])
+    elif platform_name == "macos":
+        # Try Homebrew OpenSSL first
+        _ssl_found = False
+        homebrew_openssl_candidates = [
+            "/opt/homebrew/opt/openssl",
+            "/usr/local/opt/openssl",
+            "/opt/homebrew/opt/openssl@3",
+            "/usr/local/opt/openssl@3",
+        ]
+        for candidate in homebrew_openssl_candidates:
+            if os.path.isdir(candidate):
+                extension_env.Append(LIBPATH=[os.path.join(candidate, "lib")])
+                extension_env.Append(CPPPATH=[os.path.join(candidate, "include")])
+                _ssl_found = True
+                break
+        if not _ssl_found:
+            # Fall back to vcpkg-installed OpenSSL
+            _machine = platform.machine().lower()
+            _triplet = "arm64-osx" if _machine in ("arm64", "aarch64") else "x64-osx"
+            _vcpkg_installed = os.path.join("thirdparty", "vcpkg", "installed", _triplet)
+            if os.path.isdir(_vcpkg_installed):
+                extension_env.Append(LIBPATH=[os.path.join(_vcpkg_installed, "lib")])
+                extension_env.Append(CPPPATH=[os.path.join(_vcpkg_installed, "include")])
+    elif platform_name == "linux":
+        # System OpenSSL dev headers present? If not, use vcpkg
+        if not os.path.isfile("/usr/include/openssl/ssl.h") and not os.path.isfile("/usr/local/include/openssl/ssl.h"):
+            _machine = platform.machine().lower()
+            _triplet = "arm64-linux" if _machine in ("arm64", "aarch64") else "x64-linux"
+            _vcpkg_installed = os.path.join("thirdparty", "vcpkg", "installed", _triplet)
+            if os.path.isdir(_vcpkg_installed):
+                extension_env.Append(LIBPATH=[os.path.join(_vcpkg_installed, "lib")])
+                extension_env.Append(CPPPATH=[os.path.join(_vcpkg_installed, "include")])
+        
+    # CHI-312: libidtx_core is NOT linked here. It is loaded at runtime via the
+    # generated dlopen table (Windows: delay-load against an import lib derived
+    # from the checked-in .def; POSIX: idtx_core_stubs.cc dlsym thunks). See the
+    # delay-load / stubs wiring below and flow/adapters/godot/src/idtx_core_loader.cpp.
+    core_lib_basename = f"libidtx_core.{platform_name}.{build_arch}"
+    # CHI: the extension links ZERO OpenUSD. All USD work happens inside
+    # libidtx_core (loaded at runtime via the dlopen/delay-load table); the
+    # extension reaches it only through the flat C ABI (idtx_scene.h etc.). So
+    # usd_ms / tbb / libidtx_usd are NOT linked here — that is what removes the
+    # load-time OpenUSD dependency that made Godot's loader fail (Error 126).
+    # (The DLLs are still bundled in addons/IDTXFlow/bin for libidtx_core's own
+    # runtime use — see the install step below.)
+    # godot-cpp puts ".double" between target and arch in its suffix.
+    godot_cpp_suffix = f"{build_target}.double" if is_double else build_target
+    libs = [
+        f"libgodot-cpp.{platform_name}.{godot_cpp_suffix}.{build_arch}",
+        "ixwebsocket",
+    ]
+
+    # OpenSSL static libs (all platforms)
+    if platform_name == "windows":
+        # vcpkg static OpenSSL lib names on Windows
+        libs.extend(["libssl", "libcrypto"])
+    else:
+        # Linux/macOS: standard OpenSSL lib names
+        libs.extend(["ssl", "crypto"])
+
+    # generic build flags
+    if platform.system() == "Windows" and (env["CXX"] == "cl" or env["CC"] == "cl"):
+        extension_env.Append(CXXFLAGS=['/EHsc', '/GR', '/FS', '/arch:AVX2', '/std:c++20'])        
+    else:
+        extension_env.Append(CXXFLAGS=['-fexceptions', '-frtti', '-g', '-std=c++20'])
+        extension_env.Append(CCFLAGS=["-O3" if build_target == "template_release" else "-g"])
+
+    extension_env.Append(CPPDEFINES=["IDTXFLOW_ENABLED", "IDTXFLOW_GODOT_EXPORTS", "THREADS_ENABLED", "GDEXTENSION"])
+    # CHI-312: tell the runtime loader the exact core lib basename to dlopen.
+    extension_env.Append(CPPDEFINES=[("IDTX_CORE_LIB_BASENAME", f'\\"{core_lib_basename}\\"')])
+
+    # Platform-specific configuration
+    if platform_name == "linux":
+        extension_env.Append(LIBS=libs + ["dl", "pthread", "m"])
+        extension_env.Append(CCFLAGS=["-fPIC", "-g", "-frtti"])
+        extension_env.Append(LINKFLAGS=["-Wl,-rpath,$ORIGIN"])
+
+    elif platform_name == "windows":
+        # ws2_32, crypt32, user32 are required by IXWebSocket + OpenSSL on Windows.
+        # CHI-312: link the delay-load import lib (built from the .def below) +
+        # delayimp; /DELAYLOAD defers binding until idtx_core_loader LoadLibraryEx's
+        # the bundled DLL, so there is zero static link to core or its OpenUSD.
+        extension_env.Append(LIBS=libs + [core_lib_basename + "_delayload", "delayimp",
+                                          "advapi32", "shell32", "ole32", "ws2_32", "crypt32", "user32"])
+        extension_env.Append(LINKFLAGS=[f"/DELAYLOAD:{core_lib_basename}.dll"])
+        # The core delay-load has no statically-detectable imports (the loader
+        # binds it via GetProcAddress), so the linker warns LNK4199 ("/DELAYLOAD
+        # ... ignored; no imports found"). That is intended; suppress it so an
+        # inherited /WX can't escalate this benign warning into LNK1218.
+        extension_env.Append(LINKFLAGS=["/IGNORE:4199"])
+        extension_env.Append(CPPDEFINES=["NOMINMAX", "WIN32_LEAN_AND_MEAN", "_ITERATOR_DEBUG_LEVEL=0"])
+        if build_target in ["editor", "template_debug"]:
+            # DEBUG
+            extension_env.Append(CCFLAGS=[
+                "/Z7",        # debug symbols embedded in .obj (parallel-safe vs /Zi shared PDB)
+                "/Od",        # no optimization
+                "/EHsc",
+                "/MT"
+            ])
+            extension_env.Append(LINKFLAGS=[
+                "/DEBUG"      # generate PDB (REQUIRED)
+            ])
+        else:
+            # RELEASE
+            extension_env.Append(CCFLAGS=[
+                "/O2",
+                "/EHsc",
+                "/MT"
+            ])
+    elif platform_name == "macos":
+        extension_env.Append(LIBS=libs)
+        extension_env.Append(CCFLAGS=["-fPIC", "-g", "-Og", "-O0", "-frtti"])
+        extension_env.Append(LINKFLAGS=["-framework", "CoreFoundation"])
+        extension_env.Append(LINKFLAGS=["-install_name", "@rpath/libidtxflow.dylib", "-Wl,-rpath,@loader_path"])
+        extension_env.Append(LINKFLAGS=["-g"])        
+
+    # Source files
+    sources = list(set(extension_env.Glob(f"{adapter_root}/src/*.cpp") + extension_env.Glob(f"{adapter_root}/src/**/*.cpp")))
+
+    # LEMON non-header symbols required by MaxWeightedMatching:
+    #   base.cc defines lemon::INVALID
+    #   bits/windows.cc defines lemon::bits::WinLock (Windows-only path)
+    # LP solver .cc files (glpk/cbc/clp/cplex/soplex/lp_*) are intentionally
+    # excluded — config.h leaves LEMON_HAVE_* undefined, no solver linkage.
+    sources.append(extension_env.File(f"{adapter_root}/libs/lemon/lemon/base.cc"))
+    if platform_name == "windows":
+        sources.append(extension_env.File(f"{adapter_root}/libs/lemon/lemon/bits/windows.cc"))
+
+    # CHI-312: dlopen table wiring.
+    #   POSIX — compile the generated dlsym forwarding thunks; idtx_core_loader
+    #     calls core::InitializeStubs to dlopen the lib and fill them.
+    #   Windows — derive a delay-load import lib from the checked-in .def (no
+    #     dependency on core's build output), linked above with /DELAYLOAD.
+    delay_import_lib = None
+    if platform_name == "windows":
+        core_def = os.path.join("flow", "ports", "generated", "libidtx_core.windows.def")
+
+        # The import module name MUST carry ".dll". libidtx_core's basename has
+        # dots (libidtx_core.windows.x86_64), so an import named without ".dll"
+        # makes the Windows loader read ".x86_64" as the extension, look for a
+        # literal "libidtx_core.windows.x86_64", and fail with Error 126 — even
+        # though the real file is "...x86_64.dll". The generated .def emits
+        # `LIBRARY libidtx_core.windows.x86_64` (no .dll), and a .def LIBRARY
+        # statement overrides `lib /NAME`, so we patch the LIBRARY line to ".dll"
+        # before building the import lib. Then /DELAYLOAD matches, the import is
+        # delay-bound, and the delay helper binds to the module idtx_core_loader
+        # pre-loads (which IS resolvable by its ".dll" name).
+        # Patch the .def's LIBRARY line to carry ".dll" (pure Python), then build
+        # the import lib with SCons's own `lib` string-action — which runs with the
+        # MSVC PATH (a bare subprocess can't find lib.exe on Windows).
+        def _patch_def_dllname(target, source, env, _basename=core_lib_basename):
+            import re as _re
+            p = str(source[0])
+            text = _re.sub(r'(?m)^LIBRARY\s+\S+', f'LIBRARY {_basename}.dll', open(p).read())
+            with open(p, "w") as f:
+                f.write(text)
+            return 0
+
+        _machine = "X64" if build_arch == "x86_64" else "ARM64"
+        delay_import_lib = extension_env.Command(
+            f"build/idtx_core/{core_lib_basename}_delayload.lib",
+            core_def,
+            [_patch_def_dllname,
+             f'lib /nologo /def:"$SOURCE" /out:"$TARGET" /machine:{_machine}'],
+        )
+    else:
+        sources.append(extension_env.File("flow/ports/generated/idtx_core_stubs.cc"))
+
+    # filter the source files in the gen subfolder
+    exclude_dir = os.path.normpath(f"{adapter_root}/src/gen")
+    try:
+        sources = [s for s in sources if not os.path.commonpath([s.get_dir().get_path(), exclude_dir]) == exclude_dir]
+    except ValueError:
+        # Handle case where paths are on different drives - just exclude by simple path check
+        sources = [s for s in sources if exclude_dir not in s.get_dir().get_path()]
+    
+    if build_target in ["editor", "template_debug"]:
+        print("Generating doc data..")
+        try:
+            doc_data = extension_env.GodotCPPDocData(f"{adapter_root}/src/gen/doc_data.gen.cpp", source=extension_env.Glob("doc_classes/*.xml"))
+            sources.append(doc_data)
+        except AttributeError as e:
+            print(f"Not including class reference as we're targeting a pre-4.3 baseline. Error: {e}")
+
+
+    # Output library name — the .gdextension manifest expects ".double"
+    # AFTER the arch (windows.x86_64.double.debug entries).
+    library_name = f"libidtxflow.{platform_name}.{build_target}.{build_arch}"
+    if is_double:
+        library_name += ".double"
+    library_extension = "dll" if platform_name == "windows" else ("dylib" if platform_name == "macos" else "so")
+    
+    # Set build directory
+    build_dir = f"build/IDTXFlow/bin/{platform_name}"
+    if not os.path.exists(build_dir):
+        os.makedirs(build_dir)
+
+    # Build the library
+    library = extension_env.SharedLibrary(f"{build_dir}/{library_name}.{library_extension}", sources)
+
+    # CHI-312: the extension no longer link-consumes core's import lib, so it no
+    # longer needs to wait for core's library build. On Windows it instead
+    # depends on the delay-load import lib derived from the checked-in .def.
+    if delay_import_lib is not None:
+        extension_env.Depends(library, delay_import_lib)  # build/idtx_core already on LIBPATH
+
+    # Determine PDB path
+    pdb_file = None
+    if platform_name == "windows" and build_target in ["editor", "template_debug"]:
+        dll_path = library[0].abspath
+        pdb_file = os.path.splitext(dll_path)[0] + ".pdb"
+
+    # Add install target
+    install_dir = f"addons/IDTXFlow/bin/{platform_name}"
+    install_targets = list(library)
+    if pdb_file and os.path.exists(pdb_file):
+        install_targets.append(extension_env.File(pdb_file))
+
+    install_ext = extension_env.Install(install_dir, install_targets)
+    install_libs = extension_env.Install(install_dir, _get_libs_to_install(platform_name, openusd_version, build_arch))
+    extension_env.AddPostAction(library, _copy_usd_plugins)
+    extension_env.AddPostAction(library, _copy_third_party_licenses)
+
+    extension_env.Default(library, install_ext + install_libs)
+
+    # Store the library name and node in the environment so idtxflow_sdk.py can reference it
+    env['gdextension_lib'] = library_name
+    env['gdextension_lib_dir'] = os.path.abspath(build_dir)
+    env['gdextension_library_node'] = library
+
+
+def _get_libs_to_install(platform_name, openusd_version="", build_arch="x86_64"):
+    print("Getting libs to install...")
+    usd_root = f"./thirdparty/openusd-{openusd_version}"
+    mdl_sdk_root = "./thirdparty/mdl_sdk"
+    usd_extension = "flow/core/usd"
+    if platform_name == "windows":
+        libs_to_install = [
+            f"{usd_root}/lib/usd_ms.dll",
+            f"{usd_root}/bin/tbb12.dll",
+            f"{mdl_sdk_root}/bin/libmdl_core.dll",
+            f"{mdl_sdk_root}/bin/libmdl_sdk.dll",
+            f"{mdl_sdk_root}/bin/dds.dll",
+            f"{mdl_sdk_root}/bin/nv_openimageio.dll",
+            f"{mdl_sdk_root}/bin/mdl_distiller.dll",
+            f"{usd_extension}/libs/{platform_name}/libidtx_usd.dll",
+            f"build/idtx_core/libidtx_core.{platform_name}.{build_arch}.dll",
+        ]
+    elif platform_name == "macos":
+        libs_to_install = [
+            f"{usd_root}/lib/libusd_ms.dylib",
+            f"{usd_root}/lib/libtbb.12.dylib",
+            f"{mdl_sdk_root}/lib/libmdl_core.so",
+            f"{mdl_sdk_root}/lib/libmdl_sdk.so",
+            f"{mdl_sdk_root}/lib/dds.so",
+            f"{mdl_sdk_root}/lib/nv_openimageio.so",
+            f"{mdl_sdk_root}/lib/mdl_distiller.so",
+            f"{usd_extension}/libs/{platform_name}/libidtx_usd.dylib",
+        ]
+    else:
+        libs_to_install = [
+            f"{usd_root}/lib/libusd_ms.so",
+            f"{usd_root}/lib/libtbb12.so",
+            f"{mdl_sdk_root}/lib/libmdl_core.so",
+            f"{mdl_sdk_root}/lib/libmdl_sdk.so",
+            f"{mdl_sdk_root}/lib/dds.so",
+            f"{mdl_sdk_root}/lib/nv_openimageio.so",
+            f"{mdl_sdk_root}/lib/mdl_distiller.so",
+            f"{usd_extension}/libs/{platform_name}/libidtx_usd.so",
+        ]
+
+    return libs_to_install
+
+def _copy_usd_plugins(target, source, env):
+    print("Copy USD Plugin Config..")
+    shutil.copytree(f"./thirdparty/openusd-{env.get('openusd_version', '')}/lib/usd", f"addons/IDTXFlow/bin/{env['platform_name']}/usd", dirs_exist_ok=True)
+    shutil.copytree(f"./thirdparty/openusd-{env.get('openusd_version', '')}/plugin/usd", "addons/IDTXFlow/bin/plugin/usd", dirs_exist_ok=True)
+    # res://, user:// resolver now lives in libidtx_core (IdtxHostUriResolver,
+    # driven by the host asset-IO callback) — NOT the old extension-side
+    # UsdGodotAssetResolver/UsdHttpAssetResolver, which were deleted. Ship its
+    # plugInfo so the core's USD dispatches those schemes to it.
+    shutil.copytree("flow/core/usd/plugin/idtx_resolver", "addons/IDTXFlow/bin/plugin/usd/idtx_resolver", dirs_exist_ok=True)
+    shutil.copytree("flow/core/usd/plugin/idtx", "addons/IDTXFlow/bin/plugin/usd/idtx", dirs_exist_ok=True)
+    # The codeless v_sekai:* schema (VSekaiMaterialAPI / VSekaiMToonAPI / spring
+    # bones). idtx_core_init registers the plugin/usd tree, whose top-level
+    # plugInfo Includes "*/resources/", so dropping the schema here lets applied
+    # API schemas resolve in the editor instead of silently degrading to opaque
+    # attributes.
+    shutil.copytree("openusd-fabric/schema", "addons/IDTXFlow/bin/plugin/usd/vSekaiUsd/resources", dirs_exist_ok=True)
+
+def _copy_third_party_licenses(target, source, env):
+    """Copy third-party LICENSE files to addon for distribution compliance."""
+    print("Copying third-party LICENSE files...")
+
+    license_dest_dir = "addons/IDTXFlow/LICENSES-THIRD-PARTY"
+    os.makedirs(license_dest_dir, exist_ok=True)
+
+    openusd_version = env.get('openusd_version', '')
+    license_files = [
+        ("thirdparty/godot-cpp/LICENSE.md", "godot-cpp-LICENSE.md"),
+        ("thirdparty/ixwebsocket/LICENSE.txt", "ixwebsocket-LICENSE.txt"),
+        ("thirdparty/mdl_sdk/LICENSE.md", "mdl-sdk-LICENSE.md"),
+        ("thirdparty/mdl_sdk/LICENSE_THIRDPARTY.md", "mdl-sdk-LICENSE_THIRDPARTY.md"),
+        (f"thirdparty/openusd-{openusd_version}-src/LICENSE.txt", "openusd-LICENSE.txt"),
+        (f"thirdparty/openusd-{openusd_version}-src/NOTICE.txt", "openusd-NOTICE.txt"),
+    ]
+
+    missing = []
+    for src, dest_name in license_files:
+        if os.path.exists(src):
+            dest_path = os.path.join(license_dest_dir, dest_name)
+            shutil.copy2(src, dest_path)
+            # copy2 preserves source permissions; some SDKs ship read-only files,
+            # which would cause a Permission denied error on the next incremental build.
+            os.chmod(dest_path, os.stat(dest_path).st_mode | stat.S_IRUSR | stat.S_IWUSR)
+            print(f"  Copied: {src} -> {dest_path}")
+        else:
+            missing.append(src)
+
+    if os.path.exists("THIRDPARTY.txt"):
+        cfg = configparser.ConfigParser()
+        cfg.read("addons/IDTXFlow/plugin.cfg")
+        version = cfg.get("plugin", "version", fallback="unknown").strip('"').strip("'")
+        if not re.fullmatch(r"\d+\.\d+\.\d+(?:-[\w.]+)?(?:\+[\w.]+)?", version):
+            print(f"ERROR: Version '{version}' in plugin.cfg does not follow semver (MAJOR.MINOR.PATCH).")
+            return 1
+        today = datetime.date.today()
+        date_str = f"{today.strftime('%B')} {today.day}, {today.year}"
+        with open("THIRDPARTY.txt", "r") as f:
+            lines = f.read().splitlines(keepends=True)
+        lines[0] = f"IDTX Flow - Version {version} - {date_str}\n"
+        with open("addons/IDTXFlow/THIRDPARTY.txt", "w") as f:
+            f.writelines(lines)
+        print(f"  Stamped THIRDPARTY.txt with version {version} and date {date_str}")
+
+    if missing:
+        print("ERROR: The following LICENSE files are missing and must be present for distribution compliance:")
+        for f in missing:
+            print(f"  {f}")
+        return 1
