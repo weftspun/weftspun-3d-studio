@@ -1,6 +1,6 @@
 # RFD 0001: App shell and routing
 
-**State:** abandoned
+**State:** published
 **Feature:** app shell
 
 ## Problem

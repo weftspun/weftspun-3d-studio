@@ -9,78 +9,78 @@ See the STE policy below for the writing rules.
 
 ## Index
 
-| RFD | Reference design | State |
-|-----|------------------|-------|
-| 0000 | Conventions (RFD style, STE, DRY) | published |
-| 0001 | App shell and routing | published |
-| 0002 | Studio pipeline graph | published |
-| 0003 | Task Manager job lifecycle | published |
-| 0004 | AIGC task catalog | published |
-| 0005 | Avatar and VRM pipeline | published |
-| 0006 | Layer decomposition (See-Through) | discussion |
-| 0007 | Motion validation (Kimodo) | discussion |
-| 0008 | Appearance trait extraction and remix | discussion |
-| 0009 | Viewport and scene rendering | published |
-| 0010 | WebXR and IWSDK lab | published |
-| 0011 | Spatial fabric publish | published |
-| 0012 | Wallet, minting, and x402 | abandoned |
-| 0013 | Public demo deploy | published |
-| 0014 | Batch processing | published |
-| 0015 | Phygital passport | abandoned |
-| 0016 | Deep learning model inventory | published |
-| 0017 | Fork rebrand to Weftspun | published |
-| 0018 | M3 documentation removal | discussion |
-| 0019 | Strangler fig studio core | published |
-| 0020 | CockroachDB persistence | published |
-| 0021 | Shared HRR library | published |
-| 0022 | Hexagonal client | published |
-| 0023 | Ports and adapters with headless CMS style | published |
-| 0024 | Nx and ggml | ideation |
-| 0025 | Model memory arithmetic | published |
-| 0026 | bf16 memory per model | published |
-| 0027 | GPU residency budget | published |
-| 0028 | Model license gate | published |
-| 0029 | FOSS model replacements | published |
-| 0030 | See-Through component models | published |
-| 0031 | Geometry refinement and alpha wrap | discussion |
-| 0032 | Alpha wrap rebuild on Geogram | ideation |
-| 0033 | Geometric algorithms in the catalog | published |
-| 0034 | Krea memory cross-check | published |
-| 0035 | Legacy model identifiers | published |
-| 0036 | Model packaging convention | discussion |
-| 0037 | Composite models as taskweft domains | discussion |
-| 0038 | Model image for trellis2_image_to_textured_mesh | discussion |
-| 0039 | Model image for trellis2_image_mesh_painting | discussion |
-| 0040 | Model image for pixal3d_image_to_textured_mesh | discussion |
-| 0041 | Model image for p3sam_mesh_segmentation | discussion |
-| 0042 | Model image for krea2_turbo_text_to_image | discussion |
-| 0043 | Model image for qwen_q4_k_m_image_edit | discussion |
-| 0044 | Model image for seethrough_layer_decomposition | discussion |
-| 0045 | Model image for kimodo_text_to_motion | discussion |
-| 0046 | Model image for skintokens_auto_rig | discussion |
-| 0047 | Model image for voxhammer_text_mesh_editing | discussion |
-| 0048 | Model image for voxhammer_image_mesh_editing | discussion |
-| 0049 | Model image for weftspun_image_to_world | abandoned |
-| 0050 | Model image for lingbot_map_environment_scan | abandoned |
-| 0051 | Model image for worldmirror2_reconstruct | abandoned |
-| 0052 | Model image for triposplat_image_to_splat | abandoned |
-| 0053 | OpenUSD as the internal format | discussion |
-| 0054 | The planner inside the studio core | discussion |
-| 0055 | BEAM workers on vast.ai | discussion |
-| 0056 | Develop in a dev container | discussion |
-| 0057 | Open work | published |
-| 0058 | Zero trust networking | discussion |
-| 0059 | Continuous integration, in one step | discussion |
-| 0060 | A thirdparty/ reset | discussion |
-| 0061 | GLB upload prep moves to idtx_core, later | discussion |
-| 0062 | A Fly.io toplevel, and the 4090 as a worker node | discussion |
-| 0063 | STE enforcement moves to the plugin | discussion |
-| 0064 | Character Concept Generator | pre-discussion |
-| 0065 | Taskweft domain schema in essential tuple normal form | discussion |
-| 0066 | Differential Mamba for caption encoding | abandoned |
-| 0067 | CockroachDB, reranked against FoundationDB | discussion |
-| 0068 | A generative taskweft model, and which architecture | prediscussion |
-| 0069 | Visual trait detection with RF-DETR | discussion |
+| RFD  | Reference design                                      | State          |
+| ---- | ----------------------------------------------------- | -------------- |
+| 0000 | Conventions (RFD style, STE, DRY)                     | published      |
+| 0001 | App shell and routing                                 | published      |
+| 0002 | Studio pipeline graph                                 | published      |
+| 0003 | Task Manager job lifecycle                            | published      |
+| 0004 | AIGC task catalog                                     | published      |
+| 0005 | Avatar and VRM pipeline                               | published      |
+| 0006 | Layer decomposition (See-Through)                     | discussion     |
+| 0007 | Motion validation (Kimodo)                            | discussion     |
+| 0008 | Appearance trait extraction and remix                 | discussion     |
+| 0009 | Viewport and scene rendering                          | published      |
+| 0010 | WebXR and IWSDK lab                                   | published      |
+| 0011 | Spatial fabric publish                                | published      |
+| 0012 | Wallet, minting, and x402                             | abandoned      |
+| 0013 | Public demo deploy                                    | published      |
+| 0014 | Batch processing                                      | published      |
+| 0015 | Phygital passport                                     | abandoned      |
+| 0016 | Deep learning model inventory                         | published      |
+| 0017 | Fork rebrand to Weftspun                              | published      |
+| 0018 | M3 documentation removal                              | discussion     |
+| 0019 | Strangler fig studio core                             | published      |
+| 0020 | CockroachDB persistence                               | published      |
+| 0021 | Shared HRR library                                    | published      |
+| 0022 | Hexagonal client                                      | published      |
+| 0023 | Ports and adapters with headless CMS style            | published      |
+| 0024 | Nx and ggml                                           | ideation       |
+| 0025 | Model memory arithmetic                               | published      |
+| 0026 | bf16 memory per model                                 | published      |
+| 0027 | GPU residency budget                                  | published      |
+| 0028 | Model license gate                                    | published      |
+| 0029 | FOSS model replacements                               | published      |
+| 0030 | See-Through component models                          | published      |
+| 0031 | Geometry refinement and alpha wrap                    | discussion     |
+| 0032 | Alpha wrap rebuild on Geogram                         | ideation       |
+| 0033 | Geometric algorithms in the catalog                   | published      |
+| 0034 | Krea memory cross-check                               | published      |
+| 0035 | Legacy model identifiers                              | published      |
+| 0036 | Model packaging convention                            | discussion     |
+| 0037 | Composite models as taskweft domains                  | discussion     |
+| 0038 | Model image for trellis2_image_to_textured_mesh       | discussion     |
+| 0039 | Model image for trellis2_image_mesh_painting          | discussion     |
+| 0040 | Model image for pixal3d_image_to_textured_mesh        | discussion     |
+| 0041 | Model image for p3sam_mesh_segmentation               | discussion     |
+| 0042 | Model image for krea2_turbo_text_to_image             | discussion     |
+| 0043 | Model image for qwen_q4_k_m_image_edit                | discussion     |
+| 0044 | Model image for seethrough_layer_decomposition        | discussion     |
+| 0045 | Model image for kimodo_text_to_motion                 | discussion     |
+| 0046 | Model image for skintokens_auto_rig                   | discussion     |
+| 0047 | Model image for voxhammer_text_mesh_editing           | discussion     |
+| 0048 | Model image for voxhammer_image_mesh_editing          | discussion     |
+| 0049 | Model image for weftspun_image_to_world               | abandoned      |
+| 0050 | Model image for lingbot_map_environment_scan          | abandoned      |
+| 0051 | Model image for worldmirror2_reconstruct              | abandoned      |
+| 0052 | Model image for triposplat_image_to_splat             | abandoned      |
+| 0053 | OpenUSD as the internal format                        | discussion     |
+| 0054 | The planner inside the studio core                    | discussion     |
+| 0055 | BEAM workers on vast.ai                               | discussion     |
+| 0056 | Develop in a dev container                            | discussion     |
+| 0057 | Open work                                             | published      |
+| 0058 | Zero trust networking                                 | discussion     |
+| 0059 | Continuous integration, in one step                   | discussion     |
+| 0060 | A thirdparty/ reset                                   | discussion     |
+| 0061 | GLB upload prep moves to idtx_core, later             | discussion     |
+| 0062 | A Fly.io toplevel, and the 4090 as a worker node      | discussion     |
+| 0063 | STE enforcement moves to the plugin                   | discussion     |
+| 0064 | Character Concept Generator                           | pre-discussion |
+| 0065 | Taskweft domain schema in essential tuple normal form | discussion     |
+| 0066 | Differential Mamba for caption encoding               | abandoned      |
+| 0067 | CockroachDB, reranked against FoundationDB            | discussion     |
+| 0068 | A generative taskweft model, and which architecture   | prediscussion  |
+| 0069 | Visual trait detection with RF-DETR                   | discussion     |
 
 ## DRY policy
 
