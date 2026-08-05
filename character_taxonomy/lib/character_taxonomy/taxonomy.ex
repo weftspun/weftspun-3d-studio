@@ -8,7 +8,7 @@ defmodule CharacterTaxonomy.Taxonomy do
 
   Holds no fixed capability list. A caller resolves a trait value
   observed in one dataset row, and this module returns an existing
-  capability id on a near match, or mints a new one. The taxonomy
+  capability id on a near match, or creates a new one. The taxonomy
   grows from the training data instead of a preconceived category
   list.
 
@@ -17,14 +17,14 @@ defmodule CharacterTaxonomy.Taxonomy do
   near-duplicate caption phrase binds to the same vector
   neighborhood and resolves to the existing id.
 
-  Numeric roles (`height_cm`, `age`) carry no taxonomy to mint. This
-  module tracks the observed range instead, so the static randomizer
-  page can pick inside it.
+  Numeric roles (`height_cm`, `age`) carry no taxonomy to create.
+  This module tracks the observed range instead, so the static
+  randomizer page can pick inside it.
 
   The Agent holds the read-path cache only. `CharacterTaxonomy.Repo`
-  is the durable store, on CockroachDB, so a mint or a widened range
-  survives a restart and a redeploy. `hydrate/1` rebuilds the cache
-  from the database at boot.
+  is the durable store, on CockroachDB, so a created id or a widened
+  range survives a restart and a redeploy. `hydrate/1` rebuilds the
+  cache from the database at boot.
   """
 
   use Agent
@@ -70,14 +70,14 @@ defmodule CharacterTaxonomy.Taxonomy do
   Resolves `text` under `role` to a capability id.
 
   Returns `{:ok, id, :matched}` when an existing id in the role's
-  codebook clears `threshold`, or `{:ok, id, :minted}` when this call
-  adds a new one and persists it to `CharacterTaxonomy.Repo`. `id` is
-  the normalized text on a mint, so a human reading `problem.ex`
-  still sees a plain word for a first sighting.
+  codebook clears `threshold`, or `{:ok, id, :created}` when this
+  call adds a new one and persists it to `CharacterTaxonomy.Repo`.
+  `id` is the normalized text when this call creates one, so a human
+  reading `problem.ex` still sees a plain word for a first sighting.
   """
-  @spec resolve_or_mint(GenServer.name(), String.t(), String.t(), float()) ::
-          {:ok, String.t(), :matched | :minted}
-  def resolve_or_mint(name \\ __MODULE__, role, text, threshold \\ @default_threshold) do
+  @spec resolve_or_create(GenServer.name(), String.t(), String.t(), float()) ::
+          {:ok, String.t(), :matched | :created}
+  def resolve_or_create(name \\ __MODULE__, role, text, threshold \\ @default_threshold) do
     id = normalize(text)
 
     result =
@@ -91,14 +91,14 @@ defmodule CharacterTaxonomy.Taxonomy do
 
           nil ->
             book = Map.put(book, id, probe)
-            {{:ok, id, :minted, probe}, %{state | codebooks: Map.put(books, role, book)}}
+            {{:ok, id, :created, probe}, %{state | codebooks: Map.put(books, role, book)}}
         end
       end)
 
     case result do
-      {:ok, minted_id, :minted, probe} ->
-        persist_capability(role, minted_id, probe)
-        {:ok, minted_id, :minted}
+      {:ok, created_id, :created, probe} ->
+        persist_capability(role, created_id, probe)
+        {:ok, created_id, :created}
 
       matched ->
         matched
@@ -128,7 +128,7 @@ defmodule CharacterTaxonomy.Taxonomy do
   route, the MCP `taxonomy_snapshot` tool, and the static randomizer
   page.
 
-  `categories` maps each role to the capability ids minted so far.
+  `categories` maps each role to the capability ids created so far.
   `numerics` maps each role to `[min, max]`.
   """
   @spec snapshot(GenServer.name()) :: %{categories: map(), numerics: map()}

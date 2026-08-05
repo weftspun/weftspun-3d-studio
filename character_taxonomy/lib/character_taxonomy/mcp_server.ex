@@ -13,7 +13,7 @@ defmodule CharacterTaxonomy.MCPServer do
 
   ## Tools
 
-  - `resolve_trait` — resolve or mint a capability id for one trait.
+  - `resolve_trait` — resolve or create a capability id for one trait.
   - `observe_numeric` — widen a numeric role's observed range.
   - `taxonomy_snapshot` — the whole taxonomy, categories and numerics.
   - `plan` — run taskweft's planner over the embedded domain, or over
@@ -28,7 +28,7 @@ defmodule CharacterTaxonomy.MCPServer do
   @domain_path Path.join(:code.priv_dir(:character_taxonomy), "domains/character_concept_generator.ex")
 
   tool "resolve_trait",
-       "Resolve a trait value observed in one dataset row to a capability id, minting a new one on no near match." do
+       "Resolve a trait value observed in one dataset row to a capability id, creating a new one on no near match." do
     param(:role, :string,
       required: true,
       description: "The trait role, such as hair_color, eye_color, pose, or clothing."
@@ -48,7 +48,7 @@ defmodule CharacterTaxonomy.MCPServer do
       with {:ok, role} <- fetch_param(args, :role),
            {:ok, text} <- fetch_param(args, :text) do
         threshold = Map.get(args, :threshold, 0.85)
-        {:ok, id, status} = Taxonomy.resolve_or_mint(CharacterTaxonomy.Taxonomy, role, text, threshold)
+        {:ok, id, status} = Taxonomy.resolve_or_create(CharacterTaxonomy.Taxonomy, role, text, threshold)
         {:ok, tool_text(Jason.encode!(%{capability_id: id, status: status}))}
       else
         {:error, reason} -> {:ok, tool_error(reason)}
@@ -73,7 +73,7 @@ defmodule CharacterTaxonomy.MCPServer do
   end
 
   tool "taxonomy_snapshot",
-       "The whole taxonomy resolved so far: categories minted per role, and numeric ranges observed per role." do
+       "The whole taxonomy resolved so far: categories created per role, and numeric ranges observed per role." do
     handle(fn _args, _state ->
       {:ok, tool_text(Jason.encode!(Taxonomy.snapshot(CharacterTaxonomy.Taxonomy)))}
     end)

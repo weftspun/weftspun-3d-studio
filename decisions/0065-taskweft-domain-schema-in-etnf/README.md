@@ -27,7 +27,7 @@ follow.
 3. The resolve step runs inside taskweft, through the `HRR`/
    `HRR.Cleanup` library RFD 0021 already supplies, not through
    `WeftspunStudio.FactVector` outside it. A near-duplicate caption
-   binds to the existing id, instead of minting a new one.
+   binds to the existing id, instead of creating a new one.
 
 Rule 2 and rule 3 remove the redundancy together. A functional
 dependency anchored on the capability id, a superkey, blocks the

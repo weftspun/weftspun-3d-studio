@@ -36,12 +36,12 @@ defmodule CharacterTaxonomy.TaxonomyTest do
     end
   end
 
-  test "resolving a seeded value matches instead of minting", %{taxonomy: t} do
-    assert {:ok, "black", :matched} = Taxonomy.resolve_or_mint(t, "hair_color", "black")
+  test "resolving a seeded value matches instead of creating", %{taxonomy: t} do
+    assert {:ok, "black", :matched} = Taxonomy.resolve_or_create(t, "hair_color", "black")
   end
 
-  test "resolving a new value mints and persists it", %{taxonomy: t} do
-    assert {:ok, "teal", :minted} = Taxonomy.resolve_or_mint(t, "hair_color", "teal")
+  test "resolving a new value creates and persists it", %{taxonomy: t} do
+    assert {:ok, "teal", :created} = Taxonomy.resolve_or_create(t, "hair_color", "teal")
 
     ids =
       CharacterTaxonomy.Capability

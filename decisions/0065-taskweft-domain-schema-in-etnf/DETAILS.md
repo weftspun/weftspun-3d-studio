@@ -59,7 +59,7 @@ list. The list grows as Claude's vision inspection meets new values.
   a_resolve_trait: %{
     params: [:role, :caption_text],
     bind: [
-      {:capability_id, {HRR.Cleanup, :resolve_or_mint, ["{role}", "{caption_text}"]}}
+      {:capability_id, {HRR.Cleanup, :resolve_or_create, ["{role}", "{caption_text}"]}}
     ],
     body: [
       %{pointer_set: "/trait/{role}", value: "{capability_id}"}
@@ -68,11 +68,11 @@ list. The list grows as Claude's vision inspection meets new values.
 }
 ```
 
-`HRR.Cleanup.resolve_or_mint/2` is the RFD 0021 library, called from
-inside taskweft, not from `WeftspunStudio.FactVector`. It binds the
-role and the caption text, and it checks the bound vector against the
-existing codebook. A near match returns the existing capability id.
-No match mints one and adds it to the codebook. Each `problem.ex`
+`HRR.Cleanup.resolve_or_create/2` is the RFD 0021 library, called
+from inside taskweft, not from `WeftspunStudio.FactVector`. It binds
+the role and the caption text, and it checks the bound vector against
+the existing codebook. A near match returns the existing capability
+id. No match creates one and adds it to the codebook. Each `problem.ex`
 then calls `a_resolve_trait` once per trait, and stores only the
 returned `:ref`, never the caption text.
 

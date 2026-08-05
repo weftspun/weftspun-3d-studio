@@ -3,9 +3,9 @@
 
 defmodule CharacterTaxonomy.Capability do
   @moduledoc """
-  One minted capability id, as a database row.
+  One created capability id, as a database row.
 
-  The composite key is `{role, capability_id}`, because a mint is a
+  The composite key is `{role, capability_id}`, because the id is a
   natural key already, per RFD 0065's rule against a fixed enum. The
   packed HRR atom vector lets a restarted node rebuild the codebook
   it needs for `HRR.Cleanup.nearest_above/3` with no re-encoding.

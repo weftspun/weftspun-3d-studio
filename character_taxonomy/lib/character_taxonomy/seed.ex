@@ -9,7 +9,7 @@ defmodule CharacterTaxonomy.Seed do
   These values are a starting point, not a fixed list. RFD 0065's
   Decision names the point of this schema: the taxonomy comes from
   the training data, not from preconceived categories. Every entry
-  here is a mint through the normal `resolve_or_mint` path, and the
+  here is a creation through the normal `resolve_or_create` path, and the
   15,000-row run replaces this list's weight in practice, though it
   never replaces the mechanism.
   """

@@ -5,7 +5,7 @@ defmodule CharacterTaxonomy.NumericRange do
   @moduledoc """
   The observed `[min, max]` for one numeric role, as a database row.
 
-  A numeric role, such as `height_cm`, mints nothing. This row is
+  A numeric role, such as `height_cm`, creates nothing. This row is
   the taxonomy's only durable state for it, and `role` is a natural
   key on its own.
   """

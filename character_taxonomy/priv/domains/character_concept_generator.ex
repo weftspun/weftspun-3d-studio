@@ -5,8 +5,8 @@
 # RFD 0065 records the schema this file follows.
 #
 # `trait` and `numeric` hold one value per character, per RFD 0065's
-# rule 1. Each value comes from WeftspunStudio.TraitTaxonomy, which
-# resolves or mints a capability id before a problem.ex ever calls
+# rule 1. Each value comes from CharacterTaxonomy.Taxonomy, which
+# resolves or creates a capability id before a problem.ex ever calls
 # a_set_trait. This domain holds no fixed capability list, so it
 # stays correct as the taxonomy grows from the training data.
 defmodule CharacterConceptGenerator do
@@ -30,10 +30,11 @@ defmodule CharacterConceptGenerator do
   }
 
   @actions %{
-    # capability_id comes from TraitTaxonomy.resolve_or_mint/3. The
-    # guard stops a second call from overwriting an already-set role,
-    # which keeps one value per character per role, the functional
-    # dependency RFD 0065 rests on.
+    # capability_id comes from
+    # CharacterTaxonomy.Taxonomy.resolve_or_create/4. The guard stops
+    # a second call from overwriting an already-set role, which keeps
+    # one value per character per role, the functional dependency
+    # RFD 0065 rests on.
     a_set_trait: %{
       params: [:role, :capability_id],
       body: [

@@ -10,9 +10,9 @@ defmodule CharacterTaxonomy.Application do
 
   `CharacterTaxonomy.Repo` runs first, and `Taxonomy.hydrate/1` loads
   its rows into the cache before either listener opens a port. A
-  mint or a widened range then survives a restart or a redeploy —
-  the reason this service runs its own CockroachDB instead of an
-  Agent alone.
+  created id or a widened range then survives a restart or a
+  redeploy, the reason this service runs its own CockroachDB instead
+  of an Agent alone.
 
   The first-boot seed is `priv/repo/migrations/..._seed_taxonomy.exs`,
   not a step here. `mix ecto.migrate` runs it once and tracks it in
