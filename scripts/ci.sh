@@ -32,6 +32,10 @@ npx vitest run
 step "JS: production build"
 VITE_PUBLIC_DEMO=1 npm run build
 
+step "decisions: STE lint"
+# decisions/README.md asks for this in CI; it wasn't wired in before.
+npm run lint:ste
+
 # --- Elixir: compile, then test against a throwaway CockroachDB -----
 
 step "Elixir: deps"

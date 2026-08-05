@@ -69,6 +69,8 @@ See the STE policy below for the writing rules.
 | 0055 | BEAM workers on vast.ai | discussion |
 | 0056 | Develop in a dev container | discussion |
 | 0057 | Open work | published |
+| 0058 | Zero trust networking | discussion |
+| 0059 | Continuous integration, in one step | discussion |
 
 ## DRY policy
 

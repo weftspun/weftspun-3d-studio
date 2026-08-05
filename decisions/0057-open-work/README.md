@@ -29,6 +29,8 @@ history section.
 | The model image serves HTTP | RFD 0040, run in Docker on this machine |
 | CockroachDB provisions and runs | RFD 0020, 92 tests with the node up |
 | taskweft composition | PRs 207, 208, 209, merged upstream |
+| weftspun-crdb Quadlet runs | RFD 0058, `systemctl status` shows `active (running)` |
+| weftspun_studio serves HTTP in a container | RFD 0058, `podman run`, `/api/v1/health` and `/api/v1/models` answered |
 
 ## Written, and never run
 
@@ -42,6 +44,13 @@ needs a rented card.
 
 **The vast.ai host.** RFD 0055 Phase 2. No instance is rented, and no
 worker answers.
+
+**`scripts/deploy-weftspun-quadlet.sh`, end to end.** RFD 0058. Both
+Quadlet builds needed `Network=host` before they could reach the
+internet — rootful Podman's bridge network answers no public
+address on this host, a host networking gap RFD 0058's Open section
+records. Confirm `weftspun.service` reaches `active (running)`, not
+only `weftspun-crdb.service`, before trusting the script.
 
 ## Measured, and not built
 
@@ -75,3 +84,5 @@ cost something. Measure before choosing.
 
 RFD 0055 selects the host. RFD 0056 selects the development system.
 RFD 0036 packages the models. RFD 0026 holds the memory numbers.
+RFD 0058 gives the Quadlet deployment. RFD 0059 gives the one-step
+build.
