@@ -5,9 +5,9 @@
 
 ## Problem
 
-RFD 0055 selects plain Docker images on vast.ai. The router and the
-CockroachDB host need a deploy shape on this box too, the single
-4090 RTX box this project develops on.
+RFD 0055 selects plain Docker images, on this box first. The router
+and the CockroachDB host need a deploy shape on this box too, the
+single 4090 RTX box this project develops on.
 
 A perimeter firewall is not a boundary here. The router and the
 database run on the same host as every other process the operator
@@ -32,4 +32,4 @@ verified status.
 
 RFD 0019 gives the API server. RFD 0020 pins the CockroachDB build.
 RFD 0037 gives the taskweft job/task split. RFD 0055 selects Docker
-images for vast.ai. RFD 0057 tracks what is still open.
+images, on this box first. RFD 0057 tracks what is still open.

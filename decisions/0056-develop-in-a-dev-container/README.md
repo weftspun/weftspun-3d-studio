@@ -19,10 +19,10 @@ See `DETAILS.md` for why.
 Develop in a dev container. It runs Debian, thus EXLA builds and the
 Linux CockroachDB build runs.
 
-vast.ai runs Linux as well, and RFD 0055 selects it, so the container
-is the same system production uses. Torchx goes: EXLA is the only
-backend this project builds against, and a second one only existed
-to work around the host.
+This box's own Quadlets run Linux, and RFD 0055 selects them first,
+so the container is the same system production uses. Torchx goes:
+EXLA is the only backend this project builds against, and a second
+one only existed to work around the host.
 
 VSCodium carries no Dev Containers support. The Microsoft extension
 is proprietary, and Open VSX does not carry it. Enter the container
@@ -36,4 +36,5 @@ volumes instead of bind mounts, and what it deliberately does not do.
 ## Related
 
 RFD 0019 selects EXLA. RFD 0020 selects the CockroachDB build.
-RFD 0036 packages the model images. RFD 0055 selects vast.ai.
+RFD 0036 packages the model images. RFD 0055 selects the local
+worker first.

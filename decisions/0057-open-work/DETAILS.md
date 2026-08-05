@@ -24,8 +24,10 @@ answers that by reading the error. Build it before trusting it.
 The worker stage pulls 24.045 GB and needs an NVIDIA device, thus it
 needs a rented card.
 
-**The vast.ai host.** RFD 0055 Phase 2. No instance is rented, and no
-worker answers.
+**The local worker.** RFD 0055 Phase 2. No worker service runs on
+this box yet, only a manual contract-stage test (RFD 0040). No
+instance is rented either, and RFD 0062's Gall's law says none
+should be, until this box is not enough.
 
 **The Fly.io / 4090 split.** RFD 0062. No `fly.toml`, no worker-side
 job-receiving adapter, no Tailscale join between a Fly machine and
@@ -61,11 +63,8 @@ now, and no measurement compares the two formats.
 ## Decided, and waiting on order
 
 **The Replicate passthrough.** RFD 0055 Phase 1 step 3 removes it.
-RFD 0055 also records why it stays until one vast.ai worker answers.
-
-**Storage on vast.ai.** RFD 0055. Either the host keeps the weights,
-or the container pulls them at start. Pixal3D is 24.045 GB, thus both
-cost something. Measure before choosing.
+RFD 0055 also records why it stays until this box's own worker
+answers.
 
 **The abandoned world cluster's stale references.** RFD 0064 pivots
 the roadmap to character concepts. RFD 0049, RFD 0050, RFD 0051, and

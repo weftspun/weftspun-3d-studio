@@ -64,7 +64,7 @@ See the STE policy below for the writing rules.
 | 0052 | Model image for triposplat_image_to_splat             | abandoned      |
 | 0053 | OpenUSD as the internal format                        | discussion     |
 | 0054 | The planner inside the studio core                    | published      |
-| 0055 | BEAM workers on vast.ai                               | discussion     |
+| 0055 | BEAM workers, local first                             | discussion     |
 | 0056 | Develop in a dev container                            | discussion     |
 | 0057 | Open work                                             | published      |
 | 0058 | Zero trust networking                                 | discussion     |

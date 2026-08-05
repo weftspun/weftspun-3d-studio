@@ -1,21 +1,28 @@
-# RFD 0055 details: providers, host tiers, the two phases, image shape, unresolved
+# RFD 0055 details: the local worker, the rented tier priced for later, the two phases, image shape, unresolved
 
-## What was considered
+## What was considered, and when it applies
+
+This project owns an RTX 4090, in this box. RFD 0062's Gall's law
+applies here first: rent a card only after the owned one is the
+bottleneck. The table below prices the rented tier, for the day this
+box stops being enough, not for today.
 
 | Provider  | Model      | RTX 4090 | Against it             |
 | --------- | ---------- | -------: | ------------------------ |
 | vast.ai   | P2P market |   ~$0.35 | Host quality varies    |
 | RunPod    | Datacenter |    $0.69 | Twice the price        |
 | Google    | TPU spot   |    $0.60 | Needs XLA, breaks CUDA |
-| Replicate | Serverless |     high | Hostile to the BEAM    |
+| Replicate | Serverless |     high | Hostile to the BEAM, blocklisted |
 
 The TPU row also disagrees with RFD 0019 now. That RFD first selected
 EXLA, which is XLA. Torchx replaced it, because XLA publishes no
 Windows archive, and Torchx binds LibTorch and CUDA.
 
-## Two host tiers
+## Two host tiers, for the rented future, not the local present
 
-vast.ai sells community hosts and verified hosts.
+vast.ai sells community hosts and verified hosts, priced here for the
+day this box needs a second card, not for the local worker this RFD
+builds first.
 
 Take community hosts for development, near the price floor of about
 0.15 US dollars per hour. Take verified hosts for production, at the
@@ -35,23 +42,29 @@ bandwidth, and the privacy terms.
 4. Abandon the Cog build. Done in `06c5c4ba`. RFD 0036 selects plain
    Docker, and RFD 0040 records a contract stage tested in Docker.
 
-## The passthrough stays until a worker answers
+## Replicate is blocklisted, and the passthrough is tolerated, not kept
+
+Replicate is blocklisted on two grounds: the per-second markup, and
+retention terms this project does not set and cannot audit. No new
+dependency on Replicate is acceptable, matching the RFD 0028 gate's
+own shape for a blocklisted model license.
 
 Step 3 removes the only path from the router to a model. Nothing
-replaces it yet, because Phase 2 has not run.
-
-Keep `ReplicateJobs` until one vast.ai worker answers `/predict`. Then
-the adapter changes host and keeps its port, which is what RFD 0023
+replaces it yet, because Phase 2 has not run. `ReplicateJobs` keeps
+running in code today, an explicit, temporary exception, not an
+endorsement, until this box's own worker answers `/predict`. Then the
+adapter changes host and keeps its port, which is what RFD 0023
 makes possible.
 
-`Ports.JobSink` and `Ports.JobSource` do not change. A vast.ai adapter
+`Ports.JobSink` and `Ports.JobSource` do not change. A local adapter
 implements the same two behaviors, thus the router never learns which
-host runs the model.
+host runs the model. A rented adapter, later, does the same.
 
-## Phase 2: deploy the compute
+## Phase 2: deploy the compute, on this box
 
 1. Write a `Dockerfile` for `weftspun_studio` with Elixir and CUDA.
-2. Rent a development instance, on an RTX 4090.
+2. Run it on this box's own RTX 4090, through RFD 0058's Quadlets,
+   already built and verified running. No instance to rent.
 3. Measure the inference speed, and cluster the router with the
    worker.
 
@@ -69,8 +82,9 @@ this RFD asks for, and let the router cluster with them.
 
 ## Unresolved
 
-vast.ai bills for storage while an instance is paused. Either the host
-keeps the weights, or the container pulls them from a bucket at start.
+Local storage is not billed per pause, so the rented-tier question,
+whether a host keeps the weights or a container pulls them from a
+bucket at start, only reopens the day this box is not enough.
 
-Pixal3D is 24.045 GB. A pull at start costs minutes on every boot, and
-host storage costs money on every pause. Measure both before choosing.
+Pixal3D is 24.045 GB either way. Measure the local pull-at-start cost
+before it matters for the rented tier too.

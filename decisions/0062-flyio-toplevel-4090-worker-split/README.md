@@ -9,10 +9,10 @@ RFD 0058 puts the whole stack on one box, with every port bound to
 `127.0.0.1`. That is correct for one operator, and it is not a
 product. Nobody but the person sitting at this machine can reach it.
 
-RFD 0055 prices three rented GPU options and picks vast.ai. This
-project already owns an RTX 4090, and RFD 0027 already sized every
-catalog model at that same 24 GB tier. Renting the tier this box
-already has is a cost with no matching benefit, for one operator.
+RFD 0055 prices three rented GPU options for later, and picks this
+box's own RTX 4090 first. RFD 0027 already sized every catalog model
+at that same 24 GB tier. Renting the tier this box already has is a
+cost with no matching benefit, for one operator.
 
 Two problems, one shape: this box should keep doing GPU work, and
 something else needs to be the thing a user reaches.
