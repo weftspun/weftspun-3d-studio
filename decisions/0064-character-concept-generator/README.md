@@ -33,6 +33,7 @@ run it on Fly.io with Nx, with no GPU acceleration.
 
 ## Related
 
-RFD 0037 gives the domain/problem split. RFD 0042, RFD 0043, RFD
-0044, RFD 0040, RFD 0045, and RFD 0046 give the postponed stages.
-`DETAILS.md` holds the reference links.
+RFD 0037 gives the domain/problem split. RFD 0065 gives the schema
+this step's `domain.ex` and `problem.ex` files follow. RFD 0042, RFD
+0043, RFD 0044, RFD 0040, RFD 0045, and RFD 0046 give the postponed
+stages. `DETAILS.md` holds the reference links.
