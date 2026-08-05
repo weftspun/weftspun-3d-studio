@@ -19,7 +19,11 @@ After=weftspun-crdb.service
 Image=weftspun.build
 ContainerName=weftspun
 Network=weftspun.network
-PublishPort=127.0.0.1:4000:4000
+# 4000 is taken on this host by the taskweft MCP server (a separate,
+# long-running Burrito release, unrelated to this project). The
+# container's own internal port stays 4000; only the host-side
+# publish moves.
+PublishPort=127.0.0.1:4001:4000
 Environment=WEFTSPUN_DB_HOST=weftspun-crdb
 Environment=WEFTSPUN_DB_PORT=26257
 Environment=WEFTSPUN_DB_USER=root

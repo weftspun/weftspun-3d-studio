@@ -1,6 +1,6 @@
 # RFD 0058: Zero trust networking
 
-**State:** discussion
+**State:** published
 **Scope:** `weftspun_studio/`, `scripts/deploy-weftspun-quadlet.sh`
 
 ## Problem
@@ -130,63 +130,55 @@ sudo bash scripts/deploy-weftspun-quadlet.sh
 
 The script syncs this repository to `/opt/weftspun/src`, the fixed
 path the `.build` Quadlets read a `Containerfile` from, installs the
-Quadlet files to `/etc/containers/systemd/`, and enables
+Quadlet files to `/etc/containers/systemd/`, and starts
 `weftspun.service`. `weftspun.service` requires
-`weftspun-crdb.service`, so one command brings up both.
+`weftspun-crdb.service`, so one command brings up both. The API
+answers at `http://127.0.0.1:4001` — see Verified, below, for why
+4000 is not the port.
 
-## Verified, on this box
+## Verified, on this box, through the real Quadlet path
 
-Built both images with Podman (rootless, as the login user), on the
-RTX 4090 this project develops on, and ran them directly (`podman
-run`, not through the Quadlet path): `weftspun-crdb` reached `status:
-initialized new cluster`; `weftspun` created the database, ran both
-migrations, and served `/api/v1/health` and `/api/v1/models` over the
-published loopback port.
+`scripts/deploy-weftspun-quadlet.sh` ran as root.
+`podman-system-generator` turned all six Quadlet files into
+`.service` units. `systemctl status` shows both `weftspun-crdb.service`
+and `weftspun.service` as `active (running)`, not merely built.
+`curl http://127.0.0.1:4001/api/v1/health` and `/api/v1/models`
+both answered, over the Quadlet-managed container, with no Postgrex
+error in the journal — the app reached CockroachDB by container name
+(`weftspun-crdb`) over `weftspun.network`.
 
-`scripts/deploy-weftspun-quadlet.sh` has run for real, as root, and
-proved the generation and dependency graph: `podman-system-generator`
-turned all six Quadlet files into `.service` units, `weftspun.volume`
-and `weftspun.network` came up clean, and when
-`weftspun-crdb-build.service` failed, that failure correctly
-propagated up through `weftspun-crdb.service` into `weftspun.service`
-(`Requires=`/`After=` did what it says). The Quadlet files
-themselves are not the open item.
+Two host-specific faults surfaced only at this last step, past what a
+direct `podman run` (this RFD's first verification pass) had reached.
 
-## Open
+**Rootful Podman's bridge network could not reach the internet on
+this host — the kernel dropped it, not DNS.** `weftspun-crdb-build.service`
+failed inside `apt-get update`, timing out on every mirror. DNS was
+the first suspect (`--dns=1.1.1.1`, still set on both `.build` units);
+it did not fix the failure. `sudo nft list ruleset` showed why:
+Docker's installer had written a `FORWARD` chain with `policy drop`,
+and the only chains it jumps to accept anything are `ts-forward`
+(Tailscale) and `DOCKER-FORWARD`, which itself drops everything not
+on `docker0`. Podman's netavark bridge for `weftspun.network` is
+neither, so every packet the build container sent outbound was
+dropped before it left the host. Rootless Podman never hit this
+chain — it routes through slirp4netns in user space, not the kernel
+bridge/forward path rootful Podman uses, which is why the same
+Dockerfiles built cleanly under rootless Podman earlier in this
+session. `Network=host` on both `.build` units, scoped to the build
+container only, sidesteps the chain instead of rewriting a host-wide
+firewall policy this RFD has no standing to change unilaterally.
+`weftspun.container` and `weftspun-crdb.container` still run on the
+isolated `weftspun.network` at runtime; the zero-trust boundary this
+RFD sets out is unaffected.
 
-**Rootful Podman's bridge network cannot reach the internet on this
-host — the kernel drops it, not DNS.** `weftspun-crdb-build.service`
-failed inside `apt-get update`, timing out on every mirror. The first
-diagnosis here blamed DNS (`--dns=1.1.1.1` on both `.build` units),
-which the drop-in comments on `weftspun.build` and
-`weftspun-crdb.build` still record; it did not fix the failure, and
-`getent hosts` inside the container returned nothing even querying
-`1.1.1.1` directly, while a raw host-level `curl` to the same address
-succeeded.
+**Port 4000 was already taken.** A separate, long-running Burrito
+release — the taskweft MCP server, unrelated to this project — already
+listens on `127.0.0.1:4000` on this host. `weftspun.container` now
+publishes `127.0.0.1:4001:4000`; only the host-side mapping moved, the
+container's internal port is still 4000.
 
-The actual cause: `sudo nft list ruleset` shows a `FORWARD` chain with
-`policy drop`, and only two chains it jumps to accept anything —
-`ts-forward` (Tailscale) and `DOCKER-FORWARD`, which itself drops
-everything not on `docker0` (`iifname != "docker0" oifname "docker0"
-... drop`). Podman's netavark bridge for `weftspun.network` is
-neither. Rootless Podman (the build that succeeded earlier in this
-session) never hits this chain — it routes through slirp4netns/pasta
-in user space, not the kernel bridge/forward path rootful Podman
-uses. Docker's own installer wrote this ruleset; it was never written
-with a second, rootful container engine in mind.
-
-This is a host firewall gap, not a fault in `weftspun.build` /
-`weftspun-crdb.build` / `weftspun.container` — the same Dockerfiles
-built cleanly under rootless Podman. Fixing it means changing the
-host's `nft` `FORWARD` policy (an allow rule for the `weftspun`
-bridge's subnet, or a Podman firewall-driver setting that inserts one
-automatically) — a security-relevant, host-wide change this RFD
-does not make unilaterally. Once that rule exists, rerun
-`scripts/deploy-weftspun-quadlet.sh` and confirm `systemctl status
-weftspun.service` and `systemctl status weftspun-crdb.service` show
-`active (running)` before trusting this in production — the same
-caution RFD 0057 gives the dev container and the Pixal3D worker
-stage.
+`decisions/0057-open-work/README.md` carries this row into the
+project-wide list.
 
 ## Related
 
