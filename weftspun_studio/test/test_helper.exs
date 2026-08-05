@@ -1,16 +1,16 @@
-# CUDA tests need the NVIDIA runtime libraries (nccl, cublas, cudart,
-# cudnn, nvshmem) and XLA_TARGET=cuda12. Run them with:
+# CUDA tests need a CUDA build of LibTorch. Fetch it with
+# LIBTORCH_TARGET=cu124, then run them with:
 #     mix test --include cuda
-ExUnit.configure(exclude: [:cuda])
 
-# EXLA is a backend for Nx, and not a requirement of it. mix.exs skips
-# the dependency where XLA publishes no archive, and Windows is such a
-# host. The tests that need the backend carry `@describetag exla: true`
-# and skip when it is absent, thus a run on that host reports a skip
-# and not a failure.
-unless WeftspunStudio.Compute.available?() do
-  ExUnit.configure(exclude: [:cuda, {:exla, true}])
-end
+# Torchx binds LibTorch, which ships for every host this project runs
+# on. A build where LibTorch did not fetch still starts, on the Nx
+# binary backend.
+#
+# compute_test.exs holds both paths, thus exactly one of them applies
+# on any host. Exclude the one that does not, in whichever direction
+# that is. Excluding only one direction would fail the other set.
+backend_tag = if WeftspunStudio.Compute.available?(), do: false, else: true
+ExUnit.configure(exclude: [:cuda, {:torchx, backend_tag}])
 
 # Database tests need the local CockroachDB cluster. Start it with:
 #     cockroach start-single-node --insecure --store=.crdb/data \

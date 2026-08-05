@@ -131,18 +131,18 @@ defmodule WeftspunStudio.CLI do
     end
   end
 
+  # No rescue. Release.migrate/0 already matches {:ok, _, _}, thus an
+  # unreachable database crashes there and the stacktrace names the
+  # real fault. A rescue here reformatted that into one message and
+  # threw the cause away.
   defp db_migrate do
     WeftspunStudio.Release.migrate()
     puts_ok("migrations applied")
-  rescue
-    error -> db_error(error)
   end
 
   defp db_seed do
     {:ok, count} = WeftspunStudio.Release.seed()
     puts_ok("seeded #{count} facts from the RFD 0016 inventory")
-  rescue
-    error -> db_error(error)
   end
 
   defp db_status do
@@ -162,18 +162,6 @@ defmodule WeftspunStudio.CLI do
       IO.puts(:stderr, "connection: down")
       1
     end
-  end
-
-  defp db_error(error) do
-    IO.puts(:stderr, """
-    the database is not reachable: #{Exception.message(error)}
-
-    Start a local cluster with:
-        cockroach start-single-node --insecure \\
-          --store=.crdb/data --listen-addr=127.0.0.1:26257
-    """)
-
-    1
   end
 
   defp report_side(_label, []), do: :ok

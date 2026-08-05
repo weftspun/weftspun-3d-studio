@@ -29,9 +29,12 @@ defmodule WeftspunStudio.MixProject do
 
   defp deps do
     [
-      # Tensor work. RFD 0019 selects EXLA on CUDA. Build with
-      # XLA_TARGET=cuda12 to get the NVIDIA accelerated client.
+      # Tensor work. RFD 0019 first selected EXLA, and XLA publishes no
+      # Windows archive. Torchx binds LibTorch, which ships for
+      # Windows, macOS, and Linux with a CUDA build for each. Set
+      # LIBTORCH_TARGET=cu124 for the NVIDIA build.
       {:nx, "~> 0.13"},
+      {:torchx, "~> 0.13"},
       # The phase algebra behind fact retrieval. One definition shared
       # across the weftspun repositories. RFD 0021 records the move.
       {:hrr, github: "weftspun/elixir-holographic-reduced-representation"},
@@ -53,26 +56,7 @@ defmodule WeftspunStudio.MixProject do
       {:postgrex, "~> 0.19"},
       # Mocks for the API surface the UI consumes.
       {:mox, "~> 1.1", only: :test}
-    ] ++ exla()
-  end
-
-  # EXLA is a backend for Nx, and not a requirement of it. Compute
-  # already checks for it with Code.ensure_loaded?/1, and the CLI
-  # already reports :backend_unavailable, thus the code was ready for
-  # its absence while mix.exs made it mandatory.
-  #
-  # XLA publishes no Windows archive at all, so a Windows build could
-  # never resolve this dependency. Skipping it there lets the HTTP
-  # surface and the inventory commands build, which is what that host
-  # runs anyway.
-  #
-  # WEFTSPUN_NO_EXLA=1 skips it anywhere else.
-  defp exla do
-    cond do
-      System.get_env("WEFTSPUN_NO_EXLA") == "1" -> []
-      match?({:win32, _}, :os.type()) -> []
-      true -> [{:exla, "~> 0.13"}]
-    end
+    ]
   end
 
   # `mix test` prepares a clean database first. CockroachDB holds no

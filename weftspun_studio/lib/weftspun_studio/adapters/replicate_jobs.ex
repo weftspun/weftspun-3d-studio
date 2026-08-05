@@ -39,7 +39,10 @@ defmodule WeftspunStudio.Adapters.ReplicateJobs do
   # ---------- JobSink ----------
 
   @impl WeftspunStudio.Ports.JobSink
-  def create_job(state, feature, model, params) do
+  # Replicate stores no feature on a prediction. The argument stays in
+  # the port because RFD 0003 job records carry it, and the caller that
+  # keeps those records needs it.
+  def create_job(state, _feature, model, params) do
     with {:ok, target} <- resolve(model),
          {:ok, body} <- post(state, "/predictions", %{version: target, input: params}) do
       {:ok, body["id"]}

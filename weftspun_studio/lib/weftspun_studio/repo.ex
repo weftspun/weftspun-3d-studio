@@ -28,12 +28,10 @@ defmodule WeftspunStudio.Repo do
         false
 
       _pid ->
-        try do
-          query!("SELECT 1", [])
-          true
-        rescue
-          _ -> false
-        end
+        # query/2 answers with a tuple, thus this needs no rescue. A
+        # refused connection is the answer to "is the pool up?", and
+        # not an exception to catch.
+        match?({:ok, _result}, query("SELECT 1", []))
     end
   end
 end

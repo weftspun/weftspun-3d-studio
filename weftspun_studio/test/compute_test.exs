@@ -1,23 +1,21 @@
 defmodule WeftspunStudio.ComputeTest do
   @moduledoc """
-  EXLA is a backend for Nx, and not a requirement of it. `mix.exs`
-  skips the dependency where XLA publishes no archive, and Windows is
-  such a host.
+  Torchx binds LibTorch, which ships for every host this project runs
+  on. RFD 0019 first selected EXLA, and XLA publishes no Windows
+  archive.
 
-  These tests therefore split. The absence path runs everywhere. The
-  presence path is tagged `:exla` and skips where the backend is
-  absent, so a Windows run reports a skip and not a failure.
-
-      mix test --include exla
+  The tests still split. The absence path guards a build where
+  LibTorch did not fetch, and the presence path carries the tag that
+  test_helper.exs excludes when the backend is missing.
   """
 
   use ExUnit.Case, async: false
 
   alias WeftspunStudio.Compute
 
-  # `Compute.available?/0` reads Code.ensure_loaded?(EXLA), thus this
-  # decides at run time and not at compile time.
-  @moduletag exla: Compute.available?()
+  # `Compute.available?/0` reads Code.ensure_loaded?(Torchx), thus the
+  # split decides at run time and not at compile time.
+  @moduletag torchx: Compute.available?()
 
   setup_all do
     unless Compute.available?() do
@@ -28,7 +26,7 @@ defmodule WeftspunStudio.ComputeTest do
   end
 
   describe "without the backend" do
-    @describetag exla: false
+    @describetag torchx: false
 
     test "available? reports false, and does not raise" do
       refute Compute.available?()
@@ -44,16 +42,16 @@ defmodule WeftspunStudio.ComputeTest do
   end
 
   describe "with the backend" do
-    @describetag exla: true
+    @describetag torchx: true
 
-    test "the EXLA backend is available" do
+    test "the Torchx backend is available" do
       assert Compute.available?()
     end
 
-    test "info names EXLA and reports an accelerator" do
+    test "info names Torchx and reports an accelerator" do
       assert {:ok, info} = Compute.info()
-      assert info.backend == "EXLA"
-      assert info.accelerator in ["cuda", "host"]
+      assert info.backend == "Torchx"
+      assert info.accelerator in ["cuda", "cpu"]
     end
 
     test "a graph compiles and runs on the accelerator" do
@@ -62,7 +60,7 @@ defmodule WeftspunStudio.ComputeTest do
     end
 
     @tag :cuda
-    test "XLA reports a CUDA device" do
+    test "LibTorch reports a CUDA device" do
       assert {:ok, platforms} = Compute.platforms()
 
       assert Map.get(platforms, :cuda, 0) > 0,
