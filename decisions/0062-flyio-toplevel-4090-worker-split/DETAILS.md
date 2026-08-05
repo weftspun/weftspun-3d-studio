@@ -126,12 +126,17 @@ are generic placeholders, and this project names no deployed one yet.
 `fly.toml` and `Dockerfile.fly` now exist, colocating CockroachDB on
 a Fly Volume the way `character_taxonomy/Dockerfile` already proves.
 A third process, `versitygw`, runs colocated too, per RFD 0073 and
-RFD 0058's own zero-trust rule, bound to `127.0.0.1:10000`. The image
-builds and boots locally: CockroachDB and versitygw both start,
-migrations run, and `/api/v1/health`, `/api/v1/models`, and
-`/api/v1/pipelines` all answer. Deploying it to live Fly.io
-infrastructure has not run yet, since that needs Fly credentials
-this session does not hold.
+RFD 0058's own zero-trust rule, bound to `127.0.0.1:10000`.
+
+The toplevel is live, on real Fly.io infrastructure, not only
+verified locally. `weftspun-studio` is a real app, with a real
+3 GB Volume (`weftspun_studio_data`, region `sjc`), deployed and
+running. `https://weftspun-studio.fly.dev/api/v1/health`,
+`/api/v1/models`, and `/api/v1/pipelines` all answer, over the
+public internet. Inside the running machine, `versitygw` answers
+`403` on `127.0.0.1:10000`, the correct posix-backend response, and
+CockroachDB's own health check answers `200`, both confirmed over
+`flyctl ssh console`.
 
 It still does not write the worker-side job-receiving adapter or its
 job-control envelope. It does not configure this box's Tailscale

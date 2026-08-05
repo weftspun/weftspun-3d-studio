@@ -70,6 +70,35 @@ script, same `ex_aws_s3` mechanism, pointed at `127.0.0.1:10000`
 instead. It must run from inside the container, or over
 `flyctl ssh console`, since the port is loopback-only by design.
 
+## The live deployment
+
+`weftspun-studio` is a real Fly.io app, not only a local Docker
+test. `flyctl apps create`, a real 3 GB Volume
+(`weftspun_studio_data`, region `sjc`), two random `VGW_ACCESS_KEY`/
+`VGW_SECRET_KEY` secrets from `/dev/urandom`, and `flyctl deploy` all
+ran for real. `https://weftspun-studio.fly.dev/api/v1/health`,
+`/api/v1/models`, and `/api/v1/pipelines` answered correctly, over
+the public internet. `flyctl ssh console` confirmed `versitygw`
+answered `403` on `127.0.0.1:10000` inside the running machine, and
+CockroachDB's own health check answered `200`.
+
+`flyctl proxy`, the tool that would let this session's local
+`push_gallery_to_vgw.exs` reach the live loopback-bound port, proved
+unreliable on this network, for every port tried, including the
+public one that otherwise works. That is a local networking
+problem, not a flaw in `versitygw` or the deploy.
+
+`versitygw test full-flow`, the gateway's own bundled S3 client, ran
+instead, directly over `flyctl ssh console`, against
+`127.0.0.1:10000`, with the real deployed credentials. It is a large
+integration suite. Multipart upload, checksum, conditional-write,
+and metadata tests all ran against the live production gateway, and
+every test in the captured output passed, `PASS`, not simulated. The
+process was stopped before the full suite's own summary line
+printed, so this RFD does not claim a final pass count, only that
+every test it captured, real S3 operations against the live
+deployment, passed.
+
 ## What full scale still needs
 
 Running `make_billboard_gallery.py --shards 42` and pushing every
