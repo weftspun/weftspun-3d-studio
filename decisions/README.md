@@ -72,6 +72,11 @@ See the STE policy below for the writing rules.
 | 0058 | Zero trust networking | discussion |
 | 0059 | Continuous integration, in one step | discussion |
 | 0060 | A thirdparty/ reset | discussion |
+| 0061 | GLB upload prep moves to idtx_core, later | discussion |
+| 0062 | A Fly.io toplevel, and the 4090 as a worker node | discussion |
+| 0063 | STE enforcement moves to the plugin | discussion |
+| 0064 | Character Concept Generator | pre-discussion |
+| 0065 | Taskweft domain schema in essential tuple normal form | discussion |
 
 ## DRY policy
 
