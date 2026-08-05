@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="usd-viewer:wasm" content="./wasm" />
+    <title>RFD 0073: dataset billboard gallery</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #111;
+        color: #eee;
+      }
+      header {
+        padding: 1rem;
+        border-bottom: 1px solid #333;
+      }
+      usd-viewer {
+        display: block;
+        width: 100vw;
+        height: 80vh;
+      }
+      p {
+        max-width: 60ch;
+        margin: 0.5rem 0 0;
+        color: #aaa;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://esm.sh/three@0.149.0",
+          "three/examples/jsm/environments/RoomEnvironment.js": "https://esm.sh/three@0.149.0/examples/jsm/environments/RoomEnvironment.js",
+          "three/examples/jsm/controls/OrbitControls.js": "https://esm.sh/three@0.149.0/examples/jsm/controls/OrbitControls.js",
+          "lit": "https://esm.sh/lit@2.6.1"
+        }
+      }
+    </script>
+    <script type="module">
+      import './vendor/usd-viewer/include.js';
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>RFD 0073: a billboard from the RFD 0064 dataset</h1>
+      <p>
+        One row from the anime-with-caption-cc0 dataset, wrapped as a flat
+        USD card, real pxr.Usd verified. Served over versitygw's S3 API,
+        per RFD 0073.
+      </p>
+    </header>
+    <usd-viewer
+      src="./usd/sample_billboard.usdz"
+      alt="A dataset row rendered as a USD billboard card"
+      controls
+      auto-rotate
+    ></usd-viewer>
+  </body>
+</html>

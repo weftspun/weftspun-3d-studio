@@ -1,0 +1,21 @@
+name: Deploy weftspun-studio to Fly.io
+
+# RFD 0062's toplevel, deployed by hand this session, now on every
+# push to main instead. Uses a deploy-scoped token
+# (`flyctl tokens create deploy --app weftspun-studio`), not a
+# personal one, stored as the FLY_API_TOKEN repo secret.
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only --app weftspun-studio
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

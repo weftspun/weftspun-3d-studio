@@ -23,6 +23,9 @@ FROM ${VERSITYGW_IMAGE} AS versitygw
 FROM docker.io/hexpm/elixir:${BASE_TAG} AS build
 
 ENV MIX_ENV=prod
+# RFD 0064: this deployment runs with no GPU acceleration. Skip
+# EXLA's CUDA compile entirely, since this machine has none.
+ENV EXLA_CPU_ONLY=1
 WORKDIR /build
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \

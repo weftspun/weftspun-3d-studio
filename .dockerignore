@@ -1,0 +1,11 @@
+# Neither Dockerfile nor Dockerfile.fly COPY any of these. Excluding
+# them keeps the build context small, since Docker uploads the whole
+# context to the builder on every deploy, local or remote.
+decisions/
+thirdparty/
+deps/
+.crdb/
+_build/
+character_taxonomy/
+usd_viewer_app/node_modules/
+.git/

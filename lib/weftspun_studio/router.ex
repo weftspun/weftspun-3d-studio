@@ -16,6 +16,12 @@ defmodule WeftspunStudio.Router do
 
   use Plug.Router
 
+  # RFD 0073's billboard gallery, the usd-viewer web component's
+  # WASM build needs SharedArrayBuffer, thus COEP/COOP on this one
+  # path. No other route sets these, so nothing else is affected.
+  plug(:coep_for_gallery)
+  plug(Plug.Static, at: "/gallery", from: {:weftspun_studio, "priv/static/gallery"})
+
   plug(:fetch_query_params)
   plug(:match)
 
@@ -78,6 +84,18 @@ defmodule WeftspunStudio.Router do
   # not the router's generic catch-all below.
   get "/" do
     json(conn, 200, %{status: "ok", version: WeftspunStudio.CLI.version()})
+  end
+
+  # Plug.Static answers /gallery/index.html and every asset under it
+  # correctly, but it does not resolve a bare directory request to
+  # index.html, the way a static file server usually does. These two
+  # routes cover that gap for the RFD 0073 gallery.
+  get "/gallery" do
+    send_gallery_index(conn)
+  end
+
+  get "/gallery/" do
+    send_gallery_index(conn)
   end
 
   # ---------- jobs, passed through to Replicate ----------
@@ -175,6 +193,26 @@ defmodule WeftspunStudio.Router do
   defp error(conn, reason), do: json(conn, 500, %{error: inspect(reason)})
 
   defp encode_fact(fact), do: %{fact | updated_at: DateTime.to_iso8601(fact.updated_at)}
+
+  defp send_gallery_index(conn) do
+    path = Application.app_dir(:weftspun_studio, "priv/static/gallery/index.html")
+
+    conn
+    |> Plug.Conn.put_resp_header("cross-origin-embedder-policy", "require-corp")
+    |> Plug.Conn.put_resp_header("cross-origin-opener-policy", "same-origin")
+    |> Plug.Conn.put_resp_content_type("text/html")
+    |> Plug.Conn.send_file(200, path)
+  end
+
+  defp coep_for_gallery(conn, _opts) do
+    if conn.path_info |> List.first() == "gallery" do
+      conn
+      |> Plug.Conn.put_resp_header("cross-origin-embedder-policy", "require-corp")
+      |> Plug.Conn.put_resp_header("cross-origin-opener-policy", "same-origin")
+    else
+      conn
+    end
+  end
 
   defp json(conn, status, body) do
     conn
