@@ -200,6 +200,24 @@ leaving `roughness`, `metallic`, `normal`, `occlusion`, and
 only color-like channels are sRGB. Not filed upstream, unlike the
 path-lookup bug above.
 
+## A third real usd-viewer bug: single-sided once a real texture applies
+
+With the color fix live, the billboard vanished completely for part
+of every `autoRotate` cycle, confirmed with two Playwright
+screenshots seconds apart, one showing the card, one showing
+nothing at all. `usd-viewer`'s own material code explains why: its
+shared fallback material sets `side: DoubleSide`, but the moment a
+real `diffuseColor` texture applies, `updateFinished` replaces it
+with a fresh `MeshPhysicalMaterial` built with no `side` option at
+all, three.js's own default, `FrontSide` only. A single-sided flat
+quad is invisible from behind, and `autoRotate` guarantees the
+camera reaches behind it once per cycle.
+
+Patched both vendored copies to carry `side` over from the shared
+fallback material (`d.side`, already `DoubleSide`) into the
+replacement material, rather than dropping it. Not filed upstream,
+per this session's own direction, same as the sRGB fix above.
+
 ## What full scale still needs
 
 Running `make_billboard_gallery.py --shards 42` and pushing every

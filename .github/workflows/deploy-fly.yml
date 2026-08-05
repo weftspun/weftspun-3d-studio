@@ -10,6 +10,13 @@ on:
     branches:
       - main
 
+# One deploy at a time. A push mid-deploy cancels the run already in
+# flight instead of queuing a second flyctl deploy against the same
+# Fly app, real, hand-cancelled more than once this session already.
+concurrency:
+  group: deploy-fly
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
