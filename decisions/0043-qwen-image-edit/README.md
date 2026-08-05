@@ -25,5 +25,6 @@ interface, and the open question on quantization quality.
 
 ## Related
 
-RFD 0027 selects the format and records the saving. RFD 0026 gives the
-row. RFD 0028 clears Apache 2.0.
+RFD 0027 selects the format and records the saving. RFD 0026 gives
+the row. RFD 0028 clears Apache 2.0. RFD 0071 gates this model's
+T-pose output before RFD 0040 spends compute on it.

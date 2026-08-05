@@ -79,6 +79,7 @@ See the STE policy below for the writing rules.
 | 0067 | CockroachDB, reranked against FoundationDB            | discussion     |
 | 0069 | Visual trait detection with RF-DETR                   | discussion     |
 | 0070 | Keep options open                                     | published      |
+| 0071 | A T-pose gate, with RF-DETR's keypoint model          | discussion     |
 
 ## DRY policy
 
