@@ -90,10 +90,42 @@ box already has is the whole compute budget until it is not enough.
 Renting on vast.ai stays exactly where RFD 0055 leaves it, as the
 next tier once one box stops being enough.
 
+## The asset half of the wire format is already built
+
+`thirdparty/fabric-flow-adapters/flow/`'s `idtx_transport.h` speaks a
+real, working protocol against a service called aria-storage: `PUT`,
+`HEAD`, and `GET` over content-addressed chunks (`.cacnk`, casync,
+SHA-512/256, zstd-compressed) and indexes (`.caibx`), with
+bearer-token auth already wired in. RFD 0061 names the same pair,
+`idtx_chunker.h` and `idtx_transport.c`, as the transport that
+already backs `multiplayer-fabric-godot`'s asset streaming.
+
+That settles the hard half of this RFD's open wire format, the
+binary mesh and USD payload moving between the toplevel and the
+worker. A worker adapter does not invent binary transport. It passes
+a `.caibx` URL as the asset reference, the same shape RFD 0061 needs
+for browser uploads.
+
+Unlike RFD 0061, this adapter needs no NIF. RFD 0061's gap is
+generic USD-native mesh import and export, which needs `idtx_core`
+linked into the BEAM. This adapter only exchanges REST calls with
+aria-storage, plain HTTP the `req` dependency `mix.exs` already
+carries can reach on its own.
+
+What stays open is smaller than the whole wire format now: the
+job-control envelope. `Ports.JobSource` already defines RFD 0003's
+four states, `:queued`, `:running`, `:completed`, `:failed`.
+Dispatching a job and polling that status is a small message, and
+`idtx_transport` was not built for that shape. Also open: whether an
+aria-storage instance runs anywhere reachable over the Tailscale
+join this RFD specifies. `idtx_transport.h`'s own example base URLs
+are generic placeholders, and this project names no deployed one yet.
+
 ## What this RFD does not do
 
 It does not write `fly.toml`. It does not write the worker-side
-job-receiving adapter or its wire format. It does not configure this
+job-receiving adapter or its job-control envelope. It does not
+configure this
 box's Tailscale ACLs to admit a Fly machine, or confirm Fly's side of
 that join actually works. That pairing is asserted here, not run. It
 does not move CockroachDB, which still runs where RFD 0058 put it

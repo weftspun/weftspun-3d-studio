@@ -30,7 +30,10 @@ worker answers.
 **The Fly.io / 4090 split.** RFD 0062. No `fly.toml`, no worker-side
 job-receiving adapter, no Tailscale join between a Fly machine and
 this box, no CockroachDB migration off this box. RFD 0062 names the
-target. None of it runs yet.
+target. None of it runs yet. The adapter's asset-transport half is
+settled, `idtx_transport`/aria-storage, per RFD 0062's own DETAILS.md.
+Open work narrows to the job-control envelope, and whether an
+aria-storage instance runs anywhere reachable yet.
 
 ## Measured, and not built
 

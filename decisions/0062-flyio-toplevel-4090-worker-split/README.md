@@ -35,5 +35,6 @@ leaves undone.
 ## Related
 
 RFD 0019 makes `weftspun_studio` the API server this RFD relocates.
-RFD 0023 gives the ports the worker adapter will implement, and RFD
-0057 tracks what this RFD left open.
+RFD 0023 gives the ports the worker adapter will implement. RFD 0061
+names the same asset transport for a different gap, browser uploads.
+RFD 0057 tracks what this RFD left open.
