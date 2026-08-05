@@ -65,9 +65,10 @@ See the STE policy below for the writing rules.
 | 0051 | Cog for worldmirror2_reconstruct | discussion |
 | 0052 | Cog for triposplat_image_to_splat | discussion |
 | 0053 | OpenUSD as the internal format | discussion |
-| 0054 | Headless CMS on taskweft | discussion |
+| 0054 | The planner inside the studio core | discussion |
 | 0055 | BEAM workers on vast.ai | discussion |
 | 0056 | Develop in a dev container | discussion |
+| 0057 | Open work | published |
 
 ## DRY policy
 

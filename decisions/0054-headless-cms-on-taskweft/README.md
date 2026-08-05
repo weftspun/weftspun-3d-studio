@@ -1,105 +1,94 @@
-# RFD 0054: Headless CMS on taskweft
+# RFD 0054: The planner inside the studio core
 
 **State:** discussion
-**Scope:** `cms/`
+**Scope:** `weftspun_studio/`
 
 ## Problem
 
 `extension/` ran Elixir in an editor panel, through Popcorn and
 AtomVM. It proved the pipeline, and it could not ship.
 
-AtomVM is an emscripten build with pthreads. It needs
-`SharedArrayBuffer`, thus the page must be cross-origin isolated. An
-editor webview is not isolated, and an extension cannot set the
-headers. The panel worked only with `codium --enable-coi`.
+AtomVM needs `SharedArrayBuffer`, thus the page must be cross-origin
+isolated. An editor webview is not isolated, and an extension cannot
+set the headers. The panel worked only with `codium --enable-coi`.
 
 The proof stands, and the vehicle does not.
 
 ## Decision
 
-Delete `extension/`. Build the content system as an Elixir
-application in `cms/`, in the shape RFD 0023 gives.
+Delete `extension/`. Put the planner inside `weftspun_studio`, which
+RFD 0019 already makes the API server.
 
-taskweft is a mandatory dependency. The pipeline order lives in a
-RECTGTN domain, thus a build without the planner has no pipeline.
+RFD 0023 gives the shape, and this RFD does not restate it.
 
-## The layout
+## A second application was the wrong answer first
 
-```
-cms/lib/weftspun_cms/
-  composition.ex        the composition root. The only module that
-                        picks an adapter.
-  content.ex            the API of the content system.
-  core/
-    domain/    pure rules. No I/O.
-    ports/     behaviours, one per side.
-    adapters/  the implementations.
-  planning/
-    loader.ex  reads the documents from priv/.
-cms/priv/
-  domains/     content_lifecycle, stage_mesh, stage_rig
-  problems/    avatar
-```
+This RFD first built `cms/`, a new Elixir application. That was a
+mistake, and the record of it matters more than the correction.
 
-The composition root sits outside `core/`, as RFD 0023 requires.
+`weftspun_studio` already held ports, adapters, an HTTP router, Ecto,
+and CockroachDB. RFD 0019 and RFD 0020 record it. The second
+application duplicated every one of those.
+
+Three parts were new, and only those moved:
+
+| Part                | Where it lives now                        |
+| ------------------- | ----------------------------------------- |
+| Planning documents  | `priv/domains`, `priv/problems`           |
+| `Ports.Planner`     | Beside the other ports                    |
+| `TaskweftPlanner`   | Beside the other adapters                 |
+
+`cms/` is deleted. That also settles the overlap with RFD 0023, which
+this RFD carried while it described a parallel application.
 
 ## Mock every port, and keep the documents real
 
-Every port is a `Mox` mock. A mock derives from the behaviour, thus a
+Every port is a `Mox` mock. A mock derives from the behavior, thus a
 port that gains a callback breaks its mock when it compiles.
 
 The planning documents are the exception. A mocked domain proves
 nothing about the pipeline, because the domains are the pipeline.
-`composition_of_domains_test.exs` mocks nothing and runs the real
-planner over the real documents.
+`pipeline_test.exs` mocks nothing, and it runs the real planner over
+the real documents.
 
-## The composition of domains
+## The measured plans
 
-Three documents compose for the avatar pipeline.
+| Pipeline     | Steps | Composes                                  |
+| ------------ | ----: | ----------------------------------------- |
+| content_only |     3 | the base alone                            |
+| mesh         |     7 | base and stage_mesh                       |
+| avatar       |    10 | base, stage_mesh, stage_rig, and a problem|
 
-| Document          | Adds                             |
-| ----------------- | -------------------------------- |
-| content_lifecycle | stage, validate, publish         |
-| stage_mesh        | the mesh, and it overrides       |
-| stage_rig         | the rig, and it overrides again  |
-| avatar (problem)  | the goal, and the VRM output     |
-
-Order carries meaning. A later document wins, thus the base leads and
-the problem trails.
-
-`stage_rig` calls `a_generate_mesh`, which `stage_mesh` defines. That
-resolves because the merge unions the actions of every document before
-the planner sees them. Two pipelines that both make a mesh name one
-document, and no copy drifts.
+The avatar plan is the evidence. `stage_rig` calls `a_generate_mesh`,
+which `stage_mesh` defines, and that resolves only because the merge
+unions the actions of every document first.
 
 ## Three faults came out of this
 
-The work needed three fixes to taskweft, and each one came from use
-and not from reading.
+The work needed three fixes to taskweft, and each came from use and
+not from reading. Each one answered `no_plan`, which names nothing.
 
 - Composition did not exist. `merge/2` was private to the CLI, and it
-  took one domain and one problem. Upstream PR 207 adds it.
-- A shared variable replaced instead of merging its keys. The base
-  declared `have` with `source`, the mesh stage declared `have` with
-  `mesh`, and the base keys went away. Every guard that read one
-  failed, and the planner answered `no_plan`. PR 208 fixes it.
-- A goal serialized `eq: true` as the string `"true"`. The state holds
-  a boolean, thus the goal never matched. PR 209 fixes it.
+  took one domain and one problem. PR 207.
+- A shared variable replaced instead of merging its keys, thus the
+  base lost the keys its own guards read. PR 208.
+- A goal serialized `eq: true` as the string `"true"`, thus it never
+  matched a boolean in state. PR 209.
 
-Each fault answered `no_plan`, which names nothing.
+PR 207 also rewrote the DSL diagnostics. A domain written against an
+API that does not exist compiled without complaint, and returned an
+empty document.
 
-## What this does not do
+## Two routes
 
-It does not serve HTTP yet. The API is a module, and a Plug router is
-the next step.
+`/api/v1/pipelines` lists what this deployment knows.
+`/api/v1/pipelines/:name/plan` solves one and runs nothing, thus a
+caller sees the plan before it pays for the models.
 
-It carries no job store and no asset store. Both ports exist, and both
-have mocks. Neither has an adapter.
-
-It does not run the models. A Cog runs each one, and RFD 0036 records
-that packaging.
+`Pipeline.parse/1` takes `String.to_existing_atom/1`. An HTTP caller
+must not fill the atom table, which never shrinks.
 
 ## Related
 
-RFD 0023 gives the shape. RFD 0037 gives the composite convention.
-RFD 0053 gives the asset format. RFD 0036 gives the Cog packaging.
+RFD 0019 makes this the API server. RFD 0023 gives the shape. RFD 0037
+gives the composite convention. RFD 0055 selects the worker host.

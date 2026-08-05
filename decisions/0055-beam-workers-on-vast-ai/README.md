@@ -55,14 +55,29 @@ bandwidth, and the privacy terms.
 
 ## Phase 1: unify the repository
 
-1. Commit the Torchx swap, the CockroachDB fixes, and the
-   let-it-crash pass. Done in `e1a4767b`.
+1. Commit the CockroachDB fixes and the let-it-crash pass. Done in
+   `e1a4767b`. The Torchx swap in that commit is reverted, and
+   RFD 0056 records why.
 2. Delete `cms/`, and fold the planning documents, the `Planner` port,
    and `TaskweftPlanner` into `weftspun_studio`. Done in `c2d659f7`.
    That settles the overlap RFD 0023 and RFD 0054 carried.
-3. Remove the Replicate passthrough and `ReplicateJobs`. Open.
-4. Abandon the Cog build. Done. RFD 0036 selects plain Docker, and
-   RFD 0040 records a contract stage tested in Docker.
+3. Remove the Replicate passthrough and `ReplicateJobs`. Open, and see
+   below.
+4. Abandon the Cog build. Done in `06c5c4ba`. RFD 0036 selects plain
+   Docker, and RFD 0040 records a contract stage tested in Docker.
+
+## The passthrough stays until a worker answers
+
+Step 3 removes the only path from the router to a model. Nothing
+replaces it yet, because Phase 2 has not run.
+
+Keep `ReplicateJobs` until one vast.ai worker answers `/predict`. Then
+the adapter changes host and keeps its port, which is what RFD 0023
+makes possible.
+
+`Ports.JobSink` and `Ports.JobSource` do not change. A vast.ai adapter
+implements the same two behaviors, thus the router never learns which
+host runs the model.
 
 ## Phase 2: deploy the compute
 

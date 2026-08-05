@@ -175,6 +175,34 @@ Done:
 - `cockroach_local` provisions and runs the host, through
   `mix weftspun.crdb`.
 
+### The provisioner never reached the binary
+
+`mix weftspun.crdb install` answered `:unsupported_target` on every
+platform, and not only on Windows. Two faults stood in the way, and
+`cockroach_local` had neither of them.
+
+The task passed `:os.type()` to `Provision.install/2`. That returns an
+`{os_family, os_name}` pair such as `{:win32, :nt}` or
+`{:unix, :linux}`. The asset map is keyed `{:windows, :x86_64}`, thus
+the two shapes never matched. `target/0` derives the pair now.
+
+The task then passed `priv/cockroach` as the destination.
+`install/2` appends `cockroach` itself, thus the binary landed in
+`priv/cockroach/cockroach/` while `bin/1` read `priv/cockroach/`. It
+installed, and then nothing could find it. The task passes `priv` now.
+
+The V-Sekai release carries a Windows zip, a Linux tarball, and two
+macOS tarballs. None of them was reachable before this.
+
+### Where the suite runs
+
+RFD 0056 moves development into a dev container. That container runs
+Linux, thus it takes the Linux tarball.
+
+`scripts/studio-test.sh` skips the suite when no node answers on
+127.0.0.1:26257, and it names the start command. A hook that failed
+instead would block a commit that touched no code.
+
 Open:
 
 - The router still reads the in memory store.
