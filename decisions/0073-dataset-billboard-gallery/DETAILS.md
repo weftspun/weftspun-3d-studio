@@ -145,3 +145,21 @@ at all. It has the three verified proof files under
 `public/usd/`, served as static files today, not yet through the S3
 API this RFD just proved. Wiring that fetch path is the next step,
 not something this session reached.
+
+## The live gallery's asset is a stopgap, stated plainly
+
+The deployed gallery serves `sample_billboard.usdz` from
+`priv/static/gallery/usd/`, baked into the release image, through
+`GET /sample_billboard.usdz` in `router.ex`. That is not the
+architecture this session already committed to. The asset belongs
+in `versitygw`, fetched through its real S3 API, the same one
+`versitygw test full-flow` already proved end to end.
+
+The proper version needs `ex_aws`/`ex_aws_s3` as a real
+`weftspun_studio` dependency, not only a `Mix.install` script, a
+boot-time push of the seed asset into the `gallery` bucket, and a
+proxy route that fetches from `versitygw` instead of `priv/static`.
+That is real new code and another full deploy cycle, not a small
+edit. Deliberately deferred, not silently accepted: the current
+static-file route is a stated stopgap for one deployment, not the
+decided shape.
