@@ -23,15 +23,7 @@ download a VRM after the pipeline.
 Export paths include GLB download, VRM build, avatar pipeline VRM,
 and GLB compression with gltf-transform.
 
-## References
-
-- Pipeline: `docs/AVATAR_PIPELINE.md`
-- Rig contract: `docs/API_AVATAR_RIG_CONTRACT.md`
-- Client: `src/library/avatarPipelineCatalog.js`
-- Client: `src/library/avatarPipelineExport.js`
-- Export: `src/components/GLBExport.jsx`
-- Export: `src/components/VRMExport.jsx`
-- Export: `src/library/glbCompress.js`
+See `DETAILS.md` for file references.
 
 ## Related
 

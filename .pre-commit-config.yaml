@@ -6,6 +6,12 @@
 # The Elixir hook covers the RECTGTN HTN domains and problems that sit
 # beside their RFDs. RFD 0037 records why those files are Elixir DSL,
 # and .formatter.exs names the tree they live in.
+#
+# thirdparty/ holds the vendored browser client and the two fabric
+# subtrees (RFD 0060, RFD 0061). No hook here owns that code, so it
+# stays out of every hook's file set, not only the ones whose pattern
+# already misses it.
+exclude: '^thirdparty/'
 repos:
   - repo: local
     hooks:

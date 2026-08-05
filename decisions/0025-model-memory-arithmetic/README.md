@@ -26,21 +26,8 @@ weight GB    = parameters in billions x 2
 This document counts 1 GB as 1,000,000,000 bytes. The GiB figure is
 smaller by 7 percent.
 
-## Three costs come after the weights
-
-- The load transient. A loader that reads the file into host memory,
-  and then copies to the device, holds two copies. A loader that maps
-  the file, and copies direct to the device, holds one copy.
-- The runtime overhead. A CUDA context, the allocator, and the
-  fragmentation add about 10 percent above the weights.
-- The activation peak. This depends on the batch size, the resolution,
-  and the step count. It does not depend on the parameter count.
-
-The safe rule for one resident model is below.
-
-```
-device memory = weight GB x 1.1 + activation peak
-```
+See `DETAILS.md` for the three costs that come after the weights,
+and the safe rule for one resident model.
 
 ## Related
 

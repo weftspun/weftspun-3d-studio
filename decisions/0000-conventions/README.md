@@ -17,6 +17,13 @@ The repository keeps designs in one place. The decisions directory
 records durable decisions. The docs tree holds detailed designs.
 An RFD points to its source. It does not copy the source.
 
+Each RFD's `README.md` stays under 40 lines. It states the problem
+and the decision, in the fewest lines that keep both true. A
+measurement, a verification log, a deep walkthrough, or a code
+sample does not fit. Move it to a sibling file, such as
+`DETAILS.md`, in the same RFD folder. The `README.md` names that
+file in one line.
+
 ## References
 
 - RFD style: `rfd-driven-architecture` skill
