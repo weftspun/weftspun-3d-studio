@@ -154,6 +154,16 @@ tracker held nothing about it. This is a real, confirmed upstream
 defect, not a misuse on this project's side, and not something a
 newer release already fixed.
 
+The OpenUSD spec itself settles which side the bug is on. Its own
+package-resolver contract says a path beginning with `./` or `../`
+is "interpreted in the virtual filesystem described by the
+package's internal layout," anchored to the referring layer inside
+the archive. USD's own resolver is required to normalize that
+prefix when it matches a package entry. `usd-viewer`'s `getTexture`
+skips that normalization and compares the raw, un-anchored string
+instead, so the defect sits in `usd-viewer`'s own code, not in any
+ambiguity the format leaves open.
+
 `weftspun/usd-viewer` now holds a real fork with the fix, branch
 `fix-usdz-relative-texture-path`, and
 [github.com/coryrylan/usd-viewer/pull/4](https://github.com/coryrylan/usd-viewer/pull/4)
@@ -162,6 +172,33 @@ published version picks it up, `priv/static/gallery/vendor/usd-viewer/render-del
 and `usd_viewer_app/public/vendor/usd-viewer/render-delegate.js`
 carry the identical patch by hand, a stated mirror of the real
 submitted fix, not an unexplained local hack.
+
+## A second real usd-viewer bug: no sRGB decode
+
+Once the texture loaded, the live gallery looked too bright, a
+washed-out version of the source image. Reading OpenUSD's own spec
+for `UsdUVTexture`'s `sourceColorSpace` input confirmed why: an
+8-bit, 3-or-4-channel image, ours included, must be read through
+the sRGB transfer curve before use as a `diffuseColor`, the spec's
+own default ("auto") behavior even with no attribute authored at
+all, and our card's `.usda` sets it explicitly to `"sRGB"` besides.
+
+Grepping the vendored `render-delegate.js` for `sourceColorSpace`,
+`colorSpace`, or `encoding` found zero matches. `usd-viewer` never
+reads the authored color space and never marks a loaded texture as
+sRGB, so three.js (pinned at `0.149.0`, the pre-`colorSpace` API
+version) treats the gamma-encoded PNG bytes as already linear,
+skips the decode, and the renderer's own linear-to-sRGB output
+transform brightens an already-too-high value a second time. That
+is the real, confirmed mechanism behind "too bright," not an HDR
+display artifact.
+
+Patched only the two vendored copies for this one, scoped to
+`diffuseColor` and `emissiveColor`, per the spec's own guidance,
+leaving `roughness`, `metallic`, `normal`, `occlusion`, and
+`opacity` linear, matching UsdPreviewSurface's own convention that
+only color-like channels are sRGB. Not filed upstream, unlike the
+path-lookup bug above.
 
 ## What full scale still needs
 
