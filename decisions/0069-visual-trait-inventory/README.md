@@ -1,6 +1,6 @@
 # RFD 0069: Visual trait detection with RF-DETR
 
-**State:** prediscussion
+**State:** discussion
 **Scope:** RFD 0064's dataset, RFD 0065's resolve step, RFD 0044's
 seethrough-layer-decomposition composite
 

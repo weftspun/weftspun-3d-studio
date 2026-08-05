@@ -80,7 +80,7 @@ See the STE policy below for the writing rules.
 | 0066 | Differential Mamba for caption encoding | abandoned |
 | 0067 | CockroachDB, reranked against FoundationDB | discussion |
 | 0068 | A generative taskweft model, and which architecture | prediscussion |
-| 0069 | Visual trait detection with RF-DETR | prediscussion |
+| 0069 | Visual trait detection with RF-DETR | discussion |
 
 ## DRY policy
 
