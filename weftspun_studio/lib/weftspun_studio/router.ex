@@ -6,14 +6,27 @@ defmodule WeftspunStudio.Router do
   HTTP surface. The smallest slice that serves the client.
 
   RFD 0019 makes this application an API server in the headless
-  content system style. Phase 1 exposes the model catalog only. The
-  job routes stay with the client until a later phase.
+  content system style. Phase 1 exposed the model catalog only.
+
+  The job routes pass through to Replicate, which runs each model as
+  its own Cog. This server holds no queue. Replicate already queues,
+  retries, and reports, thus a second queue here would keep a copy of
+  that state and drift from it.
   """
 
   use Plug.Router
 
   plug(:fetch_query_params)
   plug(:match)
+
+  # A job create carries JSON, and the catalog routes do not. Parsing
+  # runs after match so a GET pays nothing for it.
+  plug(Plug.Parsers,
+    parsers: [:json],
+    pass: ["application/json"],
+    json_decoder: Jason
+  )
+
   plug(:dispatch)
 
   get "/api/v1/models" do
@@ -58,9 +71,66 @@ defmodule WeftspunStudio.Router do
     json(conn, 200, %{status: "ok", version: WeftspunStudio.CLI.version()})
   end
 
+  # ---------- jobs, passed through to Replicate ----------
+
+  post "/api/v1/jobs" do
+    %{"feature" => feature, "model" => model} = conn.body_params
+    params = conn.body_params["params"] || %{}
+
+    case job_sink().create_job(nil, feature, model, params) do
+      {:ok, id} -> json(conn, 202, %{job_id: id, status: "queued"})
+      {:error, reason} -> error(conn, reason)
+    end
+  end
+
+  get "/api/v1/jobs/:id" do
+    case job_source().fetch_job(nil, id) do
+      {:ok, job} -> json(conn, 200, job)
+      {:error, reason} -> error(conn, reason)
+    end
+  end
+
+  get "/api/v1/jobs" do
+    limit =
+      case conn.params["limit"] do
+        nil -> nil
+        raw -> String.to_integer(raw)
+      end
+
+    case job_source().list_jobs(nil, limit) do
+      {:ok, jobs} -> json(conn, 200, %{jobs: jobs})
+      {:error, reason} -> error(conn, reason)
+    end
+  end
+
+  post "/api/v1/jobs/:id/cancel" do
+    case job_sink().cancel_job(nil, id) do
+      :ok -> json(conn, 200, %{job_id: id, status: "canceled"})
+      {:error, reason} -> error(conn, reason)
+    end
+  end
+
   match _ do
     json(conn, 404, %{error: "not found"})
   end
+
+  # A reason from the port becomes a status a client can act on. An
+  # unknown model is the caller's fault, and a missing token is this
+  # server's fault. One 500 for both would send a client to retry a
+  # request that can never work.
+  defp error(conn, :not_found), do: json(conn, 404, %{error: "not found"})
+
+  defp error(conn, {:unknown_model, id}),
+    do: json(conn, 400, %{error: "unknown model", model: id})
+
+  defp error(conn, :no_replicate_token),
+    do: json(conn, 503, %{error: "no replicate token is configured"})
+
+  defp error(conn, {:replicate_error, status, detail}),
+    do:
+      json(conn, 502, %{error: "replicate rejected the request", status: status, detail: detail})
+
+  defp error(conn, reason), do: json(conn, 500, %{error: inspect(reason)})
 
   defp encode_fact(fact), do: %{fact | updated_at: DateTime.to_iso8601(fact.updated_at)}
 
@@ -76,5 +146,13 @@ defmodule WeftspunStudio.Router do
       :catalog_source,
       WeftspunStudio.Adapters.InventoryCatalog
     )
+  end
+
+  defp job_sink do
+    Application.get_env(:weftspun_studio, :job_sink, WeftspunStudio.Adapters.ReplicateJobs)
+  end
+
+  defp job_source do
+    Application.get_env(:weftspun_studio, :job_source, WeftspunStudio.Adapters.ReplicateJobs)
   end
 end
