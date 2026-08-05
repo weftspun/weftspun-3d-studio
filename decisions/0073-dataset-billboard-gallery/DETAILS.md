@@ -82,6 +82,39 @@ the public internet. `flyctl ssh console` confirmed `versitygw`
 answered `403` on `127.0.0.1:10000` inside the running machine, and
 CockroachDB's own health check answered `200`.
 
+## Two real findings after a browser, not curl, checked the site
+
+A user report that `https://weftspun-studio.fly.dev/` "does not
+load" surfaced two separate, real findings, checked with Playwright
+against the live deployment, not assumed.
+
+**The root path answers 404, correctly.** `router.ex`'s own
+catch-all route returns `{"error":"not found"}` for `GET /`, since
+no frontend route exists yet. RFD 0062 names the built browser
+client as something the toplevel would serve, but that wiring was
+never built into `Dockerfile.fly` or the router. Today this
+deployment is API-only, `/api/v1/*`, by design, not by bug. A
+browser hitting `/` correctly gets a 404, the same one `curl`
+already showed.
+
+**`versitygw test full-flow` took the whole app down, for real.**
+Running the gateway's own stress-test suite on the same
+`shared-cpu-1x`, 512 MB machine that runs CockroachDB starved it.
+Around 400 test buckets landed on the shared Volume before this
+session stopped watching the process, and the SSH session closing
+locally did not stop the remote process, since it ran server-side,
+not on this session's own machine. CockroachDB's Postgrex
+connections timed out, the health check failed, and Fly's own logs
+show `"could not find a good candidate within 40 attempts at load
+balancing"` for every request to `/`, a real, user-visible outage.
+`flyctl machine restart` recovered it. Health, the catalog, and the
+pipelines all answer correctly again.
+
+The lesson: a stress-test suite against a colocated production
+database, on a machine sized for a router and not for load, is a
+real risk, not a hypothetical one. A future full-flow run belongs
+on a separate machine, or a bigger one, not this one.
+
 `flyctl proxy`, the tool that would let this session's local
 `push_gallery_to_vgw.exs` reach the live loopback-bound port, proved
 unreliable on this network, for every port tried, including the

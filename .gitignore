@@ -13,3 +13,4 @@ erl_crash.dump
 /decisions/0064-character-concept-generator/dataset/
 character_taxonomy/deps/
 character_taxonomy/_build/
+.playwright-mcp/
