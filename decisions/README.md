@@ -77,10 +77,7 @@ See the STE policy below for the writing rules.
 | 0065 | Taskweft domain schema in essential tuple normal form | discussion     |
 | 0066 | Differential Mamba for caption encoding               | abandoned      |
 | 0067 | CockroachDB, reranked against FoundationDB            | discussion     |
-| 0069 | Visual trait detection with RF-DETR                   | discussion     |
 | 0070 | Keep options open                                     | published      |
-| 0071 | A T-pose gate, with RF-DETR's keypoint model          | discussion     |
-| 0072 | GEM as teacher, RF-DETR Keypoint as student           | discussion     |
 
 ## DRY policy
 

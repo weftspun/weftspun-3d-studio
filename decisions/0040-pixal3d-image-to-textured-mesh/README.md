@@ -31,4 +31,3 @@ interface, the build-time downloads, and what this RFD corrects.
 
 RFD 0026 gives the memory per model. RFD 0027 gives the GPU tier.
 RFD 0038 packages the backbone. RFD 0053 gives the asset format.
-RFD 0071 gates this model's input on a T-pose check.

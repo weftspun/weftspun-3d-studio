@@ -27,5 +27,4 @@ and the motion validation gate this model image runs.
 ## Related
 
 RFD 0007 records the motion validation. RFD 0005 records the VRM
-pipeline the retarget targets. RFD 0026 gives the memory. RFD 0072
-uses GEM, Kimodo's SOMA-X sibling, as a pose teacher.
+pipeline the retarget targets. RFD 0026 gives the memory.

@@ -24,5 +24,4 @@ applies here too.
 ## Related
 
 RFD 0047 holds the shared domain. RFD 0038 holds the weights. RFD
-0053 gives the layer rule. RFD 0069 crops the reference image to one
-trait, for a caller who wants to edit that trait alone.
+0053 gives the layer rule.
