@@ -25,11 +25,12 @@ history section.
 
 | What | Evidence |
 | ---- | -------- |
-| The planner composes three documents | `pipeline_test.exs`, 100 of 105 pass on this box; the other 5 need `taskweft_nif`, see below |
+| The planner composes three documents | `pipeline_test.exs`, all 105 pass on this box now that `taskweft_nif` is rebuilt for x86_64 |
 | The model image serves HTTP | RFD 0040, run in Docker on this machine |
 | CockroachDB provisions and runs | RFD 0020, 92 tests with the node up |
 | taskweft composition | PRs 207, 208, 209, merged upstream |
 | Both Quadlets run end to end | RFD 0058, `weftspun.service` and `weftspun-crdb.service` both `active (running)`, `/api/v1/health` and `/api/v1/models` answered over `weftspun.network` |
+| `taskweft_nif` runs on x86_64 | `make clean && mix deps.compile taskweft_nif --force` from `deps/taskweft_nif/`; `mix test` runs 105/105 with no arch-mismatch failure |
 
 ## Written, and never run
 
@@ -54,10 +55,12 @@ when its model is next worked on, and not in a sweep.
 asset attribute, because `usd-core` alone reads no glTF. A glTF file
 format plugin would let it be a reference arc.
 
-**`taskweft_nif` on x86_64.** `deps/taskweft_nif/priv/libtaskweft_nif.so`
-is an ARM aarch64 binary; `file` confirms it. It fails to load on
-this x86_64 box, and 5 of the 105 `pipeline_test.exs` tests fail with
-it. Rebuild the NIF for x86_64, or fetch an x86_64 release.
+**The `idtx_core` NIF adapter.** RFD 0061. `flow/adapters/` in
+`thirdparty/fabric-flow-adapters/` holds three hosts — Godot, Unity,
+CLI — and no Elixir one. Needs a fourth adapter, a `weftspun_studio`
+route, and the browser call site swapped over. RFD 0061's stopgap
+(`prepareGlbForApiUpload` in `glbCompress.js`) stays until this
+lands.
 
 ## Unknown, and blocking a number
 
@@ -82,4 +85,4 @@ cost something. Measure before choosing.
 RFD 0055 selects the host. RFD 0056 selects the development system.
 RFD 0036 packages the models. RFD 0026 holds the memory numbers.
 RFD 0058 gives the Quadlet deployment. RFD 0059 gives the one-step
-build.
+build. RFD 0061 gives the `idtx_core` upload-prep decision.
