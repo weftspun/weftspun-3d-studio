@@ -1,6 +1,6 @@
 # RFD 0052: Model image for triposplat_image_to_splat
 
-**State:** discussion
+**State:** abandoned
 **Feature:** model packaging
 
 ## Problem
@@ -13,14 +13,17 @@ makes it two callers with different needs from one model image.
 
 ## Decision
 
-Package it once, and let RFD 0049 mount the same weights. The world
-model image then adds no splat weights of its own.
+Do not package this model image. Abandon this line of work.
 
-See `DETAILS.md` for the model's memory, the `predict()` interface, why
-the X-flip belongs only in this model image, and the viewport's Gaussian
-PLY contract.
+RFD 0064 turns the roadmap toward character concepts, and away from
+single-photo scene reconstruction. RFD 0051, its multi-photo sibling,
+and RFD 0049, its would-be caller, are abandoned for the same reason.
+
+See `DETAILS.md` for the model's memory and the `predict()`
+interface this RFD sketched before the pivot.
 
 ## Related
 
-RFD 0051 is the multi-photo path. RFD 0049 mounts these weights.
-RFD 0009 records the viewport that loads the result.
+RFD 0064 records the pivot this RFD yields to. RFD 0051 was the
+multi-photo path. RFD 0049 would have mounted these weights.
+RFD 0009 records the viewport that would have loaded the result.

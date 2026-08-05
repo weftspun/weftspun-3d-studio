@@ -1,6 +1,6 @@
 # RFD 0049: Model image for weftspun_image_to_world
 
-**State:** discussion
+**State:** abandoned
 **Feature:** model packaging
 
 ## Problem
@@ -14,17 +14,19 @@ a prop is a mesh. One output file cannot hold both well.
 
 ## Decision
 
-Model it as a taskweft domain over the two model images. `domain.ex` and
-`problem.ex` in this folder hold it.
+Do not package this model image. Abandon this line of work.
 
-Compose the result as a USD stage. The splat is one layer, and each
-prop is a reference under its own prim. RFD 0053 gives the rule, and
-this model is the clearest case for it.
+RFD 0064 turns the roadmap toward character concepts, and away from
+explorable worlds. RFD 0052 and RFD 0051, its two splat-half
+dependencies, are abandoned for the same reason. Package this entry
+again only if the world-building scope returns.
 
-See `DETAILS.md` for the per-part memory, the `predict()` interface,
-and why the planner earns its place over a fixed script.
+See `DETAILS.md` for the per-part memory and the `predict()`
+interface this RFD sketched before the pivot.
 
 ## Related
 
-RFD 0052 gives the splat half. RFD 0038 gives the prop half. RFD 0053
-gives the stage composition. RFD 0037 gives the convention.
+RFD 0064 records the pivot this RFD yields to. RFD 0052 gave the
+splat half. RFD 0038 gave the prop half, and it stays active for
+character mesh generation. RFD 0053 gives the stage composition this
+RFD would have used. RFD 0037 gives the convention.

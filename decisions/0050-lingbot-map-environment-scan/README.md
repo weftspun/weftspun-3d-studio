@@ -1,6 +1,6 @@
 # RFD 0050: Model image for lingbot_map_environment_scan
 
-**State:** prediscussion
+**State:** abandoned
 **Feature:** model packaging
 
 ## Problem
@@ -14,16 +14,19 @@ and still be useful. This one may not.
 
 ## Decision
 
-Model the two phases as a taskweft domain, and make the metric
-calibration a guard and not a step.
+Do not package this model image. Abandon this line of work.
 
-Measure the parameter count before the build, as RFD 0040 does for
-Pixal3D. This RFD stays in prediscussion until that number exists.
+RFD 0064 turns the roadmap toward character concepts, and away from
+environment scanning. The parameter-count measurement this RFD
+waited on is no longer needed, because the model itself is out of
+scope.
 
-See `DETAILS.md` for the two phases, the gravity-alignment rule, the
-metric gate, and what still blocks packaging.
+See `DETAILS.md` for the two phases, the gravity-alignment rule, and
+the metric gate this RFD sketched before the pivot.
 
 ## Related
 
-RFD 0053 gives the stage format. RFD 0037 gives the convention.
-RFD 0027 holds the budget this measurement closes.
+RFD 0064 records the pivot this RFD yields to. RFD 0053 gives the
+stage format this RFD would have used. RFD 0037 gives the
+convention. RFD 0027 held the budget this measurement would have
+closed.

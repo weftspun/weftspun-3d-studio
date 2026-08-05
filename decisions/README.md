@@ -60,10 +60,10 @@ See the STE policy below for the writing rules.
 | 0046 | Model image for skintokens_auto_rig | discussion |
 | 0047 | Model image for voxhammer_text_mesh_editing | discussion |
 | 0048 | Model image for voxhammer_image_mesh_editing | discussion |
-| 0049 | Model image for weftspun_image_to_world | discussion |
-| 0050 | Model image for lingbot_map_environment_scan | prediscussion |
-| 0051 | Model image for worldmirror2_reconstruct | discussion |
-| 0052 | Model image for triposplat_image_to_splat | discussion |
+| 0049 | Model image for weftspun_image_to_world | abandoned |
+| 0050 | Model image for lingbot_map_environment_scan | abandoned |
+| 0051 | Model image for worldmirror2_reconstruct | abandoned |
+| 0052 | Model image for triposplat_image_to_splat | abandoned |
 | 0053 | OpenUSD as the internal format | discussion |
 | 0054 | The planner inside the studio core | discussion |
 | 0055 | BEAM workers on vast.ai | discussion |
@@ -80,6 +80,7 @@ See the STE policy below for the writing rules.
 | 0066 | Differential Mamba for caption encoding | abandoned |
 | 0067 | CockroachDB, reranked against FoundationDB | discussion |
 | 0068 | A generative taskweft model, and which architecture | prediscussion |
+| 0069 | Visual trait detection with RF-DETR | prediscussion |
 
 ## DRY policy
 

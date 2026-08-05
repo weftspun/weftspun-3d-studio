@@ -52,10 +52,6 @@ lands.
 
 ## Unknown, and blocking a number
 
-**`lingbot_map_environment_scan`.** RFD 0026 marks its parameter count
-unknown, and it is the last such row. RFD 0050 stays in prediscussion
-until it is measured.
-
 **The Q4_K_M quality cost.** RFD 0043. Quantization is a price choice
 now, and no measurement compares the two formats.
 
@@ -67,3 +63,11 @@ RFD 0055 also records why it stays until one vast.ai worker answers.
 **Storage on vast.ai.** RFD 0055. Either the host keeps the weights,
 or the container pulls them at start. Pixal3D is 24.045 GB, thus both
 cost something. Measure before choosing.
+
+**The abandoned world cluster's stale references.** RFD 0064 pivots
+the roadmap to character concepts. RFD 0049, RFD 0050, RFD 0051, and
+RFD 0052 record the abandonment, but RFD 0016, RFD 0017, RFD 0026,
+RFD 0027, RFD 0037, and RFD 0038 still cite all four as active work.
+`lib/weftspun_studio/inventory.ex` still marks all four `:active`.
+Update each reference, or mark the four `:vetoed`, when the catalog
+is next touched.

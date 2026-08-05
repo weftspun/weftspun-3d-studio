@@ -1,6 +1,6 @@
 # RFD 0051: Model image for worldmirror2_reconstruct
 
-**State:** discussion
+**State:** abandoned
 **Feature:** model packaging
 
 ## Problem
@@ -13,14 +13,17 @@ between them by photo count. Two or more photos select this model.
 
 ## Decision
 
-Package it with a photo-count guard that matches the client. A single
-photo must fail here with a clear reason, and it must not produce a
-poor splat that looks like a model fault.
+Do not package this model image. Abandon this line of work.
 
-See `DETAILS.md` for the model's memory, the `predict()` interface,
-why there is no pose input, and how the splat becomes a USD payload.
+RFD 0064 turns the roadmap toward character concepts, and away from
+multi-photo scene reconstruction. RFD 0052, its single-photo sibling,
+is abandoned for the same reason.
+
+See `DETAILS.md` for the model's memory and the `predict()`
+interface this RFD sketched before the pivot.
 
 ## Related
 
-RFD 0052 is the single-photo path. RFD 0033 records COLMAP. RFD 0053
-gives the stage rule.
+RFD 0064 records the pivot this RFD yields to. RFD 0052 was the
+single-photo path. RFD 0033 records COLMAP. RFD 0053 gives the stage
+rule this RFD would have used.
