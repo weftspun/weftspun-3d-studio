@@ -1,4 +1,4 @@
-# RFD 0068 details: the two candidates, and the trigger to revisit
+# RFD 0068 details: the three candidates, and the trigger to revisit
 
 ## Differential Mamba (arXiv:2507.06204)
 
@@ -32,25 +32,67 @@ taskweft domain has no analogous history to model. `@variables`,
 document, not a long temporal sequence of prior events. FuXi-Linear's
 core contribution does not transfer.
 
+## Gemma 4 (small variants)
+
+Google. A general-purpose model family, shipped at several sizes.
+The small tiers matter here. E2B and E4B use the "effective
+parameter" naming Gemma 3n first used. A 26B-A4B mixture-of-experts
+tier also exists. There, 26B is the total weight count, and 4B is
+the count active per token.
+
+RFD 0026 and RFD 0027 already size this project's own catalog
+models in bf16 gigabytes, against a 24 GB card. Every Gemma 4 small
+tier clears that bar.
+
+Unlike the other two candidates, Gemma 4 starts pretrained, on text
+and code both. Fine-tuning it for `domain.ex`/`problem.ex`
+generation is a narrow adaptation, of a model that already knows
+Elixir-shaped and JSON-shaped syntax. It is not a new architecture
+learning syntax from zero. That needs a far smaller labeled set than
+training Differential Mamba or FuXi-Linear from scratch would need.
+
+### A ready fine-tune, and where it can run
+
+`yuxinlu1/gemma-4-12B-agentic-fable5-composer2.5-v2-3.5x-tau2`, on
+Hugging Face, fine-tunes `google/gemma-4-12B-it` for coding,
+agentic, and tool-use work. Apache-2.0, so it clears RFD 0028's
+license gate. 266,452 downloads and 84 likes as of this RFD.
+
+The 12B parameter count does not clear RFD 0027's local card
+budget. bf16 holds 2 bytes per parameter, so 12B needs about 24 GB
+for weights alone. That leaves no room for a KV cache or
+activations, on the RTX 4090 this project owns.
+
+Fireworks AI's custom-model upload accepts a full model like this
+one, not only a LoRA adapter. It serves that upload from an
+on-demand deployment, queried the same way a serverless endpoint is
+queried, with no local VRAM at all. Serverless deployment is not
+open to a custom upload. Only on-demand is. Running this fine-tune
+means a hosted GPU this project rents by the deployment, not the
+4090 it already owns. RFD 0055 and RFD 0062 already weigh that same
+rented-versus-owned trade, for other models.
+
 ## Why this stays prediscussion
 
-Both candidates are sequence-model architectures, and a generative
-taskweft model needs training data first: pairs of (caption,
-domain.ex/problem.ex) at a scale a model can learn from. RFD 0064
-produces zero such pairs today, because it uses Claude's own per-row
-authoring instead. There is no training set yet, so ranking an
-architecture ahead of a training set is a decision with nothing to
-decide against.
+All three candidates need training data: pairs of (caption,
+domain.ex/problem.ex). RFD 0064 produces zero such pairs today,
+because it uses Claude's own per-row authoring instead. Fine-tuning
+Gemma 4 lowers the bar. A from-scratch architecture needs a large
+learning set. Gemma 4 needs a few hundred real examples instead. The
+bar is not zero either way, and RFD 0064 has not cleared it yet.
 
 ## The trigger to revisit
 
-Revisit this RFD once RFD 0064 produces problem.ex files for a
-meaningful share of the 15,000 dataset rows. Revisit it once the
-per-row Claude cost is a measured, named bottleneck, not a guessed
-one. At that point the actual shape of the training pairs (short,
-structured JSON-LD, not long token sequences) should drive the
-architecture choice, more than either paper's own benchmark domain
-does.
+For fine-tuning Gemma 4, revisit this RFD once RFD 0064 produces a
+few hundred real `problem.ex` files. That bar is lower than a
+meaningful share of the 15,000 dataset rows. For training
+Differential Mamba or FuXi-Linear from scratch, keep the higher bar.
+That needs a measured, named per-row Claude cost, and a dataset
+large enough to train an architecture from empty weights. At that
+point the actual shape of the training pairs (short, structured
+JSON-LD, not long token sequences, and not a long
+user-interaction history) should drive the choice, more than any one
+paper's own benchmark domain does.
 
 ## Sources
 
@@ -59,3 +101,8 @@ does.
 - USTC-StarTeam. "FuXi-Linear: Unleashing the Power of Linear
   Attention in Long-term Time-aware Sequential Recommendation."
   arXiv:2602.23671, KDD 2026. https://github.com/USTC-StarTeam/fuxi-linear
+- Google. Gemma 4 model family, small tiers E2B, E4B, and 26B-A4B.
+- yuxinlu1. `gemma-4-12B-agentic-fable5-composer2.5-v2-3.5x-tau2`.
+  https://huggingface.co/yuxinlu1/gemma-4-12B-agentic-fable5-composer2.5-v2-3.5x-tau2
+- Fireworks AI. "Custom Models."
+  https://docs.fireworks.ai/models/uploading-custom-models
