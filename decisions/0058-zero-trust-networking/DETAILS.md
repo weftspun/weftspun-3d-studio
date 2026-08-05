@@ -24,6 +24,10 @@ would reach versitygw on its own bound port, under the same rule as
 this section. No port goes past loopback unless a remote caller
 needs it, and then only that one port.
 
+RFD 0073 puts this to work, on the Fly toplevel: `versitygw` runs
+colocated with `weftspun_studio`, bound to `127.0.0.1:10000`, the
+same rule stated here.
+
 ## CockroachDB replaces the Manta metadata tier's ZooKeeper
 
 Mark Cavage and David Pacheco's ["Bringing Arbitrary Compute to

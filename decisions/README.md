@@ -78,6 +78,7 @@ See the STE policy below for the writing rules.
 | 0066 | Differential Mamba for caption encoding               | abandoned      |
 | 0067 | CockroachDB, reranked against FoundationDB            | published      |
 | 0070 | Keep options open                                     | published      |
+| 0073 | A billboard gallery of the RFD 0064 dataset           | discussion     |
 
 ## DRY policy
 

@@ -125,10 +125,13 @@ are generic placeholders, and this project names no deployed one yet.
 
 `fly.toml` and `Dockerfile.fly` now exist, colocating CockroachDB on
 a Fly Volume the way `character_taxonomy/Dockerfile` already proves.
-The image builds and boots locally: CockroachDB starts, migrations
-run, and `/api/v1/health`, `/api/v1/models`, and `/api/v1/pipelines`
-all answer. Deploying it to live Fly.io infrastructure has not run
-yet, since that needs Fly credentials this session does not hold.
+A third process, `versitygw`, runs colocated too, per RFD 0073 and
+RFD 0058's own zero-trust rule, bound to `127.0.0.1:10000`. The image
+builds and boots locally: CockroachDB and versitygw both start,
+migrations run, and `/api/v1/health`, `/api/v1/models`, and
+`/api/v1/pipelines` all answer. Deploying it to live Fly.io
+infrastructure has not run yet, since that needs Fly credentials
+this session does not hold.
 
 It still does not write the worker-side job-receiving adapter or its
 job-control envelope. It does not configure this box's Tailscale
