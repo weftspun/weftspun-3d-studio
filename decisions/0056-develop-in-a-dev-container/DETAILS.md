@@ -1,4 +1,11 @@
-# RFD 0056 details: what the container carries, volumes, what it does not do
+# RFD 0056 details: the abandoned workarounds, what the container carries, volumes, what it does not do
+
+## The abandoned workarounds
+
+This branch first swapped EXLA for Torchx, and made the dependency
+conditional on the platform. Neither workaround is the answer. RFD
+0019 selects EXLA because it compiles `Nx.Defn` graphs, while Torchx
+runs them one operation at a time.
 
 ## What the container carries
 
