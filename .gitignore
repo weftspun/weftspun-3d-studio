@@ -11,3 +11,5 @@ erl_crash.dump
 # RFD 0064: the Hugging Face training dataset. 20.9 GB, fetched by
 # scripts/fetch-anime-caption-dataset.sh, never committed.
 /decisions/0064-character-concept-generator/dataset/
+character_taxonomy/deps/
+character_taxonomy/_build/
