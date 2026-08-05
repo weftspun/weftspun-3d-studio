@@ -35,7 +35,6 @@ See the STE policy below for the writing rules.
 | 0021 | Shared HRR library                                    | published      |
 | 0022 | Hexagonal client                                      | published      |
 | 0023 | Ports and adapters with headless CMS style            | published      |
-| 0024 | Nx and ggml                                           | ideation       |
 | 0025 | Model memory arithmetic                               | published      |
 | 0026 | bf16 memory per model                                 | published      |
 | 0027 | GPU residency budget                                  | published      |
@@ -43,7 +42,6 @@ See the STE policy below for the writing rules.
 | 0029 | FOSS model replacements                               | published      |
 | 0030 | See-Through component models                          | published      |
 | 0031 | Geometry refinement and alpha wrap                    | discussion     |
-| 0032 | Alpha wrap rebuild on Geogram                         | ideation       |
 | 0033 | Geometric algorithms in the catalog                   | published      |
 | 0034 | Krea memory cross-check                               | published      |
 | 0035 | Legacy model identifiers                              | published      |
@@ -79,8 +77,8 @@ See the STE policy below for the writing rules.
 | 0065 | Taskweft domain schema in essential tuple normal form | discussion     |
 | 0066 | Differential Mamba for caption encoding               | abandoned      |
 | 0067 | CockroachDB, reranked against FoundationDB            | discussion     |
-| 0068 | A generative taskweft model, and which architecture   | prediscussion  |
 | 0069 | Visual trait detection with RF-DETR                   | discussion     |
+| 0070 | Keep options open                                     | published      |
 
 ## DRY policy
 

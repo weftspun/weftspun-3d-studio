@@ -25,4 +25,5 @@ replacement options, and the blocklisted wrap tools.
 
 ## Related
 
-RFD 0028 records the license gate. RFD 0032 records the rebuild path.
+RFD 0028 records the license gate. The alpha wrap step stays
+optional, or absent, until a real need justifies a rebuild.
