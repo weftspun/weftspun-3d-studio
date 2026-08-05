@@ -132,6 +132,37 @@ printed, so this RFD does not claim a final pass count, only that
 every test it captured, real S3 operations against the live
 deployment, passed.
 
+## A real upstream bug in usd-viewer, filed, not just patched
+
+The live gallery loaded its billboard mesh but showed no texture.
+Playwright's own console log read the real error:
+`Error: Unknown file: /sample_billboard.usdz[./sample_billboard.png]`.
+
+The cause sits in `usd-viewer`'s own `getTexture` function.
+`UsdUtils.CreateNewUsdzPackage` writes internal asset references in
+`./name` relative form, USD's own convention, confirmed by reading
+the packaged `.usdz`'s own `.usda` text back out. But the same
+packager stores each zip entry flat, `sample_billboard.png`, no
+`./` prefix, confirmed with Python's `zipfile` module against the
+real deployed file. `getTexture` builds its file-lookup key from the
+raw `./name` reference, so the key never matches the flat entry, for
+every `.usdz` `CreateNewUsdzPackage` produces, not only this one.
+
+Reading `coryrylan/usd-viewer`'s own `main` branch on GitHub
+confirmed the same unpatched code sits there today, and its issue
+tracker held nothing about it. This is a real, confirmed upstream
+defect, not a misuse on this project's side, and not something a
+newer release already fixed.
+
+`weftspun/usd-viewer` now holds a real fork with the fix, branch
+`fix-usdz-relative-texture-path`, and
+[github.com/coryrylan/usd-viewer/pull/4](https://github.com/coryrylan/usd-viewer/pull/4)
+carries that same fix upstream. Until a fix lands upstream and a new
+published version picks it up, `priv/static/gallery/vendor/usd-viewer/render-delegate.js`
+and `usd_viewer_app/public/vendor/usd-viewer/render-delegate.js`
+carry the identical patch by hand, a stated mirror of the real
+submitted fix, not an unexplained local hack.
+
 ## What full scale still needs
 
 Running `make_billboard_gallery.py --shards 42` and pushing every

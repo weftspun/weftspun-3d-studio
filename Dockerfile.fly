@@ -37,10 +37,17 @@ RUN mix local.hex --force && mix local.rebar --force
 COPY mix.exs mix.lock ./
 RUN mix deps.get --only prod
 
+# Deps compile from mix.exs, mix.lock, and config alone. Splitting
+# this from the app's own compile means a change under priv/,
+# the common case right now with the RFD 0073 gallery, does not
+# bust this layer's cache and force EXLA's own CUDA-stub compile
+# to run again for no reason.
+COPY config config
+RUN mix deps.compile
+
 COPY lib lib
 COPY priv priv
-COPY config config
-RUN mix deps.compile && mix compile
+RUN mix compile
 RUN mix release weftspun_container --path /build/_release
 
 FROM docker.io/library/debian:bookworm-slim AS runtime
