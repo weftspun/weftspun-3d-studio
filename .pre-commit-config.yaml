@@ -9,6 +9,16 @@
 repos:
   - repo: local
     hooks:
+      - id: cms-test
+        name: mix test (headless CMS)
+        description: >-
+          RFD 0054 mocks every port and keeps the planning documents
+          real. This hook runs that suite.
+        entry: bash -c "cd cms && mix test"
+        language: system
+        files: '^cms/.*\.exs?$'
+        pass_filenames: false
+
       - id: mix-format
         name: mix format (taskweft domains)
         description: >-

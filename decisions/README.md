@@ -47,6 +47,25 @@ See the STE policy below for the writing rules.
 | 0033 | Geometric algorithms in the catalog | published |
 | 0034 | Krea memory cross-check | published |
 | 0035 | Legacy model identifiers | published |
+| 0036 | Cog packaging convention | discussion |
+| 0037 | Composite models as taskweft domains | discussion |
+| 0038 | Cog for trellis2_image_to_textured_mesh | discussion |
+| 0039 | Cog for trellis2_image_mesh_painting | discussion |
+| 0040 | Cog for pixal3d_image_to_textured_mesh | discussion |
+| 0041 | Cog for p3sam_mesh_segmentation | discussion |
+| 0042 | Cog for krea2_turbo_text_to_image | discussion |
+| 0043 | Cog for qwen_q4_k_m_image_edit | discussion |
+| 0044 | Cog for seethrough_layer_decomposition | discussion |
+| 0045 | Cog for kimodo_text_to_motion | discussion |
+| 0046 | Cog for skintokens_auto_rig | discussion |
+| 0047 | Cog for voxhammer_text_mesh_editing | discussion |
+| 0048 | Cog for voxhammer_image_mesh_editing | discussion |
+| 0049 | Cog for weftspun_image_to_world | discussion |
+| 0050 | Cog for lingbot_map_environment_scan | prediscussion |
+| 0051 | Cog for worldmirror2_reconstruct | discussion |
+| 0052 | Cog for triposplat_image_to_splat | discussion |
+| 0053 | OpenUSD as the internal format | discussion |
+| 0054 | Headless CMS on taskweft | discussion |
 
 ## DRY policy
 

@@ -25,11 +25,13 @@ defmodule WeftspunCMS.MixProject do
       {:jason, "~> 1.4"},
       {:mox, "~> 1.1", only: :test},
 
-      # The planner. It is optional on purpose: it carries a C++ NIF,
-      # and the suite mocks every port, thus a test run needs no NIF.
-      # RFD 0054 records that choice.
-      {:taskweft,
-       github: "taskweft/taskweft", ref: "main", optional: true, runtime: false, only: [:dev, :prod]}
+      # The planner. Mandatory. The pipeline order lives in a RECTGTN
+      # domain, thus a build without taskweft has no pipeline.
+      #
+      # It tracks the git ref, and not the Hex release. Composition
+      # landed after 0.4.0, and RFD 0054 records that this project
+      # needs it.
+      {:taskweft, github: "taskweft/taskweft", branch: "goal-eq-literal"}
     ]
   end
 end

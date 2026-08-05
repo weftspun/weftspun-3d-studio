@@ -1,7 +1,0 @@
-%{
-  "complex": {:hex, :complex, "0.7.0", "695632ef9487517aa5d57edd1697801079d622414cb2e1a7cf538b1f9a50f205", [:mix], [], "hexpm", "0ee39c0803129f546e7f3f640da8f021c9e659402bf59da6f7f2c4848f068f8d"},
-  "jason": {:hex, :jason, "1.4.5", "2e3a008590b0b8d7388c20293e9dcc9cf3e5d642fd2a114e4cbbb52e595d940a", [:mix], [{:decimal, "~> 1.0 or ~> 2.0 or ~> 3.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm", "b0c823996102bcd0239b3c2444eb00409b72f6a140c1950bc8b457d836b30684"},
-  "nx": {:hex, :nx, "0.13.0", "43c57f529f17139821f6ed01a8aba6e045fef6722700c928cec2e2e3d2ee9560", [:mix], [{:complex, "~> 0.7", [hex: :complex, repo: "hexpm", optional: false]}, {:telemetry, "~> 0.4.0 or ~> 1.0", [hex: :telemetry, repo: "hexpm", optional: false]}], "hexpm", "38d2f37ee7e2f3aaa86b96f125643ffbca56a89576cd24d83b452597397b4fbd"},
-  "popcorn": {:hex, :popcorn, "0.3.2", "7e73c3f6a5e5413b2eefb994a3fc8d67d634dd8327993243323d20aad1a819cc", [:mix], [{:jason, "~> 1.4", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm", "31619ac20191909e65ccb6b71f4b5357e1738b342013dd6d0014ceac61c95c56"},
-  "telemetry": {:hex, :telemetry, "1.4.2", "a0cb522801dffb1c49fe6e30561badffc7b6d0e180db1300df759faa22062855", [:rebar3], [], "hexpm", "928f6495066506077862c0d1646609eed891a4326bee3126ba54b60af61febb1"},
-}

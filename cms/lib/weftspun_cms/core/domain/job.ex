@@ -12,12 +12,13 @@ defmodule WeftspunCMS.Core.Domain.Job do
   """
 
   @enforce_keys [:id, :state]
-  defstruct [:id, :state, :plan, :failed_step, :asset_id, completed_steps: 0]
+  defstruct [:id, :state, :pipeline, :plan, :failed_step, :asset_id, completed_steps: 0]
 
   @type state :: :queued | :running | :failed | :done
   @type t :: %__MODULE__{
           id: String.t(),
           state: state(),
+          pipeline: atom() | nil,
           plan: [[String.t()]] | nil,
           failed_step: non_neg_integer() | nil,
           asset_id: String.t() | nil,
