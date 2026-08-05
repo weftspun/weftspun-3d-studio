@@ -23,10 +23,10 @@ file, and it never reaches a browser.
 
 See `DETAILS.md` for why layers beat a flat mesh format, the
 internal/transmission boundary, the shared runtime, and what every
-Cog must return.
+model image must return.
 
 ## Related
 
-RFD 0036 gives the Cog convention. RFD 0019 records the Elixir core
-that links this runtime. RFD 0002 records the pipeline stages that
+RFD 0036 gives the model image convention. RFD 0019 records the Elixir
+core that links this runtime. RFD 0002 records the pipeline stages that
 become layers.

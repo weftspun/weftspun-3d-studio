@@ -32,4 +32,4 @@ quantization cost tradeoff, and the resulting checklist.
 ## Related
 
 RFD 0025 gives the arithmetic. RFD 0026 gives the memory per model.
-RFD 0036 gives the Cog packaging that sets the tier.
+RFD 0036 gives the packaging that sets the tier.

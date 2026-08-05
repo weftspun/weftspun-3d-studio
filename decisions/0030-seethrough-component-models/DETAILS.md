@@ -17,13 +17,15 @@
 
 ## Two runtimes
 
-The DGX API runs the Cog model from RFD 0006. see-through.cpp runs the
-same models on a local machine, with ggml and a Vulkan backend. It
-reads GGUF weights and writes a layered PSD. It needs no DGX
-connection, and it uses the Apache 2.0 license.
+Replicate runs the Cog model from RFD 0006, in bf16. There is no DGX,
+per RFD 0027 and RFD 0036. see-through.cpp runs the same models on a
+local machine, with ggml and a Vulkan backend. It reads GGUF weights
+and writes a layered PSD. It needs no Replicate connection, and it
+uses the Apache 2.0 license.
 
 ## bf16 is the ceiling, and GGUF is the floor
 
 The local runtime does not use bf16. Q4_K_M holds one parameter in
 about 0.55 bytes, thus the same nine components need about 2.7 GB.
-Plan the DGX path against 9.82 GB. Plan the local path against 2.7 GB.
+Plan the Replicate path against 9.82 GB. Plan the local path against
+2.7 GB.

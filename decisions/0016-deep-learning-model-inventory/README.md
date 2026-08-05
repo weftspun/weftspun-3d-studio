@@ -16,7 +16,7 @@ identifiers. This RFD records the type, the task, and the runtime
 location. The live list filters the catalog when the API connects.
 
 Fifteen models form the inventory, each a deep learning model
-running as its own Cog on Replicate, per RFD 0036. See `DETAILS.md`
+packaged as its own model image, per RFD 0036. See `DETAILS.md`
 for the full table, plus the client and external models the table
 excludes.
 

@@ -51,7 +51,9 @@ defmodule WeftspunStudio.MixProject do
       {:bandit, "~> 1.5"},
       {:plug, "~> 1.16"},
       # Outbound HTTP. The job routes pass through to Replicate, which
-      # runs each model as its own Cog. RFD 0036 records the packaging.
+      # runs each model as its own Cog. RFD 0055 keeps that passthrough
+      # until one vast.ai worker answers. RFD 0036 packages the model
+      # images that replace it, and it no longer selects Cog.
       {:req, "~> 0.5"},
       # The HTN planner. RFD 0037 models each pipeline as a RECTGTN
       # domain, and priv/domains holds them.

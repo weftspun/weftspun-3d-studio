@@ -9,7 +9,7 @@
 | xatlas_uv_unwrapping      | UV unwrapping   | MIT     |
 | colmap_3dgs_reconstruct   | Photos to splat | BSD-3   |
 
-Each one runs as its own Cog on Replicate, per RFD 0036.
+Each one is packaged as its own model image, per RFD 0036.
 
 ## How they scale
 

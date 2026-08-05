@@ -1,4 +1,4 @@
-# RFD 0040: Image for pixal3d_image_to_textured_mesh
+# RFD 0040: Model image for pixal3d_image_to_textured_mesh
 
 **State:** discussion
 **Feature:** model packaging

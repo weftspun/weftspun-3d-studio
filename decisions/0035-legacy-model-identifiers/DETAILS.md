@@ -14,8 +14,8 @@
 
 ## Two rules stay
 
-TRELLIS v1 fails xformers on GB200-class GPUs. Avoid it on the DGX,
-except for the multiview path.
+TRELLIS v1 fails xformers on GB200-class GPUs. Avoid it on that
+hardware tier, except for the multiview path.
 
 UniRig is the only backend for the template VRM mode. SkinTokens
 rejects that mode.

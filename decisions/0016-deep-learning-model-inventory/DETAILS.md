@@ -1,8 +1,7 @@
 # RFD 0016 details: the inventory table
 
-Every model below is a deep learning model. Each one runs as its own
-Cog on Replicate, per RFD 0036. RFD 0033 lists the geometric
-algorithms.
+Every model below is a deep learning model. Each one is packaged as its
+own model image, per RFD 0036. RFD 0033 lists the geometric algorithms.
 
 | Model id                        | Task                |
 | -------------------------------- | ------------------- |

@@ -32,7 +32,7 @@ See-Through holds 9.82 GB and peaks at 5.13 GB, for the same reason.
 RFD 0044 makes the load and the unload real actions, thus the peak is
 a planning result.
 
-A Cog that loads every stage at once pays for a larger card every
+A model image that loads every stage at once pays for a larger card every
 second it runs.
 
 ## Quantization is now a cost choice

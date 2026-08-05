@@ -49,21 +49,21 @@ See the STE policy below for the writing rules.
 | 0035 | Legacy model identifiers | published |
 | 0036 | Model packaging convention | discussion |
 | 0037 | Composite models as taskweft domains | discussion |
-| 0038 | Cog for trellis2_image_to_textured_mesh | discussion |
-| 0039 | Cog for trellis2_image_mesh_painting | discussion |
-| 0040 | Image for pixal3d_image_to_textured_mesh | discussion |
-| 0041 | Cog for p3sam_mesh_segmentation | discussion |
-| 0042 | Cog for krea2_turbo_text_to_image | discussion |
-| 0043 | Cog for qwen_q4_k_m_image_edit | discussion |
-| 0044 | Cog for seethrough_layer_decomposition | discussion |
-| 0045 | Cog for kimodo_text_to_motion | discussion |
-| 0046 | Cog for skintokens_auto_rig | discussion |
-| 0047 | Cog for voxhammer_text_mesh_editing | discussion |
-| 0048 | Cog for voxhammer_image_mesh_editing | discussion |
-| 0049 | Cog for weftspun_image_to_world | discussion |
-| 0050 | Cog for lingbot_map_environment_scan | prediscussion |
-| 0051 | Cog for worldmirror2_reconstruct | discussion |
-| 0052 | Cog for triposplat_image_to_splat | discussion |
+| 0038 | Model image for trellis2_image_to_textured_mesh | discussion |
+| 0039 | Model image for trellis2_image_mesh_painting | discussion |
+| 0040 | Model image for pixal3d_image_to_textured_mesh | discussion |
+| 0041 | Model image for p3sam_mesh_segmentation | discussion |
+| 0042 | Model image for krea2_turbo_text_to_image | discussion |
+| 0043 | Model image for qwen_q4_k_m_image_edit | discussion |
+| 0044 | Model image for seethrough_layer_decomposition | discussion |
+| 0045 | Model image for kimodo_text_to_motion | discussion |
+| 0046 | Model image for skintokens_auto_rig | discussion |
+| 0047 | Model image for voxhammer_text_mesh_editing | discussion |
+| 0048 | Model image for voxhammer_image_mesh_editing | discussion |
+| 0049 | Model image for weftspun_image_to_world | discussion |
+| 0050 | Model image for lingbot_map_environment_scan | prediscussion |
+| 0051 | Model image for worldmirror2_reconstruct | discussion |
+| 0052 | Model image for triposplat_image_to_splat | discussion |
 | 0053 | OpenUSD as the internal format | discussion |
 | 0054 | The planner inside the studio core | discussion |
 | 0055 | BEAM workers on vast.ai | discussion |

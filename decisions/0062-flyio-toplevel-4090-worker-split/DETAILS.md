@@ -5,7 +5,7 @@
 | Node | Runs | Reachable by |
 | --- | --- | --- |
 | **Toplevel** (Fly.io) | `weftspun_studio` (router, planner, catalog), CockroachDB, the built browser client | the public internet |
-| **Worker** (this 4090 box, localhost) | the model Cogs, dispatched jobs | the toplevel node only, over Tailscale |
+| **Worker** (this 4090 box, localhost) | the model images, dispatched jobs | the toplevel node only, over Tailscale |
 
 ## Why Fly for the toplevel, and not the worker
 
@@ -77,7 +77,7 @@ work. See RFD 0057.
   themselves, though. CockroachDB is the toplevel's persistence, not
   the worker's, so those three quadlets move with the router role,
   to wherever the toplevel's CockroachDB actually runs. The worker's
-  role narrows to the model Cogs and their isolation, once the
+  role narrows to the model images and their isolation, once the
   database they used to sit beside is gone from this box.
 - A new job-receiving quadlet, not yet written, bound to the
   Tailscale interface per the section above.

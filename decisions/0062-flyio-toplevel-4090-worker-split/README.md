@@ -21,7 +21,7 @@ something else needs to be the thing a user reaches.
 
 Split the deployment by role, not by RFD 0058's single-box shape.
 `weftspun_studio`, its planner, its catalog, and CockroachDB move to
-Fly.io, reachable by the public internet. The model Cogs stay on
+Fly.io, reachable by the public internet. The model images stay on
 this box, on RFD 0058's quadlets exactly as written, reachable by
 the Fly toplevel alone, over Tailscale.
 

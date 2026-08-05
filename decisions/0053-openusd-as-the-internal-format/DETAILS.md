@@ -1,4 +1,4 @@
-# RFD 0053 details: layers, the boundary, the runtime, the Cog contract
+# RFD 0053 details: layers, the boundary, the runtime, the model image contract
 
 ## Why layers, and not a better mesh format
 
@@ -33,14 +33,14 @@ throws away the composition this RFD exists to keep.
 
 `fabric-stage-runtime` ships OpenUSD 26.5.0 as an Elixir Hex package.
 It exposes `include_dir/0`, `lib_dir/0`, and `target/0`, thus the
-Elixir core from RFD 0019 links the same USD build the Cogs write.
+Elixir core from RFD 0019 links the same USD build the model images write.
 
 One USD version across the pipeline matters. A layer written by a
 newer build may not open in an older one.
 
-## What each Cog must do
+## What each model image must do
 
 `predict()` returns the USD layer, and it returns the transmission
 file as well. The caller keeps the layer, and it ships the other.
 
-RFD 0036 records this in the Cog convention.
+RFD 0036 records this in the model image convention.

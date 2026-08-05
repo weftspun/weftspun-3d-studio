@@ -34,9 +34,10 @@ target. None of it runs yet.
 
 ## Measured, and not built
 
-**Thirteen model folders.** RFD 0036. Each still carries a `cog.yaml`
+**Fourteen model folders.** RFD 0036. Each still carries a `cog.yaml`
 and a `predict.py`, and RFD 0036 no longer selects Cog. Convert one
-when its model is next worked on, and not in a sweep.
+when its model is next worked on, and not in a sweep. The folder
+names are already converted, and the files inside are not.
 
 **`_to_usd` in the worker.** RFD 0053. The layer records the GLB as an
 asset attribute, because `usd-core` alone reads no glTF. A glTF file

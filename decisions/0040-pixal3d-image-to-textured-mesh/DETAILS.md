@@ -101,4 +101,4 @@ An instance is rented by the hour, thus that time is paid for.
 - The count is 12.02 B, and not unknown. RFD 0026 carried one of two
   unknown rows for this model.
 - The backbone is TRELLIS.2, per the upstream README. RFD 0038
-  packages TRELLIS.2, thus these two Cogs share a lineage.
+  packages TRELLIS.2, thus these two model images share a lineage.

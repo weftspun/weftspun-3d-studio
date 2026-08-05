@@ -23,7 +23,7 @@ Write the domain in the Elixir DSL. The `plan` tool takes `format` of
 `dsl` by default, and JSON-LD is the fallback. Each file is real
 Elixir, thus `Code.string_to_quoted/1` checks it with no planner.
 
-The Cog then calls the plan, and it runs one action per step. The
+The model image then calls the plan, and it runs one action per step. The
 order lives in the domain, and not in the Python.
 
 See `DETAILS.md` for the domain shape and the type rules. It also
@@ -32,5 +32,5 @@ the payoff, and the table of all five composites.
 
 ## Related
 
-RFD 0036 gives the Cog convention. RFD 0030 lists the See-Through
+RFD 0036 gives the model image convention. RFD 0030 lists the See-Through
 components. RFD 0006 records the layer decomposition design.

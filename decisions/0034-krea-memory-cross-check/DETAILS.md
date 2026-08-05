@@ -19,6 +19,7 @@ The 57 GB on disk is larger than 33.8 GB. The folder carries fp32
 copies as well, thus the disk size is not the load size.
 
 This agreement raises the confidence in the method. It does not raise
-the confidence in the parameter counts of the other models. Replace
-each estimated count with a measured count from `config/models.yaml`
-on the DGX.
+the confidence in the parameter counts of the other models. There is
+no DGX, per RFD 0027 and RFD 0036. Replace each estimated count with
+a measured count from `config/models.yaml`, when a reachable host
+carries that file.

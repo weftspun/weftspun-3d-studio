@@ -33,8 +33,8 @@ it belongs in the top-level `capabilities` key.
 ## The solved plan is a file
 
 Call `plan` once, and write the result to `plan.ex` beside the domain.
-The Cog then reads that file, and a cold start needs no planner and no
-network.
+The model image then reads that file, and a cold start needs no planner
+and no network.
 
 Write it in the same DSL, and not as JSON. One language across the
 domain, the problem, and the plan means one formatter and one parse
@@ -63,5 +63,5 @@ That is the reason a composite is a domain. A script cannot do it.
 
 Each domain lives with its model, and not here. RFD 0000 keeps one
 source per design. The See-Through pair in
-`0044-cog-seethrough-layer-decomposition/` is the worked example,
+`0044-seethrough-layer-decomposition/` is the worked example,
 because it is the largest of the five.
