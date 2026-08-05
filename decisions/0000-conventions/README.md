@@ -21,7 +21,9 @@ An RFD points to its source. It does not copy the source.
 
 - RFD style: `rfd-driven-architecture` skill
 - STE spec: https://www.asd-ste100.org/
-- STE linter: `scripts/ste-lint-decisions.py`
+- STE linter: the `simplified-technical-english` Claude Code plugin
+  (`fire/claude-ste-plugin`). RFD 0063 records the move off a
+  repo-local script.
 
 ## Related
 

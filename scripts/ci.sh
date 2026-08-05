@@ -36,9 +36,9 @@ npx vitest run
 step "JS: production build"
 VITE_PUBLIC_DEMO=1 npm run build
 
-step "decisions: STE lint"
-# decisions/README.md asks for this in CI; it wasn't wired in before.
-npm run lint:ste
+# RFD 0063 moves STE enforcement to the claude-ste-plugin's Stop hook,
+# at write time. No repo-local lint:ste step runs in CI now — the
+# script it called (scripts/ste-lint-decisions.py) is gone.
 
 # --- Elixir: compile, then test against a throwaway CockroachDB -----
 

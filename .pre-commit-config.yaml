@@ -41,15 +41,6 @@ repos:
         language: system
         files: '^decisions/.*\.exs?$'
 
-      - id: ste-lint
-        name: ASD-STE100 lint (RFDs)
-        description: >-
-          RFD 0000 requires Simplified Technical English. The linter
-          fails above 2.5 violations per 100 words.
-        entry: python scripts/ste-lint-decisions.py
-        language: system
-        files: '^decisions/0[0-9]{3}-[^/]+/README\.md$'
-
       - id: dockerfile-and-server
         name: model images parse
         description: >-

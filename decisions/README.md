@@ -99,11 +99,8 @@ Each RFD uses ASD-STE100 Simplified Technical English. The rules:
 - Do not use semicolons or em dashes in prose.
 - Name one thing by one name.
 
-The repository enforces this with a linter:
-
-```bash
-npm run lint:ste
-```
-
-The linter fails when any file scores above 2.5 violations per 100
-words. Add the npm script to CI before merge.
+The repository enforces this with the `simplified-technical-english`
+Claude Code plugin (`fire/claude-ste-plugin`), not a repo-local
+script. Its `Stop` hook lints each reply as it is written and asks
+for a rewrite on a violation. RFD 0063 records the move and why no
+CI step or pre-commit hook duplicates it.
