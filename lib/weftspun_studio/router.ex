@@ -93,6 +93,17 @@ defmodule WeftspunStudio.Router do
     send_gallery_index(conn)
   end
 
+  # usd-viewer's WASM build uses `src` as both the fetch URL and a
+  # raw path inside its own virtual filesystem, and that filesystem
+  # does not create intermediate directories. Any src with a "/" in
+  # it fails there with "No such file or directory", confirmed live
+  # with Playwright, even though the HTTP fetch itself succeeds. A
+  # flat filename, at a flat route, sidesteps it entirely.
+  get "/sample_billboard.usdz" do
+    path = Application.app_dir(:weftspun_studio, "priv/static/gallery/usd/sample_billboard.usdz")
+    conn |> Plug.Conn.put_resp_content_type("model/vnd.usdz+zip") |> Plug.Conn.send_file(200, path)
+  end
+
   get "/gallery/" do
     send_gallery_index(conn)
   end
