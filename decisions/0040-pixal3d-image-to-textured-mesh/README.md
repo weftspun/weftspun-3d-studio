@@ -1,4 +1,4 @@
-# RFD 0040: Cog for pixal3d_image_to_textured_mesh
+# RFD 0040: Image for pixal3d_image_to_textured_mesh
 
 **State:** discussion
 **Feature:** model packaging
@@ -14,11 +14,43 @@ The measurement came from the published checkpoints instead.
 
 ## Decision
 
-Package Pixal3D as the primary image to 3D Cog. Upstream is
+Package Pixal3D as the primary image to 3D worker. Upstream is
 TencentARC/Pixal3D, and it uses the MIT license.
 
+It is a plain Docker image that serves HTTP, and not a Cog. RFD 0036
+records why: vast.ai rents an instance and runs a container on it.
+
 Call the upstream `inference.py`, and do not reimplement the cascade.
-A copy here would drift from the commit this Cog pins.
+A copy here would drift from the commit this image pins.
+
+## Tested in Docker
+
+The `contract` stage carries the server and `usd-core`, and no model.
+`WEFTSPUN_STUB=1` makes `/predict` answer with the real shape.
+
+    docker build --target contract -t weftspun/pixal3d:contract .
+    docker run --rm -p 8000:8000 weftspun/pixal3d:contract
+
+Measured on a machine with no NVIDIA device:
+
+- `/health` answers `{"status":"ok","ready":true,"stub":true}`.
+- `/predict` answers with `glb`, `layer`, `seed`, and `stub`.
+- A resolution of 999 answers 400, and names the field.
+
+Two faults came out of that run, and neither one was visible on
+inspection.
+
+`usd-core` alone reads no glTF. The layer first added the GLB as a
+`references` arc, and USD could not resolve it:
+
+    Cannot determine file format for @output.glb@
+
+The layer records the GLB as an asset attribute now. A glTF file
+format plugin would make the arc work, and this image carries none.
+
+`test_input.json` first wrapped the body in `"input"`, which is the
+RunPod shape. An HTTP body is the request, thus every field read as
+missing and the server answered 422.
 
 ## The measurement
 
@@ -58,8 +90,9 @@ Three stages run in order, and each frees before the next loads.
 `--low_vram` makes that explicit, and it drops the peak from 24.045 GB
 to about 6.5 GB, which is one DiT plus a decoder.
 
-Keep `low_vram` on. A 24 GB card then runs this model, and the cost
-per second falls with the card.
+Keep `low_vram` on. An RTX 4090 holds 24 GB, thus a 6.5 GB peak leaves
+room for the activations. That card costs about 0.35 to 0.37 US
+dollars per hour on demand, and 0.13 interruptible.
 
 ## The interface
 
@@ -82,6 +115,7 @@ the field of view. `camenduru/dinov3-vitl16-pretrain-lvd1689m` is the
 conditioning encoder, and all four stages read it.
 
 A cold start that downloads 24 GB is a cold start that times out.
+An instance is rented by the hour, thus that time is paid for.
 
 ## What this corrects
 
