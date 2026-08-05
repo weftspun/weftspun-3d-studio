@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="usd-viewer:wasm" content="./wasm" />
+    <meta name="usd-viewer:wasm" content="/gallery/wasm" />
     <title>RFD 0073: dataset billboard gallery</title>
     <style>
       body {
@@ -38,7 +38,7 @@
       }
     </script>
     <script type="module">
-      import './vendor/usd-viewer/include.js';
+      import '/gallery/vendor/usd-viewer/include.js';
     </script>
   </head>
   <body>
@@ -51,7 +51,7 @@
       </p>
     </header>
     <usd-viewer
-      src="./usd/sample_billboard.usdz"
+      src="/gallery/usd/sample_billboard.usdz"
       alt="A dataset row rendered as a USD billboard card"
       controls
       auto-rotate
