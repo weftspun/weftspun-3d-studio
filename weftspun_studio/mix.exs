@@ -75,7 +75,12 @@ defmodule WeftspunStudio.MixProject do
     ]
   end
 
-  # Burrito wraps the release into one self-contained binary.
+  # Burrito wraps the release into one self-contained binary, for a
+  # host with no Elixir, no Erlang, and no Podman. `weftspun_container`
+  # is a plain assembled release with no Burrito step, for the
+  # Dockerfile — the image is already the distribution unit there, so
+  # wrapping it again just adds a Zig build dependency for nothing.
+  # RFD 0058 records both paths.
   defp releases do
     [
       weftspun: [
@@ -86,6 +91,9 @@ defmodule WeftspunStudio.MixProject do
             linux_aarch64: [os: :linux, cpu: :aarch64]
           ]
         ]
+      ],
+      weftspun_container: [
+        steps: [:assemble]
       ]
     ]
   end

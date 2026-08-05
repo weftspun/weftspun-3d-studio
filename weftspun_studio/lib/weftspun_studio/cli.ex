@@ -15,6 +15,7 @@ defmodule WeftspunStudio.CLI do
       weftspun models list [--group GROUP] [--json]
       weftspun models verify [--catalog PATH]
       weftspun compute info
+      weftspun db create
       weftspun db migrate
       weftspun db seed
       weftspun db status
@@ -24,6 +25,7 @@ defmodule WeftspunStudio.CLI do
       models list      Print the model inventory from RFD 0016.
       models verify    Compare the inventory against the client catalog.
       compute info     Report the EXLA backend state.
+      db create        Create the database if it does not exist yet.
       db migrate       Apply every pending database migration.
       db seed          Write the RFD 0016 inventory into the database.
       db status        Report the database connection and the row count.
@@ -42,6 +44,7 @@ defmodule WeftspunStudio.CLI do
   def main(["models", "list" | rest]), do: models_list(rest)
   def main(["models", "verify" | rest]), do: models_verify(rest)
   def main(["compute", "info" | _rest]), do: compute_info()
+  def main(["db", "create" | _rest]), do: db_create()
   def main(["db", "migrate" | _rest]), do: db_migrate()
   def main(["db", "seed" | _rest]), do: db_seed()
   def main(["db", "status" | _rest]), do: db_status()
@@ -135,6 +138,11 @@ defmodule WeftspunStudio.CLI do
   # unreachable database crashes there and the stacktrace names the
   # real fault. A rescue here reformatted that into one message and
   # threw the cause away.
+  defp db_create do
+    WeftspunStudio.Release.create()
+    puts_ok("database ready")
+  end
+
   defp db_migrate do
     WeftspunStudio.Release.migrate()
     puts_ok("migrations applied")

@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 K. S. Ernest (iFire) Lee
+#
+# Private network joining weftspun-crdb and weftspun. RFD 0058.
+
+[Network]
+NetworkName=weftspun

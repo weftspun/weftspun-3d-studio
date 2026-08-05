@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 K. S. Ernest (iFire) Lee
+#
+# Builds weftspun_studio from weftspun_studio/Dockerfile. RFD 0058.
+
+[Build]
+ImageTag=localhost/weftspun:latest
+File=/opt/weftspun/src/weftspun_studio/Dockerfile
+SetWorkingDirectory=file
+# See weftspun-crdb.build: rootful Podman's bridge network cannot
+# reach the internet on this host. Network=host is build-time only —
+# weftspun.container still runs on the isolated weftspun.network.
+Network=host
+DNS=1.1.1.1

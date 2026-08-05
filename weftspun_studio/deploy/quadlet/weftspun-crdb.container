@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 K. S. Ernest (iFire) Lee
+#
+# The single-node CockroachDB host weftspun_studio persists to.
+# --insecure is safe here because PublishPort binds 127.0.0.1 only,
+# and the weftspun.network is otherwise unreachable from outside the
+# host. RFD 0058 records why this replaces the earlier plain-systemd
+# design, and how it maps to the Manta paper's ZooKeeper-backed
+# Postgres tier — CockroachDB's own Raft layer does the leader
+# election Manta needed ZooKeeper for.
+
+[Unit]
+Description=weftspun_studio CockroachDB (single node)
+
+[Container]
+Image=weftspun-crdb.build
+ContainerName=weftspun-crdb
+Network=weftspun.network
+Volume=weftspun-crdb.volume:/cockroach-data
+PublishPort=127.0.0.1:26257:26257
+PublishPort=127.0.0.1:8080:8080
+
+[Service]
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target default.target

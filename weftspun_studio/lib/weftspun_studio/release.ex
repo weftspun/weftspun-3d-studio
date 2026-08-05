@@ -11,6 +11,31 @@ defmodule WeftspunStudio.Release do
 
   @app :weftspun_studio
 
+  @doc """
+  Creates the database if it does not exist yet.
+
+  A fresh CockroachDB node (RFD 0058's `weftspun-crdb` container, on
+  its first boot) holds no `weftspun_studio` database, and
+  `Ecto.Migrator.with_repo/2` connects to a database rather than
+  creating one — `migrate/0` alone errors with `invalid_catalog_name`
+  against an empty cluster. `storage_up/1` is idempotent, so calling
+  this every boot is safe.
+  """
+  @spec create() :: :ok
+  def create do
+    load()
+
+    for repo <- repos() do
+      case repo.__adapter__().storage_up(repo.config()) do
+        :ok -> :ok
+        {:error, :already_up} -> :ok
+        {:error, reason} -> raise "cannot create database for #{inspect(repo)}: #{inspect(reason)}"
+      end
+    end
+
+    :ok
+  end
+
   @doc "Applies every migration that the database has not run."
   @spec migrate() :: :ok
   def migrate do

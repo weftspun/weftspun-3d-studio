@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 K. S. Ernest (iFire) Lee
+#
+# The single-node CockroachDB host, built from the exact V-Sekai 22.1
+# LTS binary RFD 0020 pins and deps/cockroach_local/lib/cockroach_local/
+# provision.ex downloads — not the stock cockroachdb/cockroach image,
+# so the container matches the version the rest of the project already
+# depends on. Keep COCKROACH_TAG in step with that module's @tag.
+
+FROM docker.io/library/debian:bookworm-slim
+
+ARG COCKROACH_TAG=v22.1.64b21683521d9a8735ad
+ARG TARGETARCH=amd64
+
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN set -eu; \
+    case "$TARGETARCH" in \
+      amd64) asset="cockroach-${COCKROACH_TAG}.linux-amd64.tgz" ;; \
+      *) echo "unsupported arch: $TARGETARCH" >&2; exit 1 ;; \
+    esac; \
+    curl -fsSL --retry 3 -o /tmp/crdb.tgz \
+      "https://github.com/V-Sekai/cockroach/releases/download/${COCKROACH_TAG}/${asset}"; \
+    mkdir -p /tmp/crdb; \
+    tar -xzf /tmp/crdb.tgz -C /tmp/crdb; \
+    bin="$(find /tmp/crdb -maxdepth 2 -type f -name cockroach | head -n1)"; \
+    install -m 0755 "$bin" /usr/local/bin/cockroach; \
+    rm -rf /tmp/crdb /tmp/crdb.tgz
+
+RUN useradd --system --no-create-home --shell /usr/sbin/nologin cockroach \
+    && mkdir -p /cockroach-data \
+    && chown cockroach:cockroach /cockroach-data
+USER cockroach
+
+EXPOSE 26257 8080
+ENTRYPOINT ["/usr/local/bin/cockroach"]
+CMD ["start-single-node", "--insecure", "--store=path=/cockroach-data", "--listen-addr=0.0.0.0:26257", "--http-addr=0.0.0.0:8080"]

@@ -1,5 +1,19 @@
 name: CI
 
+# RFD 0059 backfills this decision. Fowler's "Continuous Integration"
+# (https://martinfowler.com/articles/continuousIntegration.html) sets
+# the bar this chases: one command builds and self-tests everything,
+# every commit on the mainline runs it, and a broken build is the
+# loudest thing in the room. scripts/ci.sh is that one command —
+# this workflow's job is to run it on GitHub's machine, not to
+# duplicate its steps.
+#
+# The step this replaced called `npm run test:anim-regression`, a
+# script package.json never defined. Every run of this job failed at
+# that line. RFD 0059 records it as the reason "one step, run
+# locally first" matters — a script this workflow and a developer
+# both run stays honest in a way a script only CI runs does not.
+
 on:
   push:
     branches:
@@ -7,7 +21,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,14 +35,16 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.20.3'
+          otp-version: '29.0'
 
-      - name: Animation regression tests
-        run: npm run test:anim-regression
+      - name: Install clang
+        run: sudo apt-get update -y && sudo apt-get install -y --no-install-recommends clang
 
-      - name: Build
+      - name: Run scripts/ci.sh
         env:
           VITE_ASSET_PATH: https://m3-org.github.io/loot-assets/
-          VITE_PUBLIC_DEMO: '1'
-        run: npm run build
+        run: bash scripts/ci.sh

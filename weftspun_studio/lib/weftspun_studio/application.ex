@@ -18,8 +18,15 @@ defmodule WeftspunStudio.Application do
     opts = [strategy: :one_for_one, name: WeftspunStudio.Supervisor]
     {:ok, pid} = Supervisor.start_link(children, opts)
 
-    if release?() do
-      argv() |> WeftspunStudio.CLI.main() |> System.halt()
+    # A standard `bin/weftspun start` sets RELEASE_NAME and passes no
+    # argv — that boot must serve, not print `CLI.main([])`'s usage
+    # text and halt the node it just started. Route through the CLI
+    # only when a caller actually gave it a command, such as
+    # `bin/weftspun db migrate` or `bin/weftspun models list`.
+    args = argv()
+
+    if args != [] and release?() do
+      args |> WeftspunStudio.CLI.main() |> System.halt()
     end
 
     {:ok, pid}
@@ -49,8 +56,13 @@ defmodule WeftspunStudio.Application do
   end
 
   # The HTTP surface stays off during tests, which call the router
-  # directly through Plug.Test.
-  defp serve?, do: System.get_env("WEFTSPUN_SERVE", "1") == "1" and Mix.env() != :test
+  # directly through Plug.Test. Mix.env/0 crashes a release — Mix
+  # ships with the compiler, not with `mix release` output — so guard
+  # it the same way argv/0 guards Burrito.Util.Args: a release is
+  # never MIX_ENV=test, so treat "Mix is unavailable" as "not test."
+  defp serve?, do: System.get_env("WEFTSPUN_SERVE", "1") == "1" and not test_env?()
+
+  defp test_env?, do: Code.ensure_loaded?(Mix) and Mix.env() == :test
 
   defp port, do: String.to_integer(System.get_env("WEFTSPUN_PORT", "4000"))
 end
