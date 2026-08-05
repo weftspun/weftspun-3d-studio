@@ -50,6 +50,9 @@ defmodule WeftspunStudio.MixProject do
       # Outbound HTTP. The job routes pass through to Replicate, which
       # runs each model as its own Cog. RFD 0036 records the packaging.
       {:req, "~> 0.5"},
+      # The HTN planner. RFD 0037 models each pipeline as a RECTGTN
+      # domain, and priv/domains holds them.
+      {:taskweft, github: "taskweft/taskweft", ref: "main"},
       # Persistence. CockroachDB speaks the PostgreSQL wire protocol,
       # so Ecto drives it through Postgrex. RFD 0020 records why.
       {:ecto_sql, "~> 3.12"},

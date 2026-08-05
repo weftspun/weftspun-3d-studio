@@ -110,6 +110,24 @@ defmodule WeftspunStudio.Router do
     end
   end
 
+  # ---------- pipelines ----------
+
+  get "/api/v1/pipelines" do
+    json(conn, 200, %{pipelines: WeftspunStudio.Pipeline.names()})
+  end
+
+  # Solves a pipeline into its ordered steps, and runs nothing. A
+  # caller sees what the plan is before it pays for the models.
+  get "/api/v1/pipelines/:name/plan" do
+    with {:ok, pipeline} <- WeftspunStudio.Pipeline.parse(name),
+         {:ok, %{base: base, overlays: overlays}} <- WeftspunStudio.Pipeline.load(pipeline),
+         {:ok, steps} <- planner().plan(nil, base, overlays) do
+      json(conn, 200, %{pipeline: name, steps: steps, step_count: length(steps)})
+    else
+      {:error, reason} -> error(conn, reason)
+    end
+  end
+
   match _ do
     json(conn, 404, %{error: "not found"})
   end
@@ -119,6 +137,21 @@ defmodule WeftspunStudio.Router do
   # server's fault. One 500 for both would send a client to retry a
   # request that can never work.
   defp error(conn, :not_found), do: json(conn, 404, %{error: "not found"})
+
+  defp error(conn, :unknown_pipeline), do: json(conn, 404, %{error: "unknown pipeline"})
+
+  # The planner is optional, thus its absence is this server's state
+  # and not the caller's fault.
+  defp error(conn, :planner_absent),
+    do: json(conn, 503, %{error: "the planner did not build"})
+
+  defp error(conn, {:cannot_read, path, reason}),
+    do:
+      json(conn, 500, %{
+        error: "cannot read a planning document",
+        path: path,
+        reason: inspect(reason)
+      })
 
   defp error(conn, {:unknown_model, id}),
     do: json(conn, 400, %{error: "unknown model", model: id})
@@ -154,5 +187,9 @@ defmodule WeftspunStudio.Router do
 
   defp job_source do
     Application.get_env(:weftspun_studio, :job_source, WeftspunStudio.Adapters.ReplicateJobs)
+  end
+
+  defp planner do
+    Application.get_env(:weftspun_studio, :planner, WeftspunStudio.Adapters.TaskweftPlanner)
   end
 end
