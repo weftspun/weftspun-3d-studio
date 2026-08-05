@@ -123,14 +123,20 @@ are generic placeholders, and this project names no deployed one yet.
 
 ## What this RFD does not do
 
-It does not write `fly.toml`. It does not write the worker-side
-job-receiving adapter or its job-control envelope. It does not
-configure this
-box's Tailscale ACLs to admit a Fly machine, or confirm Fly's side of
-that join actually works. That pairing is asserted here, not run. It
-does not move CockroachDB, which still runs where RFD 0058 put it
-until the toplevel migration actually happens. RFD 0057 tracks all
-four as open work.
+`fly.toml` and `Dockerfile.fly` now exist, colocating CockroachDB on
+a Fly Volume the way `character_taxonomy/Dockerfile` already proves.
+The image builds and boots locally: CockroachDB starts, migrations
+run, and `/api/v1/health`, `/api/v1/models`, and `/api/v1/pipelines`
+all answer. Deploying it to live Fly.io infrastructure has not run
+yet, since that needs Fly credentials this session does not hold.
+
+It still does not write the worker-side job-receiving adapter or its
+job-control envelope. It does not configure this box's Tailscale
+ACLs to admit a Fly machine, or confirm Fly's side of that join
+actually works. That pairing is asserted here, not run. It does not
+move CockroachDB off this box's own RFD 0058 deployment, since the
+Fly toplevel runs its own separate, colocated CockroachDB instead.
+RFD 0057 tracks the rest as open work.
 
 It does not retire `ReplicateJobs`. RFD 0055 already records why that
 adapter stays until a worker answers. This RFD gives that worker a
