@@ -33,6 +33,21 @@ over its 3.0 product. That license does not apply here. This RFD
 runs the `rfdetr` package and its Apache-tagged weights directly,
 and not the hosted platform.
 
+## A second consumer: RFD 0048
+
+RFD 0069 first served one consumer, RFD 0065's resolve step. A
+second consumer needs the same detection, for a different reason.
+
+RFD 0048 edits a mesh region from a reference image. Its guard
+preserves every vertex outside the edited region, but the reference
+image itself carries no such boundary. A whole-frame reference asks
+VoxHammer to infer which part of the picture the caller means.
+
+RF-DETR's segmentation output already draws that boundary, one mask
+per detected trait. Crop the source image to one trait's mask, and
+hand that crop to RFD 0048 as the reference image. The edit then
+targets the trait the caller named, and no other.
+
 ## Composition with RFD 0044
 
 Two entry points exist, and this RFD does not yet pick one.
@@ -53,10 +68,12 @@ COCO's classes never cover. Measure this before trusting the raw
 checkpoint on the dataset.
 
 **Packaging.** RFD 0036 packages a served model as a model image, one
-model per catalog entry. This RFD's use looks like an offline
-labeling pass over a fixed dataset, not a served endpoint. Decide
-whether RF-DETR needs a model image folder at all, or whether a
-script in `priv/` or `scripts/` covers the job.
+model per catalog entry. The RFD 0065 consumer is an offline labeling
+pass over a fixed dataset, and a script could cover it. The RFD 0048
+consumer runs on demand, against whatever image a caller supplies at
+edit time, and a script cannot serve that call. RF-DETR likely needs
+an RFD 0036 model image folder for the second consumer, even if the
+first consumer never calls it that way.
 
 **The taxonomy join.** RFD 0065's rule 2 grows the trait taxonomy
 from caption text. A detected visual label must resolve through the
