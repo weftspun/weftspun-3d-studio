@@ -3,9 +3,11 @@
 #   prek install
 #   prek run --all-files
 #
-# The Elixir hook covers the RECTGTN HTN domains and problems that sit
-# beside their RFDs. RFD 0037 records why those files are Elixir DSL,
-# and .formatter.exs names the tree they live in.
+# The RECTGTN HTN domains, the model-image build sources, and every
+# RFD moved to weftspun/request-for-discussion (per the user's own
+# direction, consolidating the RFD tree into one shared repository).
+# Their own lint hooks (mix format, elixir parses, dockerfile-and-server)
+# moved there with them; nothing under this repository needs them now.
 #
 # thirdparty/ holds the vendored browser client and the two fabric
 # subtrees (RFD 0060, RFD 0061). No hook here owns that code, so it
@@ -27,32 +29,3 @@ repos:
         language: system
         files: '^apps/weftspun_studio/(lib|test|config)/.*\.exs?$|^apps/weftspun_studio/mix\.exs$'
         pass_filenames: false
-
-      - id: mix-format
-        name: mix format (taskweft domains)
-        description: >-
-          Formats decisions/**/*.ex against .formatter.exs. A domain is
-          real Elixir, thus the formatter is the first check it passes.
-        entry: mix format --check-formatted
-        language: system
-        files: '^decisions/.*\.exs?$'
-        pass_filenames: false
-
-      - id: elixir-parses
-        name: elixir parses (taskweft domains)
-        description: >-
-          Rejects a domain that is not valid Elixir. The formatter
-          catches this as well, and this hook names the failure.
-        entry: elixir scripts/check-elixir-parses.exs
-        language: system
-        files: '^decisions/.*\.exs?$'
-
-      - id: dockerfile-and-server
-        name: model images parse
-        description: >-
-          Each model folder carries a Dockerfile and a server.py.
-          RFD 0036 gives the rules, and a broken server.py fails much
-          later, on a rented GPU.
-        entry: python scripts/check-model-images.py
-        language: system
-        files: '^decisions/.*/(Dockerfile|server\.py|test_input\.json)$'
