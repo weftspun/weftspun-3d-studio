@@ -3,9 +3,11 @@
 # apps/character_taxonomy/, apps/usd_viewer_app/ each carry one). This
 # file covers only what belongs to no single app.
 
-# RFD 0064: the Hugging Face training dataset. 20.9 GB, fetched by
-# scripts/fetch-anime-caption-dataset.sh, never committed.
-/decisions/0064-character-concept-generator/dataset/
+# RFD 0064 (weftspun/request-for-discussion): the Hugging Face
+# training dataset, fetched by scripts/fetch-anime-caption-dataset.sh,
+# never committed. Moved here from decisions/0064-.../dataset/ when
+# decisions/ itself moved to weftspun/request-for-discussion.
+/datasets/
 
 # A safety net: `mix weftspun.crdb`/`mix test` run from the wrong
 # directory create this at the repo root instead of inside

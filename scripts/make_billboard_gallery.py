@@ -1,12 +1,13 @@
 """Wraps RFD 0064 dataset images as billboard cards in one USD stage.
 
-RFD 0073 records the decision. Each image becomes a flat, textured
-quad, alpha cutout, no mesh generation. Cards lay out on a grid, and
-each carries its caption as USD metadata (customData), so a viewer
-can show it without a second lookup.
+RFD 0073 records the decision (both RFDs now in
+weftspun/request-for-discussion). Each image becomes a flat,
+textured quad, alpha cutout, no mesh generation. Cards lay out on a
+grid, and each carries its caption as USD metadata (customData), so
+a viewer can show it without a second lookup.
 
 Usage:
-    python scripts/make_billboard_gallery.py --shards 1 --out-dir usd_viewer_app/public/usd/gallery
+    python scripts/make_billboard_gallery.py --shards 1 --out-dir apps/usd_viewer_app/public/usd/gallery
 """
 
 import argparse
@@ -18,7 +19,7 @@ import pyarrow.parquet as pq
 from PIL import Image
 from pxr import Usd, UsdGeom, UsdShade, Sdf, UsdUtils
 
-DATASET_DIR = Path("decisions/0064-character-concept-generator/dataset/data")
+DATASET_DIR = Path("datasets/anime-caption-cc0/data")
 THUMB_SIZE = 128
 GRID_SPACING = 1.2
 
@@ -106,7 +107,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--shards", type=int, default=1, help="how many of the 42 parquet shards to process")
     parser.add_argument("--cols", type=int, default=20)
-    parser.add_argument("--out-dir", default="usd_viewer_app/public/usd/gallery")
+    parser.add_argument("--out-dir", default="apps/usd_viewer_app/public/usd/gallery")
     args = parser.parse_args()
 
     shard_paths = sorted(DATASET_DIR.glob("train-*.parquet"))[: args.shards]

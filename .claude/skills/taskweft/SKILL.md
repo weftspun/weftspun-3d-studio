@@ -1,6 +1,6 @@
 ---
 name: taskweft
-description: Write, solve, and maintain RECTGTN HTN planning domains with the taskweft MCP server. Use when working on decisions/*/domain.ex, problem.ex, or plan.ex, when a pipeline runs several models in order, or when the user mentions taskweft, HTN, RECTGTN, a planning domain, or replanning.
+description: Write, solve, and maintain RECTGTN HTN planning domains with the taskweft MCP server. Use when working on weftspun/request-for-discussion's 00NN-*/domain.ex, problem.ex, or plan.ex, when a pipeline runs several models in order, or when the user mentions taskweft, HTN, RECTGTN, a planning domain, or replanning.
 ---
 
 # taskweft
@@ -137,10 +137,11 @@ That is the reason a composite is a domain and not a script.
 
 ## Maintenance
 
-Run these before a commit. prek runs them too.
+The domains moved to weftspun/request-for-discussion; run these
+there, before a commit, on a checkout of that repository.
 
 ```bash
-mix format --check-formatted        # .formatter.exs covers decisions/**/*.ex
+mix format --check-formatted        # .formatter.exs covers 00NN-*/*.ex
 elixir scripts/check-elixir-parses.exs
 prek run --all-files
 ```
@@ -165,12 +166,15 @@ unset key fails quietly.
 
 ## Where things are
 
+Every path below is in weftspun/request-for-discussion, not this
+repository.
+
 | Path | Holds |
 | ---- | ----- |
-| `decisions/00NN-*/domain.ex` | The domain. |
-| `decisions/00NN-*/problem.ex` | The problem. |
-| `decisions/00NN-*/plan.ex` | The solved plan, generated. |
-| `decisions/0037-*/README.md` | Why composites are domains. |
+| `00NN-*/domain.ex` | The domain. |
+| `00NN-*/problem.ex` | The problem. |
+| `00NN-*/plan.ex` | The solved plan, generated. |
+| `0037-*/README.md` | Why composites are domains. |
 | `.formatter.exs` | Formatter scope. |
 
 Upstream is github.com/taskweft/taskweft. `docs/rectgtn.md` explains

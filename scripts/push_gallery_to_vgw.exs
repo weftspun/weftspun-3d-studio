@@ -34,9 +34,9 @@ Application.put_all_env(
 )
 
 files = [
-  {"usd_viewer_app/public/usd/sample_billboard.png", "sample_billboard.png", "image/png"},
-  {"usd_viewer_app/public/usd/sample_billboard.usda", "sample_billboard.usda", "model/vnd.usd"},
-  {"usd_viewer_app/public/usd/sample_billboard.usdz", "sample_billboard.usdz", "model/vnd.usdz+zip"}
+  {"apps/usd_viewer_app/public/usd/sample_billboard.png", "sample_billboard.png", "image/png"},
+  {"apps/usd_viewer_app/public/usd/sample_billboard.usda", "sample_billboard.usda", "model/vnd.usd"},
+  {"apps/usd_viewer_app/public/usd/sample_billboard.usdz", "sample_billboard.usdz", "model/vnd.usdz+zip"}
 ]
 
 for {path, key, content_type} <- files do

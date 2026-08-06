@@ -7,6 +7,12 @@ holds three parts in one application:
 - WebXR, and WebGPU features
 - VRM avatar authoring, with appearance traits, animation, and export
 
+`apps/weftspun_studio/`, `apps/character_taxonomy/`, and
+`apps/usd_viewer_app/` each deploy on their own. Every design
+decision behind them, RFD 0000 onward, lives in
+[weftspun/request-for-discussion](https://github.com/weftspun/request-for-discussion),
+not in this repository.
+
 ## Acknowledgments
 
 The project started as Open3DStudio. It then took the name Weftspun
