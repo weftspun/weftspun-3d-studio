@@ -6,14 +6,17 @@
 # for that step — RFD 0058 explains why that logic moved into the
 # container instead.
 #
-# Requires=/After= on weftspun-crdb.service is explicit because that
-# dependency crosses containers; Quadlet only auto-wires the
+# Requires=/After= on weftspun-crdb.service and
+# weftspun-usd-viewer.service is explicit because both dependencies
+# cross containers; Quadlet only auto-wires the
 # Network=/Volume=/Image= references below.
 
 [Unit]
 Description=weftspun_studio API server
 Requires=weftspun-crdb.service
 After=weftspun-crdb.service
+Requires=weftspun-usd-viewer.service
+After=weftspun-usd-viewer.service
 
 [Container]
 Image=weftspun.build
@@ -32,6 +35,7 @@ Environment=WEFTSPUN_DB_NAME=weftspun_studio
 Environment=WEFTSPUN_DB_POOL=10
 Environment=WEFTSPUN_PORT=4000
 Environment=WEFTSPUN_SERVE=1
+Environment=GALLERY_URL=http://weftspun-usd-viewer:8090
 
 [Service]
 Restart=on-failure

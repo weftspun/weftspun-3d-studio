@@ -1,16 +1,15 @@
-/_build/
-/cover/
-/deps/
-/doc/
-/.fetch
-erl_crash.dump
-*.ez
-/burrito_out/
-/.crdb/
+# RFD 0076: every deployed app lives under apps/, each with its own
+# .gitignore for its own build/fetch artifacts (apps/weftspun_studio/,
+# apps/character_taxonomy/, apps/usd_viewer_app/ each carry one). This
+# file covers only what belongs to no single app.
 
 # RFD 0064: the Hugging Face training dataset. 20.9 GB, fetched by
 # scripts/fetch-anime-caption-dataset.sh, never committed.
 /decisions/0064-character-concept-generator/dataset/
-character_taxonomy/deps/
-character_taxonomy/_build/
+
+# A safety net: `mix weftspun.crdb`/`mix test` run from the wrong
+# directory create this at the repo root instead of inside
+# apps/weftspun_studio/, where its own .gitignore already covers it.
+/.crdb/
+
 .playwright-mcp/

@@ -13,8 +13,9 @@
 # and each one is a fact about the host and not about the code.
 set -uo pipefail
 
-# RFD 0060 put weftspun_studio's mix.exs at the repo root.
-cd "$(dirname "$0")/.." || exit 1
+# RFD 0076 put weftspun_studio's mix.exs back in
+# apps/weftspun_studio/, reversing RFD 0060's move to the repo root.
+cd "$(dirname "$0")/../apps/weftspun_studio" || exit 1
 
 skip() {
   echo "skipped: $1"

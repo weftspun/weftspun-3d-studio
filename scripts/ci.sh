@@ -13,9 +13,11 @@
 # ordering .github/workflows/main.yml uses, so a green run here means
 # a green run there.
 #
-# RFD 0060 swapped the repo layout: weftspun_studio's content now
-# sits at the repo root, and the JS app RFD 0060 calls thirdparty/
-# lives at thirdparty/3d_studio/.
+# RFD 0060 swapped the repo layout so weftspun_studio's content sat
+# at the repo root; RFD 0076 moved it back into
+# apps/weftspun_studio/, alongside apps/character_taxonomy/ and
+# apps/usd_viewer_app/. The JS app RFD 0060 calls thirdparty/ still
+# lives at thirdparty/3d_studio/, unaffected.
 
 set -euo pipefail
 
@@ -43,7 +45,7 @@ VITE_PUBLIC_DEMO=1 npm run build
 # --- Elixir: compile, then test against a throwaway CockroachDB -----
 
 step "Elixir: deps"
-cd "$ROOT/weftspun_studio"
+cd "$ROOT/apps/weftspun_studio"
 export CC="${CC:-clang}" CXX="${CXX:-clang++}"
 mix local.hex --force --if-missing
 mix local.rebar --force --if-missing
@@ -74,12 +76,19 @@ trap - EXIT
 
 # --- Containers: build both images (no push) -------------------------
 
+cd "$ROOT"
+
 if [[ -n "$CONTAINER_ENGINE" ]]; then
   step "container: weftspun-crdb"
   "$CONTAINER_ENGINE" build -f deploy/Dockerfile.crdb -t localhost/weftspun-crdb:ci .
 
+  # apps/weftspun_studio/Dockerfile's own COPY lines (mix.exs, lib,
+  # priv, config, deploy/docker-entrypoint.sh) are relative to
+  # apps/weftspun_studio/ itself, so the build context is that
+  # directory, not the repo root — the same context Quadlet's own
+  # SetWorkingDirectory=file gives weftspun.build.
   step "container: weftspun"
-  "$CONTAINER_ENGINE" build -f Dockerfile -t localhost/weftspun:ci .
+  "$CONTAINER_ENGINE" build -f apps/weftspun_studio/Dockerfile -t localhost/weftspun:ci apps/weftspun_studio
 else
   step "container: skipped, no podman or docker on PATH"
 fi

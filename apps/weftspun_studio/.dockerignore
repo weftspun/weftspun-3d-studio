@@ -1,0 +1,8 @@
+# RFD 0076 moved weftspun_studio's own Dockerfiles here, so the
+# build context is this directory, not the repo root. decisions/,
+# thirdparty/, character_taxonomy/, and usd_viewer_app/ are outside
+# it now and need no exclusion; only this app's own build artifacts
+# do.
+/_build/
+/deps/
+/.crdb/

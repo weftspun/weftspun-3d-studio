@@ -1,0 +1,21 @@
+{
+  "name": "weftspun-usd-viewer-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "postinstall": "patch-package",
+    "vendor": "rm -rf public/vendor public/wasm && mkdir -p public/vendor/usd-viewer && cp node_modules/usd-viewer/*.js node_modules/usd-viewer/*.d.ts public/vendor/usd-viewer/ && cp -r node_modules/usd-viewer/wasm public/wasm",
+    "dev": "npm run vendor && vite",
+    "build": "npm run vendor && vite build",
+    "preview": "vite preview",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "usd-viewer": "0.0.0"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.1",
+    "vite": "^5.4.0"
+  }
+}
