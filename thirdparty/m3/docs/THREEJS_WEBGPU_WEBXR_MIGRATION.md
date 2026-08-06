@@ -395,14 +395,14 @@ function updateAvatar(bodyData, faceData) {
 ## 🔮 Future Enhancements
 
 ### Planned Features
-1. **Face Tracking Integration**: Web path in [`xrExpressionTrackingDriver.js`](../src/library/xrExpressionTrackingDriver.js). Native OpenXR path documented in **[OPENXR_FACE_TRACKING_ANDROID_XR.md](./OPENXR_FACE_TRACKING_ANDROID_XR.md)** and scaffold **[`native/android-xr-face-bridge/README.md`](../native/android-xr-face-bridge/README.md)**
+1. **Face Tracking Integration**: Web path in [`xrExpressionTrackingDriver.js`](../src/library/xrExpressionTrackingDriver.js). Native OpenXR path documented in **[RFD 0096](https://github.com/weftspun/request-for-discussion/tree/main/0096-openxr-face-tracking-android-xr), `weftspun/request-for-discussion`** and scaffold **[`native/android-xr-face-bridge/README.md`](../native/android-xr-face-bridge/README.md)**
 2. **Body Tracking Integration**: Real-time skeletal animation from IMU sensors
 3. **Advanced Post-Processing**: More effects (motion blur, depth of field, etc.)
 4. **Audio Visualization**: Real-time audio analysis for lip-sync
 5. **Performance Monitoring**: FPS tracking and optimization suggestions
 
 ### Android XR Integration
-- Native Android XR app using OpenXR (`XR_ANDROID_face_tracking`), see [OPENXR_FACE_TRACKING_ANDROID_XR.md](./OPENXR_FACE_TRACKING_ANDROID_XR.md)
+- Native Android XR app using OpenXR (`XR_ANDROID_face_tracking`), see [RFD 0096](https://github.com/weftspun/request-for-discussion/tree/main/0096-openxr-face-tracking-android-xr), `weftspun/request-for-discussion`
 - Face tracking data streaming to web app via `window.__weftspun3dStudioNativeFace` ([`nativeFaceBridge.js`](../src/library/nativeFaceBridge.js))
 - Complete avatar animation (body + face + eye)
 
@@ -432,7 +432,7 @@ function updateAvatar(bodyData, faceData) {
 - [ ] Test WebGPU on various browsers
 - [x] Test WebXR on Android XR devices (Samsung Galaxy XR)
 - [ ] Test post-processing performance
-- [x] Integrate face tracking data (web: `expression-tracking`. Native: `nativeFaceBridge` + [`OPENXR_FACE_TRACKING_ANDROID_XR.md`](./OPENXR_FACE_TRACKING_ANDROID_XR.md))
+- [x] Integrate face tracking data (web: `expression-tracking`. Native: `nativeFaceBridge` + [RFD 0096](https://github.com/weftspun/request-for-discussion/tree/main/0096-openxr-face-tracking-android-xr), `weftspun/request-for-discussion`)
 - [ ] Integrate body tracking data
 
 ---

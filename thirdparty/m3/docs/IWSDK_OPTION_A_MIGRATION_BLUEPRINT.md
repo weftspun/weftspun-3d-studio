@@ -76,7 +76,7 @@ Use all three repos as **layers**, not as three parallel apps:
 - **World building** (after core XR is stable): add Spark + world package import. Use sensai-webxr-worldmodels for integration pitfalls (collision GLB, LoD, UI depth).
 - **Authoring + experiencing**: desktop precision + DGX for meshes. XR for spatial staging and performance. Hybrid is expected.
 
-See also `docs/IWSDK_INTEGRATION.md` (Gaussian splat worlds noted as a later track).
+See also [RFD 0090](https://github.com/weftspun/request-for-discussion/tree/main/0090-iwsdk-integration), `weftspun/request-for-discussion` (Gaussian splat worlds noted as a later track).
 
 ---
 

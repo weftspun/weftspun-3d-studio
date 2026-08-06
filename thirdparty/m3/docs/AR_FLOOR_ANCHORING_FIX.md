@@ -2,7 +2,7 @@
 
 This document has been **consolidated** into:
 
-- `docs/XR_MODE_FLOOR_ANCHORING_AND_BACKGROUNDS.md`
+- [RFD 0108](https://github.com/weftspun/request-for-discussion/tree/main/0108-xr-mode-floor-anchoring-and-backgrounds), `weftspun/request-for-discussion`
 
 That document reflects the current correct AR behavior:
 - **Pass-through** is enforced by keeping `scene.background = null` and `renderer.setClearColor(..., 0)`

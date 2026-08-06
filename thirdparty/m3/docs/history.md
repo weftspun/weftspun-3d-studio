@@ -50,8 +50,8 @@ More development screenshots, from a livestream of January 2023. They show more 
 
 - **Immersive XR (in repo)**:
   - The main app runs **WebXR** through `SceneManager`, for VR and AR, with floor anchoring.
-  - The **IWSDK lab** at `/xr` holds the locomotion and grab experiments. See [`docs/IWSDK_INTEGRATION.md`](../IWSDK_INTEGRATION.md).
-  - **Galaxy XR** takes an optional [**Weftspun XR Face** APK](../../native/android-xr-face-bridge/README.md). That APK relays blend shapes when Chrome has no expression tracking. See [`docs/OPENXR_FACE_TRACKING_ANDROID_XR.md`](../OPENXR_FACE_TRACKING_ANDROID_XR.md).
+  - The **IWSDK lab** at `/xr` holds the locomotion and grab experiments. See [RFD 0090](https://github.com/weftspun/request-for-discussion/tree/main/0090-iwsdk-integration), `weftspun/request-for-discussion`.
+  - **Galaxy XR** takes an optional [**Weftspun XR Face** APK](../../native/android-xr-face-bridge/README.md). That APK relays blend shapes when Chrome has no expression tracking. See [RFD 0096](https://github.com/weftspun/request-for-discussion/tree/main/0096-openxr-face-tracking-android-xr), `weftspun/request-for-discussion`.
 - **Kimodo text-to-motion**: Animation bar → **3DAIGC-API** `text_to_motion` (Kimodo SOMA-RP-v1.1) → studio motion JSON → VRM / rigged GLB playback in viewport
 - AI features: create or load a personality, then talk to your VRM. These are **companion runtimes**. They run beside the app, and the project does **not** merge them.
   - **[moeChat](https://github.com/moeru-ai/chat)** is the **default**. See the [demo](https://chat.moeru.ai/). It covers WebXR, VRM, voice, and the AI model settings.

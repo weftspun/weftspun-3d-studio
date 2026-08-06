@@ -2,7 +2,7 @@
 
 This document has been **consolidated** into:
 
-- `docs/XR_MODE_FLOOR_ANCHORING_AND_BACKGROUNDS.md`
+- [RFD 0108](https://github.com/weftspun/request-for-discussion/tree/main/0108-xr-mode-floor-anchoring-and-backgrounds), `weftspun/request-for-discussion`
 
 That document is the single source of truth for current XR positioning:
 - **X = 0**
