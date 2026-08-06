@@ -1,7 +1,8 @@
-# RFD 0076: every deployed app lives under apps/, each with its own
-# .gitignore for its own build/fetch artifacts (apps/weftspun_studio/,
-# apps/character_taxonomy/, apps/usd_viewer_app/ each carry one). This
-# file covers only what belongs to no single app.
+# RFD 0120 split every deployed app into its own repository
+# (weftspun-studio, weftspun-character-taxonomy, weftspun-usd-viewer),
+# each with its own .gitignore for its own build artifacts. This file
+# covers only 3d_studio/, android-xr-face-bridge/, and top-level
+# fetch/build output.
 
 # RFD 0064 (weftspun/request-for-discussion): the Hugging Face
 # training dataset, fetched by scripts/fetch-anime-caption-dataset.sh,
@@ -9,9 +10,9 @@
 # decisions/ itself moved to weftspun/request-for-discussion.
 /datasets/
 
-# A safety net: `mix weftspun.crdb`/`mix test` run from the wrong
-# directory create this at the repo root instead of inside
-# apps/weftspun_studio/, where its own .gitignore already covers it.
+# Local CockroachDB runtime data, from whichever app or ad hoc
+# `cockroach start-single-node` created it here. Never tracked,
+# regardless of which app, if any, lives in this repository.
 /.crdb/
 
 .playwright-mcp/

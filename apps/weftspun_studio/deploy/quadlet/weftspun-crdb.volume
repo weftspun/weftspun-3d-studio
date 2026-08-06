@@ -1,8 +1,0 @@
-# SPDX-License-Identifier: MIT
-# Copyright (c) 2026 K. S. Ernest (iFire) Lee
-#
-# Persistent CockroachDB store, outside the container's writable
-# layer. RFD 0058.
-
-[Volume]
-VolumeName=weftspun-crdb-data
