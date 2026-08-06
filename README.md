@@ -7,9 +7,15 @@ holds three parts in one application:
 - WebXR, and WebGPU features
 - VRM avatar authoring, with appearance traits, animation, and export
 
-`apps/weftspun_studio/`, `apps/character_taxonomy/`, and
-`apps/usd_viewer_app/` each deploy on their own. Every design
-decision behind them, RFD 0000 onward, lives in
+The three deployed apps this project built,
+[weftspun-studio](https://github.com/weftspun/weftspun-studio),
+[weftspun-character-taxonomy](https://github.com/weftspun/weftspun-character-taxonomy),
+and
+[weftspun-usd-viewer](https://github.com/weftspun/weftspun-usd-viewer),
+each have their own repository now (RFD 0120). This repository holds
+`3d_studio/`, the browser client, and `android-xr-face-bridge/`, the
+companion Android XR APK. Every design decision, RFD 0000 onward,
+lives in
 [weftspun/request-for-discussion](https://github.com/weftspun/request-for-discussion),
 not in this repository.
 

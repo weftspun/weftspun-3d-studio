@@ -6,8 +6,12 @@ textured quad, alpha cutout, no mesh generation. Cards lay out on a
 grid, and each carries its caption as USD metadata (customData), so
 a viewer can show it without a second lookup.
 
+RFD 0120 split usd_viewer_app into its own repo,
+weftspun/weftspun-usd-viewer; point --out-dir at that repo's own
+public/usd/gallery, wherever it is checked out locally.
+
 Usage:
-    python scripts/make_billboard_gallery.py --shards 1 --out-dir apps/usd_viewer_app/public/usd/gallery
+    python scripts/make_billboard_gallery.py --shards 1 --out-dir ../weftspun-usd-viewer/public/usd/gallery
 """
 
 import argparse
@@ -107,7 +111,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--shards", type=int, default=1, help="how many of the 42 parquet shards to process")
     parser.add_argument("--cols", type=int, default=20)
-    parser.add_argument("--out-dir", default="apps/usd_viewer_app/public/usd/gallery")
+    parser.add_argument("--out-dir", required=True, help="weftspun-usd-viewer's own public/usd/gallery, checked out locally")
     args = parser.parse_args()
 
     shard_paths = sorted(DATASET_DIR.glob("train-*.parquet"))[: args.shards]
