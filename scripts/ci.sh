@@ -80,7 +80,7 @@ cd "$ROOT"
 
 if [[ -n "$CONTAINER_ENGINE" ]]; then
   step "container: weftspun-crdb"
-  "$CONTAINER_ENGINE" build -f deploy/Dockerfile.crdb -t localhost/weftspun-crdb:ci .
+  "$CONTAINER_ENGINE" build -f apps/weftspun_studio/deploy/Dockerfile.crdb -t localhost/weftspun-crdb:ci .
 
   # apps/weftspun_studio/Dockerfile's own COPY lines (mix.exs, lib,
   # priv, config, deploy/docker-entrypoint.sh) are relative to
