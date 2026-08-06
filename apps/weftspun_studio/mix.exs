@@ -63,7 +63,13 @@ defmodule WeftspunStudio.MixProject do
       {:ecto_sql, "~> 3.12"},
       {:postgrex, "~> 0.19"},
       # Mocks for the API surface the UI consumes.
-      {:mox, "~> 1.1", only: :test}
+      {:mox, "~> 1.1", only: :test},
+      # Observability. Traces every request through Plug.Router
+      # (RFD 0079 records why: AppSignal, not raw OpenTelemetry, per
+      # the user's own direction), and reports to the collector
+      # config/runtime.exs points at the APPSIGNAL_PUSH_API_KEY
+      # secret configures.
+      {:appsignal_plug, "~> 2.0"}
     ]
   end
 

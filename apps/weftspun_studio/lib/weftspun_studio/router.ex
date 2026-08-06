@@ -15,6 +15,10 @@ defmodule WeftspunStudio.Router do
   """
 
   use Plug.Router
+  # RFD 0079: traces every request through this router, reported to
+  # AppSignal. Must load before :match/:dispatch so it wraps the
+  # whole pipeline, per appsignal_plug's own setup instructions.
+  use Appsignal.Plug
 
   # RFD 0075's GitHub login needs a session to hold the CSRF `state`
   # value across the redirect to GitHub and back, and to hold the

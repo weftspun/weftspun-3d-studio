@@ -23,6 +23,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
+      # RFD 0079: keeps the Fly secret in sync with the GitHub
+      # secret of record on every deploy, not only the one this
+      # session set by hand. --stage takes effect on the deploy step
+      # right after, no extra rolling restart of its own.
+      - run: flyctl secrets set --stage --app weftspun-studio APPSIGNAL_PUSH_API_KEY="$APPSIGNAL_PUSH_API_KEY"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          APPSIGNAL_PUSH_API_KEY: ${{ secrets.APPSIGNAL_PUSH_API_KEY }}
       # RFD 0076 moved fly.toml, and the Dockerfile.fly it points at
       # with a plain relative `dockerfile = "Dockerfile.fly"`, into
       # apps/weftspun_studio/. Running from inside it makes that

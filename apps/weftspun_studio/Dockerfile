@@ -60,6 +60,14 @@ ENV WEFTSPUN_PORT=4000
 # only: weftspun.container's own Environment= line sets the real
 # value, ContainerName-addressed over weftspun.network.
 ENV GALLERY_URL=http://localhost:8090
+# RFD 0079: AppSignal, wired through Appsignal.Plug in router.ex.
+# APPSIGNAL_PUSH_API_KEY belongs in weftspun.container's own
+# Environment= line, not baked in here; every other setting
+# appsignal itself reads straight from these env vars.
+ENV APPSIGNAL_ACTIVE=true
+ENV APPSIGNAL_APP_NAME=weftspun-studio
+ENV APPSIGNAL_APP_ENV=production
+ENV APPSIGNAL_OTP_APP=weftspun_studio
 
 RUN useradd --system --no-create-home --shell /usr/sbin/nologin weftspun
 WORKDIR /app

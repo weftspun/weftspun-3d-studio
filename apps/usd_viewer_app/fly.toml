@@ -15,6 +15,9 @@ primary_region = "sjc"
 [[services]]
   internal_port = 8090
   protocol = "tcp"
+  # Single machine: cheaper, at the cost of a restart-window gap
+  # instead of Fly's default zero-downtime HA pair.
+  min_machines_running = 0
 
   # Not exposed on the public internet on purpose. weftspun_studio's
   # GallerySource adapter is the only intended caller, over Fly's

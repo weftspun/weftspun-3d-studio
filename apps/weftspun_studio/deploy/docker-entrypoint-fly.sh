@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 K. S. Ernest (iFire) Lee
 #
-# Start the colocated CockroachDB node and versitygw, wait for both,
-# migrate, then exec the release. One container, three processes,
-# the RFD 0062 colocation pattern, the same shape character_taxonomy
-# already proves on Fly.io for CockroachDB.
+# Start the colocated CockroachDB node, wait for it, migrate, then
+# exec the release. One container, two processes, the RFD 0062
+# colocation pattern, the same shape character_taxonomy already
+# proves on Fly.io for CockroachDB.
 #
-# versitygw binds 127.0.0.1 only, per RFD 0058's own rule: no port
-# goes past loopback unless a remote caller needs it. Only this
-# container's own release process reads or writes through it.
+# versitygw ran here too, RFD 0073's original S3 target. RFD 0073
+# and RFD 0077 both name Tigris as its replacement instead; there is
+# no self-hosted gateway to start in this container anymore.
 set -eu
 
 cockroach start-single-node --insecure \
@@ -18,14 +18,7 @@ cockroach start-single-node --insecure \
   --http-addr=127.0.0.1:8081 &
 CRDB_PID=$!
 
-: "${VGW_ACCESS_KEY:?VGW_ACCESS_KEY must be set, a Fly secret, not a default}"
-: "${VGW_SECRET_KEY:?VGW_SECRET_KEY must be set, a Fly secret, not a default}"
-mkdir -p /data/vgw-store/gallery
-ROOT_ACCESS_KEY="$VGW_ACCESS_KEY" ROOT_SECRET_KEY="$VGW_SECRET_KEY" \
-  versitygw --port 127.0.0.1:10000 posix /data/vgw-store &
-VGW_PID=$!
-
-trap 'kill "$CRDB_PID" "$VGW_PID" 2>/dev/null || true' TERM INT
+trap 'kill "$CRDB_PID" 2>/dev/null || true' TERM INT
 
 for _ in $(seq 1 60); do
   if cockroach sql --insecure --host=127.0.0.1:26257 -e "SELECT 1" >/dev/null 2>&1; then
