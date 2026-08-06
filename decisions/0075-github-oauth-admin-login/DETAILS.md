@@ -52,13 +52,38 @@ documented contract for that endpoint. Only a `204` starts a
 session; a `404` ends the flow with a plain, honest "not a weftspun
 member" response, not a silent failure.
 
+## The real DevOps steps, as run
+
+1. `flyctl secrets set GITHUB_OAUTH_CLIENT_ID=... GITHUB_OAUTH_CLIENT_SECRET=...
+   --app weftspun-studio`, values from the hand-done registration
+   above, run by the user directly rather than pasted into any
+   chat transcript.
+2. A signed-cookie session needs its own signing key, separate from
+   the OAuth secrets. Generated with `openssl rand -base64 48`, the
+   same urandom-based pattern RFD 0073 already used for
+   `VGW_ACCESS_KEY`/`VGW_SECRET_KEY`, and set as a fourth Fly
+   secret, `SECRET_KEY_BASE`, with
+   `flyctl secrets set SECRET_KEY_BASE=... --app weftspun-studio`.
+3. Each `flyctl secrets set` restarts the running machine on its
+   own, independent of the GitHub Actions deploy pipeline, so the
+   secret exists before the code that reads it ever deploys.
+
+## Session storage: a signed cookie
+
+Decided: `Plug.Session`, `store: :cookie`, signed with
+`SECRET_KEY_BASE` above. No new database table, no new ETS
+process, nothing to garbage-collect. `Plug.Router` sets no
+`secret_key_base` on its own, unlike a Phoenix endpoint, so a small
+plug sets `conn.secret_key_base` from the Fly secret before
+`Plug.Session` runs.
+
 ## What still needs deciding
 
-Session storage, a signed cookie, an ETS table, or CockroachDB
-itself, already running for RFD 0062's other state. Session
-lifetime, and whether the org-membership check runs once at login
-or again on some cadence, since a person removed from `weftspun`
-after logging in should not keep admin access indefinitely on an
-old session. None of this is decided yet; this RFD records the
-registration steps and the shape of the flow, not a finished
-design.
+Session lifetime, and whether the org-membership check runs once at
+login or again on some cadence, since a person removed from
+`weftspun` after logging in should not keep admin access
+indefinitely on an old session. Which upload-admin routes actually
+exist to gate: none do yet, this session's own scope stops at
+proving the login and membership check work, demonstrated on one
+small protected route, not at building the upload-admin feature
+itself.

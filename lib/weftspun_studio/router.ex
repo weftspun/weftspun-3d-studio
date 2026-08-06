@@ -22,6 +22,21 @@ defmodule WeftspunStudio.Router do
   plug(:coep_for_gallery)
   plug(Plug.Static, at: "/gallery", from: {:weftspun_studio, "priv/static/gallery"})
 
+  # RFD 0075's GitHub login needs a session to hold the CSRF `state`
+  # value across the redirect to GitHub and back, and to hold the
+  # logged-in user afterward. A signed cookie, no new database table,
+  # no new process. Plug.Router sets no secret_key_base on its own,
+  # unlike a Phoenix endpoint, so :put_secret_key_base sets it from
+  # the SECRET_KEY_BASE Fly secret before Plug.Session runs.
+  plug(:put_secret_key_base)
+
+  plug(Plug.Session,
+    store: :cookie,
+    key: "_weftspun_studio_session",
+    signing_salt: "rfd0075_github_login"
+  )
+
+  plug(:fetch_session)
   plug(:fetch_query_params)
   plug(:match)
 
@@ -87,8 +102,12 @@ defmodule WeftspunStudio.Router do
 
   # Plug.Static answers /gallery/index.html and every asset under it
   # correctly, but it does not resolve a bare directory request to
-  # index.html, the way a static file server usually does. These two
-  # routes cover that gap for the RFD 0073 gallery.
+  # index.html, the way a static file server usually does. This route
+  # covers that gap for the RFD 0073 gallery. Plug.Router normalizes
+  # a trailing slash away when it splits path_info, so "/gallery" and
+  # "/gallery/" already match the same clause; a second, separate
+  # "/gallery/" clause here would be unreachable dead code, confirmed
+  # by the compiler's own "cannot match" warning.
   get "/gallery" do
     send_gallery_index(conn)
   end
@@ -104,8 +123,48 @@ defmodule WeftspunStudio.Router do
     conn |> Plug.Conn.put_resp_content_type("model/vnd.usdz+zip") |> Plug.Conn.send_file(200, path)
   end
 
-  get "/gallery/" do
-    send_gallery_index(conn)
+  # ---------- RFD 0075: GitHub login, gated on weftspun membership ----------
+
+  # A random, per-attempt value, checked again in the callback below,
+  # so a forged callback request cannot forge a login too, the
+  # standard OAuth CSRF defense.
+  get "/auth/github/login" do
+    state = :crypto.strong_rand_bytes(24) |> Base.url_encode64(padding: false)
+
+    query =
+      URI.encode_query(%{
+        "client_id" => System.fetch_env!("GITHUB_OAUTH_CLIENT_ID"),
+        "redirect_uri" => github_callback_url(),
+        "scope" => "read:org",
+        "state" => state
+      })
+
+    conn
+    |> Plug.Conn.put_session(:oauth_state, state)
+    |> Plug.Conn.put_resp_header("location", "https://github.com/login/oauth/authorize?" <> query)
+    |> Plug.Conn.send_resp(302, "")
+  end
+
+  get "/auth/github/callback" do
+    expected_state = Plug.Conn.get_session(conn, :oauth_state)
+    code = conn.params["code"]
+    state = conn.params["state"]
+
+    cond do
+      is_nil(code) -> json(conn, 400, %{error: "missing code"})
+      is_nil(expected_state) or state != expected_state -> json(conn, 400, %{error: "state mismatch"})
+      true -> handle_github_callback(conn, code)
+    end
+  end
+
+  # One small protected route, demonstrating the gate works. The
+  # upload-admin routes this login exists for do not exist yet, RFD
+  # 0075's own DETAILS.md names that as open work, not built here.
+  get "/api/v1/admin/whoami" do
+    case Plug.Conn.get_session(conn, :github_user) do
+      nil -> json(conn, 401, %{error: "not logged in"})
+      user -> json(conn, 200, %{user: user, org: "weftspun"})
+    end
   end
 
   # ---------- jobs, passed through to Replicate ----------
@@ -203,6 +262,79 @@ defmodule WeftspunStudio.Router do
   defp error(conn, reason), do: json(conn, 500, %{error: inspect(reason)})
 
   defp encode_fact(fact), do: %{fact | updated_at: DateTime.to_iso8601(fact.updated_at)}
+
+  defp put_secret_key_base(conn, _opts) do
+    %{conn | secret_key_base: System.fetch_env!("SECRET_KEY_BASE")}
+  end
+
+  defp github_callback_url do
+    System.get_env(
+      "GITHUB_OAUTH_CALLBACK_URL",
+      "https://weftspun-studio.fly.dev/auth/github/callback"
+    )
+  end
+
+  # The three real calls: trade the one-time code for a token, read
+  # whose token it is, then check that person against the org roster.
+  # A 204 from GitHub's own membership endpoint means a real member; a
+  # 404 means it does not, per GitHub's own documented contract for
+  # that route. Anything else is a real, reported failure, not a
+  # silent one.
+  defp handle_github_callback(conn, code) do
+    with {:ok, token} <- exchange_code_for_token(code),
+         {:ok, username} <- fetch_github_username(token),
+         :ok <- verify_org_membership(token, username) do
+      conn
+      |> Plug.Conn.put_session(:github_user, username)
+      |> Plug.Conn.delete_session(:oauth_state)
+      |> json(200, %{status: "ok", user: username, org: "weftspun"})
+    else
+      {:error, :not_a_member, username} ->
+        json(conn, 403, %{error: "not a weftspun member", user: username})
+
+      {:error, reason} ->
+        json(conn, 502, %{error: "github oauth failed", reason: inspect(reason)})
+    end
+  end
+
+  defp exchange_code_for_token(code) do
+    case Req.post("https://github.com/login/oauth/access_token",
+           headers: [{"accept", "application/json"}],
+           form: [
+             client_id: System.fetch_env!("GITHUB_OAUTH_CLIENT_ID"),
+             client_secret: System.fetch_env!("GITHUB_OAUTH_CLIENT_SECRET"),
+             code: code,
+             redirect_uri: github_callback_url()
+           ]
+         ) do
+      {:ok, %{status: 200, body: %{"access_token" => token}}} -> {:ok, token}
+      {:ok, %{body: body}} -> {:error, {:no_token, body}}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp fetch_github_username(token) do
+    case Req.get("https://api.github.com/user", headers: github_api_headers(token)) do
+      {:ok, %{status: 200, body: %{"login" => login}}} -> {:ok, login}
+      {:ok, %{status: status, body: body}} -> {:error, {:user_lookup_failed, status, body}}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp verify_org_membership(token, username) do
+    url = "https://api.github.com/orgs/weftspun/members/#{username}"
+
+    case Req.get(url, headers: github_api_headers(token)) do
+      {:ok, %{status: 204}} -> :ok
+      {:ok, %{status: 404}} -> {:error, :not_a_member, username}
+      {:ok, %{status: status}} -> {:error, {:membership_check_failed, status}}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp github_api_headers(token) do
+    [{"authorization", "Bearer " <> token}, {"user-agent", "weftspun-studio"}]
+  end
 
   defp send_gallery_index(conn) do
     path = Application.app_dir(:weftspun_studio, "priv/static/gallery/index.html")
